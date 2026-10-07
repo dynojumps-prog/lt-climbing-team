@@ -397,6 +397,11 @@ input[type=password]{width:100%;background:var(--field);border:1px solid var(--l
 .bcchips button.bchip{min-height:34px;color:var(--ink)}.bcchips button.bchip.on{border-color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
 .robtop{display:flex;justify-content:space-between;align-items:center;gap:8px}.robar{height:8px;border-radius:4px;background:var(--line);overflow:hidden;margin:5px 0 2px}.robar i{display:block;height:100%}
 .roqn{margin:4px 0 0;line-height:1.4}
+.secadd{background:none;border:1px dashed var(--line);border-radius:10px;color:var(--soft);font:inherit;font-size:.85rem;padding:6px 10px;margin-top:8px;cursor:pointer}
+.secbox{margin-top:10px;border:1px dashed var(--line);border-radius:10px;padding:8px 10px}
+.secbox label{display:block;font-weight:700;font-size:.9rem;margin-bottom:6px}.secbox label small{display:block;font-weight:400;color:var(--soft);font-size:.78rem}
+.secbox textarea{width:100%;box-sizing:border-box}
+.seclock{color:var(--soft);font-size:.85rem;margin:8px 0 0}
 </style>
 </head>
 <body>
@@ -614,12 +619,37 @@ async function pullAll(){ if(!col||GUEST) return;
     if(cc.exists&&!dirty.has('coach')){ S.coach=migrateCoach(JSON.parse(JSON.stringify(cc.data()))); bump(); }
     else if(dirty.has('coach')||S.coach.history.length||S.coach.hyps.length) saveCoach();
     setSync(dirty.size?'Saving…':'Synced'); render();
-    await loadRemoteMonth(mkey(S.y,S.m)); await loadRemoteMonth(prevMonthKey()); flushDirty();
+    await loadRemoteMonth(mkey(S.y,S.m)); await loadRemoteMonth(prevMonthKey()); flushDirty(); await secLoadAll();
   }catch(e){ setSync('Saved on phone, syncs later'); }
 }
 db=TEAM.db||null; col=db?db.collection('people/'+ACC.id+'/docs'):null;
 if(col){ window.addEventListener('online',()=>{ if(ALIVE) pullAll(); }); setTimeout(async()=>{ if(!ALIVE) return; if(!(await verifyMe())) return; await pullAll(); if(ALIVE){ sumQueue(); pendingImport(); } },0); }
 
+// ---------- secret notes: only you can read them. The text lives in people/<you>/secret, which the database gives to nobody else;
+// the log your coach can open only gets a 🔒 mark (it.sec) that says a secret note exists ----------
+const SEC={}, secT={}, secDirty=new Set(ls.get('secdirty')||[]);
+const secCol=()=>TEAM.db&&!GUEST?TEAM.db.collection('people/'+ACC.id+'/secret'):null;
+const secNorm=v=>{ const o={}; if(v&&typeof v==='object') Object.entries(v).forEach(([k,t])=>{ if(typeof t==='string'&&t.trim()&&/^[^|]+\|[^|]+$/.test(k)) o[k]=t.slice(0,5000); }); return o; };
+function secMonth(k){ if(!SEC[k]){ const v=ls.get('sec:'+k); SEC[k]={notes:secNorm(v&&v.notes)}; } return SEC[k]; }
+function secGet(key){ if(GUEST) return ''; const {k}=itemAt(key); return k?String(secMonth(k).notes[key]||''):''; }
+function secMark(){ try{ ls.set('secdirty',[...secDirty]); }catch(e){} }
+function secSave(k){ ls.set('sec:'+k,SEC[k]); secDirty.add(k); secMark(); clearTimeout(secT[k]); secT[k]=setTimeout(()=>secPush(k),700); }
+async function secPush(k){ const c=secCol(); if(!c||!ALIVE||!SEC[k]) return; const sent=JSON.stringify(SEC[k].notes);
+  try{ await c.doc('m-'+k).set({key:k,notes:JSON.parse(sent)}); if(JSON.stringify(SEC[k].notes)===sent){ secDirty.delete(k); secMark(); } }catch(e){} }
+function secSet(key,text){ if(GUEST) return; const {k,it}=itemAt(key); if(!k||!it) return; const n=secMonth(k).notes; text=String(text||'').slice(0,5000);
+  if(text.trim()) n[key]=text; else delete n[key];
+  const on=!!text.trim(); if(!!it.sec!==on){ if(on) it.sec=1; else delete it.sec; saveMonth(k); }
+  secSave(k); }
+function secFlush(){ [...secDirty].forEach(k=>{ secMonth(k); secPush(k); }); }
+const secTyping=()=>{ const a=document.activeElement; return !!a&&/^(TEXTAREA|INPUT)$/.test(a.tagName); };
+async function secLoadAll(){ const c=secCol(); if(!c) return; try{ const s=await c.get(); if(GUEST||!ALIVE) return; let ch=false;
+    s.docs.forEach(d=>{ const k=String(d.id).slice(2); if(!/^\d{4}-\d{2}$/.test(k)||secDirty.has(k)) return; const v={notes:secNorm((d.data()||{}).notes)};
+      if(JSON.stringify(v)!==JSON.stringify(SEC[k]||null)){ SEC[k]=v; ls.set('sec:'+k,v); ch=true; } });
+    secFlush(); if(ch&&!secTyping()) render(); }catch(e){} }
+function secAll(){ const o={}; Object.keys(S.months).forEach(k=>secMonth(k)); Object.entries(SEC).forEach(([k,v])=>{ if(Object.keys(v.notes).length) o[k]={notes:Object.assign({},v.notes)}; }); return o; }
+function secHTML(e,it,key){ const t=secGet(key), op=t||S.st.secOpen===key;
+  if(!op) return `<button class="secadd" data-secopen="${key}">🔒 Add secret note</button>`;
+  return `<div class="secbox"><label for="sec${e.id}${it.fid}">🔒 Secret note <small>Only you can read this. Your coach only sees that there is one.</small></label><textarea id="sec${e.id}${it.fid}" data-sec="${key}" rows="2" placeholder="Write what you want to keep to yourself">${esc(t)}</textarea></div>`; }
 // ---------- helpers ----------
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function dur(v){ if(!v||!v.from||!v.to) return ''; const [a,b]=v.from.split(':').map(Number),[c,d]=v.to.split(':').map(Number);
@@ -717,11 +747,11 @@ const COLL=new Set((()=>{ try{ return JSON.parse(localStorage.getItem(PFX+'colla
 const saveColl=()=>{ try{ localStorage.setItem(PFX+'collapsed',JSON.stringify([...COLL])); }catch(e){} };
 function fieldHTML(e,it){ const key=`${e.id}|${it.fid}`, fid='f'+e.id+it.fid, cs=compsList(it), op=S.typeOpen===key, shut=COLL.has(it.fid)&&!op;
   if(shut){ const sm=itemSummary(it,true), q=itemQuality(it,prevNote(it.name,S.sel));
-    return `<div class="f fcard2 shut" data-fkey="${key}"><button class="fhd" data-fcol="${it.fid}" aria-expanded="false"><span class="fl">${esc(it.name)}</span><span class="fsm">${sm?esc(sm):'<i>empty</i>'}</span>${q?`<i class="fdot" style="background:${q.color}"></i>`:''}<span class="chev">▸</span></button></div>`; }
+    return `<div class="f fcard2 shut" data-fkey="${key}"><button class="fhd" data-fcol="${it.fid}" aria-expanded="false"><span class="fl">${esc(it.name)}</span><span class="fsm">${sm?esc(sm):it.sec?'':'<i>empty</i>'}${it.sec?(sm?' · ':'')+'🔒':''}</span>${q?`<i class="fdot" style="background:${q.color}"></i>`:''}<span class="chev">▸</span></button></div>`; }
   if(GUEST) return roFieldHTML(e,it,key);
   return `<div class="f fcard2" data-fkey="${key}"><div class="lrow"><button class="fhd" data-fcol="${it.fid}" aria-expanded="true"><span class="fl">${esc(it.name)}</span><span class="chev">▾</span></button><button class="fmt" data-ft="${key}" aria-expanded="${op}">${op?'Close':'Format'}</button></div>${op?pickerHTML(e,it,key):''}
     ${cs.map(c=>`<div class="comp c${c}">${compHTML(e,it,c,key,fid)}</div>`).join('')}
-    <div class="qm">${qHTML(itemQuality(it,prevNote(it.name,S.sel)))}</div>${plausHTML(it)}</div>`; }
+    <div class="qm">${qHTML(itemQuality(it,prevNote(it.name,S.sel)))}</div>${plausHTML(it)}${secHTML(e,it,key)}</div>`; }
 function pickerHTML(e,it,key){ const R=compRatings(it.name), cs=compsList(it), tp=S.cfg.templates.find(t=>t.id===e.tid), tf=tp&&tp.fields.find(f=>f.id===it.fid);
   const same=tf&&compsOf(tf).join('')===compsOf(it).join('')&&!!tf.comps===!!it.comps;
   return `<div class="picker"><p class="note" style="margin:0 0 6px">Tap to add or remove parts. Best for ${esc(it.name)}: <b style="color:${RCOL[4]}">${R.best.map(c=>COMP[c]).join(' + ')}</b>. ${esc(R.why)}</p>
@@ -1612,7 +1642,7 @@ function exportClaude(range){ const D=exportDays(range); if(!D.length) return ''
     '- Training load = effort (1–10) × minutes. Times are 24h clock. Text in quotes is exactly what I wrote.',...(NT.pid===showPid()&&NT.list.length?['- [Coach notes] are what my coach wrote about that day.']:[]),
     `- Log types: ${S.cfg.templates.map(t=>t.name).join(', ')}.`,''];
   D.forEach(d=>{ XDAY=d; const [y,m,dd]=d.split('-'), mo=S.months[`${y}-${m}`], es=(mo.days[String(+dd)]||[]); const blocks=[];
-    es.forEach(e=>{ const lines=(e.items||[]).map(it=>{ const t=compsList(it).map(c=>partText(it,c)).filter(Boolean).join('; '); return t?`- ${it.name}: ${t}`:''; }).filter(Boolean);
+    es.forEach(e=>{ const lines=(e.items||[]).map(it=>{ const t=compsList(it).map(c=>partText(it,c)).filter(Boolean).join('; '), sn=GUEST?'':secGet(e.id+'|'+it.fid).trim().replace(/\s+/g,' '); return [t?`- ${it.name}: ${t}`:'', sn?`- ${it.name} (my secret note): "${sn}"`:''].filter(Boolean).join('\n'); }).filter(Boolean);
       const tp=S.cfg.templates.find(t=>t.id===e.tid); if(tp&&tp.fingerTest){ const rv=r=>{ const fd=tp.fields.find(x=>x.role===r), it=fd&&(e.items||[]).find(i=>i.fid===fd.id), x=it?parseFloat(getP(it,'N')):NaN; return isNaN(x)?null:x; }, bw=rv('bw'), ad=rv('add'); if(bw>0&&ad!=null) lines.push(`- Finger strength: ${Math.round((bw+ad)/bw*100)}% of bodyweight (bodyweight ${bw} kg + ${ad} kg on a ${rv('edge')||20} mm edge, 10 s)`); }
       if(lines.length) blocks.push(`[${tplName(e)}]`,...lines); });
     const cn=[], q=t=>String(t||'').replace(/\s+/g,' ').trim(); notesFor(d).forEach(n=>{ cn.push(`- ${n.byName||'Coach'}: "${q(n.text)}"`); repliesOf(n).forEach(r=>cn.push(`  - reply from ${r.byName||'?'}: "${q(r.text)}"`)); }); if(cn.length) blocks.push('[Coach notes]',...cn);
@@ -2143,6 +2173,7 @@ app.addEventListener('click',async ev=>{
   const tp=ev.target.closest('[data-tip]'); if(tp){ const w=tp.closest('.cw'), t=w&&w.querySelector('.tip'); if(t) t.textContent=tp.dataset.tip; if(w) w.querySelectorAll('.hit.sel').forEach(x=>x.classList.remove('sel')); tp.classList.add('sel'); ev.stopPropagation(); return; }
   if(bodyClick(ev)) return;
   const b=ev.target.closest('button'); if(!b) return; const ds=b.dataset;
+  if(ds.secopen&&!GUEST){ S.st.secOpen=ds.secopen; render(); const ta=document.querySelector(`[data-sec="${ds.secopen}"]`); if(ta) ta.focus(); return; }
   if(fieldClick(ds,b)) return;
   if(ds.act==='ftopen'){ const L=fingerTests(), last=L[L.length-1]||{}; S.st.ftOpen=true; S.st.ft={bw:last.bw??'',add:'',edge:last.edge??20,reps:'',grip:'half',note:''}; render(); return; }
   if(ds.act==='ftlater'){ S.st.ftLater=true; render(); return; }
@@ -2243,6 +2274,7 @@ app.addEventListener('input',ev=>{
   if(GUEST) return;
   if(t.id==='sciq'){ S.st.sciq=t.value; return; }
   if(t.dataset.ftin){ S.st.ft=Object.assign({},S.st.ft,{[t.dataset.ftin]:t.value}); const f=S.st.ft, el=document.getElementById('ftres'); if(el&&+f.bw>0&&f.add!==''){ el.innerHTML=`= <b>${Math.round((+f.bw+ +f.add)/ +f.bw*100)}%</b> of bodyweight`; } return; }
+  if(t.dataset.sec!==undefined){ secSet(t.dataset.sec,t.value); return; }
   HIST.typing=true; try{ if(bodyInput(t)) return; fieldInput(t); } finally{ HIST.typing=false; }
 });
 app.addEventListener('change',ev=>{
@@ -2266,7 +2298,7 @@ app.addEventListener('change',ev=>{
 // One file = everything (logs, body maps, notes, tests, setup). Friends open it in their own Climb log:
 // "Just look" shows it without touching their data; "Replace" / "Add missing days" are for your own backups.
 let allAt=0;
-async function ensureAll(){ if(GUEST||Date.now()-allAt<10*60e3) return; if(await loadAll()&&!GUEST) allAt=Date.now(); }
+async function ensureAll(){ if(GUEST||Date.now()-allAt<10*60e3) return; if(await loadAll()&&!GUEST){ allAt=Date.now(); await secLoadAll(); } }
 function bkAge(){ const t=+S.cfg.lastBackup||0; if(!t) return {lvl:2,days:Infinity,txt:'Never'};
   const w=new Date(t), n=Math.max(0,Math.round((new Date(todayStr+'T12:00')-new Date(dstr(w)+'T12:00'))/864e5)), hm=`${pad(w.getHours())}:${pad(w.getMinutes())}`;
   return {lvl:n<=7?0:n<=14?1:2,days:n,txt:n===0?`Today ${hm}`:n===1?`Yesterday ${hm}`:`${n} days ago`}; }
@@ -2275,10 +2307,10 @@ const fileTag=()=>{ const o=String(ACC.name||'').trim().replace(/[^\p{L}\p{N} _-
 function logDays(months){ const D=[]; Object.values(months||{}).forEach(mo=>{ if(!mo||!mo.key) return; Object.entries(mo.days||{}).forEach(([d,es])=>{ if((es||[]).length) D.push(`${mo.key}-${pad(+d)}`); }); }); return D.sort(); }
 const niceDate=ds=>{ const d=new Date(ds+'T12:00'); return isNaN(d)?'':d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); };
 const niceWhen=iso=>{ const d=new Date(iso); return iso&&!isNaN(d)?`${niceDate(dstr(d))}, ${pad(d.getHours())}:${pad(d.getMinutes())}`:''; };
-function bkPayload(kind){ const base={app:'climb-log',v:2,kind,owner:ACC.name||'',saved:new Date().toISOString()};
+function bkPayload(kind,send){ const base={app:'climb-log',v:2,kind,owner:ACC.name||'',saved:new Date().toISOString()};
   if(kind==='setup') return JSON.stringify(Object.assign(base,{templates:S.cfg.templates}));
   const months={}; Object.entries(S.months).forEach(([k,v])=>{ if(v&&v.days&&Object.values(v.days).some(a=>(a||[]).length)) months[k]=v; });
-  return JSON.stringify(Object.assign(base,{config:S.cfg,coach:S.coach,months})); }
+  const sx=send?{}:secAll(); return JSON.stringify(Object.assign(base,{config:S.cfg,coach:S.coach,months},Object.keys(sx).length?{secrets:sx}:{})); }
 function bkReadable(){ const t=exportClaude(0); return t?(S.cfg.owner?`${S.cfg.owner}'s climb log\n\n`:'')+t:''; }
 function markBackup(){ if(GUEST||!ALIVE) return; S.cfg.lastBackup=Date.now(); bump(); ls.set('config',S.cfg); queue('config',()=>col.doc('config').set(S.cfg)); if(HIST.base.config!==undefined) HIST.base.config=docJSON('config'); }
 // hand a file to the person: the phone's share sheet when asked to send, otherwise (or if that is blocked) save it; last resort: show the text
@@ -2296,7 +2328,7 @@ async function giveFile(name,data,send){
   return 'shown'; }
 async function bkDo(kind,send){ if(GUEST||S.st.bkBusy) return; const st=S.st; st.bkBusy=true;
   try{ if(kind!=='setup') await ensureAll(); if(GUEST||!ALIVE) return;
-    const data=kind==='read'?bkReadable():bkPayload(kind==='setup'?'setup':'backup');
+    const data=kind==='read'?bkReadable():bkPayload(kind==='setup'?'setup':'backup',send);
     if(!data){ toast('Nothing logged yet'); return; }
     const name=kind==='setup'?`${fileTag()}climb-log-setup.json`:kind==='read'?`${fileTag()}climb-log-${todayStr}.md`:`${fileTag()}climb-log-backup-${todayStr}.json`;
     const r=await giveFile(name,data,send); if(GUEST||!ALIVE) return;
@@ -2313,7 +2345,8 @@ function bkParse(text){ const t=String(text||'').trim(); let o=null;
   const months={}; Object.entries(o.months&&typeof o.months==='object'?o.months:{}).forEach(([k,v])=>{ if(/^\d{4}-\d{2}$/.test(k)) months[k]=normMonth(k,JSON.parse(JSON.stringify(v))); });
   const cfg=normCfg(JSON.parse(JSON.stringify(o.config))), coach=migrateCoach(JSON.parse(JSON.stringify(o.coach&&typeof o.coach==='object'?o.coach:{})));
   coach.hyps.forEach(x=>{ x.result=String(x.result||''); x.title=String(x.title||''); });
-  const D=logDays(months); return {kind:'backup',owner,saved,cfg,coach,months,days:D.length,first:D[0],last:D[D.length-1],tests:coach.hyps.length}; }
+  const secrets={}; if(o.secrets&&typeof o.secrets==='object') Object.entries(o.secrets).forEach(([k,v])=>{ if(/^\d{4}-\d{2}$/.test(k)){ const n=secNorm(v&&v.notes); if(Object.keys(n).length) secrets[k]={notes:n}; } });
+  const D=logDays(months); return {kind:'backup',owner,saved,cfg,coach,months,secrets,days:D.length,first:D[0],last:D[D.length-1],tests:coach.hyps.length}; }
 function bkSetupSel(r){ S.st.bkSel=r.templates.map(t=>!S.cfg.templates.some(x=>nk(x.name)===nk(t.name))); if(!S.st.bkSel.some(Boolean)) S.st.bkSel=r.templates.map(()=>true); }
 function bkOpenText(text){ const r=bkParse(text); S.st.bkDone=null; S.st.bkArm=0; S.st.bkText=null;
   if(r.err){ S.st.bk=null; S.st.bkErr=r.err; } else { S.st.bk=r; S.st.bkErr=''; S.st.bkPaste=false; S.st.impText=''; if(r.kind==='setup') bkSetupSel(r); }
@@ -2328,6 +2361,7 @@ async function bkReplace(){ const r=S.st.bk; if(!r||r.kind!=='backup') return;
   S.cfg=normCfg(JSON.parse(JSON.stringify(r.cfg))); migrateBody(); migrateRoutes(); saveCfg();
   S.coach=migrateCoach(JSON.parse(JSON.stringify(r.coach))); saveCoach();
   Object.entries(r.months).forEach(([k,v])=>{ S.months[k]=normMonth(k,JSON.parse(JSON.stringify(v))); saveMonth(k); });
+  Object.entries(r.secrets||{}).forEach(([k,v])=>{ SEC[k]={notes:Object.assign({},v.notes)}; secSave(k); });
   cleanDrafts(); S.st.bk=null; S.st.bkDone={what:'replace',snap}; render(); toast('Restored ✓'); }
 async function bkMerge(){ const r=S.st.bk; if(!r||r.kind!=='backup') return; await ensureAll(); if(GUEST||!ALIVE||S.st.bk!==r) return; const snap=bkSnap();
   const ids=new Set(); Object.values(S.months).forEach(mo=>Object.values((mo&&mo.days)||{}).forEach(es=>(es||[]).forEach(e=>ids.add(e.id))));
@@ -2337,6 +2371,7 @@ async function bkMerge(){ const r=S.st.bk; if(!r||r.kind!=='backup') return; awa
     if(ch) saveMonth(k); });
   const add=r.cfg.templates.filter(t=>tids.has(t.id)&&!S.cfg.templates.some(x=>x.id===t.id));
   if(add.length){ S.cfg.templates.push(...JSON.parse(JSON.stringify(add))); saveCfg(); }
+  Object.entries(r.secrets||{}).forEach(([k,v])=>{ const n=secMonth(k).notes; let ch=false; Object.entries(v.notes).forEach(([key,t])=>{ if(!n[key]){ n[key]=t; ch=true; } }); if(ch) secSave(k); });
   S.st.bk=null; S.st.bkDone={what:'merge',n,days:days.size,snap:n?snap:null}; render(); toast(n?`Added ${n} log${n>1?'s':''}`:'Nothing new: you already have all of it'); }
 function bkUndo(){ const d=S.st.bkDone; if(!d||!d.snap) return; const sn=d.snap, old=JSON.parse(sn.months);
   S.cfg=normCfg(JSON.parse(sn.cfg)); saveCfg(); S.coach=migrateCoach(JSON.parse(sn.coach)); saveCoach();
@@ -2604,7 +2639,7 @@ async function removePerson(id){ const a=TM.list.find(x=>x.id===id); if(!a||id==
   if(TM.arm!==id){ TM.arm=id; render(); setTimeout(()=>{ if(TM.arm===id){ TM.arm=null; if(S.view==='team') softRender(); } },4000); return; }
   TM.arm=null; TM.busy=true; render();
   try{ await TEAM.db.doc('accounts/'+id).delete(); if(a.hash) try{ await TEAM.db.doc('uids/'+a.hash).delete(); }catch(e){}
-    for(const c of ['docs','notes','import']){ const s=await TEAM.db.collection('people/'+id+'/'+c).get(); for(const d of s.docs) await TEAM.db.doc('people/'+id+'/'+c+'/'+d.id).delete(); }
+    for(const c of ['docs','notes','import']){ const s=await TEAM.db.collection('people/'+id+'/'+c).get(); for(const d of s.docs){ await TEAM.db.doc('people/'+id+'/'+c+'/'+d.id).delete(); if(c==='docs'&&/^m-\d{4}-\d{2}$/.test(d.id)) await TEAM.db.doc('people/'+id+'/secret/'+d.id).delete(); } }
     TM.open=null; toast(`${a.name} removed`); }
   catch(e){ toast('Couldn’t remove everything. Try again.'); }
   finally{ TM.busy=false; if(ALIVE) render(); } }
@@ -2752,7 +2787,7 @@ function roCompHTML(e,it,c,key){ const x=getP(it,c), sl=sleepLike(it.name), cs=c
 function roPart(e,it,c,key){ try{ return roCompHTML(e,it,c,key); }catch(err){ try{ const t=partText(it,c); return t?roLab(esc(COMP[c]||''))+roVal(esc(t)):''; }catch(e2){ return ''; } } }
 function roFieldHTML(e,it,key){ const parts=compsList(it).map(c=>roPart(e,it,c,key)).filter(Boolean);
   return `<div class="f fcard2 rof" data-fkey="${key}"><div class="lrow"><button class="fhd" data-fcol="${it.fid}" aria-expanded="true"><span class="fl">${esc(it.name)}</span><span class="chev">▾</span></button></div>
-    ${parts.length?parts.map(h=>`<div class="comp">${h}</div>`).join(''):'<p class="note roempty">Not filled in</p>'}</div>`; }
+    ${parts.length?parts.map(h=>`<div class="comp">${h}</div>`).join(''):it.sec?'':'<p class="note roempty">Not filled in</p>'}${it.sec?'<p class="seclock">🔒 Secret note. Only the athlete can read it.</p>':''}</div>`; }
 // the body map, read only: the check saved at that moment (or, if none, where they left it last time, clearly marked)
 function bodyRO(ek){ let c=edCtx(ek); if(!c) return ''; const has=m=>{ const x=savedOf(c,m); return !!x&&hasRatings(x); };
   if(!(S.st.bmMom||{})[ek]&&!has(c.mom)){ const m=MOM.map(x=>x[0]).find(has); if(m) c=Object.assign({},c,{mom:m}); }

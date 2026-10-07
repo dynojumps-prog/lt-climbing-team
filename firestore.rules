@@ -78,6 +78,11 @@ service cloud.firestore {
         allow delete: if (isCoach() && (resource.data.by == me() || roleOf(resource.data.by) != 'coach'))
           || (isStaff() && pid != me() && !accExists(pid));
       }
+      // secret notes: only the athlete themselves, never a coach or the supervisor (they may only delete them after removing that person)
+      match /secret/{d} {
+        allow read, create, update: if member() && pid == me();
+        allow delete: if (member() && pid == me()) || (isStaff() && pid != me() && !accExists(pid));
+      }
       // one-time import of old data put there for you
       match /import/{d} {
         allow read, delete: if (member() && pid == me()) || (isStaff() && pid != me() && !accExists(pid));
