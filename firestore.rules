@@ -35,19 +35,26 @@ service cloud.firestore {
       allow update: if isStaff();
       allow delete: if false;
     }
+    function okId(x) { return x.matches('^[A-Za-z0-9_-]{1,64}$'); }
+    // coaches manage athletes only; coaches and the supervisor are managed by the supervisor
+    function canManage(r) { return isSuper() || (isStaff() && r == 'athlete'); }
+
     match /accounts/{id} {
       // your own account (even if it was removed: then it reads as missing), or any account if you are in the team
       allow read: if (hasMe() && me() == id) || isStaff();
-      allow create: if okRole(request.resource.data.role) && (
-          (isStaff() && (request.resource.data.role != 'supervisor' || isSuper()))
+      allow create: if okId(id) && okRole(request.resource.data.role) && (
+          (canManage(request.resource.data.role) && request.resource.data.get('own', false) == false)
           || (setupOwner() && request.resource.data.role == 'supervisor' && request.resource.data.hash == request.auth.uid && !hasMe()));
       allow update: if
           // a coach or the supervisor changes someone else (only the supervisor touches supervisors)
-          (isStaff() && id != me() && (resource.data.role != 'supervisor' || isSuper())
-             && okRole(request.resource.data.role) && (request.resource.data.role != 'supervisor' || isSuper()))
+          // (a new code from someone else is never "your own" code, so it can't open secret notes)
+          (isStaff() && id != me() && canManage(resource.data.role)
+             && okRole(request.resource.data.role) && canManage(request.resource.data.role)
+             && (request.resource.data.get('own', false) == false
+                 || (resource.data.get('own', false) == true && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['hash']))))
           // you change your own code or your summary, nothing else
-          || (member() && id == me() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['sum','hash']));
-      allow delete: if isStaff() && id != me() && (resource.data.role != 'supervisor' || isSuper());
+          || (member() && id == me() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['sum','hash','own']));
+      allow delete: if isStaff() && id != me() && canManage(resource.data.role);
     }
     match /uids/{uid} {
       allow read: if signedIn() && (request.auth.uid == uid || isStaff());
@@ -62,30 +69,30 @@ service cloud.firestore {
     match /people/{pid} {
       // logs: only you; a coach may read athletes' logs (not other coaches'); the supervisor reads only his own
       match /docs/{d} {
-        allow read: if (member() && (pid == me() || (isCoach() && roleOf(pid) != 'coach')))
-          || (isStaff() && pid != me() && !accExists(pid));   // cleaning up after removing someone
+        allow read: if member() && (pid == me() || (isCoach() && roleOf(pid) != 'coach'));
         allow create, update: if member() && pid == me();
         allow delete: if (member() && pid == me()) || (isStaff() && pid != me() && !accExists(pid));
       }
       // coach notes: the athlete and coaches read them; coaches write their own; the athlete only replies
       match /notes/{n} {
         allow read: if (member() && (pid == me() || (isCoach() && roleOf(pid) != 'coach')))
-          || (isStaff() && pid != me() && !accExists(pid));
-        allow create: if isCoach() && roleOf(pid) != 'coach' && pid != me() && request.resource.data.by == me();
+          || (isCoach() && pid != me() && !accExists(pid));   // a coach cleaning up after removing someone
+        allow create: if okId(n) && isCoach() && roleOf(pid) != 'coach' && pid != me() && request.resource.data.by == me();
         allow update: if (isCoach() && resource.data.by == me() && request.resource.data.by == me())
           || ((pid == me() && member()) || (isCoach() && roleOf(pid) != 'coach'))
              && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['replies']);
         allow delete: if (isCoach() && (resource.data.by == me() || roleOf(resource.data.by) != 'coach'))
           || (isStaff() && pid != me() && !accExists(pid));
       }
-      // secret notes: only the athlete themselves, never a coach or the supervisor (they may only delete them after removing that person)
-      match /secret/{d} {
-        allow read, create, update: if member() && pid == me();
-        allow delete: if (member() && pid == me()) || (isStaff() && pid != me() && !accExists(pid));
+      // secret notes: only the athlete, and only from the login that wrote them (a code reset by someone else can't open them)
+      match /vault/{owner}/m/{d} {
+        allow read, write: if member() && pid == me() && owner == request.auth.uid && acct(me()).get('own', false) == true;
+        allow delete: if isStaff() && pid != me() && !accExists(pid);
       }
       // one-time import of old data put there for you
       match /import/{d} {
-        allow read, delete: if (member() && pid == me()) || (isStaff() && pid != me() && !accExists(pid));
+        allow read: if member() && pid == me();
+        allow delete: if (member() && pid == me()) || (isStaff() && pid != me() && !accExists(pid));
         allow create, update: if false;
       }
     }
