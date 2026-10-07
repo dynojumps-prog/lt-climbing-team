@@ -2238,6 +2238,7 @@ document.addEventListener('keydown',ev=>{ if(!ALIVE||GUEST) return; if(!(ev.ctrl
 app.addEventListener('keydown',ev=>{ const t=ev.target; if(GUEST) return; if((ev.key==='Enter'||ev.key===' ')&&t.getAttribute&&t.getAttribute('data-bmr')){ ev.preventDefault(); bodyClick(ev); return; } if(ev.key!=='Enter'&&ev.keyCode!==13) return; if(t.dataset&&t.dataset.bmnew){ ev.preventDefault(); const i=t.dataset.bmnew.lastIndexOf('|'), v=t.value; t.value=''; addItem(t.dataset.bmnew.slice(0,i),t.dataset.bmnew.slice(i+1),v); return; } if(t.dataset.bin||t.dataset.lin){ ev.preventDefault(); addToList(t.dataset.bin||t.dataset.lin,t.id); } else if(t.id&&t.id.startsWith('nf')){ ev.preventDefault(); const b=t.parentElement.querySelector('[data-newf]'); if(b) b.click(); } });
 app.addEventListener('input',ev=>{
   const t=ev.target; if(t.tagName==='TEXTAREA') grow(t);
+  if(t.id==='imp'){ S.st.impText=t.value; clearTimeout(TM.impT); if(!GUEST&&t.value.length>40) TM.impT=setTimeout(()=>{ if(GUEST||!S.st.bkPaste||S.st.impText!==t.value) return; const r=bkParse(t.value); if(!r.err) bkOpenText(t.value); },350); return; }
   if(teamInput(t)) return;
   if(GUEST) return;
   if(t.id==='sciq'){ S.st.sciq=t.value; return; }
@@ -2304,7 +2305,7 @@ async function bkDo(kind,send){ if(GUEST||S.st.bkBusy) return; const st=S.st; st
 // read a file someone sent (or your own backup)
 function bkParse(text){ const t=String(text||'').trim(); let o=null;
   try{ o=JSON.parse(t); }catch(e){ const i=t.indexOf('{'), j=t.lastIndexOf('}'); if(i>=0&&j>i){ try{ o=JSON.parse(t.slice(i,j+1)); }catch(e2){ o=null; } } }
-  if(!o||typeof o!=='object'||o.app!=='climb-log') return {err:!t?'That file is empty.':/CLIMB LOG \(/.test(t.slice(0,300))?'That is the readable copy. It is only for reading. Open the .json backup file instead.':'That is not a Climb log file. Pick the .json file you saved or got sent.'};
+  if(!o||typeof o!=='object'||o.app!=='climb-log') return {err:!t?'That file is empty.':/CLIMB LOG \(/.test(t.slice(0,300))?'That is the readable copy. It is only for reading. Open the .json backup file instead.':/"app"\s*:\s*"climb-log"/.test(t)?'The text is cut off. Copy it again from the old app (Copy as text) and paste all of it.':'That is not a Climb log backup. Use Copy as text in the old app, then paste it here.'};
   const owner=String(o.owner||(o.config&&o.config.owner)||'').trim().slice(0,40), saved=typeof o.saved==='string'?o.saved:'';
   if(o.kind==='setup'||(!o.config&&Array.isArray(o.templates))){ if(!Array.isArray(o.templates)||!o.templates.length) return {err:'There are no log types in that file.'};
     return {kind:'setup',owner,saved,templates:normCfg({templates:JSON.parse(JSON.stringify(o.templates))}).templates}; }
@@ -2315,7 +2316,7 @@ function bkParse(text){ const t=String(text||'').trim(); let o=null;
   const D=logDays(months); return {kind:'backup',owner,saved,cfg,coach,months,days:D.length,first:D[0],last:D[D.length-1],tests:coach.hyps.length}; }
 function bkSetupSel(r){ S.st.bkSel=r.templates.map(t=>!S.cfg.templates.some(x=>nk(x.name)===nk(t.name))); if(!S.st.bkSel.some(Boolean)) S.st.bkSel=r.templates.map(()=>true); }
 function bkOpenText(text){ const r=bkParse(text); S.st.bkDone=null; S.st.bkArm=0; S.st.bkText=null;
-  if(r.err){ S.st.bk=null; S.st.bkErr=r.err; } else { S.st.bk=r; S.st.bkErr=''; S.st.bkPaste=false; if(r.kind==='setup') bkSetupSel(r); }
+  if(r.err){ S.st.bk=null; S.st.bkErr=r.err; } else { S.st.bk=r; S.st.bkErr=''; S.st.bkPaste=false; S.st.impText=''; if(r.kind==='setup') bkSetupSel(r); }
   S.view='set'; render(); const c=document.getElementById('bkcard'), p=c&&(c.querySelector('.bkprev')||c.querySelector('#msg')); if(p) p.scrollIntoView({block:'center'}); }
 async function bkReadFile(f){ let t=''; try{ t=await f.text(); }catch(e){ S.st.bk=null; S.st.bkErr='Could not read that file.'; S.view='set'; render(); return; } bkOpenText(t); }
 const bfile=document.createElement('input'); bfile.type='file'; bfile.id='bfile'; bfile.setAttribute('aria-hidden','true'); bfile.tabIndex=-1; bfile.style.cssText='position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0';
@@ -2393,7 +2394,7 @@ function backupCard(){
     <div class="bk2"><button class="btn ghost bkmain" data-act="bopen">📂 Open file</button><button class="btn ghost bkmain" data-act="bpaste">📋 Paste text</button></div>
     <div class="msg" id="msg" role="status">${esc(S.st.bkErr||'')}</div>
     ${bkPreview()}
-    ${S.st.bkPaste?`<textarea id="imp" rows="3" placeholder="Paste your backup text here"></textarea><div class="row" style="margin-top:8px"><button class="btn" data-act="bpasteopen">Open pasted text</button></div>`:''}
+    ${S.st.bkPaste?`<textarea id="imp" rows="3" placeholder="Paste your backup text here">${esc(S.st.impText||'')}</textarea><div class="row" style="margin-top:8px"><button class="btn" data-act="bpasteopen">Open pasted text</button></div>`:''}
   </div>`; }
 function backupNudge(){ if(GUEST) return ''; const a=bkAge(); if(!a.lvl) return ''; let sn=0; try{ sn=+localStorage.getItem(PFX+'bksnooze')||0; }catch(e){} if(Date.now()<sn) return '';
   if(logDays(S.months).length<3) return '';
@@ -2416,8 +2417,8 @@ function bkClick(ds,b){
   if(ds.act==='bsave'){ bkDo('all',false); return true; }
   if(ds.bsend){ bkDo(ds.bsend,true); return true; }
   if(ds.act==='bopen'){ bfile.value=''; bfile.click(); return true; }
-  if(ds.act==='bpaste'){ S.st.bkPaste=true; render(); const t=document.getElementById('imp'); if(t) t.focus(); return true; }
-  if(ds.act==='bpasteopen'){ const t=document.getElementById('imp'); bkOpenText(t?t.value:''); return true; }
+  if(ds.act==='bpaste'){ S.st.bkPaste=true; S.st.impText=''; render(); const t=document.getElementById('imp'); if(t) t.focus(); return true; }
+  if(ds.act==='bpasteopen'){ const t=document.getElementById('imp'); clearTimeout(TM.impT); bkOpenText(t&&t.value?t.value:(S.st.impText||'')); return true; }
   if(ds.act==='bcancel'){ S.st.bk=null; S.st.bkErr=''; S.st.bkArm=0; render(); return true; }
   if(ds.act==='bguest'){ enterGuest(); return true; }
   if(ds.act==='gclose'){ exitGuest(false); return true; }
