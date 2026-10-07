@@ -1,0 +1,88 @@
+rules_version = '2';
+// LT climbing team: who may read and change what. Google checks these on every read and write.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    // my account id: the login is linked to an account in uids/<login>
+    function hasMe() { return signedIn() && exists(/databases/$(database)/documents/uids/$(request.auth.uid)); }
+    function me() { return get(/databases/$(database)/documents/uids/$(request.auth.uid)).data.acc; }
+    function acct(id) { return get(/databases/$(database)/documents/accounts/$(id)).data; }
+    function accExists(id) { return exists(/databases/$(database)/documents/accounts/$(id)); }
+    // a member: linked login, the account exists and still points at this login (a changed code locks the old one out)
+    function member() { return hasMe() && accExists(me()) && acct(me()).hash == request.auth.uid; }
+    function myRole() { return acct(me()).role; }
+    function isSuper() { return member() && myRole() == 'supervisor'; }
+    function isCoach() { return member() && myRole() == 'coach'; }
+    function isStaff() { return member() && (myRole() == 'coach' || myRole() == 'supervisor'); }
+    function roleOf(id) { return accExists(id) ? acct(id).role : 'none'; }
+    function pub() { return get(/databases/$(database)/documents/team/public).data; }
+    // the very first person, while setting the team up (closed for good once setup is done)
+    function setupOwner() { return signedIn() && exists(/databases/$(database)/documents/team/public)
+      && pub().owner == request.auth.uid && !('done' in pub()); }
+    function okRole(r) { return r == 'athlete' || r == 'coach' || r == 'supervisor'; }
+
+    match /team/public {
+      allow read: if true;   // team name + salt, needed on the login screen
+      allow create: if signedIn() && request.resource.data.owner == request.auth.uid
+        && request.resource.data.keys().hasOnly(['name','salt','iter','owner','created']);
+      allow update: if (setupOwner() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['done']))
+        || (isSuper() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name']));
+      allow delete: if false;
+    }
+    match /team/info {
+      allow read: if member();
+      allow create: if setupOwner();
+      allow update: if isStaff();
+      allow delete: if false;
+    }
+    match /accounts/{id} {
+      // your own account (even if it was removed: then it reads as missing), or any account if you are in the team
+      allow read: if (hasMe() && me() == id) || isStaff();
+      allow create: if okRole(request.resource.data.role) && (
+          (isStaff() && (request.resource.data.role != 'supervisor' || isSuper()))
+          || (setupOwner() && request.resource.data.role == 'supervisor' && request.resource.data.hash == request.auth.uid && !hasMe()));
+      allow update: if
+          // a coach or the supervisor changes someone else (only the supervisor touches supervisors)
+          (isStaff() && id != me() && (resource.data.role != 'supervisor' || isSuper())
+             && okRole(request.resource.data.role) && (request.resource.data.role != 'supervisor' || isSuper()))
+          // you change your own code or your summary, nothing else
+          || (member() && id == me() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['sum','hash']));
+      allow delete: if isStaff() && id != me() && (resource.data.role != 'supervisor' || isSuper());
+    }
+    match /uids/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isStaff());
+      // a login may only be linked to an account that already points at it
+      allow create: if signedIn() && request.resource.data.keys().hasOnly(['acc'])
+        && accExists(request.resource.data.acc) && acct(request.resource.data.acc).hash == uid
+        && (isStaff() || request.auth.uid == uid);
+      allow update: if false;
+      // only links that no longer match their account (after a new code or a removal), or your own
+      allow delete: if (isStaff() && (!accExists(resource.data.acc) || acct(resource.data.acc).hash != uid)) || (member() && resource.data.acc == me());
+    }
+    match /people/{pid} {
+      // logs: only you; a coach may read athletes' logs (not other coaches'); the supervisor reads only his own
+      match /docs/{d} {
+        allow read: if (member() && (pid == me() || (isCoach() && roleOf(pid) != 'coach')))
+          || (isStaff() && pid != me() && !accExists(pid));   // cleaning up after removing someone
+        allow create, update: if member() && pid == me();
+        allow delete: if (member() && pid == me()) || (isStaff() && pid != me() && !accExists(pid));
+      }
+      // coach notes: the athlete and coaches read them; coaches write their own; the athlete only replies
+      match /notes/{n} {
+        allow read: if (member() && (pid == me() || (isCoach() && roleOf(pid) != 'coach')))
+          || (isStaff() && pid != me() && !accExists(pid));
+        allow create: if isCoach() && roleOf(pid) != 'coach' && pid != me() && request.resource.data.by == me();
+        allow update: if (isCoach() && resource.data.by == me() && request.resource.data.by == me())
+          || ((pid == me() && member()) || (isCoach() && roleOf(pid) != 'coach'))
+             && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['replies']);
+        allow delete: if (isCoach() && (resource.data.by == me() || roleOf(resource.data.by) != 'coach'))
+          || (isStaff() && pid != me() && !accExists(pid));
+      }
+      // one-time import of old data put there for you
+      match /import/{d} {
+        allow read, delete: if (member() && pid == me()) || (isStaff() && pid != me() && !accExists(pid));
+        allow create, update: if false;
+      }
+    }
+  }
+}
