@@ -53,7 +53,9 @@ service cloud.firestore {
              && (request.resource.data.get('own', false) == false
                  || (resource.data.get('own', false) == true && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['hash']))))
           // you change your own code or your summary, nothing else
-          || (member() && id == me() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['sum','hash','own']));
+          // ("own" can only be switched on together with a new code: the code nobody else knows)
+          || (member() && id == me() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['sum','hash','own'])
+             && (request.resource.data.get('own', false) == resource.data.get('own', false) || request.resource.data.get('own', false) == false || request.resource.data.hash != resource.data.hash));
       allow delete: if isStaff() && id != me() && canManage(resource.data.role);
     }
     match /uids/{uid} {

@@ -414,6 +414,16 @@ input[type=password]{width:100%;background:var(--field);border:1px solid var(--l
 .atpick{display:flex;flex-direction:column;gap:4px;margin:10px 0}.atpick select{width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
 #atren{width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
 .atnew .row input{flex:1;min-width:0;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+.elock{font-size:.8rem;margin-right:4px}.dlock{position:absolute;top:2px;right:24px;font-size:.62rem;line-height:1}
+.atq{font-weight:700;margin:14px 0 8px}.atlist{display:flex;flex-direction:column;gap:8px}
+.atpr{border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden}.atpr.open{border-color:var(--ink)}
+.atprh{display:flex;align-items:center;gap:10px;width:100%;background:none;border:0;padding:10px 12px;text-align:left}
+.atprh .tav{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;flex:none}
+.atprn{display:flex;flex-direction:column;min-width:0;flex:1}.atprn span{font-size:.85rem}.atok{color:var(--pos);font-weight:600}
+.atprb{padding:0 12px 12px}.atstep{font-weight:700;font-size:.9rem;margin:6px 0 8px}
+.atchips{display:flex;flex-wrap:wrap;gap:8px}.atchip{display:flex;flex-direction:column;align-items:flex-start;border:1px solid var(--line);background:var(--field);border-radius:10px;padding:8px 12px;text-align:left;min-height:44px}
+.atchip small{color:var(--soft);font-size:.72rem}.atchip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}.atchip.on small{color:inherit;opacity:.75}
+.atnum{margin:10px 0 0;font-size:.82rem}.atclr{margin-top:10px;display:inline-block;color:var(--soft)}
 </style>
 </head>
 <body>
@@ -690,14 +700,14 @@ function hoursOf(r){ if(!r||!r.from||!r.to) return null; const [a,b]=String(r.fr
 // what can be counted in each part of a field: [code, name, unit, read]
 const SMEAS={
   S:[['s','1–10 score','/10',x=>typeof x==='number'?x:null]],
-  V:[['v','Timed scores (day average)','/10',x=>Array.isArray(x)?meanOf(x.map(y=>num(y&&y.n)).filter(v=>v!=null)):null]],
-  R:[['h','Hours (time range)','h',hoursOf]],
+  V:[['v','1–10 scores (day average)','/10',x=>Array.isArray(x)?meanOf(x.map(y=>num(y&&y.n)).filter(v=>v!=null)):null]],
+  R:[['h','Hours','h',hoursOf]],
   N:[['n','Number','',num]],
   D:[['d','Minutes','min',num]],
   K:[['k','Count','',x=>typeof x==='number'?x:null]],
-  Y:[['y','Yes / No (% of days yes)','%',x=>x===true?100:x===false?0:null]],
-  E:[['e','Effort','/10',x=>x&&typeof x.e==='number'?x.e:null],['l','Training load','',x=>x&&typeof x.e==='number'&&num(x.m)>0?x.e*num(x.m):null]],
-  P:[['p','Pain','/10',x=>x&&typeof x.p==='number'?x.p:null]],
+  Y:[['y','Yes / No (% yes)','%',x=>x===true?100:x===false?0:null]],
+  E:[['e','Effort 1–10','/10',x=>x&&typeof x.e==='number'?x.e:null],['l','Training load','',x=>x&&typeof x.e==='number'&&num(x.m)>0?x.e*num(x.m):null]],
+  P:[['p','Pain 0–10','/10',x=>x&&typeof x.p==='number'?x.p:null]],
   F:[['t','Tops','',x=>x&&+x.t?Math.min(Math.max(+x.o||0,+x.f||0),+x.t):null],['f','Flashes','',x=>x&&+x.t?Math.min(+x.f||0,Math.min(Math.max(+x.o||0,+x.f||0),+x.t)):null]],
   G:[['r','Routes','',x=>Array.isArray(x)&&x.length?x.length:null],['g','Routes topped','',x=>Array.isArray(x)&&x.length?x.filter(y=>y&&y.top).length:null]] };
 const MEAS={}; Object.entries(SMEAS).forEach(([c,L])=>L.forEach(([m,name,unit,read])=>{ MEAS[m]={c,name,unit,read}; }));
@@ -729,7 +739,7 @@ function atMatch(name,F){ const n=nkS(name); if(n.length<3) return null;
 function atGuess(name,cfg){ const n=nkS(name); if(n.length<3) return null; const F=atFields(cfg).filter(f=>f.opts.length);
   const hit=F.find(f=>nkS(f.name)===n)||F.find(f=>{ const x=nkS(f.name); return x.length>=4&&(x.startsWith(n.slice(0,5))||n.startsWith(x.slice(0,5))); })||(sleepLike(name)?F.find(f=>sleepLike(f.name)):null);
   if(!hit) return null; const pref=['h','s','v','n','d','k','e','p','l','t','f','r','g','y']; const m=pref.find(m=>hit.opts.some(o=>o.m===m)); return {fid:hit.fid,m}; }
-async function atSave(stats){ AT.busy=true; softRender(); try{ try{ await TEAM.db.doc('team/info').update({stats}); TEAM.info.stats=stats; }catch(e){ await TEAM.setInfo({stats}); } AT.msg=''; }catch(e){ AT.msg='Couldn’t save. Check your connection and try again.'; } finally{ AT.busy=false; if(ALIVE) render(); } }
+async function atSave(stats){ AT.busy=true; softRender(); try{ try{ await TEAM.db.doc('team/info').update({stats}); TEAM.info.stats=stats; }catch(e){ if(!(e&&/not.found/i.test(String(e.code||e.message||'')))) throw e; await TEAM.setInfo({stats}); } AT.msg=''; }catch(e){ AT.msg='Couldn’t save. Check your connection and try again.'; } finally{ AT.busy=false; if(ALIVE) render(); } }
 async function atReloadInfo(){ try{ const s=await TEAM.db.doc('team/info').get(); if(s.exists&&ALIVE){ TEAM.info.stats=(s.data()||{}).stats||[]; softRender(); } }catch(e){} }
 function renderAth(){ if(ACC.role!=='coach'){ S.view='cal'; renderCal(); return; } teamSub(); const P=atPeople(), St=atStats(), days=atDays(AT.range);
   P.forEach(a=>atLoad(a)); if(!AT.infoAt||Date.now()-AT.infoAt>60e3){ AT.infoAt=Date.now(); atReloadInfo(); }
@@ -756,42 +766,53 @@ function atCardHTML(st,P,days){ const picks=st.picks||{}, rows=[];
   const bar=r=>{ const span=max-Math.min(min0,0)||1; return Math.max(4,Math.round((r.avg-Math.min(min0,0))/span*100)); };
   const spark=r=>{ const W=96,H=22, v=r.ser.map(x=>x.v), mn=Math.min(...v), mx=Math.max(...v), sp=mx-mn||1, idx=new Map(days.map((d,i)=>[d,i]));
     const pts=r.ser.map(x=>`${(idx.get(x.d)/(Math.max(days.length-1,1))*W).toFixed(1)},${(H-2-(x.v-mn)/sp*(H-4)).toFixed(1)}`); return `<svg class="atsp" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true">${pts.length>1?`<polyline points="${pts.join(' ')}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>`:''}${pts.length?`<circle cx="${pts[pts.length-1].split(',')[0]}" cy="${pts[pts.length-1].split(',')[1]}" r="2.4" fill="currentColor"/>`:''}</svg>`; };
-  const why={none:'No field picked yet',load:'Loading…',err:'Couldn’t load. Open this tab again.',gone:'That field was deleted. Pick another one.',empty:'No numbers logged in this range'};
+  const why={none:'Not set up yet',load:'Loading…',err:'Couldn’t load. Open this tab again.',gone:'That field was deleted. Pick another one.',empty:'No numbers logged in this range'};
   return `<div class="card atcard"><div class="athead"><h3>${esc(st.name)}</h3><button class="mini" data-atedit="${st.id}">Edit</button></div>
     ${ok.length>1?`<div class="atmm"><span><small>Most</small><b>${esc(ok[0].a.name)}</b> ${fmtN(ok[0].avg,MEAS[ok[0].pk.m].unit)}</span><span><small>Least</small><b>${esc(ok[ok.length-1].a.name)}</b> ${fmtN(ok[ok.length-1].avg,MEAS[ok[ok.length-1].pk.m].unit)}</span></div>`:''}
     ${mixed?'<p class="note atwarn">⚠ Athletes are measured in different ways here (e.g. hours vs 1–10), so the ranking isn’t a fair comparison. Tap Edit.</p>':''}
     <div class="atrows">${ok.map((r,i)=>`<div class="atrow"><div class="atname"><b>${esc(r.a.name)}</b><span class="note">${esc(r.f.name)} · ${esc(MEAS[r.pk.m].name)}</span></div>
       <div class="atbarw"><i class="atbar" style="width:${bar(r)}%"></i></div><div class="atavg"><b>${fmtN(r.avg,MEAS[r.pk.m].unit)}</b><small>avg</small></div>
       <div class="atmeta"><span>▲ ${fmtN(r.hi.v,MEAS[r.pk.m].unit)} <small>${shortD(r.hi.d)}</small></span><span>▼ ${fmtN(r.lo.v,MEAS[r.pk.m].unit)} <small>${shortD(r.lo.d)}</small></span><span>${r.n}/${days.length} days</span>${spark(r)}</div></div>`).join('')}
-    ${rest.map(r=>`<div class="atrow off"><div class="atname"><b>${esc(r.a.name)}</b>${r.state==='text'?`<span class="atbad">⚠ “${esc(r.f.name)}” has no number part (${esc(r.f.parts)}). Ask ${esc(r.a.name)} to add one (Format → 1–10 or Number), then tap Edit.</span>`:`<span class="note">${why[r.state]}${r.state==='none'?' · <button class="linkb" data-atedit="'+st.id+'">Pick</button>':''}</span>`}</div></div>`).join('')}</div></div>`; }
+    ${rest.map(r=>`<div class="atrow off"><div class="atname"><b>${esc(r.a.name)}</b>${r.state==='text'?`<span class="atbad">“${esc(r.f.name)}” is text only, so it can’t be counted. Ask ${esc(r.a.name)} to add a 1–10 or Number part to it.</span>`:`<span class="note">${why[r.state]}${r.state==='none'?' · <button class="linkb" data-atedit="'+st.id+'">Pick</button>':''}</span>`}</div></div>`).join('')}</div></div>`; }
+// editing a stat: one athlete at a time → tap their field → (if it holds several numbers) tap which one
+function atPickLabel(a,pk){ const d=AT.data[a.id]; if(!pk) return {t:'Not picked',bad:false}; if(!d) return {t:'…',bad:false};
+  const f=atFields(d.cfg).find(x=>x.fid===pk.fid); if(!f) return {t:'Field was deleted. Pick again.',bad:true};
+  const o=f.opts.find(x=>x.m===pk.m); if(!o) return {t:`“${f.name}” has no number now. Pick again.`,bad:true};
+  return {t:f.opts.length>1?`${f.name} · ${o.label}`:f.name,bad:false}; }
 function atEditHTML(st,P){ const picks=st.picks||{}, arm=AT.arm===st.id;
-  return `<div class="card atcard ated"><div class="athead"><h3>Edit stat</h3><button class="mini" data-act="atdone">Done</button></div>
+  return `<div class="card atcard ated"><div class="athead"><h3>Edit stat</h3><button class="btn" data-act="atdone">Done</button></div>
     <label class="tmlab" for="atren">Name</label><input type="text" id="atren" maxlength="40" value="${esc(st.name)}" data-atren="${st.id}">
-    <p class="note" style="margin:10px 0 6px">For each athlete: which of their fields is “${esc(st.name)}”, and which number in it.</p>
-    ${P.map(a=>{ const d=AT.data[a.id]; if(!d) return `<div class="atpick"><b>${esc(a.name)}</b><span class="note">${AT.err[a.id]?'Couldn’t load their log types':'Loading…'}</span></div>`;
-      const F=atFields(d.cfg), pk=picks[a.id], cur=pk?pk.fid+'|'+pk.m:'', num=F.filter(f=>f.opts.length), txt=F.filter(f=>!f.opts.length);
-      const pf=pk&&F.find(f=>f.fid===pk.fid), broken=pk&&(!pf||!pf.opts.some(o=>o.m===pk.m));
-      return `<div class="atpick"><label for="atp${a.id}"><b>${esc(a.name)}</b></label>
-        <select id="atp${a.id}" data-atpick="${st.id}|${a.id}"><option value="">— not tracked —</option>
-        ${num.map(f=>`<optgroup label="${esc(f.tname)} › ${esc(f.name)}">${f.opts.map(o=>`<option value="${f.fid}|${o.m}"${cur===f.fid+'|'+o.m?' selected':''}>${esc(f.name)} · ${esc(o.label)}</option>`).join('')}</optgroup>`).join('')}
-        ${txt.length?`<optgroup label="Text only, can’t be counted">${txt.map(f=>`<option disabled>${esc(f.tname)} › ${esc(f.name)} (${esc(f.parts)})</option>`).join('')}</optgroup>`:''}</select>
-        ${broken?`<span class="atbad">⚠ ${pf?`“${esc(pf.name)}” no longer has that number. ${esc(a.name)} changed it to ${esc(pf.parts)}.`:'That field was deleted.'} Pick again${pf?` or ask ${esc(a.name)} to add a number part back`:''}.</span>`:''}
-        ${txt.length&&!num.length?`<span class="atbad">⚠ ${esc(a.name)} has no fields with numbers. Ask them to add a 1–10 or Number part (Format).</span>`:''}</div>`; }).join('')}
-    <div class="row" style="margin-top:12px"><button class="btn ghost bkdanger${arm?' armed':''}" data-atdel="${st.id}">${arm?'Tap again to delete this stat':'Delete stat'}</button></div></div>`; }
+    <p class="atq">Which field is “${esc(st.name)}” for each athlete?</p>
+    <div class="atlist">${P.map(a=>{ const pk=picks[a.id], L=atPickLabel(a,pk), open=AT.open===a.id, d=AT.data[a.id];
+      let body='';
+      if(open){ if(!d) body=`<p class="note">${AT.err[a.id]?'Couldn’t load their log types. Close and try again.':'Loading…'}</p>`;
+        else { const F=atFields(d.cfg), num=F.filter(f=>f.opts.length), txt=F.filter(f=>!f.opts.length), selF=AT.pend&&AT.pend.pid===a.id?AT.pend.fid:(pk&&pk.fid), sf=num.find(f=>f.fid===selF);
+          body=`<p class="atstep">Tap ${esc(a.name)}’s field</p>
+            ${num.length?`<div class="atchips">${num.map(f=>`<button class="atchip${f.fid===selF?' on':''}" data-atf="${a.id}|${f.fid}" aria-pressed="${f.fid===selF}"><b>${esc(f.name)}</b><small>${esc(f.tname)}</small></button>`).join('')}</div>`:`<p class="atbad">${esc(a.name)} has no fields with numbers yet.</p>`}
+            ${txt.length?`<p class="note atnum">Text only, can’t be counted: ${txt.map(f=>esc(f.name)).join(', ')}. To track one, ${esc(a.name)} adds a 1–10 or Number part to it (Format).</p>`:''}
+            ${sf&&sf.opts.length>1?`<p class="atstep">Which number in “${esc(sf.name)}”?</p><div class="atchips">${sf.opts.map(o=>`<button class="atchip${pk&&pk.fid===sf.fid&&pk.m===o.m?' on':''}" data-atm="${a.id}|${sf.fid}|${o.m}"><b>${esc(o.label)}</b></button>`).join('')}</div>`:''}
+            ${pk?`<button class="linkb atclr" data-atclr="${a.id}">Don’t track ${esc(a.name)}</button>`:''}`; } }
+      return `<div class="atpr${open?' open':''}"><button class="atprh" data-atopen="${a.id}" aria-expanded="${open}"><span class="tav" style="background:${nameColor(a.name)}" aria-hidden="true">${initial(a.name)}</span><span class="atprn"><b>${esc(a.name)}</b><span class="${L.bad?'atbad':pk?'atok':'note'}">${pk&&!L.bad?'✓ ':''}${esc(L.t)}</span></span><span class="chev">${open?'▾':'›'}</span></button>${open?`<div class="atprb">${body}</div>`:''}</div>`; }).join('')}</div>
+    <button class="btn ghost bkdanger${arm?' armed':''}" style="margin-top:14px" data-atdel="${st.id}">${arm?'Tap again to delete this stat':'Delete stat'}</button></div>`; }
+function atSetPick(pid,pick){ const L=atStats(), st=L.find(x=>x.id===AT.edit); if(!st) return; st.picks=Object.assign({},st.picks||{}); if(pick) st.picks[pid]=pick; else delete st.picks[pid];
+  AT.pend=null; const P=atPeople(), nxt=pick?P.find(a=>a.id!==pid&&!st.picks[a.id]):null; AT.open=nxt?nxt.id:null; if(nxt) atLoad(nxt); atSave(L); }
 function atClick(ds){
   if(ds.atr){ AT.range=+ds.atr; render(); return true; }
-  if(ds.atedit){ AT.edit=ds.atedit; AT.arm=null; atPeople().forEach(a=>atLoad(a,true)); render(); return true; }
-  if(ds.act==='atdone'){ AT.edit=null; render(); return true; }
+  if(ds.atedit){ AT.edit=ds.atedit; AT.arm=null; AT.pend=null; { const st=atStats().find(x=>x.id===ds.atedit), f=st&&atPeople().find(a=>!(st.picks||{})[a.id]); AT.open=f?f.id:null; } atPeople().forEach(a=>atLoad(a,true)); render(); return true; }
+  if(ds.act==='atdone'){ AT.edit=null; AT.open=null; AT.pend=null; render(); return true; }
+  if(ds.atopen){ AT.open=AT.open===ds.atopen?null:ds.atopen; AT.pend=null; const a=atPeople().find(x=>x.id===ds.atopen); if(a) atLoad(a); render(); return true; }
+  if(ds.atf){ const [pid,fid]=ds.atf.split('|'), d=AT.data[pid], f=d&&atFields(d.cfg).find(x=>x.fid===fid); if(!f||!f.opts.length) return true;
+    if(f.opts.length===1) atSetPick(pid,{fid,m:f.opts[0].m}); else { AT.pend={pid,fid}; render(); } return true; }
+  if(ds.atm){ const [pid,fid,m]=ds.atm.split('|'); if(OKID.test(fid)&&MEAS[m]) atSetPick(pid,{fid,m}); return true; }
+  if(ds.atclr){ atSetPick(ds.atclr,null); AT.open=null; return true; }
   if(ds.act==='atadd'){ const el=document.getElementById('atname'), name=String(el?el.value:AT.newName).trim().slice(0,40); if(!name){ AT.msg='Give the stat a name first.'; render(); return true; }
     const picks={}; atPeople().forEach(a=>{ const d=AT.data[a.id], g=d&&atGuess(name,d.cfg); if(g) picks[a.id]=g; });
-    const st={id:rid(),name,picks,by:ACC.id,at:Date.now()}; AT.newName=''; AT.edit=st.id; atSave(atStats().concat(st)); return true; }
+    const st={id:rid(),name,picks,by:ACC.id,at:Date.now()}; AT.newName=''; AT.edit=st.id; AT.pend=null; { const f=atPeople().find(a=>!picks[a.id]); AT.open=f?f.id:null; } atSave(atStats().concat(st)); return true; }
   if(ds.atdel){ if(AT.arm!==ds.atdel){ AT.arm=ds.atdel; render(); setTimeout(()=>{ if(AT.arm===ds.atdel){ AT.arm=null; if(ALIVE&&S.view==='ath') softRender(); } },4000); return true; }
     AT.arm=null; AT.edit=null; atSave(atStats().filter(x=>x.id!==ds.atdel)); return true; }
   return false; }
 function atInput(t){ if(t.id==='atname'){ AT.newName=t.value; return true; } return false; }
 function atChange(t){ const ds=t.dataset;
-  if(ds.atpick){ const [sid,pid]=ds.atpick.split('|'), L=atStats(), st=L.find(x=>x.id===sid); if(!st) return true; st.picks=Object.assign({},st.picks||{});
-    if(t.value){ const [fid,m]=t.value.split('|'); if(OKID.test(fid)&&MEAS[m]) st.picks[pid]={fid,m}; } else delete st.picks[pid]; atSave(L); return true; }
   if(ds.atren){ const L=atStats(), st=L.find(x=>x.id===ds.atren), v=t.value.trim().slice(0,40); if(st&&v&&v!==st.name){ st.name=v; atSave(L); } return true; }
   return false; }
 // ---------- a coach looking at an athlete's day: one line per field (tap to open), empty fields grouped ----------
@@ -827,8 +848,8 @@ function renderCal(){
   for(let d=1;d<=days;d++){
     const ds=`${S.y}-${pad(S.m+1)}-${pad(d)}`, es=month(k).days[String(d)]||[];
     const warn=dayPain(es);
-    cells+=`<button class="day${ds===todayStr?' today':''}${ds===S.sel?' sel':''}" data-day="${ds}" aria-label="${d} ${MONTHS[S.m]}, ${es.length} logs${warn?', pain marked':''}${nd.has(ds)?', coach note':''}">
-      <span class="n">${d}</span>${warn?'<i class="dwarn" aria-hidden="true"></i>':''}${nd.has(ds)?'<i class="dnote" aria-hidden="true"></i>':''}<span class="tapes">${es.slice(0,4).map(e=>`<span class="tape" style="background:${tplColor(e)}"></span>`).join('')}</span></button>`;
+    cells+=`<button class="day${ds===todayStr?' today':''}${ds===S.sel?' sel':''}" data-day="${ds}" aria-label="${d} ${MONTHS[S.m]}, ${es.length} logs${warn?', pain marked':''}${nd.has(ds)?', coach note':''}${es.some(e=>(e.items||[]).some(it=>it.sec))?', secret note':''}">
+      <span class="n">${d}</span>${warn?'<i class="dwarn" aria-hidden="true"></i>':''}${nd.has(ds)?'<i class="dnote" aria-hidden="true"></i>':''}${es.some(e=>(e.items||[]).some(it=>it.sec))?'<i class="dlock" aria-hidden="true">🔒</i>':''}<span class="tapes">${es.slice(0,4).map(e=>`<span class="tape" style="background:${tplColor(e)}"></span>`).join('')}</span></button>`;
   }
   const sd=new Date(S.sel+'T12:00'), sel=entriesOn(S.sel);
   app.innerHTML=`
@@ -847,7 +868,7 @@ function renderCal(){
 }
 
 
-function headSmall(e,open){ const q=entryQuality(e), filled=e.items.filter(filledItem).length; return `${q?`<span class="qdot" style="background:${q.color}" title="Notes: ${q.label}"></span>`:''}${filled}/${e.items.length} ${open?'▴':'▾'}`; }
+function headSmall(e,open){ const q=entryQuality(e), filled=e.items.filter(filledItem).length; return `${e.items.some(it=>it.sec)?'<span class="elock" title="Has a secret note">🔒</span>':''}${filled}/${e.items.length} ${open?'▴':'▾'}`; }
 function tplName(e){ const t=S.cfg.templates.find(t=>t.id===e.tid); return t?t.name:e.name; }
 function refreshItem(el,e,it){ const f=el.closest('.f'), qm=f&&f.querySelector('.qm'); if(qm) qm.innerHTML=qHTML(itemQuality(it,prevNote(it.name,S.sel))); const pw=f&&f.querySelector('.plaus'); if(pw) pw.outerHTML=plausHTML(it); else if(f){ const ph=plausHTML(it); if(ph) f.insertAdjacentHTML('beforeend',ph); } const hs=el.closest('.entry'), sm=hs&&hs.querySelector('.ehead small'); if(sm) sm.innerHTML=headSmall(e,true); }
 function compHTML(e,it,c,key,fid){ const x=getP(it,c), sl=sleepLike(it.name), cs=compsList(it), lab=t=>`<p class="clab">${t}</p>`;
@@ -901,11 +922,11 @@ const COLL=new Set((()=>{ try{ return JSON.parse(localStorage.getItem(PFX+'colla
 const saveColl=()=>{ try{ localStorage.setItem(PFX+'collapsed',JSON.stringify([...COLL])); }catch(e){} };
 function fieldHTML(e,it){ const key=`${e.id}|${it.fid}`, fid='f'+e.id+it.fid, cs=compsList(it), op=S.typeOpen===key, shut=GUEST?!GOPEN.has(key):COLL.has(it.fid)&&!op;
   if(shut){ const sm=itemSummary(it,true), q=itemQuality(it,prevNote(it.name,S.sel));
-    return `<div class="f fcard2 shut" data-fkey="${key}"><button class="fhd" data-fcol="${it.fid}" aria-expanded="false"><span class="fl">${esc(it.name)}</span><span class="fsm">${sm?esc(sm):it.sec?'':'<i>empty</i>'}${it.sec?(sm?' · ':'')+'🔒':''}</span>${q?`<i class="fdot" style="background:${q.color}"></i>`:''}<span class="chev">▸</span></button></div>`; }
+    return `<div class="f fcard2 shut" data-fkey="${key}"><button class="fhd" data-fcol="${it.fid}" aria-expanded="false"><span class="fl">${esc(it.name)}</span><span class="fsm">${sm?esc(sm):it.sec?'':'<i>empty</i>'}${it.sec?(sm?' · ':'')+'🔒 secret note':''}</span><span class="chev">▸</span></button></div>`; }
   if(GUEST) return roFieldHTML(e,it,key);
   return `<div class="f fcard2" data-fkey="${key}"><div class="lrow"><button class="fhd" data-fcol="${it.fid}" aria-expanded="true"><span class="fl">${esc(it.name)}</span><span class="chev">▾</span></button><button class="fmt" data-ft="${key}" aria-expanded="${op}">${op?'Close':'Format'}</button></div>${op?pickerHTML(e,it,key):''}
     ${cs.map(c=>`<div class="comp c${c}">${compHTML(e,it,c,key,fid)}</div>`).join('')}
-    <div class="qm">${qHTML(itemQuality(it,prevNote(it.name,S.sel)))}</div>${plausHTML(it)}${secHTML(e,it,key)}</div>`; }
+    ${plausHTML(it)}${secHTML(e,it,key)}</div>`; }
 function pickerHTML(e,it,key){ const R=compRatings(it.name), cs=compsList(it), tp=S.cfg.templates.find(t=>t.id===e.tid), tf=tp&&tp.fields.find(f=>f.id===it.fid);
   const same=tf&&compsOf(tf).join('')===compsOf(it).join('')&&!!tf.comps===!!it.comps;
   return `<div class="picker"><p class="note" style="margin:0 0 6px">Tap to add or remove parts. Best for ${esc(it.name)}: <b style="color:${RCOL[4]}">${R.best.map(c=>COMP[c]).join(' + ')}</b>. ${esc(R.why)}</p>
@@ -1757,7 +1778,7 @@ function weekCard(){ const off=S.st.wk||0, s=weekStats(off); const lt=S.st.wl===
       (p.flags?crow('Warning signs',`${p.flags}`,'var(--neg)'):'')+s.checks.map(c=>Object.entries(checkAreas(c)).map(([k,x])=>crow(`Body check · ${esc(areaName(k))}`,`${x.score}/100`,x.sub?'var(--neg)':x.score?'#B7791F':'var(--pos)')).join('')).join(''),p.max>=4||p.flags>0); }
   if(s.body&&s.body.length){ out+=wsec('Body',`${s.body.filter(x=>x.n).length} sore`,s.body.slice(0,12).map(x=>crow(`${esc(x.g)}${x.where?`<br><span class="note">${esc(x.where)}</span>`:''}`,`${x.n?`sore ${x.n} day${x.n>1?'s':''}${x.p?`, pain ${x.p}`:''}`:'tired'} <span class="note">worst ${x.max}</span>`,x.p?'var(--neg)':x.n?'#B7791F':'var(--ink)')).join(''),true); }
   s.lists.forEach(L=>{ if(!L.items.length&&!L.known) return; out+=wsec(L.field,`${L.items.length} item${L.items.length===1?'':'s'}`,L.items.slice(0,12).map(x=>crow(`${esc(x.name)}${x.t!=null?` <span class="note">~${fmt({kind:'time'},x.t)}${x.tsd?` ±${Math.round(x.tsd*60)} min`:''}</span>`:''}`,`${x.days}/${x.known} days${L.food&&x.n>x.days?` · ${x.n}×`:''}`)).join('')+`<p class="note">Out of the ${L.known} day${L.known===1?'':'s'} you logged ${esc(L.field.toLowerCase())}.</p>`); });
-  if(s.notes.n) out+=wsec('Notes',`${Math.round(s.notes.avg)}/100`,crow('Average note quality',`${Math.round(s.notes.avg)}/100${s.notes.prev!=null?` <span class="note">(${s.notes.avg>=s.notes.prev?'+':'−'}${Math.round(Math.abs(s.notes.avg-s.notes.prev))})</span>`:''}`,s.notes.prev!=null?col(s.notes.avg,s.notes.prev,3):null)+crow('Useful or better',`${s.notes.green}/${s.notes.n} notes`));
+  if(false&&s.notes.n) out+=wsec('Notes',`${Math.round(s.notes.avg)}/100`,crow('Average note quality',`${Math.round(s.notes.avg)}/100${s.notes.prev!=null?` <span class="note">(${s.notes.avg>=s.notes.prev?'+':'−'}${Math.round(Math.abs(s.notes.avg-s.notes.prev))})</span>`:''}`,s.notes.prev!=null?col(s.notes.avg,s.notes.prev,3):null)+crow('Useful or better',`${s.notes.green}/${s.notes.n} notes`));
   if(s.tests.length) out+=wsec('Tests',`${s.tests.length}`,s.tests.map(x=>crow(`${esc(x.name)} <span class="note">${dmy(x.d)}</span>`,`${x.x}${x.x>=x.best?' · best ever':` · best ${x.best}`}`,x.x>=x.best?'var(--pos)':null)).join(''),true);
   if(s.running.length||s.laws.length) out+=wsec('Scientist',`${s.running.length} running`,s.running.map(h=>crow(`Testing: ${esc(h.title)}`,'')).join('')+s.laws.map(h=>crow(`New law: ${esc(h.title)}`,'','var(--pos)')).join(''));
   return `<div class="card"><h3>Weekly stats</h3>${nav}${out}
@@ -1799,7 +1820,7 @@ function exportClaude(range){ const D=exportDays(range); if(!D.length) return ''
     '- Training load = effort (1–10) × minutes. Times are 24h clock. Text in quotes is exactly what I wrote.',...(NT.pid===showPid()&&NT.list.length?['- [Coach notes] are what my coach wrote about that day.']:[]),
     `- Log types: ${S.cfg.templates.map(t=>t.name).join(', ')}.`,''];
   D.forEach(d=>{ XDAY=d; const [y,m,dd]=d.split('-'), mo=S.months[`${y}-${m}`], es=(mo.days[String(+dd)]||[]); const blocks=[];
-    es.forEach(e=>{ const lines=(e.items||[]).map(it=>{ const t=compsList(it).map(c=>partText(it,c)).filter(Boolean).join('; '), sn=GUEST?'':secGet(e.id+'|'+it.fid).trim().replace(/\s+/g,' '); return [t?`- ${it.name}: ${t}`:'', sn?`- ${it.name} (my secret note): "${sn}"`:''].filter(Boolean).join('\n'); }).filter(Boolean);
+    es.forEach(e=>{ const lines=(e.items||[]).map(it=>{ const t=compsList(it).map(c=>partText(it,c)).filter(Boolean).join('; '), sn=GUEST?'':secGet(e.id+'|'+it.fid).trim().replace(/\s+/g,' '); return [t?`- ${it.name}: ${t}`:'', sn?`- ${it.name} (my secret note): "${sn}"`:GUEST&&it.sec?`- ${it.name}: [secret note, private]`:''].filter(Boolean).join('\n'); }).filter(Boolean);
       const tp=S.cfg.templates.find(t=>t.id===e.tid); if(tp&&tp.fingerTest){ const rv=r=>{ const fd=tp.fields.find(x=>x.role===r), it=fd&&(e.items||[]).find(i=>i.fid===fd.id), x=it?parseFloat(getP(it,'N')):NaN; return isNaN(x)?null:x; }, bw=rv('bw'), ad=rv('add'); if(bw>0&&ad!=null) lines.push(`- Finger strength: ${Math.round((bw+ad)/bw*100)}% of bodyweight (bodyweight ${bw} kg + ${ad} kg on a ${rv('edge')||20} mm edge, 10 s)`); }
       if(lines.length) blocks.push(`[${tplName(e)}]`,...lines); });
     const cn=[], q=t=>String(t||'').replace(/\s+/g,' ').trim(); notesFor(d).forEach(n=>{ cn.push(`- ${n.byName||'Coach'}: "${q(n.text)}"`); repliesOf(n).forEach(r=>cn.push(`  - reply from ${r.byName||'?'}: "${q(r.text)}"`)); }); if(cn.length) blocks.push('[Coach notes]',...cn);
@@ -2280,7 +2301,7 @@ function renderStats(){ const sv=S.st.sv||'week', ds=dataset(S.st.range), V=ds.v
   const start=S.st.range?dAdd(todayStr,-S.st.range+1):(ds.days[0]||todayStr); const dates=[]; for(let d=start;d<=todayStr&&dates.length<400;d=dAdd(d,1)) dates.push(d);
   const pills=`<div class="pills">${[[30,'30 days'],[90,'90 days'],[0,'All time']].map(([n,l])=>`<button data-range="${n}" class="${S.st.range===n?'on':''}">${l}</button>`).join('')}</div>`;
   let body='';
-  if(sv==='week') body=weekCard()+`<div class="card"><button class="wsh" data-dq="1"><span>How good is your data</span><b>${S.st.dqOpen?'hide':'show'}</b></button>${S.st.dqOpen?(qualityCard()+coverageCard()).replace(/<div class="card">/g,'<div class="sub">'):''}</div>`;
+  if(sv==='week') body=weekCard();
   else if(sv==='body') body=bodyView();
   else if(sv==='trends') body=trendsView();
   else if(sv==='works') body=pills+worksView(ds,F,V,dates);
@@ -2788,7 +2809,7 @@ async function setCode(id){ const a=TM.list.find(x=>x.id===id); if(!a||TM.busy||
 async function changeMyCode(){ const code=String(S.st.myCode||'').trim(); if(!TEAM.db){ S.st.myCodeErr='Can’t reach the team right now.'; render(); return; }
   if(!TEAM.validCode(code)||weakCode(code)){ S.st.myCodeErr=WEAKMSG; render(); return; }
   try{ const h=await TEAM.hash(code); if(await TEAM.taken(h,ACC.id)){ S.st.myCodeErr='Someone already has that code. Pick another one.'; render(); return; }
-    await secLoadAll(); { const oldV=secCol(); if(oldV){ const ks=Object.keys(SEC); ks.forEach(k=>secDirty.add(k)); secMark(); for(const k of ks) await oldV.doc('m-'+k).delete().catch(()=>{}); } }
+    await secLoadAll(); { const oldV=secCol(); if(oldV){ const ks=Object.keys(SEC); ks.forEach(k=>secDirty.add(k)); secMark(); for(const k of ks) await oldV.doc('m-'+k).delete(); } }
     const old=ACC.hv, ou=TEAM.uid(); ACC.hvOld=old; ACC.hv=h.slice(0,12); try{ await TEAM.db.doc('accounts/'+ACC.id).update({hash:h,own:true}); await TEAM.bind(ACC.id,h,ou,code,true); ACC.own=true; try{ localStorage.setItem('ct:weak','0'); }catch(e){} }catch(e){ ACC.hv=old; throw e; }finally{ delete ACC.hvOld; }
     if(!ALIVE) return; Object.keys(SEC).forEach(k=>{ if(Object.keys(SEC[k].notes).length) secSave(k); }); TEAM.setWho(Object.assign({},ACC)); S.st.myCode=null; S.st.myCodeErr=''; render(); toast('Code changed ✓ Use the new one next time'); }
   catch(e){ if(!ALIVE) return; S.st.myCodeErr=e&&e.code==='taken'?'Someone already has that code. Pick another one.':'Couldn’t change it. Check your connection and try again.'; render(); } }
@@ -2829,7 +2850,7 @@ function addHTML(){ const f=TM.add;
   if(!f) return `<button class="btn bkmain" data-act="tmaddopen">+ Add a person</button>`;
   const help={athlete:'Athletes only see their own calendar.',coach:'Coaches see everyone’s calendar, manage people and leave notes.',supervisor:'Supervisors log like athletes and can do everything: roles, codes, coaches.'};
   return `<div class="card tmadd"><h3>Add a person</h3>
-    <label class="tmlab">Name<input type="text" data-tmf="name" value="${esc(f.name)}" placeholder="e.g. Povilas" maxlength="40" autocomplete="off"></label>
+    <label class="tmlab">Name<input type="text" data-tmf="name" value="${esc(f.name)}" placeholder="Vardas" maxlength="40" autocomplete="off"></label>
     ${isCoach()?`<div class="pills" style="margin:10px 0 2px">${rolesICanGive().map(k=>`<button data-tmpick="${k}" class="${f.role===k?'on':''}" aria-pressed="${f.role===k}">${ROLE_NAME[k]}</button>`).join('')}</div>`:''}
     <label class="tmlab">Code they log in with<span class="tmin"><input type="text" inputmode="numeric" maxlength="10" autocomplete="off" data-tmf="code" value="${esc(f.code)}" placeholder="8–10 digits"><button class="mini" data-act="tmaddrand" aria-label="Make a random code">🎲</button></span></label>
     <p class="note" style="margin:6px 0 0">${help[rolesICanGive().includes(normRole(f.role))?normRole(f.role):'athlete']}</p>
@@ -3083,7 +3104,7 @@ function showSetup(resume){
   const c=card(`${LOGO}<h1>Set up your team</h1><p class="note">${resume?'Setup didn’t finish last time. Enter the same name and code to finish it.':'You’re the first one here, so you’re the <b>supervisor</b>: you log like an athlete and can do everything, adding coaches and athletes, roles and codes.'}</p>
     <div class="gform"><label>Team name<input type="text" id="gteam" maxlength="40" value="LT climbing team" autocomplete="off"></label>
       <label>Your name<input type="text" id="gname" maxlength="40" placeholder="e.g. Kajus" autocomplete="off"></label>
-      <label>Your code <span class="note">6–10 digits</span><input type="text" id="gnew" inputmode="numeric" maxlength="10" placeholder="e.g. 123456" autocomplete="off"></label></div>
+      <label>Your code <span class="note">6–10 digits</span><input type="text" id="gnew" inputmode="numeric" maxlength="10" placeholder="8–10 digits" autocomplete="off"></label></div>
     <button class="btn gbtn" data-g="setup">Create team</button><p class="gerr" id="gerr" role="alert"></p>`);
   c.querySelector('[data-g=setup]').onclick=()=>doSetup(c); }
 async function doSetup(c){ const v=s=>{ const el=c.querySelector(s); return el?el.value.trim():''; }, err=c.querySelector('#gerr'), btn=c.querySelector('[data-g=setup]');
