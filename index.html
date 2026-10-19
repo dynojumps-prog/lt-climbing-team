@@ -512,6 +512,82 @@ body{background:var(--bg)}
 .gpick{display:grid;gap:10px;padding:10px}.gopt{display:flex;flex-direction:column;gap:4px;text-align:left;border:1px solid var(--line);background:var(--field);border-radius:12px;padding:14px}.gopt b{font-family:"Barlow Condensed",sans-serif;font-size:1.35rem}.gopt span{color:var(--soft);font-size:.9rem}.gopt em{font-style:normal;font-weight:700;margin-top:4px}.gopt:first-child{background:#0E1A24;color:#fff;border-color:#0E1A24}.gopt:first-child span{color:#A9B8C3}.gopt:first-child em{color:var(--gold)}
 .gnotes .note{margin:0}
 @media (max-width:370px){.gsty{grid-template-columns:repeat(2,1fr)}.top .sync{display:none}}
+
+/* ---------- v3: sharp team machine. Hairlines, square corners, condensed caps, tabular numbers, Lithuanian tricolour as the only accents ---------- */
+:root{--bg:#F3F4F5;--panel:#FFFFFF;--ink:#0A0E11;--soft:#5B6670;--line:#DADFE3;--field:#F0F2F4;--acc:#0A0E11;--gold:#FDB913;--lgreen:#006A44;--lred:#C1272D;--pos:#0E8A55;--neg:#C1272D;--shadow:none;--hair:rgba(10,14,17,.08)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#06080A;--panel:#0D1115;--ink:#ECEFF1;--soft:#8A959E;--line:#1D252C;--field:#141A20;--acc:#ECEFF1;--pos:#21B573;--neg:#E5484D;--hair:rgba(255,255,255,.05)}}
+:root[data-theme="dark"]{--bg:#06080A;--panel:#0D1115;--ink:#ECEFF1;--soft:#8A959E;--line:#1D252C;--field:#141A20;--acc:#ECEFF1;--pos:#21B573;--neg:#E5484D;--hair:rgba(255,255,255,.05)}
+body{background:var(--bg);font-variant-numeric:tabular-nums}
+*:not(.gring):not(.gring span):not(.bsl-thumb):not(.mmdot):not(.dwarn):not(.dnote):not(.dsim):not(i):not(svg *){border-radius:2px!important}
+.card,.entry,.tabs,.simbox,.goal,.route{border-radius:3px!important}
+.top{border-radius:3px!important;background:#06080A;padding:16px 12px 14px 16px;box-shadow:none;border:1px solid #1D252C;min-height:76px}
+.top::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0 1px,transparent 1px 9px);pointer-events:none}
+.top::after{content:"";position:absolute;right:56px;top:4px;width:110px;height:70px;opacity:.13;pointer-events:none;background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 68'%3E%3Cg fill='%23fff'%3E%3Ccircle cx='70' cy='12' r='5'/%3E%3Cpath d='M66 18l-10 14 4 3 8-10 3 13-9 16 4 3 10-17 6 8 2 15h5l-2-18-8-11-2-12 10 6 8-9-3-3-6 7z'/%3E%3Cpath d='M92 2l8 3-3 6-7-2zM20 40l9-2 2 6-9 3zM40 10l7 1-1 6-7-1zM104 40l7 3-3 6-7-3z' opacity='.8'/%3E%3C/g%3E%3C/svg%3E")}
+.tflag{height:3px}.tname{font-size:1.25rem;letter-spacing:.14em}.top .bwho{letter-spacing:.04em;text-transform:uppercase;font-size:.7rem;font-weight:600}
+.gear{border-radius:2px!important;border-color:rgba(255,255,255,.14);background:transparent;position:relative;z-index:1}.gear.on{background:var(--gold);color:#06080A;border-color:var(--gold)}
+.top .brand,.top .sync{position:relative;z-index:1}
+.tabs{background:var(--panel);border:1px solid var(--line);padding:0;gap:0;box-shadow:none}
+.tabs button{border-radius:0!important;min-height:46px;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);position:relative;border-right:1px solid var(--line)}.tabs button:last-child{border-right:0}
+.tabs button.on{background:var(--ink);color:var(--bg)}.tabs button.on::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--gold) 33.3%,var(--lgreen) 33.3% 66.6%,var(--lred) 66.6%)}
+.card{border:1px solid var(--line);box-shadow:none;padding:16px}
+.card h3,.clab,.gsec,.gskick,.sikick,.lcnow small,.lstats small{font-family:"Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.card h3{font-size:.95rem;font-weight:700;color:var(--soft);border-bottom:1px solid var(--line);padding-bottom:8px;margin:-2px 0 10px}
+.phead{border-left:3px solid var(--gold);padding-left:10px}.phead h1{text-transform:uppercase;letter-spacing:.02em;font-size:2.3rem}
+.month h1{text-transform:uppercase;letter-spacing:.01em}
+.btn{border-radius:2px!important;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:1rem;letter-spacing:.06em;text-transform:uppercase;min-height:44px}
+.btn.go,.bigbtn{background:var(--gold);border-color:var(--gold);color:#06080A}.btn.danger{background:var(--neg);border-color:var(--neg);color:#fff}
+.bigbtn{width:100%;min-height:56px;font-size:1.15rem;margin-bottom:12px}
+.add{box-shadow:none;border-left:4px solid rgba(0,0,0,.25);font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:1.02rem;letter-spacing:.04em;text-transform:uppercase}
+.entry{border:1px solid var(--line);border-left:4px solid var(--c);box-shadow:none}
+.day{border:1px solid var(--line);background:var(--panel)}.day.today .n{background:var(--gold);color:#06080A}.day.sel{outline:2px solid var(--ink);outline-offset:-2px;border-color:var(--ink)}
+.chips button{border-radius:2px!important;font-weight:600}.chips button.on,.rsty button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.step button,.mini,.arrows button{border-radius:2px!important}
+.s7 button.on{background:var(--ink)!important;color:var(--bg)}.s7 button{font-family:"Barlow Condensed",sans-serif;font-size:1.2rem}
+.gring{background:conic-gradient(var(--gold) calc(var(--p)*360deg),var(--field) 0)}.gsbar i,.mbar i{background:var(--ink)}.mbar.neg i{background:var(--neg)}
+.gstrip{background:var(--panel);border-left:3px solid var(--gold)}.goal.gnext{border:1px solid var(--ink);border-left:3px solid var(--gold)}
+.gopt:first-child{background:#06080A;border-color:#06080A}
+.lbt i{background:var(--soft)}.lbar.lnow .lbt i{background:var(--gold)}
+.gbar{border-radius:2px!important}
+.dsim{position:absolute;top:5px;right:5px;width:8px;height:8px;background:var(--gold);transform:rotate(45deg)}
+/* comp simulation */
+.flagbar{display:inline-block;width:18px;height:4px;margin-right:8px;vertical-align:middle;background:linear-gradient(90deg,var(--gold) 33.3%,var(--lgreen) 33.3% 66.6%,var(--lred) 66.6%)}
+.sikick{display:block;font-size:.75rem;font-weight:700;color:var(--soft)}.sititle{display:block;font-family:"Barlow Condensed",sans-serif;font-size:1.5rem;margin:2px 0}
+.siminv{border-left:3px solid var(--gold)}.simday{display:block;width:100%;text-align:left;position:relative;border-left:3px solid var(--gold)}.simday .note{display:block}.simgo{position:absolute;right:14px;top:16px;font-weight:700}.live{color:var(--neg)}
+.simrow{display:grid;grid-template-columns:46px 1fr auto;gap:12px;align-items:center;width:100%;text-align:left;padding:12px 14px}.simd{display:flex;flex-direction:column;align-items:center;border-right:1px solid var(--line);padding-right:10px}.simd b{font-family:"Barlow Condensed",sans-serif;font-size:1.7rem;line-height:1}.simd small{text-transform:uppercase;font-size:.7rem;color:var(--soft);font-weight:700}
+.simm b{display:block;font-family:"Barlow Condensed",sans-serif;font-size:1.25rem}.simm small{color:var(--soft)}.simst{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.8rem;padding:3px 8px;border:1px solid var(--line)}.simst.s-live{background:var(--neg);color:#fff;border-color:var(--neg)}.simst.s-open{border-color:var(--gold)}
+.simed input[type=text],.simed input[type=date]{width:100%}.simroute{display:grid;grid-template-columns:34px 1fr;gap:6px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}.simroute b{font-family:"Barlow Condensed",sans-serif;font-size:1.2rem}.simroute .rsty,.simroute input[data-simr$="note"]{grid-column:2}
+.siminv-row{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:6px 0;border-top:1px solid var(--line)}.siminv-row select{width:auto}
+.simfs{position:fixed;inset:0;z-index:60;overflow:auto;padding-top:max(10px,env(safe-area-inset-top));padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right));background:#06080A;color:#ECEFF1;padding:10px 12px 40px}
+.simfs .btn.ghost{background:transparent;color:#ECEFF1;border-color:#2A333B}.simfs .note{color:#8A959E}.simfs .card{background:#0D1115;border-color:#1D252C;color:#ECEFF1}
+.simbar{display:flex;justify-content:space-between;gap:8px;margin-bottom:10px}
+.simgrid{display:grid;gap:12px}
+.simbox{border:1px solid #1D252C;background:#0B0F13 repeating-linear-gradient(135deg,rgba(255,255,255,.025) 0 1px,transparent 1px 10px);padding:14px 16px 16px;position:relative;overflow:hidden}
+.simtop{display:flex;justify-content:space-between;align-items:center;gap:8px;font-family:"Barlow Condensed",sans-serif;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:.8rem;color:#8A959E}.simtop span:nth-child(2){flex:1}
+.simlab{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:1.6rem;letter-spacing:.06em;text-transform:uppercase;margin-top:8px}
+.simt{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:clamp(5rem,26vw,11rem);line-height:.9;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.simsub{font-weight:600;color:#8A959E;min-height:1.4em}.simprog{height:4px;background:#1D252C;margin-top:12px}.simprog i{display:block;height:100%;width:0;background:#ECEFF1}
+.simbox[data-ph=climb] .simprog i{background:var(--gold)}.simbox.last .simt{color:var(--gold)}.simbox[data-ph=rest] .simlab{color:#21B573}.simbox[data-ph=count] .simt{color:var(--gold)}.simbox[data-ph=obs] .simlab{color:#8FB8FF}
+.simctl{display:flex;gap:8px;margin-top:10px}.simctl .btn{flex:1}
+.simbs{display:grid;grid-template-columns:repeat(auto-fit,minmax(56px,1fr));gap:6px}.simb{background:#0D1115;border:1px solid #1D252C;color:#ECEFF1;min-height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.simb small{font-family:"Barlow Condensed",sans-serif;font-weight:700;letter-spacing:.1em;color:#8A959E}.simb b{font-family:"Barlow Condensed",sans-serif;font-size:1.6rem}.simb.now{border-color:var(--gold);box-shadow:inset 0 -3px 0 var(--gold)}.simb.on{background:#ECEFF1;color:#06080A}.simb.on small{color:#06080A}
+.simres{border:1px solid #1D252C;background:#0D1115;padding:12px;margin-top:8px}.srh{display:flex;gap:10px;align-items:baseline;margin-bottom:6px}.srh b{font-family:"Barlow Condensed",sans-serif;font-size:1.35rem;text-transform:uppercase}.srh span{color:#8A959E;flex:1}.srh .pts{flex:0;white-space:nowrap;color:var(--gold);font-weight:700}
+.simres .crow{border-color:#1D252C}.simres .step button{background:#141A20;border-color:#2A333B;color:#ECEFF1}.simres .clab2 small{color:#8A959E}.simres .chips button,.simres .rsty button{background:#141A20;border-color:#2A333B;color:#ECEFF1}.simres .chips button.on,.simres .rsty button.on{background:#ECEFF1;color:#06080A}.simres input{background:#141A20;color:#ECEFF1;border-color:#2A333B}.simres .rfo{border-color:#2A333B;color:#8A959E}
+.simsum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;border-top:1px solid #1D252C;padding-top:10px}.simsum b{display:block;font-family:"Barlow Condensed",sans-serif;font-size:1.5rem}.simsum small{color:#8A959E;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em}
+.simboard{border:1px solid #1D252C;background:#0D1115;margin-top:12px}.sbh{display:flex;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #1D252C;font-family:"Barlow Condensed",sans-serif;font-weight:700;letter-spacing:.12em;text-transform:uppercase}.sbh small{color:var(--neg)}
+.sbr{display:grid;grid-template-columns:28px minmax(70px,1fr) auto auto;gap:8px;align-items:center;padding:8px 12px;border-bottom:1px solid #1D252C}.sbr .pos{font-family:"Barlow Condensed",sans-serif;font-size:1.4rem;color:var(--gold)}.sbr .nm{font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sbr .bx{display:flex;gap:3px}.sbr .bx i{width:20px;height:22px;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:.75rem;font-weight:700;background:#141A20;border:1px solid #1D252C}.sbr .bx i.t{background:var(--gold);color:#06080A;border-color:var(--gold)}.sbr .bx i.z{background:#2A333B}.sbr .bx i.f{color:#8A959E}
+.sbr .sc{text-align:right}.sbr .sc b{display:block;font-family:"Barlow Condensed",sans-serif;font-size:1.3rem}.sbr .sc small{color:#8A959E;font-size:.7rem}
+.sbr.own{grid-template-columns:1fr auto}.ownl{grid-column:1/-1;display:flex;flex-direction:column;gap:2px;font-size:.82rem;color:#B8C1C8}
+.sbinv{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px}.sbinv span{font-size:.75rem;border:1px solid #2A333B;padding:3px 7px;color:#8A959E}.sbinv .y{color:#21B573;border-color:#21B573}.sbinv .n{color:var(--neg);border-color:var(--neg)}
+.simgrid{max-width:1200px;margin:0 auto}.simbar{max-width:1200px;margin:0 auto 10px}
+@media (orientation:landscape) and (min-width:560px){.simgrid{grid-template-columns:1.1fr 1fr;align-items:start}.simt{font-size:clamp(5rem,17vw,12rem)}.simfs.full .simleft{position:sticky;top:0}}
+
+.top .bwho .sync{display:inline;color:inherit;font-size:inherit;max-width:none;text-align:left}.tname{font-size:1.15rem;letter-spacing:.12em}
+.tabs button{flex:1 1 0;min-width:0;padding:0 4px;font-size:.88rem;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:370px){.tabs button{font-size:.78rem;letter-spacing:.02em}.top .bwho .sync{display:inline}}
+.tabs.many button{flex:1 1 0;padding:0 4px}
+.tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:58px;font-size:.7rem!important;letter-spacing:.06em!important;padding:6px 2px!important;overflow:visible;text-overflow:clip}
+.tabs button span{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis}.tabs button svg{opacity:.9}.tabs button.on svg{color:var(--gold)}
 </style>
 </head>
 <body>
@@ -764,7 +840,7 @@ async function pullAll(){ if(!col||GUEST) return;
   }catch(e){ setSync('Saved on phone, syncs later'); }
 }
 db=TEAM.db||null; col=db?db.collection('people/'+ACC.id+'/docs'):null;
-if(col){ window.addEventListener('online',()=>{ if(ALIVE) pullAll(); }); setTimeout(async()=>{ if(!ALIVE) return; if(!(await verifyMe())) return; await pullAll(); if(ALIVE){ sumQueue(); pendingImport(); } },0); }
+if(col){ window.addEventListener('online',()=>{ if(ALIVE) pullAll(); }); setTimeout(async()=>{ if(!ALIVE) return; if(!(await verifyMe())) return; await pullAll(); if(ALIVE){ sumQueue(); pendingImport(); simSub(); simClock(); } },0); }
 
 // ---------- secret notes: only you can read them. The text lives in people/<you>/secret, which the database gives to nobody else;
 // the log your coach can open only gets a 🔒 mark (it.sec) that says a secret note exists ----------
@@ -938,7 +1014,7 @@ function tplColor(e){ const t=S.cfg.templates.find(t=>t.id===e.tid); return safe
 const app=document.getElementById('app');
 
 // ---------- render ----------
-function render(){ const y=window.scrollY; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; ({cal:renderCal,perf:renderPerf,goals:renderGoals,team:renderTeam,ath:renderAth}[S.view]||renderSettings)(); const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); window.scrollTo(0,y); }
+function render(){ const y=window.scrollY; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; ({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth}[S.view]||renderSettings)(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); }
 function toast(t){ let el=document.getElementById('toast'); if(!el){ el=document.createElement('div'); el.id='toast'; el.setAttribute('role','status'); document.body.appendChild(el); } el.textContent=t; el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),1800); }
 function say(t){ const m=document.getElementById('msg'); if(m) m.textContent=t; }
 function armed(b,label){ if(b.dataset.armed) return true; b.dataset.armed='1'; const old=b.textContent; b.textContent=label; b.classList.add('armed'); setTimeout(()=>{ if(b.isConnected){ delete b.dataset.armed; b.textContent=old; b.classList.remove('armed'); } },3000); return false; }
@@ -953,19 +1029,19 @@ function renderCal(){
     const ds=`${S.y}-${pad(S.m+1)}-${pad(d)}`, es=(month(k).days[String(d)]||[]).filter(e=>!isPerfE(e));
     const warn=dayPain(es);
     cells+=`<button class="day${ds===todayStr?' today':''}${ds===S.sel?' sel':''}" data-day="${ds}" aria-label="${d} ${MONTHS[S.m]}, ${es.length} logs${warn?', pain marked':''}${nd.has(ds)?', coach note':''}${es.some(e=>(e.items||[]).some(it=>it.sec))?', secret note':''}">
-      <span class="n">${d}</span>${warn?'<i class="dwarn" aria-hidden="true"></i>':''}${nd.has(ds)?'<i class="dnote" aria-hidden="true"></i>':''}${es.some(e=>(e.items||[]).some(it=>it.sec))?'<i class="dlock" aria-hidden="true">🔒</i>':''}<span class="tapes">${es.slice(0,4).map(e=>`<span class="tape" style="background:${tplColor(e)}"></span>`).join('')}</span></button>`;
+      <span class="n">${d}</span>${warn?'<i class="dwarn" aria-hidden="true"></i>':''}${nd.has(ds)?'<i class="dnote" aria-hidden="true"></i>':''}${!GUEST&&simCardsForDay(ds).length?'<i class="dsim" aria-hidden="true"></i>':''}${es.some(e=>(e.items||[]).some(it=>it.sec))?'<i class="dlock" aria-hidden="true">🔒</i>':''}<span class="tapes">${es.slice(0,4).map(e=>`<span class="tape" style="background:${tplColor(e)}"></span>`).join('')}</span></button>`;
   }
   const sd=new Date(S.sel+'T12:00'), sel=entriesOn(S.sel).filter(e=>!isPerfE(e)), CT=S.cfg.templates.filter(t=>!t.perf);
   app.innerHTML=`
   ${topBar()}
-  ${alertsHTML(healthAlerts())}${GUEST?'':todayNotesHTML()}${goalStrip()}${todayCard()}${loadCard()}${GUEST?aiCard():packCard(true)+backupNudge()}
+  ${alertsHTML(healthAlerts())}${GUEST?'':todayNotesHTML()}${simInviteCards()}${goalStrip()}${todayCard()}${loadCard()}${GUEST?aiCard():packCard(true)+backupNudge()}
   <div class="month"><h1>${MONTHS[S.m]}<span>${S.y}</span></h1>
     <div class="arrows"><button data-act="prev" aria-label="Previous month">‹</button><button data-act="next" aria-label="Next month">›</button></div></div>
   <div class="grid">${cells}</div>
   <div class="legend">${CT.map(t=>`<span><i style="background:${t.color}"></i>${esc(t.name)}</span>`).join('')}</div>
   <div class="dayhead" id="dayhead"><button class="mini" data-dnav="-1" aria-label="Previous day">‹</button><span>${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}</span><button class="mini" data-dnav="1" aria-label="Next day">›</button></div>
   ${S.sel!==todayStr?'<button class="btn ghost gotoday" data-act="gotoday">Back to today</button>':''}
-  ${dayNotesHTML()}
+  ${dayNotesHTML()}${GUEST?'':simDayHTML(S.sel)}
   <div class="adds"${GUEST?' style="display:none"':''}>${CT.map(t=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)}" data-add="${t.id}">+ ${esc(t.name)}</button>`).join('')}</div>
   ${sel.length?sel.map(entryHTML).join(''):`<div class="empty">${GUEST?'Nothing logged on this day.':'Nothing logged yet. Pick a log type above to start.'}</div>`}`;
   app.querySelectorAll('textarea').forEach(grow);
@@ -1479,12 +1555,13 @@ function dataLines(ds,n){ const V=ds.vars; return ds.days.slice(-n).map(d=>{ con
   const t=(ds.texts[d]||[]).map(s=>s.slice(0,200)); return `${d} (${WD[(new Date(d+'T12:00').getDay()+6)%7]}): ${parts.join('; ')}${t.length?' | notes: '+t.join(' / '):''}`; }); }
 const SAFE='Never suggest eating less, losing weight, supplement doses or medication. Slow-acting supplements (omega-3, creatine, vitamin D, iron) build up over weeks, so never propose day-by-day A/B tests of them. If something sounds like injury (a pop, sharp pain, swelling) say to stop and see a physio.';
 const GLOSS='Krūvis = training load (effort × minutes), Pirštų skausmas = finger pain, Pirštų testas = finger strength test. Notes are mostly Lithuanian: Prieš trieša = before training, Po triešos = after training, Restday = rest day, Miegas = sleep, Maistas = food, Maisto papildai = supplements, Oda = skin, Energija = energy, Kūnas = body, Fokusas = focus, Pirštai = fingers, Emocijos = emotions. Weekdays: Pr An Tr Kt Pn Š S = Mon–Sun.';
-function tabsHTML(){ const B=[['cal','Calendar'],['perf','Performance'],['goals','Milestones']], T=GUEST?B:B.concat(isCoach()?[['team','Team']]:[]).concat(ACC.role==='coach'?[['ath','Stats']]:[]);
-  return `<nav class="tabs${T.length>3?' many':''}" aria-label="Sections">${T.map(([k,l])=>`<button data-tab="${k}" class="${S.view===k?'on':''}"${S.view===k?' aria-current="page"':''}>${l}</button>`).join('')}</nav>`; }
+function tabsHTML(){ const B=[['cal','Calendar'],['perf','Performance'],['goals','Milestones']], T=GUEST?B:B.concat([['sims','Comps']]).concat(isCoach()?[['team','Team']]:[]).concat(ACC.role==='coach'?[['ath','Stats']]:[]);
+  return `<nav class="tabs${T.length>3?' many':''}" aria-label="Sections">${T.map(([k,l])=>`<button data-tab="${k}" class="${S.view===k||(k==='sims'&&S.view==='sim')?'on':''}"${S.view===k?' aria-current="page"':''}><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">${TICON[k]||''}</svg><span>${T.length>4?({perf:'Perform',goals:'Goals'}[k]||l):l}</span></button>`).join('')}</nav>`; }
+const TICON={cal:'<path fill="none" stroke="currentColor" stroke-width="2" d="M3 5h18v16H3zM3 10h18M8 2v5M16 2v5"/>',perf:'<path fill="none" stroke="currentColor" stroke-width="2" d="M3 20h18M6 16v-5M11 16V6M16 16v-8M21 16V9"/>',goals:'<path fill="none" stroke="currentColor" stroke-width="2" d="M5 22V3M5 4h12l-2 4 2 4H5"/>',sims:'<g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.5M9.5 2h5M12 2v4.5M18.5 6.5l1.5-1.5"/></g>',team:'<g fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 21c.6-4 3.2-6 6.5-6s5.9 2 6.5 6M16 4.8a3.5 3.5 0 0 1 0 6.4M18 15.4c2 .7 3.2 2.6 3.5 5.6"/></g>',ath:'<path fill="none" stroke="currentColor" stroke-width="2" d="M3 3v18h18M7 15l4-5 3 3 6-7"/>'};
 const isWeakCode=()=>{ try{ return localStorage.getItem('ct:weak')==='1'; }catch(e){ return false; } };
 const ROLEW={athlete:'Athlete',coach:'Coach',supervisor:'Head of team'};
 const teamName=()=>{ try{ return (TEAM.info&&TEAM.info.name)||'LT climbing team'; }catch(e){ return 'LT climbing team'; } };
-const topBar=()=>`${!GUEST&&isWeakCode()&&!(S.view==='set'&&S.st.myCode!=null)?'<div class="alert amber weakc"><span>🔑 Your code is easy to guess. Change it to 8–10 digits that only you know.</span><button class="btn" data-act="weakfix">Change it</button></div>':''}<div class="top"><span class="tflag" aria-hidden="true"><i></i><i></i><i></i></span><span class="brand"><b class="tname">${esc(teamName())}</b><span class="bwho">${esc(ACC.name)} · ${ROLEW[ACC.role]||'Athlete'}</span></span>${GUEST||S.view==='ath'?'':histBar()}<span class="sync" id="sync">${GUEST?'Read only':syncState}</span>${GUEST?'':`<button class="gear${S.view==='set'?' on':''}" data-tab="set" aria-label="Customize"${S.view==='set'?' aria-current="page"':''}><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.6 7.6 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7.6 7.6 0 0 0 1.7 1l.4 2.5h4l.4-2.5a7.6 7.6 0 0 0 1.7-1l2.4 1 2-3.4zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg></button>`}</div>${GUEST?`<div class="gbar" role="status"><span>👀 <b>${GUEST.name?esc(GUEST.name)+'’s':'Shared'} log</b><br><span>Read only. Only ${GUEST.name?esc(GUEST.name):'they'} can change it.</span></span><button class="btn" data-act="gclose">Back to mine</button></div>`:''}`;
+const topBar=()=>`${!GUEST&&isWeakCode()&&!(S.view==='set'&&S.st.myCode!=null)?'<div class="alert amber weakc"><span>🔑 Your code is easy to guess. Change it to 8–10 digits that only you know.</span><button class="btn" data-act="weakfix">Change it</button></div>':''}<div class="top"><span class="tflag" aria-hidden="true"><i></i><i></i><i></i></span><span class="brand"><b class="tname">${esc(teamName())}</b><span class="bwho">${esc(ACC.name)} · ${ROLEW[ACC.role]||'Athlete'} · <span class="sync" id="sync">${GUEST?'Read only':syncState}</span></span></span>${GUEST||S.view==='ath'?'':histBar()}${GUEST?'':`<button class="gear${S.view==='set'?' on':''}" data-tab="set" aria-label="Customize"${S.view==='set'?' aria-current="page"':''}><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.6 7.6 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7.6 7.6 0 0 0 1.7 1l.4 2.5h4l.4-2.5a7.6 7.6 0 0 0 1.7-1l2.4 1 2-3.4zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg></button>`}</div>${GUEST?`<div class="gbar" role="status"><span>👀 <b>${GUEST.name?esc(GUEST.name)+'’s':'Shared'} log</b><br><span>Read only. Only ${GUEST.name?esc(GUEST.name):'they'} can change it.</span></span><button class="btn" data-act="gclose">Back to mine</button></div>`:''}`;
 
 // ---------- patterns (weekday + timing) ----------
 function weekdayChart(t){ const s=Array(7).fill(0),c=Array(7).fill(0); for(const d in t.vals){ const w=(new Date(d+'T12:00').getDay()+6)%7; s[w]+=t.vals[d]; c[w]++; }
@@ -2514,6 +2591,7 @@ app.addEventListener('click',async ev=>{
   const b=ev.target.closest('button'); if(!b) return; const ds=b.dataset;
   if(ds.qpad!==undefined){ if(!GUEST) qpadSet(b,ev); return; }
   if(goalClick(ds,b)) return;
+  if(!GUEST&&simClick(ds,b)) return;
   if(ds.secopen&&!GUEST){ S.st.secOpen=ds.secopen; render(); const ta=document.querySelector(`[data-sec="${ds.secopen}"]`); if(ta) ta.focus(); return; }
   if(ds.act==='weakfix'){ S.view='set'; S.st.myCode=''; S.st.myCodeErr=''; render(); const m=document.getElementById('mycode'); if(m){ m.scrollIntoView({block:'center'}); m.focus(); } return; }
   if(!GUEST&&S.view==='ath'&&atClick(ds)) return;
@@ -2628,6 +2706,7 @@ app.addEventListener('input',ev=>{
 app.addEventListener('change',ev=>{
   if(GUEST) return;
   if(S.view==='ath'&&atChange(ev.target)) return;
+  if(simChange(ev.target)) return;
   const t=ev.target, ds=t.dataset, T=S.cfg.templates;
   if(ds.owner!==undefined){ S.cfg.owner=t.value.trim().slice(0,40); t.value=S.cfg.owner; saveCfg(); return; }
   if((ds.bin||ds.lin)&&t.value.trim()){ addToList(ds.bin||ds.lin,t.id); return; }
@@ -3336,6 +3415,7 @@ function renderPerf(){ ensurePerf(); const k=mkey(S.y,S.m); month(k); const PT=S
   <div class="legend">${PT.map(t=>`<span><i style="background:${t.color}"></i>${esc(t.name)}</span>`).join('')}</div>
   <div class="dayhead" id="dayhead"><button class="mini" data-dnav="-1" aria-label="Previous day">‹</button><span>${LTWD[sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}</span><button class="mini" data-dnav="1" aria-label="Next day">›</button></div>
   ${S.sel!==todayStr?'<button class="btn ghost gotoday" data-act="gotoday">Back to today</button>':''}
+  ${GUEST?'':simDayHTML(S.sel)}
   ${GUEST?'':PT.length?`<div class="adds">${PT.map(t=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)}" data-add="${t.id}">+ ${esc(t.name)}</button>`).join('')}</div>`:`<div class="empty">${col&&!PULLED?'Connecting… your tests show up once you are online.':'No tests yet. Add one in Customize → Performance tests.'}</div>`}
   ${sel.length?sel.map(entryHTML).join(''):`<div class="empty">${GUEST?'No tests on this day.':'Nothing on this day yet. Tap a test above.'}</div>`}
   ${fallCard()}`;
@@ -3452,6 +3532,162 @@ function setupUpdateCard(){ if(S.cfg.setupV3) return ''; const P=setupPlan(); if
     <div class="row" style="margin:8px 0 0"><button class="btn" data-act="setupv2">Update</button><button class="btn ghost" data-act="setupno">No thanks</button></div></div>`; }
 function applySetupV2(){ const P=setupPlan(); P.forEach(x=>{ if(x.add){ const fs=x.add.fields, at=fs.findIndex(f=>/energ/i.test(f.name)); fs.splice(at<0?fs.length:at+1,0,{id:rid(),name:'Stresas',type:'mix',comps:['A','T']}); return; } x.f.type='mix'; x.f.comps=sortC(x.to); if(x.name) x.f.name=x.name; }); S.cfg.setupV2=1; S.cfg.setupV3=1; saveCfg(); render(); toast(P.length?`Updated ${P.length} item${P.length>1?'s':''}. ↶ to undo`:'Nothing to update'); }
 
+// ================= Comp simulation: a coach sets up a round, invites athletes, starts one timer that every phone shows =================
+// Times follow the IFSC boulder rules (Youth World Championships, art. 8.13): qualification 4 min climbing with a 4 min 15 s rotation period,
+// semi-final 5 min / 5 min 15 s, final 4 min with a 2 min observation per boulder. Between two boulders an athlete rests one rotation period,
+// so the next climb starts 2 rotation periods after the last one did. Signals at the start, at 1 minute left and at the end (art. 8.3).
+// Where it lives: the round itself in team/info (coaches write, everyone in the team reads); each athlete's answer and results in
+// people/<athlete>/docs/sim-<id> (only the athlete writes; coaches read). The timer runs from one start time in server time.
+const SIMP={q:['Qualification',240,270,0],s:['Semi-final',300,330,0],f:['Final',240,240,120]};
+const SIM={off:0,offOk:false,mine:{},watch:{},unw:{},sub:null,tick:null,lastPh:'',audio:null,wake:null,saveT:{}};
+const simNow=()=>Date.now()+SIM.off;
+const mmss=t=>{ t=Math.max(0,Math.ceil(t)); return `${Math.floor(t/60)}:${pad(t%60)}`; };
+const secIn=v=>{ const m=String(v||'').trim().match(/^(\d{1,3})(?::(\d{1,2}))?$/); return m?(m[2]!=null?+m[1]*60+Math.min(59,+m[2]):+m[1]*60):null; };
+function simNorm(x,id){ if(!x||typeof x!=='object') return null; x=cleanText(JSON.parse(JSON.stringify(x))); const n=Math.max(1,Math.min(8,Math.round(+x.n)||4)), I=v=>Math.max(0,Math.min(3600,Math.round(+v)||0));
+  return {id,name:String(x.name||'Comp simulation').slice(0,60),by:String(x.by||''),byName:String(x.byName||'Coach').slice(0,40),date:/^\d{4}-\d{2}-\d{2}$/.test(String(x.date))?x.date:todayStr,
+    round:SIMP[x.round]?x.round:'c',mode:x.mode==='own'?'own':'same',n,climb:I(x.climb)||240,rest:I(x.rest),obs:I(x.obs),
+    routes:Array.from({length:n},(_,i)=>{ const r=(Array.isArray(x.routes)?x.routes:[])[i]||{}; return {g:String(r.g||'').toUpperCase().slice(0,4),st:(Array.isArray(r.st)?r.st:[]).filter(k=>STYLES.some(s=>s[0]===k)),note:String(r.note||'').slice(0,200)}; }),
+    inv:(Array.isArray(x.inv)?x.inv:[]).filter(a=>a&&OKID.test(String(a.id))).map(a=>({id:String(a.id),name:String(a.name||'').slice(0,40),s:Math.max(1,Math.min(n,Math.round(+a.s)||1))})),
+    status:['draft','open','live','done'].includes(x.status)?x.status:'draft',startAt:+x.startAt||0,created:+x.created||0}; }
+function sims(){ const o=(TEAM.info&&TEAM.info.sims)||{}; return Object.entries(o).map(([id,x])=>OKID.test(id)?simNorm(x,id):null).filter(Boolean).sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:b.created-a.created); }
+const simById=id=>sims().find(x=>x.id===id)||null;
+const iAmIn=x=>x.inv.some(a=>a.id===ACC.id);
+const myStart=x=>{ const a=x.inv.find(a=>a.id===ACC.id); return a?a.s:1; };
+// the timeline everyone shares: observation, then for each boulder a climbing period and (between boulders) a rest
+function simPhases(x){ const P=[]; let t=0; if(x.obs) { P.push({k:'obs',t0:t,len:x.obs*x.n}); t+=x.obs*x.n; }
+  for(let i=0;i<x.n;i++){ P.push({k:'climb',i,t0:t,len:x.climb}); t+=x.climb; if(i<x.n-1&&x.rest){ P.push({k:'rest',i,t0:t,len:x.rest}); t+=x.rest; } } return {P,total:t}; }
+function simState(x){ if(x.status!=='live'&&x.status!=='done'||!x.startAt) return {k:'wait'}; const el=(simNow()-x.startAt)/1000; if(el<0) return {k:'count',left:-el};
+  const {P,total}=simPhases(x); if(el>=total||x.status==='done') return {k:'end'}; const p=P.find(p=>el<p.t0+p.len)||P[P.length-1]; return Object.assign({},p,{left:p.t0+p.len-el,el,total}); }
+const boulderFor=(x,start,i)=>((start-1+i)%x.n);   // rotation i → boulder index for an athlete who starts on boulder <start>
+function simLabel(x,st,start,staff){ if(st.k==='wait') return staff?['Ready','Tap Start when everyone is at the wall']:['Waiting for the coach','The timer starts on every phone at the same time']; if(st.k==='count') return ['Starting in','']; if(st.k==='end') return ['Finished',''];
+  if(st.k==='obs') return ['Observation',`All ${x.n} boulders · touch only the start holds`];
+  const b=start?boulderFor(x,start,st.i)+1:null; if(st.k==='climb') return [start?`Boulder ${b}`:`Rotation ${st.i+1} of ${x.n}`,'Climbing'];
+  const nb=start?boulderFor(x,start,st.i+1)+1:null; return ['Rest',start?`Next: boulder ${nb}`:`Next: rotation ${st.i+2}`]; }
+// ---- server clock + live data
+async function simClock(){ if(!TEAM.clock||GUEST) return; try{ SIM.off=await TEAM.clock(ACC.id); SIM.offOk=true; }catch(e){ SIM.offOk=false; } }
+function simSub(){ if(SIM.sub||!TEAM.db||GUEST||!ALIVE) return;
+  SIM.sub=TEAM.db.doc('team/info').onSnapshot(s=>{ if(!ALIVE) return; const d=s.exists?s.data():{}; if(TEAM.info) TEAM.info.sims=(d&&d.sims)||{}; simLoadMine(); if(['sims','sim','cal','perf'].includes(S.view)) softRender(); },()=>{ SIM.sub=null; }); }
+function simLoadMine(){ if(!col) return; sims().filter(x=>iAmIn(x)&&!SIM.mine[x.id]).forEach(x=>{ SIM.mine[x.id]={loading:true,res:[]};
+  col.doc('sim-'+x.id).get().then(s=>{ const v=s.exists?cleanText(s.data()||{}):{}; SIM.mine[x.id]=simMineNorm(v); if(ALIVE&&['sims','sim','cal','perf'].includes(S.view)) softRender(); }).catch(()=>{ SIM.mine[x.id]={res:[]}; }); }); }
+function simMineNorm(v){ return {ans:v.ans==='yes'||v.ans==='no'?v.ans:'',res:(Array.isArray(v.res)?v.res:[]).map(r=>r&&typeof r==='object'?r:{}),t:+v.t||0}; }
+function simSaveMine(id){ const m=SIM.mine[id]; if(!m||!col) return; m.t=Date.now(); clearTimeout(SIM.saveT[id]); SIM.saveT[id]=setTimeout(()=>{ col.doc('sim-'+id).set({ans:m.ans,res:m.res,t:m.t}).catch(()=>toast('Not saved: no connection')); },300); }
+function simWatch(x){ if(!TEAM.db||ACC.role!=='coach') return; x.inv.forEach(a=>{ const k=x.id+'|'+a.id; if(SIM.unw[k]) return;
+  SIM.unw[k]=TEAM.db.doc('people/'+a.id+'/docs/sim-'+x.id).onSnapshot(s=>{ (SIM.watch[x.id]=SIM.watch[x.id]||{})[a.id]=simMineNorm(s.exists?cleanText(s.data()||{}):{}); if(ALIVE&&S.view==='sim') simSoft(); },()=>{}); }); }
+function simUnwatch(){ Object.values(SIM.unw).forEach(u=>{ try{ u(); }catch(e){} }); SIM.unw={}; }
+async function simPut(x){ const o={}; o[x.id]=Object.assign({},x); delete o[x.id].id; await TEAM.db.doc('team/info').update({sims:o}); TEAM.info.sims=Object.assign({},TEAM.info.sims,{[x.id]:o[x.id]}); }
+// ---- signals: a beep and a buzz at the start, at 1 minute left and at the end of every climbing period
+function beep(n,hz){ try{ const A=SIM.audio||(SIM.audio=new (window.AudioContext||window.webkitAudioContext)()); for(let i=0;i<n;i++){ const o=A.createOscillator(), g=A.createGain(), t=A.currentTime+i*0.28; o.frequency.value=hz||880; o.connect(g); g.connect(A.destination); g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.5,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.22); o.start(t); o.stop(t+0.24); } }catch(e){} try{ navigator.vibrate&&navigator.vibrate(n>1?[200,100,200]:200); }catch(e){} }
+function simSignals(x,st){ const key=st.k+':'+(st.i??'')+':'+(st.k==='climb'&&st.left<=60?'1m':''); if(key===SIM.lastPh) return; const prev=SIM.lastPh; SIM.lastPh=key; if(!prev) return;
+  if(st.k==='climb'&&!/1m$/.test(key)) beep(1,1040); else if(st.k==='climb') beep(2,880); else if(st.k==='rest'||st.k==='end') beep(3,660); else if(st.k==='obs') beep(1,880); }
+async function simEnter(){ try{ if(document.fullscreenElement==null&&document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen(); }catch(e){} try{ await screen.orientation.lock('landscape'); }catch(e){}
+  try{ if(navigator.wakeLock) SIM.wake=await navigator.wakeLock.request('screen'); }catch(e){} beep(0); }
+async function simExit(){ try{ if(screen.orientation&&screen.orientation.unlock) screen.orientation.unlock(); }catch(e){} try{ if(document.fullscreenElement) await document.exitFullscreen(); }catch(e){} try{ if(SIM.wake) await SIM.wake.release(); }catch(e){} SIM.wake=null; }
+function simTickStart(){ if(SIM.tick) return; SIM.tick=setInterval(()=>{ if(!ALIVE||S.view!=='sim'){ clearInterval(SIM.tick); SIM.tick=null; return; } const x=simById(S.st.simId); if(!x) return; const st=simState(x);
+  const t=document.getElementById('simt'), l=document.getElementById('siml'), sb=document.getElementById('simsub'), bar=document.getElementById('simbar'), me=iAmIn(x)?myStart(x):null;
+  if(t) t.textContent=st.k==='wait'?'–:––':st.k==='end'?'0:00':mmss(st.left); const [L1,L2]=simLabel(x,st,me,(ACC.role==='coach'||ACC.role==='supervisor')&&x.by===ACC.id); if(l) l.textContent=L1; if(sb) sb.textContent=L2;
+  const box=document.getElementById('simbox'); if(box){ box.dataset.ph=st.k; box.classList.toggle('last',st.k==='climb'&&st.left<=60); }
+  if(bar&&st.len) bar.style.width=Math.min(100,(1-st.left/st.len)*100)+'%';
+  const ph=st.k+':'+(st.i??''); if(SIM.uiPh!==ph){ SIM.uiPh=ph; simSoft(); } simSignals(x,st); },200); }
+function simSoft(){ const ae=document.activeElement; if(ae&&app.contains(ae)&&(ae.tagName==='INPUT'||ae.tagName==='TEXTAREA'||ae.tagName==='SELECT')) return; render(); }
+// ---- results
+const simRes=(m,i)=>{ const r=(m&&m.res&&m.res[i])||{}; return r; };
+function simScore(x,m){ const R=Array.from({length:x.n},(_,i)=>simRes(m,i)), T=R.filter(r=>+r.ta>0), Z=R.filter(r=>+r.za>0||+r.ta>0);
+  return {T:T.length,Z:Z.length,ta:T.reduce((t,r)=>t+(+r.ta),0),za:Z.reduce((t,r)=>t+(+r.za||+r.ta),0),pts:Math.round(R.reduce((t,r)=>t+ifscPts(r),0)*10)/10,att:R.reduce((t,r)=>t+(+r.a||0),0)}; }
+function simRank(x){ const W=SIM.watch[x.id]||{}; return x.inv.map(a=>({a,m:W[a.id]||null})).filter(o=>o.m&&o.m.ans==='yes').map(o=>Object.assign(o,{sc:simScore(x,o.m)}))
+  .sort((p,q)=>q.sc.pts-p.sc.pts||q.sc.T-p.sc.T||q.sc.Z-p.sc.Z||p.sc.ta-q.sc.ta); }
+// ---- screens
+function simCardsForDay(day){ return sims().filter(x=>x.date===day&&(iAmIn(x)||ACC.role==='coach'&&x.by===ACC.id)&&x.status!=='draft'); }
+function simInviteCards(){ if(GUEST) return ''; return sims().filter(x=>iAmIn(x)&&x.status!=='draft'&&x.status!=='done'&&SIM.mine[x.id]&&!SIM.mine[x.id].loading&&!SIM.mine[x.id].ans).map(x=>`<div class="card siminv"><div class="sikick"><span class="flagbar"></span>Comp simulation · invite</div><b class="sititle">${esc(x.name)}</b>
+  <p class="note">${esc(x.byName)} · ${dmyy(x.date)} · ${x.n} boulders · ${mmss(x.climb)} climb / ${mmss(x.rest)} rest${x.mode==='own'?' · your own boulders':''} · you start on boulder ${myStart(x)}</p>
+  <div class="row" style="margin:10px 0 0"><button class="btn" data-simans="${x.id}|yes">Accept</button><button class="btn ghost" data-simans="${x.id}|no">Decline</button></div></div>`).join(''); }
+function simDayHTML(day){ const L=simCardsForDay(day); if(!L.length) return ''; return L.map(x=>{ const st=simState(x), m=SIM.mine[x.id];
+  return `<button class="card simday" data-simopen="${x.id}"><span class="sikick"><span class="flagbar"></span>Comp simulation${x.status==='live'?' · <b class="live">LIVE</b>':x.status==='done'?' · finished':''}</span><b class="sititle">${esc(x.name)}</b><span class="note">${x.n} boulders · ${mmss(x.climb)} / ${mmss(x.rest)}${m&&m.ans==='no'?' · you declined':''}${iAmIn(x)&&m&&m.ans==='yes'?` · ${simScore(x,m).T}T ${simScore(x,m).Z}Z`:''}</span><span class="simgo">Open ›</span></button>`; }).join(''); }
+function renderSims(){ if(GUEST){ S.view='cal'; renderCal(); return; } simSub(); const L=sims(), coach=ACC.role==='coach'||ACC.role==='supervisor';
+  const mine=L.filter(x=>coach?x.by===ACC.id||iAmIn(x):iAmIn(x)&&x.status!=='draft');
+  app.innerHTML=`${topBar()}<div class="phead"><h1>Comp simulation</h1><p>${coach?'Build a round, invite athletes, start one timer on every phone.':'Rounds your coach invited you to.'}</p></div>
+    ${coach?`<button class="btn bigbtn" data-act="simnew">+ New simulation</button>`:''}
+    ${simInviteCards()}
+    ${mine.length?mine.map(x=>`<button class="card simrow" data-simopen="${x.id}"><span class="simd"><b>${x.date.slice(8)}</b><small>${MONTHS[+x.date.slice(5,7)-1].slice(0,3)}</small></span><span class="simm"><b>${esc(x.name)}</b><small>${SIMP[x.round]?SIMP[x.round][0]+' · ':''}${x.n} boulders · ${x.mode==='own'?'own boulders':'same boulders'} · ${x.inv.length} invited</small></span><span class="simst s-${x.status}">${{draft:'Draft',open:'Invited',live:'Live',done:'Done'}[x.status]}</span></button>`).join(''):`<div class="empty">${coach?'No simulations yet.':'No simulations yet. Your coach invites you from his phone.'}</div>`}`; }
+function simEditHTML(x){ const ath=(TM.list||[]).filter(a=>seenRole(a)==='athlete'&&a.id!==ACC.id).sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+  const inv=new Map(x.inv.map(a=>[a.id,a])), sel=(v,cur,lbl)=>`<option value="${v}"${cur===v?' selected':''}>${lbl}</option>`;
+  return `<div class="card simed"><p class="clab">Name</p><input type="text" data-sime="name" value="${esc(x.name)}" maxlength="60">
+    <div class="ftgrid"><label class="ftin">Date<input type="date" data-sime="date" value="${esc(x.date)}"></label><label class="ftin">Boulders<span class="step"><button data-simn="-1" aria-label="One boulder less">−</button><b>${x.n}</b><button data-simn="1" aria-label="One boulder more">+</button></span></label></div>
+    <p class="clab">Round <small>IFSC times</small></p><div class="chips">${Object.entries(SIMP).map(([k,v])=>`<button data-simround="${k}" class="${x.round===k?'on':''}">${v[0]}</button>`).join('')}<button data-simround="c" class="${x.round==='c'?'on':''}">Custom</button></div>
+    <div class="ftgrid g3"><label class="ftin">Climb <small>min:s</small><input type="text" inputmode="numeric" data-sime="climb" value="${mmss(x.climb)}"></label><label class="ftin">Rest <small>min:s</small><input type="text" inputmode="numeric" data-sime="rest" value="${mmss(x.rest)}"></label><label class="ftin">Observation <small>per boulder</small><input type="text" inputmode="numeric" data-sime="obs" value="${mmss(x.obs)}"></label></div>
+    <p class="note">${x.round==='q'?'IFSC qualification: 4 min climbing, rotation period 4:15, so 4:30 between your boulders.':x.round==='s'?'IFSC semi-final: 5 min climbing, rotation period 5:15, so 5:30 between your boulders.':x.round==='f'?'IFSC final: 4 min climbing, 2 min observation per boulder. In a real final athletes climb one at a time, so set the rest to 4 min × (athletes − 1).':'Your own times.'} Signals at the start, at 1 minute left and at the end.</p>
+    <p class="clab">Boulders</p><div class="chips"><button data-simmode="same" class="${x.mode==='same'?'on':''}">Same for everyone</button><button data-simmode="own" class="${x.mode==='own'?'on':''}">Each athlete their own</button></div>
+    ${x.mode==='same'?x.routes.map((r,i)=>`<div class="simroute"><b>B${i+1}</b><input type="text" data-simr="${i}|g" value="${esc(r.g)}" placeholder="Grade" autocapitalize="characters"><div class="rsty">${STYLES.map(([k,l])=>`<button data-simrst="${i}|${k}" class="${r.st.includes(k)?'on':''}">${l}</button>`).join('')}</div><input type="text" data-simr="${i}|note" value="${esc(r.note)}" placeholder="Note (optional)"></div>`).join(''):'<p class="note">Athletes write the grade and style of each boulder themselves. You see their results, no ranking.</p>'}
+    <p class="clab">Invite <small>and the boulder each one starts on</small></p>
+    ${ath.length?ath.map(a=>{ const on=inv.get(a.id); return `<div class="siminv-row"><button class="gchk${on?' on':''}" data-siminv="${a.id}" aria-pressed="${!!on}">${on?'✓':''}</button><span>${esc(a.name)}</span>${on?`<select data-simstart="${a.id}" aria-label="${esc(a.name)} starts on">${Array.from({length:x.n},(_,i)=>sel(String(i+1),String(on.s),'Starts B'+(i+1))).join('')}</select>`:''}</div>`; }).join(''):`<p class="note">${TM.loaded?'No athletes in the team yet.':'Loading the team…'}</p>`}
+    <div class="row" style="margin:14px 0 0"><button class="btn" data-act="simsave">${x.status==='draft'?'Send invites':'Save'}</button><button class="btn ghost" data-act="simcancel">Cancel</button><span style="flex:1"></span>${x.created?`<button class="del" data-act="simdel">Delete</button>`:''}</div></div>`; }
+function renderSim(){ if(GUEST){ S.view='cal'; renderCal(); return; } simSub(); const id=S.st.simId;
+  if(S.st.simDraft){ const x=S.st.simDraft; teamSub(); app.innerHTML=`${topBar()}<div class="phead"><h1>${x.created?'Edit simulation':'New simulation'}</h1><p>Times, boulders, who climbs and where they start.</p></div>${simEditHTML(x)}`; return; }
+  const x=simById(id); if(!x){ app.innerHTML=`${topBar()}<div class="empty">This simulation was deleted.</div><button class="btn ghost" data-tab="sims">Back</button>`; return; }
+  const coach=ACC.role==='coach'&&x.by===ACC.id, staff=(ACC.role==='coach'||ACC.role==='supervisor')&&x.by===ACC.id, me=iAmIn(x), m=SIM.mine[x.id]||{res:[]}, st=simState(x);
+  if(coach) simWatch(x); if(!SIM.offOk) simClock(); simTickStart();
+  const [L1,L2]=simLabel(x,st,me?myStart(x):null,staff), timer=`<div class="simbox" id="simbox" data-ph="${st.k}"><div class="simtop"><span class="flagbar"></span><span>${esc(x.name)}</span><span>${SIMP[x.round]?SIMP[x.round][0]:'Custom'}</span></div>
+    <div class="simlab" id="siml">${esc(L1)}</div><div class="simt" id="simt">${st.k==='wait'?'–:––':st.k==='end'?'0:00':mmss(st.left)}</div><div class="simsub" id="simsub">${esc(L2)}</div><div class="simprog"><i id="simbar"></i></div></div>`;
+  const cur=st.k==='climb'&&me?boulderFor(x,myStart(x),st.i):-1;
+  const pane=me&&m.ans==='yes'?`<div class="simbs">${Array.from({length:x.n},(_,i)=>{ const r=simRes(m,i), t=+r.ta?(+r.ta===1?'⚡':'T'):+r.za?'Z':+r.a?'×':''; return `<button class="simb${S.st.simB===i?' on':''}${cur===i?' now':''}${t?' has':''}" data-simb="${i}"><small>B${i+1}</small><b>${t||'–'}</b></button>`; }).join('')}</div>
+      ${S.st.simB!=null&&S.st.simB<x.n?simResHTML(x,m,S.st.simB):`<p class="note simhint">Tap a boulder to log attempts, zone and top.</p>`}
+      <div class="simsum">${(()=>{ const s=simScore(x,m); return `<span><b>${s.T}T ${s.Z}Z</b><small>tops · zones</small></span><span><b>${s.ta} · ${s.za}</b><small>attempts to T · Z</small></span><span><b>${n1(s.pts)}</b><small>points</small></span>`; })()}</div>`
+    :me&&m.ans!=='no'?`<div class="card"><p class="note">Accept the invite to log results.</p><div class="row"><button class="btn" data-simans="${x.id}|yes">Accept</button><button class="btn ghost" data-simans="${x.id}|no">Decline</button></div></div>`:me?'<p class="note">You declined this simulation.</p>':'';
+  const W=SIM.watch[x.id]||{}, rank=coach?simRank(x):[];
+  const board=coach?`<div class="simboard"><div class="sbh"><span>${x.mode==='same'?'Ranking':'Results'}</span><small>live</small></div>${x.mode==='same'?rank.map((o,i)=>`<div class="sbr"><b class="pos">${i+1}</b><span class="nm">${esc(o.a.name)}</span><span class="bx">${Array.from({length:x.n},(_,j)=>{ const r=simRes(o.m,j); return `<i class="${+r.ta?'t':+r.za?'z':+r.a?'f':''}">${+r.ta?r.ta:+r.za?r.za:+r.a?'·':''}</i>`; }).join('')}</span><span class="sc"><b>${n1(o.sc.pts)}</b><small>${o.sc.T}T${o.sc.Z}Z ${o.sc.ta}/${o.sc.za}</small></span></div>`).join('')||'<p class="note">Nobody has accepted yet.</p>'
+      :x.inv.filter(a=>W[a.id]&&W[a.id].ans==='yes').map(a=>{ const mm=W[a.id], sc=simScore(x,mm); return `<div class="sbr own"><span class="nm">${esc(a.name)}</span><span class="sc"><b>${sc.T}T ${sc.Z}Z</b></span><div class="ownl">${Array.from({length:x.n},(_,j)=>{ const r=simRes(mm,j); return `<span>B${j+1} ${esc(r.g||'?')}${(r.st||[]).length?' · '+esc(r.st.map(styName).join(', ')):''}: ${+r.ta?`top ${r.ta}`:+r.za?`zone ${r.za}`:+r.a?`${r.a} att.`:'–'}</span>`; }).join('')}</div></div>`; }).join('')||'<p class="note">Nobody has accepted yet.</p>'}
+      <div class="sbinv">${x.inv.map(a=>{ const v=(W[a.id]||{}).ans; return `<span class="${v==='yes'?'y':v==='no'?'n':''}">${esc(a.name)} · B${a.s} · ${v==='yes'?'in':v==='no'?'declined':'waiting'}</span>`; }).join('')}</div></div>`
+    :staff?'<div class="alert amber">Only the coach role can see athletes’ results (team rules).</div>':'';
+  const ctl=staff?`<div class="simctl">${x.status==='live'?`<button class="btn danger" data-act="simstop">Stop</button>`:x.status==='done'?`<button class="btn" data-act="simstart">Run again</button>`:`<button class="btn go" data-act="simstart">Start · 10 s countdown</button>`}<button class="btn ghost" data-act="simedit">Edit</button></div>`:'';
+  app.innerHTML=`<div class="simfs${S.st.simFull?' full':''}"><div class="simbar"><button class="btn ghost" data-act="simback">‹ Back</button><button class="btn ghost" data-act="simfull">${S.st.simFull?'Exit full screen':'Full screen · landscape ⤢'}</button></div>
+    <div class="simgrid"><div class="simleft">${timer}${ctl}${!SIM.offOk?'<p class="note">Syncing the clock…</p>':''}</div><div class="simright">${pane}${board}</div></div></div>`;
+  app.querySelectorAll('textarea').forEach(grow); }
+function simResHTML(x,m,i){ const r=simRes(m,i), key=x.id+'|'+i, at=+r.a||0, fl=Array.isArray(r.fall)?r.fall:[], can=at>0&&+r.ta!==1, R=x.routes[i]||{};
+  const stp=(f,lab,sub)=>`<div class="crow"><span class="clab2">${lab}<small>${sub}</small></span><span class="step"><button data-simz="${key}|${f}|-1">−</button><b>${+r[f]||'–'}</b><button data-simz="${key}|${f}|1">+</button></span></div>`;
+  return `<div class="simres"><div class="srh"><b>Boulder ${i+1}</b>${x.mode==='same'&&(R.g||R.st.length)?`<span>${esc(R.g)}${R.st.length?' · '+esc(R.st.map(styName).join(', ')):''}</span>`:''}<span class="pts">${n1(ifscPts(r))} pts</span></div>
+    ${x.mode==='same'&&R.note?`<p class="note">${esc(R.note)}</p>`:''}
+    ${x.mode==='own'?`<div class="srown"><input type="text" data-simg="${key}" value="${esc(r.g||'')}" placeholder="Grade" autocapitalize="characters"><div class="rsty">${STYLES.map(([k,l])=>`<button data-simst="${key}|${k}" class="${(r.st||[]).includes(k)?'on':''}">${l}</button>`).join('')}</div></div>`:''}
+    ${stp('a','Attempts','all goes')}${stp('za','Zone on attempt','– = no zone')}${stp('ta','Top on attempt','– = no top')}
+    ${fl.length||r.fo?`<div class="chips rfall">${FALLS.map(([k,l])=>`<button data-simfall="${key}|${k}" class="${fl.includes(k)?'on':''}">${l}</button>`).join('')}</div>`:can?`<button class="rfo" data-simfo="${key}">+ Why did I fall?</button>`:''}</div>`; }
+// ---- clicks and edits
+function simDraftNew(){ return {id:'',name:'Comp simulation',by:ACC.id,byName:ACC.name,date:todayStr,round:'q',mode:'same',n:5,climb:240,rest:270,obs:0,routes:Array.from({length:5},()=>({g:'',st:[],note:''})),inv:[],status:'draft',startAt:0,created:0}; }
+function simClick(ds,b){
+  if(ds.simopen){ S.view='sim'; S.st.simId=ds.simopen; S.st.simB=null; S.st.simDraft=null; SIM.lastPh=''; render(); scrollTo(0,0); return true; }
+  if(ds.simans){ const [id,v]=ds.simans.split('|'), m=SIM.mine[id]||(SIM.mine[id]={res:[]}); m.ans=v; simSaveMine(id); render(); toast(v==='yes'?'You’re in. It shows on your calendar.':'Declined'); return true; }
+  if(ds.act==='simnew'){ S.view='sim'; S.st.simDraft=simDraftNew(); render(); scrollTo(0,0); return true; }
+  if(ds.act==='simback'){ simExit(); S.st.simFull=false; simUnwatch(); S.view='sims'; render(); return true; }
+  if(ds.act==='simfull'){ S.st.simFull=!S.st.simFull; if(S.st.simFull) simEnter(); else simExit(); render(); return true; }
+  const D=S.st.simDraft;
+  if(D){ const fix=()=>{ D.routes=Array.from({length:D.n},(_,i)=>D.routes[i]||{g:'',st:[],note:''}); D.inv.forEach(a=>{ if(a.s>D.n) a.s=1; }); };
+    if(ds.simn){ D.n=Math.max(1,Math.min(8,D.n+(+ds.simn))); fix(); render(); return true; }
+    if(ds.simround){ D.round=ds.simround; const p=SIMP[ds.simround]; if(p){ D.climb=p[1]; D.rest=p[2]; D.obs=p[3]; if(ds.simround==='f'){ D.n=Math.min(D.n,4); fix(); } else if(ds.simround==='q'&&D.n<5){ D.n=5; fix(); } else if(ds.simround==='s'&&D.n!==4){ D.n=4; fix(); } } render(); return true; }
+    if(ds.simmode){ D.mode=ds.simmode; render(); return true; }
+    if(ds.simrst){ const [i,k]=ds.simrst.split('|'), r=D.routes[+i]; const L=new Set(r.st); L.has(k)?L.delete(k):L.add(k); r.st=STYLES.map(z=>z[0]).filter(z=>L.has(z)); render(); return true; }
+    if(ds.siminv){ const a=(TM.list||[]).find(z=>z.id===ds.siminv); if(!a) return true; const i=D.inv.findIndex(z=>z.id===a.id); if(i>=0) D.inv.splice(i,1); else D.inv.push({id:a.id,name:a.name,s:(D.inv.length%D.n)+1}); render(); return true; }
+    if(ds.act==='simcancel'){ S.st.simDraft=null; S.view=D.created?'sim':'sims'; render(); return true; }
+    if(ds.act==='simsave'){ if(!D.inv.length){ toast('Invite at least one athlete'); return true; } if(!TEAM.db){ toast('No connection'); return true; } const id=D.id||rid(), x=simNorm(Object.assign({},D,{status:D.status==='draft'?'open':D.status,created:D.created||Date.now()}),id);
+      simPut(x).then(()=>{ S.st.simDraft=null; S.st.simId=id; S.view='sim'; render(); toast(D.created?'Saved':'Invites sent'); }).catch(()=>toast('Couldn’t save. Check the connection.')); return true; }
+    if(ds.act==='simdel'){ if(!armed(b,'Tap again')) return true; TEAM.db.doc('team/info').update({sims:{[D.id]:null}}).then(()=>{ if(TEAM.info.sims) delete TEAM.info.sims[D.id]; S.st.simDraft=null; S.view='sims'; render(); toast('Deleted'); }).catch(()=>toast('Couldn’t delete')); return true; }
+  }
+  const x=simById(S.st.simId);
+  if(x&&ds.act==='simedit'){ S.st.simDraft=JSON.parse(JSON.stringify(x)); render(); return true; }
+  if(x&&ds.act==='simstart'){ simClock().then(()=>{ const y=Object.assign({},x,{status:'live',startAt:simNow()+10000}); simPut(y).then(()=>{ SIM.lastPh=''; render(); }).catch(()=>toast('Couldn’t start. Check the connection.')); }); return true; }
+  if(x&&ds.act==='simstop'){ simPut(Object.assign({},x,{status:'done'})).then(render).catch(()=>toast('Couldn’t stop')); return true; }
+  if(x&&ds.simb!==undefined){ S.st.simB=S.st.simB===+ds.simb?null:+ds.simb; render(); return true; }
+  const rk=ds.simz||ds.simfo||ds.simfall||ds.simst; if(rk){ const [id,i]=rk.split('|'), m=SIM.mine[id]; if(!m) return true; const res=m.res; while(res.length<=+i) res.push({}); const r=res[+i]=Object.assign({},res[+i]);
+    if(ds.simz){ const f=ds.simz.split('|')[2], d=+ds.simz.split('|')[3]; compStep(r,f,d); }
+    else if(ds.simfo){ r.fo=1; }
+    else if(ds.simfall){ const k=ds.simfall.split('|')[2], L=new Set(r.fall||[]); L.has(k)?L.delete(k):L.add(k); r.fall=FALLS.map(z=>z[0]).filter(z=>L.has(z)); }
+    else if(ds.simst){ const k=ds.simst.split('|')[2], L=new Set(r.st||[]); L.has(k)?L.delete(k):L.add(k); r.st=STYLES.map(z=>z[0]).filter(z=>L.has(z)); }
+    simSaveMine(id); render(); return true; }
+  return false; }
+function simChange(t){ const ds=t.dataset, D=S.st.simDraft;
+  if(ds.simg!==undefined){ const [id,i]=ds.simg.split('|'), m=SIM.mine[id]; if(!m) return true; while(m.res.length<=+i) m.res.push({}); m.res[+i]=Object.assign({},m.res[+i],{g:t.value.trim().toUpperCase().slice(0,4)}); simSaveMine(id); return true; }
+  if(!D) return false;
+  if(ds.sime){ const k=ds.sime; if(k==='name') D.name=t.value.trim().slice(0,60)||'Comp simulation'; else if(k==='date'){ if(/^\d{4}-\d{2}-\d{2}$/.test(t.value)) D.date=t.value; } else { const v=secIn(t.value); if(v!=null){ D[k]=v; D.round='c'; } render(); } return true; }
+  if(ds.simr){ const [i,k]=ds.simr.split('|'); D.routes[+i][k]=k==='g'?t.value.trim().toUpperCase().slice(0,4):t.value.slice(0,200); return true; }
+  if(ds.simstart){ const a=D.inv.find(z=>z.id===ds.simstart); if(a) a.s=+t.value; return true; }
+  return false; }
+
 loadLocalMonths(); cleanDrafts();
 render();
 document.addEventListener('visibilitychange',()=>{ if(!ALIVE) return; if(document.visibilityState==='visible'){ const n=dstr(new Date()); if(n!==todayStr){ if(S.sel===todayStr) S.sel=n; todayStr=n; if(!GUEST){ loadLocalMonths(); cleanDrafts(); } render(); sumQueue(); } if(col&&dirty.size&&!GUEST) flushDirty(); } });
@@ -3528,6 +3764,9 @@ const TEAM={
   async hash(code){ return makeLogin(code); },
   async taken(){ return false; },
   bind, uid:()=>AUTH&&AUTH.currentUser?AUTH.currentUser.uid:'',
+  // server clock: how far this phone's clock is from Google's (ms). Used so every phone shows the same comp timer.
+  async clock(acc){ const r=FS.doc(FS.getFirestore(),'people/'+acc+'/docs/clock'), t0=Date.now(); await FS.setDoc(r,{t:FS.serverTimestamp()}); const t1=Date.now();
+    const g=FS.getDocFromServer||FS.getDoc, d=(await g(r)).data()||{}, v=d.t, ms=typeof v==='number'?v:v&&v.toMillis?v.toMillis():null; if(ms==null) throw new Error('no clock'); return ms-(t0+t1)/2; },
   newId, validCode, setWho,
   async setInfo(p){ const d=Object.assign({},INFO||{},p); delete d.name; await DB.doc('team/info').set(d); INFO=Object.assign({},INFO,p); },
   logout(msg){ SESSION++; setWho(null); try{ if(msg) localStorage.setItem('ct:msg',msg); else localStorage.removeItem('ct:msg'); }catch(e){} booted=false; try{ A.signOut(AUTH); }catch(e){} fresh(); showLogin(); }
