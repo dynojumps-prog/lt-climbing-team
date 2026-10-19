@@ -290,6 +290,49 @@ button.glance.gon{background:var(--field);border-radius:8px}
 .ftproto{margin:4px 0 8px;padding-left:20px;font-size:.88rem;line-height:1.45}.ftgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .ftin{display:flex;flex-direction:column;gap:3px;font-size:.78rem;font-weight:700;color:var(--soft)}.ftres{margin:8px 0 0;font-size:1rem}
 .scale{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
+/* ---- new parts: route cards v2, slider, Mood Meter, measure ---- */
+.route{padding:10px}.route .rtop{gap:8px}.route .rtop b{flex:0 0 auto;font-family:"Barlow Condensed",sans-serif;font-size:1.15rem}
+.route input.rg{flex:1;min-width:0;min-height:44px;font-weight:700;font-size:1.1rem;text-transform:uppercase}
+.rrow{display:flex;align-items:center;gap:8px;margin:8px 0;flex-wrap:wrap;row-gap:6px}.rrow .rlab{font-weight:600}.rrow .step{gap:8px}.rrow .step button{width:40px;height:40px}.rmin{display:flex;align-items:center;gap:4px;margin-left:auto;flex:0 0 auto;white-space:nowrap;font-size:.85rem;color:var(--soft);font-weight:600}.rmin input{width:56px;min-height:44px;text-align:center;padding:4px}
+.rres{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:4px 0 2px}.rres button{border:1px solid var(--line);background:var(--field);border-radius:8px;min-height:44px;font-weight:700;font-size:.8rem;padding:4px 0;white-space:nowrap;overflow:hidden}
+.rres button.on{color:#fff;border-color:transparent}.rres .rr-flash.on{background:#B8860B}.rres .rr-top.on{background:var(--pos)}.rres .rr-zone.on{background:var(--acc)}.rres .rr-no.on{background:var(--neg)}
+.route.r-flash{border-color:#E3B31C}.route.r-top{border-color:var(--pos)}.route.r-zone{border-color:var(--acc)}.route.r-no{border-color:var(--neg)}
+.rfl{margin-top:10px}.rfl small{text-transform:none;letter-spacing:0;font-weight:500}.rfall{margin-bottom:6px}
+.rnb{display:block;width:100%;border:1px dashed var(--line);background:none;border-radius:8px;min-height:40px;font-weight:600;margin:6px 0;color:var(--soft)}.rnb.on{border:1px solid var(--ink);background:var(--ink);color:var(--bg)}
+.route textarea{margin-top:6px}.radd{width:100%;min-height:46px}.rsum{margin:6px 0 0}
+.asl .bsl-track{background:linear-gradient(90deg,var(--line),var(--acc))}.atop{display:flex;align-items:baseline;justify-content:space-between;gap:8px;font-size:.78rem;font-weight:600;color:var(--soft)}
+.atop .aval{font-family:"Barlow Condensed",sans-serif;font-size:1.6rem;color:var(--ink);line-height:1}.aquick button{padding:6px 0;font-weight:700}.anorm{margin:2px 0 0}
+.qpad{position:relative;display:block;width:100%;aspect-ratio:1/0.8;max-height:320px;margin:2px 0 6px;padding:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:crosshair;touch-action:manipulation;
+  background:linear-gradient(90deg,rgba(210,63,99,.22) 0 50%,rgba(227,179,28,.28) 50% 100%) top/100% 50% no-repeat,linear-gradient(90deg,rgba(47,111,209,.22) 0 50%,rgba(53,160,113,.24) 50% 100%) bottom/100% 50% no-repeat}
+.qpad::before,.qpad::after{content:"";position:absolute;background:var(--line);pointer-events:none}.qpad::before{left:50%;top:0;bottom:0;width:1px}.qpad::after{top:50%;left:0;right:0;height:1px}
+.qq{position:absolute;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:1rem;pointer-events:none;opacity:.85}.qr{left:10px;top:8px;color:#B0284D}.qy{right:10px;top:8px;color:#8A6500}.qb{left:10px;bottom:8px;color:#2458A8}.qg{right:10px;bottom:8px;color:#23744B}
+.qax{position:absolute;font-size:.68rem;font-weight:600;color:var(--soft);pointer-events:none}.qay{left:50%;top:6px;transform:translateX(6px)}.qaxx{right:8px;top:50%;transform:translateY(4px)}
+.mmdot{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:var(--panel);border:4px solid var(--ink);box-shadow:0 1px 6px rgba(0,0,0,.35);pointer-events:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .qr{color:#F28AA5}:root:not([data-theme="light"]) .qy{color:#F2C94C}:root:not([data-theme="light"]) .qb{color:#8EBBF0}:root:not([data-theme="light"]) .qg{color:#7EE0B5}}
+:root[data-theme="dark"] .qr{color:#F28AA5}:root[data-theme="dark"] .qy{color:#F2C94C}:root[data-theme="dark"] .qb{color:#8EBBF0}:root[data-theme="dark"] .qg{color:#7EE0B5}
+.qpad.ro{max-height:200px;cursor:default}.qinfo{margin:0 0 6px}.qwords{margin-bottom:6px}.qweek span{display:inline-flex;align-items:center;gap:4px;margin-right:10px}.qweek i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.xgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.xgrid.one{grid-template-columns:1fr}.xin{display:flex;align-items:center;gap:6px;color:var(--ink)}.xin input{flex:1;min-width:0;min-height:46px;font-size:1.15rem;font-weight:700}.xin span{font-weight:600;color:var(--soft)}
+.xres{margin:6px 0 0;line-height:1.45}.xres b{font-size:1.02rem}.xcfg{margin:8px 0 0;padding:8px 0 0;border-top:1px dashed var(--line)}.xcfg .chips{margin-bottom:6px}.xcfg input.xu{width:110px;min-height:36px;border-radius:999px;padding:4px 12px}
+.abar i{background:var(--acc)!important}.phow{margin:0 0 10px;padding:8px 10px;background:var(--field);border-radius:8px}
+/* ---- Performance tab ---- */
+.pnow h3{margin-bottom:4px}.pnrow{display:grid;grid-template-columns:1fr auto;grid-template-areas:"l v" "l d";gap:0 10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.pnl{grid-area:l;display:flex;align-items:center;gap:8px;min-width:0}.pnl i{flex:0 0 10px;height:28px;border-radius:3px}.pnl span{display:flex;flex-direction:column;min-width:0}.pnl small{color:var(--soft);font-size:.78rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pnv{grid-area:v;display:flex;gap:12px;justify-content:flex-end}.pv{display:flex;align-items:baseline;gap:3px}.pv b{font-family:"Barlow Condensed",sans-serif;font-size:1.3rem}.pv small{font-size:.72rem;color:var(--soft);font-weight:600}.pv small.up{color:var(--pos)}.pv small.dn{color:var(--neg)}
+.pnd{grid-area:d;text-align:right;color:var(--soft);font-size:.72rem}
+.fbars{margin:6px 0 4px}.fbar{display:grid;grid-template-columns:minmax(0,1.3fr) 1fr auto;gap:8px;align-items:center;padding:4px 0;font-size:.88rem}.fbt{height:10px;border-radius:5px;background:var(--field);overflow:hidden}.fbt i{display:block;height:100%;border-radius:5px;background:var(--neg)}
+/* ---- Milestones ---- */
+.gstrip{display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;border:1.5px solid var(--ink);cursor:pointer}.gstrip.gempty{border-style:dashed;border-color:var(--line)}
+.gstop{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}.gstop b{font-family:"Barlow Condensed",sans-serif;font-size:1.2rem}.gstop span{font-size:.82rem;color:var(--soft);font-weight:600}
+.gsbar,.mbar{display:block;height:8px;border-radius:4px;background:var(--field);overflow:hidden}.gsbar i,.mbar i{display:block;height:100%;border-radius:4px;background:var(--pos)}.mbar.neg i{background:#E86A2C}
+.gsl{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.82rem;font-weight:600}.gsl .neg{color:var(--neg)}
+.goal{padding:0;overflow:hidden}.goal.gnext{border:1.5px solid var(--ink)}.ghead{display:flex;width:100%;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border:0;background:none;text-align:left}
+.ghead b{font-family:"Barlow Condensed",sans-serif;font-size:1.3rem;display:block}.ghead small{color:var(--soft);font-weight:600}.gcount{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:1.3rem}
+.gitems{padding:0 14px 12px}.gitem{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start;padding:10px 0;border-top:1px solid var(--line)}.gitem.done .gtxt>b{color:var(--pos)}
+.gtxt{display:flex;flex-direction:column;gap:4px;min-width:0}.gmain{font-size:.95rem}.gmain b{font-family:"Barlow Condensed",sans-serif;font-size:1.25rem}
+.gico{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--field);font-weight:800;color:var(--soft)}.gico.on{background:var(--pos);color:#fff}
+.gchk{width:34px;height:34px;border-radius:8px;border:2px solid var(--line);background:var(--panel);font-weight:800}.gchk.on{background:var(--pos);border-color:var(--pos);color:#fff}
+.gedbtn{margin-top:10px;width:100%}.gaddbtn{width:100%;margin-bottom:12px}.gedit{padding:14px}.giedit{padding:10px 0;border-top:1px solid var(--line)}.giedit .ftgrid{margin-top:6px}.ftgrid.g3{grid-template-columns:1fr 1fr 1fr}
+.pos{color:var(--pos)}.neg{color:var(--neg)}.setuplist{margin:6px 0;padding-left:20px;font-size:.88rem;line-height:1.45}
 .scale button{border:1px solid var(--line);background:var(--field);border-radius:6px;padding:7px 0;font-weight:600;font-size:.9rem}
 .scale button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .del{background:none;border:0;color:#C0392B;font-weight:600;padding:10px 0;min-height:44px}
@@ -437,8 +480,8 @@ function inkFor(c){ const m=/^#?([0-9a-f]{6})$/i.exec(c||''); if(!m) return '#ff
 const MONTHS=['Sausis','Vasaris','Kovas','Balandis','Gegužė','Birželis','Liepa','Rugpjūtis','Rugsėjis','Spalis','Lapkritis','Gruodis'];
 const WD=['Pr','An','Tr','Kt','Pn','Š','S'];
 // ---------- field building blocks (v2): every field is a set of parts you add ----------
-const COMP={R:'Time range',C:'Time',S:'1–10',V:'Timed scores',N:'Number',D:'Minutes',K:'Count',Y:'Yes / No',E:'Training load',F:'Flash & tops',G:'Routes',P:'Pain check',M:'Body map',B:'Timed blocks',L:'Checklist',T:'Text'};
-const CORDER=['R','C','S','V','N','D','K','Y','E','F','G','P','M','B','L','T'];
+const COMP={R:'Time range',C:'Time',Q:'Mood Meter',A:'Slider',S:'1–10',V:'Timed scores',X:'Measure',N:'Number',D:'Minutes',K:'Count',Y:'Yes / No',E:'Training load',F:'Flash & tops',G:'Routes',P:'Pain check',M:'Body map',B:'Timed blocks',L:'Checklist',T:'Text'};
+const CORDER=['R','C','Q','A','S','V','X','N','D','K','Y','E','F','G','P','M','B','L','T'];
 const LEG={text:'T',scale:'S',both:'ST',range:'R',sleep:'RT',rangeScale:'RS',all:'RST',blocks:'B',list:'L',load:'E',pain:'P',flash:'F',number:'N'};
 const TYPES={mix:'Custom',text:'Text',scale:'1–10',both:'1–10 + text',range:'Time range',sleep:'Time range + text',rangeScale:'Time range + 1–10',all:'Time range + 1–10 + text',blocks:'Timed blocks',list:'Checklist',load:'Training load',pain:'Pain check',flash:'Flash tries',number:'Number'};
 const VTYPES=Object.keys(TYPES);
@@ -467,17 +510,22 @@ function toggleComp(it,c){ toMix(it); const cs=it.comps.slice(); it.stash=Object
   return true; }
 const blank=f=>{ if(f.type==='mix'){ const v={}; if((f.comps||[]).includes('L')) v.L=(f.opts||[]).map(n=>({id:rid(),name:n,at:''})); return v; }
   const t=f.type; return t==='scale'?null:t==='text'?'':t==='list'?(f.opts||[]).map(n=>({id:rid(),name:n,at:''})):t==='blocks'?[]:t==='both'?{n:null,t:''}:(t==='sleep'||t==='range')?{}:t==='rangeScale'?{n:null}:t==='all'?{n:null,t:''}:t==='load'?{e:null,m:''}:t==='pain'?{p:null,where:'',flags:{}}:t==='flash'?{t:0,f:0}:t==='number'?{v:''}:''; };
-function newItem(f){ const it={fid:f.id,name:f.name,type:f.type,val:blank(f)}; if(f.type==='mix') it.comps=(f.comps||[]).slice(); return it; }
+function newItem(f){ const it={fid:f.id,name:f.name,type:f.type,val:blank(f)}; if(f.type==='mix') it.comps=(f.comps||[]).slice(); if(f.x) it.x=Object.assign({},f.x); return it; }
 function filledPart(it,c){ const x=getP(it,c);
   switch(c){ case 'R': return !!(x&&(x.from||x.to)); case 'C': return !!x; case 'S': case 'K': return typeof x==='number'&&(c==='S'||x>0); case 'T': return !!(x&&String(x).trim());
     case 'N': case 'D': return x!==''&&x!=null&&!isNaN(parseFloat(x)); case 'Y': return x===true||x===false;
     case 'B': return (Array.isArray(x)&&x.length>0)||!!it.none; case 'L': return (Array.isArray(x)&&x.some(y=>y.at))||!!it.none;
     case 'E': return !!(x&&(typeof x.e==='number'||(x.m!==''&&x.m!=null))); case 'P': return !!(x&&typeof x.p==='number'); case 'F': return !!(x&&+x.t>0);
-    case 'M': return !!(x&&MOM.some(([m])=>Object.keys(snapVals(x[m])).length)); case 'V': return Array.isArray(x)&&x.length>0; case 'G': return Array.isArray(x)&&x.length>0; }
+    case 'M': return !!(x&&MOM.some(([m])=>Object.keys(snapVals(x[m])).length)); case 'V': return Array.isArray(x)&&x.length>0; case 'G': return Array.isArray(x)&&x.length>0;
+    case 'A': return typeof x==='number'; case 'Q': return !!(x&&typeof x.e==='number'&&typeof x.p==='number');
+    case 'X': return !!(x&&['v','l','r'].some(k=>x[k]!==''&&x[k]!=null&&!isNaN(parseFloat(x[k])))); }
   return false; }
 const filledItem=it=>compsList(it).some(c=>filledPart(it,c));
 // ---------- quality v3: the format you choose AND what you put in it both count ----------
-function formatScore(name,cs){ const R=compRatings(name), hit=R.best.filter(c=>cs.includes(c)).length/R.best.length, poor=cs.filter(c=>(R.rate[c]??1)===0).length;
+// a slider or the Mood Meter does the job of a 1–10 score, a measure does the job of a number
+const CEQ=c=>c==='A'||c==='Q'?'S':c==='X'?'N':c;
+const bestHitOf=(R,cs)=>{ const ce=cs.map(CEQ); return R.best.filter(c=>cs.includes(c)||ce.includes(CEQ(c))).length/R.best.length; };
+function formatScore(name,cs){ const R=compRatings(name), hit=bestHitOf(R,cs), poor=cs.filter(c=>(R.rate[c]??1)===0).length;
   return Math.max(0.2,Math.min(1,0.2+0.8*Math.pow(hit,1.5)-0.1*poor)); }
 const fmtLevel=f=>f>=0.9?4:f>=0.7?3:f>=0.5?2:f>=0.35?1:0;
 function scoreHistory(name,date){ return cached('SH:'+nk(name)+':'+date,()=>{ const out=[]; for(let i=1;i<=21&&out.length<7;i++){ const d=dAdd(date,-i), [y,m,dd]=d.split('-'), mo=S.months[`${y}-${m}`];
@@ -500,7 +548,10 @@ function partScore(it,c,prev){ const x=getP(it,c), plaus=plausible(it);
       if(!(o.fingers||[]).length) return {s:55,tip:'Which finger hurts? Tap it.'}; if(o.p>=3&&!(o.when||[]).length&&!(o.grip||[]).length) return {s:80,tip:'When does it hurt, and on which grip?'}; return {s:100}; }
     case 'B': return (Array.isArray(x)&&x.length)||it.none?{s:100}:{s:0,tip:'Add what you had, with the time, or tap Nothing today.'};
     case 'M': return filledPart(it,'M')?{s:100}:{s:0,tip:'Tap the body parts to mark how they feel.'};
-    case 'L': return (Array.isArray(x)&&x.some(y=>y.at))||it.none?{s:100}:{s:0,tip:'Tick what you took, or tap None today.'}; }
+    case 'L': return (Array.isArray(x)&&x.some(y=>y.at))||it.none?{s:100}:{s:0,tip:'Tick what you took, or tap None today.'};
+    case 'A': return typeof x==='number'?{s:100}:{s:0,tip:'Slide to rate it, or tap a number.'};
+    case 'Q': return filledPart(it,'Q')?{s:100}:{s:0,tip:'Tap the square where you are right now.'};
+    case 'X': return filledPart(it,'X')?{s:100}:{s:0,tip:'Enter the result.'}; }
   return {s:0}; }
 function itemQuality(it,prev){ if(!it) return null; const cs=compsList(it); if(!cs.some(c=>filledPart(it,c))) return null;
   const R=compRatings(it.name), Fm=formatScore(it.name,cs), P={}; cs.forEach(c=>P[c]=partScore(it,c,prev));
@@ -519,21 +570,22 @@ function itemQuality(it,prev){ if(!it) return null; const cs=compsList(it); if(!
   if(!hasT&&q.s>=80) q.label='Clear'; return q; }
 
 // which parts fit a field best: [0 poor .. 4 best]
-function compRatings(name){ const n=String(name||'').toLowerCase(), base={R:0,C:1,S:3,V:2,N:1,D:1,K:1,Y:1,E:0,F:0,G:0,P:0,B:0,L:0,T:3}, r=(o,best,why)=>({rate:Object.assign({},base,o),best,why});
+function compRatings(name){ const n=String(name||'').toLowerCase(), base={R:0,C:1,Q:1,A:3,S:3,V:2,X:1,N:1,D:1,K:1,Y:1,E:0,F:0,G:0,P:0,B:0,L:0,T:3}, r=(o,best,why)=>({rate:Object.assign({},base,o),best,why});
   if(sleepLike(n)) return r({R:4,S:4,T:3,C:0},['R','S','T'],'Time range gives hours and bedtime, 1–10 gives quality, text gives the reason.');
   if(/papild|supp|vitam|omega|kreat|creat/.test(n)) return r({B:4,L:3,T:1,S:0},['B'],'Each supplement gets its own time, so timing can be analysed.');
   if(/maist|food|valg|meal/.test(n)) return r({B:4,S:3,T:3,C:1,L:2},['B'],'You eat several times a day: each meal gets its own block with the food and the time.');
   if(/pirš|pirs|finger|skaus|pain/.test(n)) return r({P:4,T:3,S:2},['P'],'Pain level, which finger, grip and warning signs is what physios track.');
-  if(/flash|perform|route|trasa|trasos|boulder|problem/.test(n)) return r({F:4,G:4,N:1,T:2,E:3},['F'],'Tried, flashed, topped and attempts give rates you can chart; routes add the grade and why.');
+  if(/flash|perform|route|trasa|trasos|boulder|problem/.test(n)) return r({F:3,G:4,N:1,T:2,E:3},['G'],'One card per route: grade, attempts, result and why you fell. Flash rate, top rate and your fall reasons come from it.');
   if(/krūv|kruv|load|trenir|trieš|triesos|session|sesij/.test(n)) return r({E:4,R:2,T:3,S:2},['E'],'Effort × minutes is the research-standard training load. A note is a bonus.');
-  if(/test|hang|kg|max|jėg|jeg|strength/.test(n)) return r({N:4,T:2,S:1},['N'],'A real measured number is the most accurate result.');
+  if(/test|hang|kg|max|jėg|jeg|strength|svor|weight|lock|laiky|prisitrauk|pull|vieta|place|rank/.test(n)) return r({X:4,N:4,T:2,S:1},['N'],'A real measured number is the most accurate result. Measure adds left/right and % of bodyweight.');
   if(/temp|stretch|mobil|kavos|coffee|kava|alkohol|ekran|screen/.test(n)) return r({Y:4,D:3,K:3,C:3,T:2},['Y','C'],'Yes/no and the time make it easy for the Scientist to test.');
   if(/oda|skin/.test(n)) return r({S:4,T:4},['S','T'],'The score tracks skin over time, the text says what happened.');
   if(/kūn|kun|body/.test(n)) return r({M:4,S:2,T:3},['M'],'Tap a body part, pick how it feels, then Save. Before and after training, so the app sees how fast each part recovers.');
-  if(/energ|fok|focus|emoc|emot|nuotaik|mood|jaus/.test(n)) return r({S:4,T:4,V:3},['S','T'],'A 1–10 tracks your state better than lab tests do, and the text explains why.');
+  if(/energ|fok|focus|emoc|emot|nuotaik|mood|jaus/.test(n)) return r({S:4,T:4,V:3,A:4,Q:/emoc|emot|nuotaik|mood|jaus/.test(n)?4:2},['S','T'],'Rated once a day at the same time and compared with your own normal, how you feel tracks your training better than lab tests do. A slider, the Mood Meter or 1–10 all work; the text says why.');
+  if(/nusiteik|motyv|motiv|stres|mindset/.test(n)) return r({S:4,T:4,A:4,Q:2},['S','T'],'A score you can compare day to day, and the text says why. Watch for it drifting over weeks.');
   return r({S:4,T:4},['S','T'],'A number for the stats, text for the reasons.'); }
 const RCOL=['#D23F63','#E86A2C','#E3B31C','#8BC34A','#35A071'], RWORD=['Poor','Weak','OK','Good','Best'];
-function fmtRating(name,cs){ const R=compRatings(name), rs=cs.map(c=>R.rate[c]??1); if(!rs.length) return 0; const bestHit=R.best.filter(c=>cs.includes(c)).length/R.best.length; return Math.max(0,Math.min(4,Math.round((Math.max(...rs)+bestHit*4)/2))); }
+function fmtRating(name,cs){ const R=compRatings(name), rs=cs.map(c=>R.rate[c]??1); if(!rs.length) return 0; const bestHit=bestHitOf(R,cs); return Math.max(0,Math.min(4,Math.round((Math.max(...rs)+bestHit*4)/2))); }
 
 
 const rid=()=>Math.random().toString(36).slice(2,9);
@@ -550,7 +602,7 @@ let todayStr=dstr(today);
 let GUEST=null;
 const ls={get(k){try{const v=localStorage.getItem(PFX+k);return v?JSON.parse(v):null}catch(e){return null}},
           set(k,v){ if(!ALIVE) return true; if(GUEST&&k!=='collapsed') return true; try{localStorage.setItem(PFX+k,JSON.stringify(v)); return true;}catch(e){ return false; }}};
-let db=null, col=null, syncState='Saved on this device';
+let db=null, col=null, syncState='Saved on this device', PULLED=false;
 const safeColor=c=>/^#[0-9a-f]{6}$/i.test(String(c||''))?c:'#5B6770';
 // ---------- safety: data written by someone else (another person's log, notes, replies, backup files) can't smuggle code into this page ----------
 const OKID=/^[A-Za-z0-9_-]{1,64}$/, IDKEYS=new Set(['id','fid','tid','eid','pid','fromExp']), BADKEY=/["'<>&`\\]/;
@@ -571,9 +623,10 @@ function weakCode(c){ c=String(c||''); if(!/^\d{8,10}$/.test(c)) return true; if
   for(const n of [2,3,4,5]) if(c.length%n===0&&c.slice(0,n).repeat(c.length/n)===c) return true; return false; }
 const WEAKMSG='Use 8–10 digits, not an easy pattern like 12345678 or 11111111.';
 function normCfg(c){ cleanIds(c); if(!c||!Array.isArray(c.templates)) return defaultCfg();
-  c.templates=c.templates.filter(t=>t&&typeof t==='object').map(t=>({id:String(t.id||rid()),name:String(t.name||'Log'),color:safeColor(t.color),bodyCheck:!!t.bodyCheck,fingerTest:!!t.fingerTest,
-    fields:(Array.isArray(t.fields)?t.fields:[]).filter(f=>f&&typeof f==='object').map(f=>Object.assign({id:String(f.id||rid()),name:String(f.name||'Laukas'),type:VTYPES.includes(f.type)?f.type:'text'},Array.isArray(f.opts)?{opts:f.opts.map(String)}:{},f.type==='mix'?{comps:sortC((Array.isArray(f.comps)?f.comps:['T']).filter(c=>COMP[c]))}:{},typeof f.role==='string'?{role:f.role}:{}))}));
-  if(!c.templates.length) return defaultCfg(); c.pack=c.pack?1:0; c.packNo=c.packNo?1:0; c.bodyMig=c.bodyMig?1:0; c.routesMig=c.routesMig?1:0; const hs={}; if(c.hideSug&&typeof c.hideSug==='object') Object.entries(c.hideSug).forEach(([k,a])=>{ if(Array.isArray(a)) hs[String(k)]=a.map(String).slice(0,200); }); c.hideSug=hs; const nm={}; if(c.names&&typeof c.names==='object') Object.entries(c.names).forEach(([k,a])=>{ if(Array.isArray(a)){ const L=a.filter(x=>typeof x==='string'&&x.trim()).map(x=>x.trim().slice(0,60)).slice(-80); if(L.length) nm[String(k)]=L; } }); c.names=nm; c.lastBackup=Math.max(0,+c.lastBackup||0); c.owner=String(c.owner||'').trim().slice(0,40); return c; }
+  c.templates=c.templates.filter(t=>t&&typeof t==='object').map(t=>Object.assign({id:String(t.id||rid()),name:String(t.name||'Log'),color:safeColor(t.color),bodyCheck:!!t.bodyCheck,fingerTest:!!t.fingerTest},t.perf?{perf:true}:{},t.how&&typeof t.how==='string'?{how:t.how.slice(0,600)}:{},{
+    fields:(Array.isArray(t.fields)?t.fields:[]).filter(f=>f&&typeof f==='object').map(f=>Object.assign({id:String(f.id||rid()),name:String(f.name||'Laukas'),type:VTYPES.includes(f.type)?f.type:'text'},Array.isArray(f.opts)?{opts:f.opts.map(String)}:{},f.type==='mix'?{comps:sortC((Array.isArray(f.comps)?f.comps:['T']).filter(c=>COMP[c]))}:{},typeof f.role==='string'?{role:f.role}:{},f.x&&typeof f.x==='object'?{x:normX(f.x)}:{}))}));
+  if(!c.templates.length) return defaultCfg(); if(!c.templates.some(t=>!t.perf)) c.templates=defaultCfg().templates.concat(c.templates);
+  c.goals=normGoals(c.goals); c.perfMig=c.perfMig?1:0; c.setupV2=c.setupV2?1:0; c.pack=c.pack?1:0; c.packNo=c.packNo?1:0; c.bodyMig=c.bodyMig?1:0; c.routesMig=c.routesMig?1:0; const hs={}; if(c.hideSug&&typeof c.hideSug==='object') Object.entries(c.hideSug).forEach(([k,a])=>{ if(Array.isArray(a)) hs[String(k)]=a.map(String).slice(0,200); }); c.hideSug=hs; const nm={}; if(c.names&&typeof c.names==='object') Object.entries(c.names).forEach(([k,a])=>{ if(Array.isArray(a)){ const L=a.filter(x=>typeof x==='string'&&x.trim()).map(x=>x.trim().slice(0,60)).slice(-80); if(L.length) nm[String(k)]=L; } }); c.names=nm; c.lastBackup=Math.max(0,+c.lastBackup||0); c.owner=String(c.owner||'').trim().slice(0,40); return c; }
 function migM(i){ if(i&&i.type==='mix'&&i.val&&i.val.M&&i.val.M.now){ const M=Object.assign({},i.val.M); if(!M.rest) M.rest=M.now; delete M.now; return Object.assign({},i,{val:Object.assign({},i.val,{M})}); } return i; }
 function normMonth(k,m){ cleanIds(m); const days={}; const src=m&&m.days&&typeof m.days==='object'?m.days:{};
   Object.entries(src).forEach(([d,es])=>{ if(!Array.isArray(es)) return; days[String(+d)]=es.filter(e=>e&&typeof e==='object').map(e=>Object.assign({},e,{id:String(e.id||rid()),items:(Array.isArray(e.items)?e.items:[]).filter(i=>i&&typeof i==='object').map(migM).map(i=>Object.assign({},i,{fid:String(i.fid||rid()),name:String(i.name||''),type:VTYPES.includes(i.type)?i.type:'text'},i.type==='mix'?{comps:sortC((Array.isArray(i.comps)?i.comps:['T']).filter(c=>COMP[c]))}:{}))})); });
@@ -655,6 +708,7 @@ async function pullAll(){ if(!col||GUEST) return;
   try{
     const c=await col.doc('config').get(); if(GUEST) return;
     if(dirty.has('config')||!c.exists) saveCfg(); else { S.cfg=normCfg(JSON.parse(JSON.stringify(c.data()))); histBase('config'); if(!S.cfg.bodyMig){ migrateBody(); saveCfg(); } if(migrateRoutes()) saveCfg(); ls.set('config',S.cfg); bump(); }
+    PULLED=true; if(ensurePerf()) render();
     const cc=await col.doc('coach').get(); if(GUEST) return;
     if(cc.exists&&!dirty.has('coach')){ S.coach=migrateCoach(JSON.parse(JSON.stringify(cc.data()))); bump(); }
     else if(dirty.has('coach')||S.coach.history.length||S.coach.hyps.length) saveCoach();
@@ -709,7 +763,10 @@ const SMEAS={
   E:[['e','Effort 1–10','/10',x=>x&&typeof x.e==='number'?x.e:null],['l','Training load','',x=>x&&typeof x.e==='number'&&num(x.m)>0?x.e*num(x.m):null]],
   P:[['p','Pain 0–10','/10',x=>x&&typeof x.p==='number'?x.p:null]],
   F:[['t','Tops','',x=>x&&+x.t?Math.min(Math.max(+x.o||0,+x.f||0),+x.t):null],['f','Flashes','',x=>x&&+x.t?Math.min(+x.f||0,Math.min(Math.max(+x.o||0,+x.f||0),+x.t)):null]],
-  G:[['r','Routes','',x=>Array.isArray(x)&&x.length?x.length:null],['g','Routes topped','',x=>Array.isArray(x)&&x.length?x.filter(y=>y&&y.top).length:null]] };
+  G:[['r','Routes','',x=>Array.isArray(x)&&x.length?x.length:null],['g','Routes topped','',x=>Array.isArray(x)&&x.length?x.filter(y=>y&&y.top).length:null]],
+  A:[['a','Slider 0–100','/100',x=>typeof x==='number'?x:null]],
+  Q:[['qe','Mood Meter: energy','/100',x=>x&&typeof x.e==='number'?x.e:null],['qp','Mood Meter: pleasant','/100',x=>x&&typeof x.p==='number'?x.p:null]],
+  X:[['xv','Result','',x=>x?num(x.v):null],['xl','Left','',x=>x?num(x.l):null],['xr','Right','',x=>x?num(x.r):null]] };
 const MEAS={}; Object.entries(SMEAS).forEach(([c,L])=>L.forEach(([m,name,unit,read])=>{ MEAS[m]={c,name,unit,read}; }));
 const AT={data:{},loading:{},err:{},range:7,edit:null,arm:null,busy:false,msg:'',newName:''};
 const atStats=()=>{ const s=TEAM.info&&Array.isArray(TEAM.info.stats)?TEAM.info.stats:[]; return cleanText(s).filter(x=>x&&OKID.test(String(x.id))&&typeof x.name==='string'); };
@@ -834,7 +891,7 @@ function tplColor(e){ const t=S.cfg.templates.find(t=>t.id===e.tid); return safe
 const app=document.getElementById('app');
 
 // ---------- render ----------
-function render(){ const y=window.scrollY; if(GUEST&&S.view!=='cal') S.view='cal'; ({cal:renderCal,team:renderTeam,ath:renderAth}[S.view]||renderSettings)(); const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); window.scrollTo(0,y); }
+function render(){ const y=window.scrollY; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; ({cal:renderCal,perf:renderPerf,goals:renderGoals,team:renderTeam,ath:renderAth}[S.view]||renderSettings)(); const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); window.scrollTo(0,y); }
 function toast(t){ let el=document.getElementById('toast'); if(!el){ el=document.createElement('div'); el.id='toast'; el.setAttribute('role','status'); document.body.appendChild(el); } el.textContent=t; el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),1800); }
 function say(t){ const m=document.getElementById('msg'); if(m) m.textContent=t; }
 function armed(b,label){ if(b.dataset.armed) return true; b.dataset.armed='1'; const old=b.textContent; b.textContent=label; b.classList.add('armed'); setTimeout(()=>{ if(b.isConnected){ delete b.dataset.armed; b.textContent=old; b.classList.remove('armed'); } },3000); return false; }
@@ -846,26 +903,28 @@ function renderCal(){
   let cells=WD.map(w=>`<div class="wd">${w}</div>`).join(''); const nd=noteDays();
   for(let i=0;i<lead;i++) cells+=`<div class="day out"></div>`;
   for(let d=1;d<=days;d++){
-    const ds=`${S.y}-${pad(S.m+1)}-${pad(d)}`, es=month(k).days[String(d)]||[];
+    const ds=`${S.y}-${pad(S.m+1)}-${pad(d)}`, es=(month(k).days[String(d)]||[]).filter(e=>!isPerfE(e));
     const warn=dayPain(es);
     cells+=`<button class="day${ds===todayStr?' today':''}${ds===S.sel?' sel':''}" data-day="${ds}" aria-label="${d} ${MONTHS[S.m]}, ${es.length} logs${warn?', pain marked':''}${nd.has(ds)?', coach note':''}${es.some(e=>(e.items||[]).some(it=>it.sec))?', secret note':''}">
       <span class="n">${d}</span>${warn?'<i class="dwarn" aria-hidden="true"></i>':''}${nd.has(ds)?'<i class="dnote" aria-hidden="true"></i>':''}${es.some(e=>(e.items||[]).some(it=>it.sec))?'<i class="dlock" aria-hidden="true">🔒</i>':''}<span class="tapes">${es.slice(0,4).map(e=>`<span class="tape" style="background:${tplColor(e)}"></span>`).join('')}</span></button>`;
   }
-  const sd=new Date(S.sel+'T12:00'), sel=entriesOn(S.sel);
+  const sd=new Date(S.sel+'T12:00'), sel=entriesOn(S.sel).filter(e=>!isPerfE(e)), CT=S.cfg.templates.filter(t=>!t.perf);
   app.innerHTML=`
   ${topBar()}
-  ${alertsHTML(healthAlerts())}${GUEST?'':todayNotesHTML()}${todayCard()}${GUEST?aiCard():fingerCheckHTML()+fingerTestHTML()+packCard(true)+backupNudge()}
+  ${alertsHTML(healthAlerts())}${GUEST?'':todayNotesHTML()}${goalStrip()}${todayCard()}${GUEST?aiCard():packCard(true)+backupNudge()}
   <div class="month"><h1>${MONTHS[S.m]}<span>${S.y}</span></h1>
     <div class="arrows"><button data-act="prev" aria-label="Previous month">‹</button><button data-act="next" aria-label="Next month">›</button></div></div>
   <div class="grid">${cells}</div>
-  <div class="legend">${S.cfg.templates.map(t=>`<span><i style="background:${t.color}"></i>${esc(t.name)}</span>`).join('')}</div>
+  <div class="legend">${CT.map(t=>`<span><i style="background:${t.color}"></i>${esc(t.name)}</span>`).join('')}</div>
   <div class="dayhead" id="dayhead"><button class="mini" data-dnav="-1" aria-label="Previous day">‹</button><span>${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}</span><button class="mini" data-dnav="1" aria-label="Next day">›</button></div>
   ${S.sel!==todayStr?'<button class="btn ghost gotoday" data-act="gotoday">Back to today</button>':''}
   ${dayNotesHTML()}
-  <div class="adds"${GUEST?' style="display:none"':''}>${S.cfg.templates.map(t=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)}" data-add="${t.id}">+ ${esc(t.name)}</button>`).join('')}</div>
+  <div class="adds"${GUEST?' style="display:none"':''}>${CT.map(t=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)}" data-add="${t.id}">+ ${esc(t.name)}</button>`).join('')}</div>
   ${sel.length?sel.map(entryHTML).join(''):`<div class="empty">${GUEST?'Nothing logged on this day.':'Nothing logged yet. Pick a log type above to start.'}</div>`}`;
   app.querySelectorAll('textarea').forEach(grow);
 }
+// entries that belong to the Performance tab (their own calendar), not to the daily calendar
+function isPerfE(e){ if(!e) return false; if(e.perf) return true; const t=S.cfg.templates.find(t=>t.id===e.tid); return !!(t&&t.perf); }
 
 
 function headSmall(e,open){ const q=entryQuality(e), filled=e.items.filter(filledItem).length; return `${e.items.some(it=>it.sec)?'<span class="elock" title="Has a secret note">🔒</span>':''}${filled}/${e.items.length} ${open?'▴':'▾'}`; }
@@ -881,18 +940,25 @@ function compHTML(e,it,c,key,fid){ const x=getP(it,c), sl=sleepLike(it.name), cs
   if(c==='Y') return `${lab('Yes or no')}<div class="yn"><button data-yn="${key}|1" class="${x===true?'on':''}" aria-pressed="${x===true}">Yes</button><button data-yn="${key}|0" class="${x===false?'on':''}" aria-pressed="${x===false}">No</button></div>`;
   if(c==='T') return `${cs.length>1?lab('Text'):''}<textarea rows="1" data-k="${key}" data-c="T" aria-label="${esc(it.name)} text" placeholder="${sl?'How did you sleep, and why?':'What happened, and why?'}">${esc(x||'')}</textarea>`;
   if(c==='E'){ const o=x||{}; return `${lab('Training load')}<p class="note" style="margin:0 0 4px">How hard was the whole session?</p>${scaleRow(key,it,'E','e',o.e,1)}<div class="row" style="margin-top:6px"><input type="number" inputmode="numeric" min="0" max="600" data-k="${key}" data-c="E" data-p="m" value="${esc(o.m??'')}" placeholder="Minutes" aria-label="Minutes trained"><span class="dur" id="e${fid}">${loadText(o)}</span></div>`; }
+  if(c==='F'&&cs.includes('G')&&!(+((x||{}).t)>0)) return '';   // the route cards already count tops and flashes
   if(c==='F'){ const o=x||{}, T=+o.t||0, O=Math.min(Math.max(+o.o||0,+o.f||0),T), F=Math.min(+o.f||0,O), row=(lab2,part,v,al)=>`<span>${lab2}</span><span class="step"><button data-fl="${key}|${part}|-1" aria-label="One less ${al}">−</button><b>${v}</b><button data-fl="${key}|${part}|1" aria-label="One more ${al}">+</button></span>`;
     const A=o.a!=null&&o.a!==''?Math.max(+o.a||0,T):null;
     return `${lab('Problems: tried, flashed, topped, attempts')}<div class="flash">${row('Tried','t',T,'problem tried')}${row('Flashed <small class="note">first go</small>','f',F,'flash')}${row('Topped <small class="note">incl. flashes</small>','o',O,'top')}${row('Attempts <small class="note">all goes, in total</small>','a',A==null?'–':A,'attempt')}</div>${T?`<p class="note" style="margin:4px 0 0"><b>${Math.round(F/T*100)}%</b> flash rate · <b>${Math.round(O/T*100)}%</b> top rate${A&&O?` · <b>${Math.round(A/O*10)/10}</b> attempts per top`:''}</p>`:''}`; }
-  if(c==='G'){ const a=Array.isArray(x)?x:[], yn=(id,f,v,l)=>`<div class="rtyn"><span>${l}</span><div class="yn"><button data-rt="${key}|${id}|${f}|1" class="${v===true?'on':''}" aria-pressed="${v===true}">Yes</button><button data-rt="${key}|${id}|${f}|0" class="${v===false?'on':''}" aria-pressed="${v===false}">No</button></div></div>`;
-    return `${lab('Routes')}${a.map((y,i)=>`<div class="route"><div class="rtop"><b>Route ${i+1}</b>${y.at?`<span class="note">${esc(y.at)}</span>`:''}<button class="x" data-rdel="${key}|${y.id}" aria-label="Remove route ${i+1}">✕</button></div>
-      <div class="rgrid"><label class="ftin">Grade<input type="text" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="g" value="${esc(y.g||'')}" placeholder="e.g. 6B+" autocapitalize="characters"></label>
-        <label class="ftin">Time on it (min)<input type="number" inputmode="decimal" min="0" step="any" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="dur" value="${esc(y.dur??'')}" placeholder="min"></label></div>
-      <div class="flash" style="margin-top:6px"><span>Attempts</span><span class="step"><button data-ratt="${key}|${y.id}|-1" aria-label="One less attempt">−</button><b>${+y.a||1}</b><button data-ratt="${key}|${y.id}|1" aria-label="One more attempt">+</button></span></div>
-      ${yn(y.id,'top',y.top,'Topped?')}<textarea rows="1" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="why" placeholder="${y.top===false?'Why didn’t you top it?':y.top===true?'Why did you top it?':'Why you topped it, or why not'}" aria-label="Why topped or not">${esc(y.why||'')}</textarea>
-      ${yn(y.id,'fl',y.fl,'Flashed?')}<textarea rows="1" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="fwhy" placeholder="${y.fl===false?'Why no flash?':y.fl===true?'Why did the flash work?':'Why you flashed it, or why not'}" aria-label="Why flashed or not">${esc(y.fwhy||'')}</textarea></div>`).join('')}
-      <button class="btn ghost" style="width:100%;min-height:46px" data-radd="${key}">+ Add route</button>
-      ${a.length?`<p class="note" style="margin:6px 0 0">${a.length} route${a.length>1?'s':''} · <b>${a.filter(y=>y.top).length}</b> topped · <b>${a.filter(y=>y.fl).length}</b> flashed · <b>${a.reduce((t,y)=>t+(+y.a||1),0)}</b> attempts</p>`:''}`; }
+  if(c==='G'){ const a=Array.isArray(x)?x:[];
+    return `${cs.length>1?lab('Routes'):''}${a.map((y,i)=>routeCard(key,y,i)).join('')}
+      <button class="btn ghost radd" data-radd="${key}">+ Add route</button>
+      ${a.length?`<p class="note rsum">${routeSum(a)}</p>`:''}`; }
+  if(c==='A'){ const v=typeof x==='number'?x:null, [lo,hi]=slEnds(it.name);
+    return `${cs.length>1?lab('Slider'):''}<div class="atop"><span>0 · ${esc(lo)}</span><b class="aval">${v==null?'–':v}</b><span>${esc(hi)} · 100</span></div>
+      <div class="bsl asl${v==null?' unset':''}" data-asl="${key}" data-v="${v??''}" style="--p:${v==null?0.5:v/100}" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100"${v!=null?` aria-valuenow="${v}"`:''} aria-label="${esc(it.name)}: 0 is ${esc(lo)}, 100 is ${esc(hi)}"><i class="bsl-track"></i><i class="bsl-thumb"></i></div>
+      <div class="bquick aquick">${[0,25,50,75,100].map(q=>`<button data-aq="${key}|${q}" class="${v===q?'on':''}" aria-pressed="${v===q}" aria-label="${esc(it.name)} ${q}">${q}</button>`).join('')}</div>
+      ${slNormHTML(e,it,v)}`; }
+  if(c==='Q'){ const o=x&&typeof x==='object'?x:{}, z=qZone(o), Z=z&&QZ[z];
+    return `${cs.length>1?lab('Mood Meter'):''}<button class="qpad" data-qpad="${key}" aria-label="Mood Meter: tap where you are. Up is more energy, right is more pleasant.${z?` Now: ${Z[0]}.`:''}">${qPadInner(o)}</button>
+      ${z?`<p class="qinfo"><b style="color:${Z[1]}">${Z[0]}</b> <span class="note">energy ${o.e} · pleasant ${o.p}</span></p><p class="clab">Which word fits best? <small>optional</small></p><div class="chips qwords">${Z[2].map(w=>`<button data-qw="${key}|${w}" class="${o.w===w?'on':''}" aria-pressed="${o.w===w}">${w}</button>`).join('')}</div>`:'<p class="note">Tap where you are: up = more energy, right = more pleasant.</p>'}
+      ${qWeekHTML(e,it)}`; }
+  if(c==='X'){ const cfg=xcfg(e,it), o=x&&typeof x==='object'?x:{}, u=cfg.u||'', inp=(p,l)=>`<label class="ftin">${l}<span class="xin"><input type="number" inputmode="decimal" step="any" data-k="${key}" data-c="X" data-p="${p}" value="${esc(o[p]??'')}" placeholder="${cfg.role==='bw'?'e.g. 72':'0'}" aria-label="${esc(it.name)}: ${l}">${u?`<span>${esc(u)}</span>`:''}</span></label>`;
+    return `${cs.length>1?lab('Measure'):''}<div class="xgrid${cfg.lr?'':' one'}">${cfg.lr?inp('l','Left')+inp('r','Right'):inp('v',cfg.role==='bw'?'Bodyweight':'Result')}</div><p class="xres note" id="xr${fid}">${xResText(e,it)}</p>`; }
   if(c==='P'){ const o=x||{}, fl=o.flags||{}, red=painRed(o), any=(typeof o.p==='number'&&o.p>0)||Object.values(fl).some(Boolean)||(o.fingers||[]).length;
     const chips=(attr,list,sel)=>list.map(([k,l])=>`<button data-${attr}="${key}|${k}" class="${(sel||[]).includes(k)?'on':''}" aria-pressed="${(sel||[]).includes(k)}">${l}</button>`).join(''), fingers=['Thumb','Index','Middle','Ring','Little'];
     return `${lab('Worst finger pain today (0 = none)')}${scaleRow(key,it,'P','p',o.p,0)}
@@ -925,21 +991,24 @@ function fieldHTML(e,it){ const key=`${e.id}|${it.fid}`, fid='f'+e.id+it.fid, cs
     return `<div class="f fcard2 shut" data-fkey="${key}"><button class="fhd" data-fcol="${it.fid}" aria-expanded="false"><span class="fl">${esc(it.name)}</span><span class="fsm">${sm?esc(sm):it.sec?'':'<i>empty</i>'}${it.sec?(sm?' · ':'')+'🔒 secret note':''}</span><span class="chev">▸</span></button></div>`; }
   if(GUEST) return roFieldHTML(e,it,key);
   return `<div class="f fcard2" data-fkey="${key}"><div class="lrow"><button class="fhd" data-fcol="${it.fid}" aria-expanded="true"><span class="fl">${esc(it.name)}</span><span class="chev">▾</span></button><button class="fmt" data-ft="${key}" aria-expanded="${op}">${op?'Close':'Format'}</button></div>${op?pickerHTML(e,it,key):''}
-    ${cs.map(c=>`<div class="comp c${c}">${compHTML(e,it,c,key,fid)}</div>`).join('')}
+    ${cs.map(c=>{ const h=compHTML(e,it,c,key,fid); return h?`<div class="comp c${c}">${h}</div>`:''; }).join('')}
     ${plausHTML(it)}${secHTML(e,it,key)}</div>`; }
 function pickerHTML(e,it,key){ const R=compRatings(it.name), cs=compsList(it), tp=S.cfg.templates.find(t=>t.id===e.tid), tf=tp&&tp.fields.find(f=>f.id===it.fid);
   const same=tf&&compsOf(tf).join('')===compsOf(it).join('')&&!!tf.comps===!!it.comps;
   return `<div class="picker"><p class="note" style="margin:0 0 6px">Tap to add or remove parts. Best for ${esc(it.name)}: <b style="color:${RCOL[4]}">${R.best.map(c=>COMP[c]).join(' + ')}</b>. ${esc(R.why)}</p>
     <div class="pk">${CORDER.map(c=>`<button data-tc="${key}|${c}" class="${cs.includes(c)?'on':''}" style="--rc:${RCOL[R.rate[c]??1]}" aria-pressed="${cs.includes(c)}"><i></i>${cs.includes(c)?'✓ ':'+ '}${COMP[c]}<small>${RWORD[R.rate[c]??1]}</small></button>`).join('')}</div>
+    ${cs.includes('X')?xcfgHTML('xi',key,xcfg(e,it)):''}
     ${tf?`<button class="setdef${same?' on':''}" data-setdef="${key}">${same?'New logs already use these parts':'Use these parts for new logs too'}</button>`:''}
     <div class="frm"><button class="btn ghost bclr" data-frm="${key}">Remove from this log</button>${tf?`<button class="btn ghost bclr" data-frmall="${key}">Remove from new logs too</button>`:''}</div></div>`; }
 function itemSummary(it,long){ if(!filledItem(it)) return ''; const cs=compsList(it), g=c=>cs.includes(c)?getP(it,c):undefined, out=[];
   const R=g('R'), S2=g('S'), E=g('E'), P=g('P'), F=g('F'), B=g('B'), L=g('L'), M=g('M'), N=g('N'), Y=g('Y'), V=g('V'), T=g('T'), D=g('D'), K=g('K');
   if(R&&R.from&&R.to) out.push(long?`${R.from}–${R.to} (${dur(R)})`:dur(R)); if(typeof S2==='number') out.push(`${S2}/10`);
   if(Array.isArray(V)&&V.length) out.push(V.slice().sort((p,q)=>(p.at||'')<(q.at||'')?-1:1).map(y=>y.n).join('→')+'/10');
+  const A=g('A'), Qm=g('Q'), X=g('X'); if(typeof A==='number') out.push(`${A}/100`); if(qZone(Qm)) out.push(`${QZ[qZone(Qm)][3]}${Qm.w?' '+Qm.w.toLowerCase():''}`);
+  if(X&&filledPart(it,'X')) out.push(xShort(it));
   if(E&&E.e&&parseFloat(E.m)>0) out.push(`${Math.round(E.e*parseFloat(E.m))} load`); if(P&&typeof P.p==='number') out.push(P.p?`pain ${P.p}/10`:'no pain');
   if(F&&+F.t){ const Tt=+F.t, Oo=Math.min(Math.max(+F.o||0,+F.f||0),Tt); out.push(`${Math.min(+F.f||0,Oo)} flash, ${Oo} top / ${Tt}${F.a!=null&&F.a!==''?`, ${Math.max(+F.a,Tt)} att`:''}`); }
-  const G=g('G'); if(Array.isArray(G)&&G.length) out.push(long?G.map(y=>`${y.g||'?'}${y.fl?' ⚡':y.top?' ✓':y.top===false?' ✗':''}`).join(', '):`${G.length} route${G.length>1?'s':''}, ${G.filter(y=>y.top).length} topped`);
+  const G=g('G'); if(Array.isArray(G)&&G.length) out.push(long?G.map(y=>`${y.g||'?'}${y.fl?' ⚡':y.top?' ✓':y.top===false?(y.zone?' zone':' ✗'):''}`).join(', '):`${G.length} route${G.length>1?'s':''}, ${G.filter(y=>y.top).length} topped`);
   if(Array.isArray(B)) out.push(B.length?(long?B.map(y=>y.name).join(', '):`${B.length} item${B.length>1?'s':''}`):(it.none?'none':''));
   if(Array.isArray(L)&&(L.some(y=>y.at)||it.none)) out.push(L.some(y=>y.at)?(long?L.filter(y=>y.at).map(y=>y.name).join(', '):`${L.filter(y=>y.at).length} ticked`):'none');
   if(M){ const n=MOM.reduce((a,[m])=>a+Object.values(snapVals(M[m])).filter(v=>v>=SORE).length,0); out.push(n?`${n} sore`:'fresh'); }
@@ -951,7 +1020,7 @@ function entrySummary(e){ const out=[]; (e.items||[]).forEach(it=>{ if(out.lengt
 function entryHTML(e){ const open=S.open===e.id;
   return `<div class="entry" style="--c:${tplColor(e)}">
     <button class="ehead" data-toggle="${e.id}" aria-expanded="${open}"><span class="etitle"><b>${esc(tplName(e))}</b>${open?'':`<span class="esum">${esc(entrySummary(e))||'Nothing filled in yet'}</span>`}</span><small>${headSmall(e,open)}</small></button>
-    ${open?`<div class="ebody"><div class="collbar"><button data-fcolall="${e.id}|1">Close all</button><button data-fcolall="${e.id}|0">Open all</button></div>${GUEST?roItems(e):e.items.map(it=>fieldHTML(e,it)).join('')}${GUEST?'':`
+    ${open?`<div class="ebody"><div class="collbar"><button data-fcolall="${e.id}|1">Close all</button><button data-fcolall="${e.id}|0">Open all</button></div>${perfHowHTML(e)}${GUEST?roItems(e):e.items.map(it=>fieldHTML(e,it)).join('')}${GUEST?'':`
       <details class="more"><summary>Add a field or delete this log</summary>
       <div class="addf"><label class="note" for="nf${e.id}">New field name</label>
         <div class="row"><input type="text" id="nf${e.id}" placeholder="e.g. Emocijos"><button class="btn" data-newf="${e.id}">Add</button></div>
@@ -983,14 +1052,26 @@ function fieldClick(ds,b){
   if(bodyButtons(ds,b)) return true;
   if(ds.tc){ const i=ds.tc.lastIndexOf('|'), {k,it}=itemAt(ds.tc.slice(0,i)); if(!it) return true; const c=ds.tc.slice(i+1); if(!toggleComp(it,c)){ toast('Keep at least one part'); return true; } saveMonth(k); render(); toast(`${it.name}: ${compsList(it).map(x=>COMP[x]).join(' + ')}`); return true; }
   if(ds.setdef){ const {e,it}=itemAt(ds.setdef); if(!it) return true; const tp=S.cfg.templates.find(t=>t.id===e.tid), tf=tp&&tp.fields.find(f=>f.id===it.fid); if(!tf) return true;
-    tf.type='mix'; tf.comps=compsOf(it).slice(); if(compsOf(it).includes('L')) tf.opts=arrP(it,'L').map(y=>y.name); saveCfg(); render(); toast(`New ${tp.name} logs will use these parts`); return true; }
+    tf.type='mix'; tf.comps=compsOf(it).slice(); if(compsOf(it).includes('L')) tf.opts=arrP(it,'L').map(y=>y.name); if(it.x) tf.x=normX(it.x); saveCfg(); render(); toast(`New ${tp.name} logs will use these parts`); return true; }
+  if(ds.xi){ const [key,prop,val]=splitTail(ds.xi,2), {k,e,it}=itemAt(key); if(!it) return true; it.x=Object.assign({},xcfg(e,it)); xcfgSet(it.x,prop,val); saveMonth(k); render(); return true; }
+  if(ds.aq){ const [key,q]=splitTail(ds.aq,1), {k,it}=itemAt(key); if(!it) return true; const v=+q; setP(it,'A',getP(it,'A')===v?null:v); saveMonth(k); render(); return true; }
+  if(ds.qw){ const [key,w]=splitTail(ds.qw,1), {k,it}=itemAt(key); if(!it) return true; const o=objP(it,'Q'); o.w=o.w===w?'':w; setP(it,'Q',o); saveMonth(k); render(); return true; }
+  if(ds.rres){ const [key,id,r]=splitTail(ds.rres,2), {k,it}=itemAt(key); if(!it) return true; const a=arrP(it,'G'), y=a.find(z=>z.id===id); if(!y) return true;
+    if(rresOf(y)===r){ y.top=null; y.fl=null; delete y.zone; }
+    else if(r==='flash'){ y.fl=true; y.top=true; y.zone=true; y.a=1; y.fall=[]; delete y.nb; }
+    else if(r==='top'){ y.top=true; y.fl=false; y.zone=true; }
+    else if(r==='zone'){ y.top=false; y.fl=false; y.zone=true; }
+    else { y.top=false; y.fl=false; y.zone=false; }
+    setP(it,'G',a); saveMonth(k); render(); return true; }
+  if(ds.rfall){ const [key,id,f]=splitTail(ds.rfall,2), {k,it}=itemAt(key); if(!it) return true; const a=arrP(it,'G'), y=a.find(z=>z.id===id); if(!y) return true; const L=new Set(Array.isArray(y.fall)?y.fall:[]); L.has(f)?L.delete(f):L.add(f); y.fall=FALLS.map(x=>x[0]).filter(c=>L.has(c)); setP(it,'G',a); saveMonth(k); render(); return true; }
+  if(ds.rnb){ const [key,id]=splitTail(ds.rnb,1), {k,it}=itemAt(key); if(!it) return true; const a=arrP(it,'G'), y=a.find(z=>z.id===id); if(!y) return true; y.nb=!y.nb; if(!y.nb) delete y.nb; setP(it,'G',a); saveMonth(k); render(); return true; }
   if(ds.n!==undefined&&ds.k&&ds.c){ const {k,e,it}=itemAt(ds.k); if(!it) return true; const n=+ds.n, c=ds.c, p=ds.p; let cur;
     if(p){ const o=objP(it,c); o[p]=o[p]===n?null:n; if(c==='P'&&!o.flags) o.flags={}; setP(it,c,o); cur=o[p]; } else { const x=getP(it,c); cur=x===n?null:n; setP(it,c,cur); }
     saveMonth(k); if(c==='P'){ render(); return true; }
     b.parentElement.querySelectorAll('button').forEach(x=>{ x.classList.toggle('on',+x.dataset.n===cur); x.setAttribute('aria-pressed',+x.dataset.n===cur); });
     const an=b.parentElement.nextElementSibling; if(an&&an.dataset&&an.dataset.anc) an.textContent=ancText(an.dataset.anc,cur); refreshItem(b,e,it); return true; }
   if(ds.yn){ const i=ds.yn.lastIndexOf('|'), {k,it}=itemAt(ds.yn.slice(0,i)); if(!it) return true; const v=ds.yn.slice(i+1)==='1', cur=getP(it,'Y'); setP(it,'Y',cur===v?null:v); saveMonth(k); render(); return true; }
-  if(ds.radd){ const {k,it}=itemAt(ds.radd); if(!it) return true; const a=arrP(it,'G'); a.push({id:rid(),at:nowHM(),g:'',dur:'',a:1,top:null,fl:null,why:'',fwhy:''}); setP(it,'G',a); saveMonth(k); render(); return true; }
+  if(ds.radd){ const {k,it}=itemAt(ds.radd); if(!it) return true; const a=arrP(it,'G'), nid=rid(); a.push({id:nid,at:nowHM(),g:'',dur:'',a:1,top:null,fl:null,why:'',fwhy:'',fall:[]}); setP(it,'G',a); saveMonth(k); render(); const gi=[...document.querySelectorAll('input[data-gid]')].find(x=>x.dataset.gid===nid&&x.dataset.p==='g'); if(gi) gi.focus(); return true; }
   if(ds.rdel){ if(!armed(b,'Tap again')) return true; const [key,id]=splitTail(ds.rdel,1), {k,it}=itemAt(key); if(!it) return true; setP(it,'G',arrP(it,'G').filter(y=>y.id!==id)); saveMonth(k); render(); return true; }
   if(ds.ratt){ const [key,id,dd]=splitTail(ds.ratt,2), {k,it}=itemAt(key); if(!it) return true; const a=arrP(it,'G'), y=a.find(z=>z.id===id); if(!y) return true; y.a=Math.max(1,(+y.a||1)+(+dd)); if(y.a>1&&y.fl) y.fl=false; setP(it,'G',a); saveMonth(k); render(); return true; }
   if(ds.rt){ const [key,id,f,v]=splitTail(ds.rt,3), {k,it}=itemAt(key); if(!it) return true; const a=arrP(it,'G'), y=a.find(z=>z.id===id); if(!y) return true; const val=v==='1', nv=y[f]===val?null:val; y[f]=nv;
@@ -1036,6 +1117,7 @@ function fieldInput(t){ if(GUEST) return true; if(!t.dataset.k) return false; co
   else if(c==='G'&&t.dataset.gid){ const a=arrP(it,'G'), y=a.find(z=>z.id===t.dataset.gid); if(y){ y[t.dataset.p]=t.dataset.p==='g'?t.value.toUpperCase():t.value; setP(it,'G',a); } }
   else if(t.dataset.li){ const cc=c||listComp(it), a=arrP(it,cc), y=a.find(z=>z.id===t.dataset.li); if(y){ y.at=t.value; setP(it,cc,a); } }
   else if(c==='C') it.at=t.value;
+  else if(c==='X'&&t.dataset.p){ const o=objP(it,'X'); o[t.dataset.p]=t.value; setP(it,'X',o); saveMonth(k); (e.items||[]).forEach(i2=>{ if(!compsList(i2).includes('X')) return; const el=document.getElementById('xrf'+e.id+i2.fid); if(el) el.innerHTML=xResText(e,i2); }); refreshItem(t,e,it); return true; }
   else if(t.dataset.p){ const o=objP(it,c); o[t.dataset.p]=t.value; if(c==='P'&&!o.flags) o.flags={}; setP(it,c,o); const d=document.getElementById((c==='E'?'ef':'df')+e.id+it.fid); if(d) d.textContent=c==='E'?loadText(o):dur(o); }
   else setP(it,c||'T',t.value);
   saveMonth(k); refreshItem(t,e,it); return true; }
@@ -1049,23 +1131,32 @@ function renderSettings(){
   ${backupCard()}
   ${aiCard()}
   ${packCard(false)}
-  <div class="h2">Log types</div>
-  <p class="note">Changes apply to new logs. Logs you already filled in keep their fields.</p>
-  ${S.cfg.templates.map((t,ti)=>`<div class="sec" style="--c:${t.color}">
-    <div class="row"><input type="text" value="${esc(t.name)}" data-tname="${ti}" aria-label="Log type name">
+  ${setupUpdateCard()}
+  <div class="h2">Daily log types</div>
+  <p class="note">Your calendar: how you feel, sleep, food, body. Changes apply to new logs. Logs you already filled in keep their fields.</p>
+  ${S.cfg.templates.map((t,ti)=>t.perf?'':tplSecHTML(t,ti)).join('')}
+  <button class="btn" data-act="tadd">+ New log type</button>
+  <div class="h2">Performance tests</div>
+  <p class="note">The Performance tab: tests and route cards on their own calendar. Name any test and choose how it's measured (kg with % of bodyweight, seconds, reps, left and right).</p>
+  ${S.cfg.templates.map((t,ti)=>t.perf?tplSecHTML(t,ti):'').join('')}
+  <button class="btn" data-act="taddp">+ New test</button>`;
+  app.querySelectorAll('textarea').forEach(grow);
+}
+function tplSecHTML(t,ti){ return `<div class="sec" style="--c:${t.color}">
+    <div class="row"><input type="text" value="${esc(t.name)}" data-tname="${ti}" aria-label="${t.perf?'Test name':'Log type name'}">
       <button class="mini" data-tmove="${ti}|-1" aria-label="Move up">↑</button><button class="mini" data-tmove="${ti}|1" aria-label="Move down">↓</button></div>
     <div class="swatches">${HOLD.map(c=>`<button class="sw${c===t.color?' on':''}" style="background:${c}" data-color="${ti}|${c}" aria-label="Color ${c}"></button>`).join('')}<label class="sw pick" title="Any color"><input type="color" value="${esc(t.color)}" data-ccolor="${ti}" aria-label="Pick any color"><span>+</span></label></div>
+    ${t.perf?`<label class="ftin" style="margin:0 0 8px">How to do this test <small class="note">(shown when you open it)</small><textarea rows="2" data-thow="${ti}" placeholder="e.g. Warm up 15 min. 20 mm edge, half crimp, 7 s. Best of 3.">${esc(t.how||'')}</textarea></label>`:''}
     ${t.fields.map((f,fi)=>{ const cs=compsOf(f), R=compRatings(f.name), rt=fmtLevel(formatScore(f.name,cs)); return `<div class="cfield"><div class="row" style="margin:0">
       <span class="rdot" style="background:${RCOL[rt]}" title="${RWORD[rt]} setup for this field"></span><input type="text" value="${esc(f.name)}" data-fname="${ti}|${fi}" aria-label="Field name">
       <button class="mini" data-fmove="${ti}|${fi}|-1" aria-label="Move up">↑</button><button class="mini" data-fdel="${ti}|${fi}" aria-label="Remove field">✕</button></div>
       <button class="cpsum" data-cpo="${ti}|${fi}" aria-expanded="${S.st.cpOpen===ti+'|'+fi}"><span>Parts: <b>${cs.map(c=>COMP[c]).join(' + ')}</b></span><span class="note">${S.st.cpOpen===ti+'|'+fi?'Done':'Change'}</span></button>
       ${S.st.cpOpen===ti+'|'+fi?`<div class="chips cparts">${CORDER.map(c=>`<button data-cp="${ti}|${fi}|${c}" class="${cs.includes(c)?'on':''}" style="--rc:${RCOL[R.rate[c]??1]}" aria-pressed="${cs.includes(c)}"><i></i>${COMP[c]}</button>`).join('')}</div><p class="note" style="margin:4px 0 0">Best for ${esc(f.name)}: ${R.best.map(c=>COMP[c]).join(' + ')}.</p>`:''}
+      ${cs.includes('X')?xcfgHTML('xc',`${ti}|${fi}`,normX(f.x||{})):''}
       ${cs.includes('L')?`<div class="row" style="margin:6px 0 0"><input type="text" value="${esc((f.opts||[]).join(', '))}" data-fopts="${ti}|${fi}" placeholder="Checklist items, e.g. Vitaminai, Omega3" aria-label="Checklist items"></div>`:''}</div>`; }).join('')}
     <div class="row"><button class="btn ghost" data-fadd="${ti}">+ Add field</button>
-      <span style="flex:1"></span><button class="del" data-tdel="${ti}">Delete type</button></div>
-  </div>`).join('')}
-  <button class="btn" data-act="tadd">+ New log type</button>`;
-}
+      <span style="flex:1"></span><button class="del" data-tdel="${ti}">Delete ${t.perf?'test':'type'}</button></div>
+  </div>`; }
 
 // ---------- note quality ----------
 const JUNK=new Set('gerai blogai normaliai normalus normali normalu ok okey okay neblogai puikiai prastai šiaip siaip nieko gera geras gerą bloga blogas super labai buvo jaučiausi jauciausi jaučiuosi šiandien siandien aš as ir bet man kaip visai truputi truputį dar tai čia cia fine good bad great meh normal pretty very was felt feel feeling today it and but the so kinda bit little nice well not too also really quite just its were is am i my me had have been fainai faina fain vidutiniškai vidutiniskai'.split(' '));
@@ -1335,7 +1426,7 @@ function dataLines(ds,n){ const V=ds.vars; return ds.days.slice(-n).map(d=>{ con
   const t=(ds.texts[d]||[]).map(s=>s.slice(0,200)); return `${d} (${WD[(new Date(d+'T12:00').getDay()+6)%7]}): ${parts.join('; ')}${t.length?' | notes: '+t.join(' / '):''}`; }); }
 const SAFE='Never suggest eating less, losing weight, supplement doses or medication. Slow-acting supplements (omega-3, creatine, vitamin D, iron) build up over weeks, so never propose day-by-day A/B tests of them. If something sounds like injury (a pop, sharp pain, swelling) say to stop and see a physio.';
 const GLOSS='Krūvis = training load (effort × minutes), Pirštų skausmas = finger pain, Pirštų testas = finger strength test. Notes are mostly Lithuanian: Prieš trieša = before training, Po triešos = after training, Restday = rest day, Miegas = sleep, Maistas = food, Maisto papildai = supplements, Oda = skin, Energija = energy, Kūnas = body, Fokusas = focus, Pirštai = fingers, Emocijos = emotions. Weekdays: Pr An Tr Kt Pn Š S = Mon–Sun.';
-function tabsHTML(){ const T=GUEST?[['cal','Calendar']]:[['cal','Calendar']].concat(isCoach()?[['team','Team']]:[]).concat(ACC.role==='coach'?[['ath','Stats']]:[]).concat([['set','Customize']]);
+function tabsHTML(){ const B=[['cal','Calendar'],['perf','Performance'],['goals','Milestones']], T=GUEST?B:B.concat(isCoach()?[['team','Team']]:[]).concat(ACC.role==='coach'?[['ath','Stats']]:[]).concat([['set','Customize']]);
   return `<nav class="tabs" aria-label="Sections">${T.map(([k,l])=>`<button data-tab="${k}" class="${S.view===k?'on':''}"${S.view===k?' aria-current="page"':''}>${l}</button>`).join('')}</nav>`; }
 const isWeakCode=()=>{ try{ return localStorage.getItem('ct:weak')==='1'; }catch(e){ return false; } };
 const topBar=()=>`${!GUEST&&isWeakCode()&&!(S.view==='set'&&S.st.myCode!=null)?'<div class="alert amber weakc"><span>🔑 Your code is easy to guess. Change it to 8–10 digits that only you know.</span><button class="btn" data-act="weakfix">Change it</button></div>':''}<div class="top"><span class="brand">Climb log <span class="bwho">· ${esc(ACC.name)}</span></span>${GUEST||S.view==='ath'?'':histBar()}<span class="sync" id="sync">${GUEST?'Read only':syncState}</span></div>${GUEST?`<div class="gbar" role="status"><span>👀 <b>${GUEST.name?esc(GUEST.name)+'’s':'Shared'} log</b><br><span>Read only. Only ${GUEST.name?esc(GUEST.name):'they'} can change it.</span></span><button class="btn" data-act="gclose">Back to mine</button></div>`:''}`;
@@ -1788,7 +1879,7 @@ function weekCard(){ const off=S.st.wk||0, s=weekStats(off); const lt=S.st.wl===
 
 // ---------- take your data to Claude ----------
 const WDLT=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-let XDAY=null; // the log day being exported (so a body rating filled in on a later day says when)
+let XDAY=null, XENT=null; // the log day and log being exported (so a body rating filled in on a later day says when; tests find their bodyweight)
 function partText(it,c){ const x=getP(it,c);
   switch(c){
     case 'R': { if(!x||!(x.from||x.to)) return ''; const d=x.from&&x.to?dur(x):''; return `${sleepLike(it.name)?'bed ':'from '}${x.from||'?'} ${sleepLike(it.name)?'– woke':'to'} ${x.to||'?'}${d?` (${d})`:''}`; }
@@ -1802,7 +1893,11 @@ function partText(it,c){ const x=getP(it,c);
     case 'E': { if(!x||(x.e==null&&!x.m)) return ''; const m=parseFloat(x.m); return `training load: effort ${x.e??'?'}/10 × ${x.m||'?'} min${x.e&&m>0?` = ${Math.round(x.e*m)}`:''}`; }
     case 'F': { if(!x||!(+x.t>0)) return ''; const T=+x.t, O=Math.min(Math.max(+x.o||0,+x.f||0),T), F=Math.min(+x.f||0,O), A=x.a!=null&&x.a!==''?Math.max(+x.a,T):null; return `problems: tried ${T}, flashed ${F} (${Math.round(F/T*100)}%), topped ${O} (${Math.round(O/T*100)}%)${A!=null?`, attempts in total ${A}`:''}`; }
     case 'G': { const a=Array.isArray(x)?x.slice().sort((p,q)=>(p.at||'')<(q.at||'')?-1:1):[]; if(!a.length) return '';
-      return 'routes: '+a.map((y,i)=>`#${i+1} ${String(y.g||'').trim()||'grade ?'}${y.at?` at ${y.at}`:''}: ${+y.a||1} attempt${(+y.a||1)>1?'s':''}, ${y.top===true?'topped':y.top===false?'not topped':'top not marked'}, ${y.fl===true?'flashed':y.fl===false?'not flashed':'flash not marked'}${y.dur!=null&&y.dur!==''?`, ${y.dur} min on it`:''}${String(y.why||'').trim()?`, why topped/not: "${String(y.why).trim()}"`:''}${String(y.fwhy||'').trim()?`, why flashed/not: "${String(y.fwhy).trim()}"`:''}`).join('; '); }
+      return 'routes: '+a.map((y,i)=>{ const r=rresOf(y), fl=Array.isArray(y.fall)?y.fall.map(f=>(FALLS.find(z=>z[0]===f)||[f,f])[1].toLowerCase()):[];
+        return `#${i+1} ${String(y.g||'').trim()||'grade ?'}${y.at?` at ${y.at}`:''}: ${+y.a||1} attempt${(+y.a||1)>1?'s':''}, ${r==='flash'?'flashed':r==='top'?'topped (not flashed)':r==='zone'?'zone, not topped':r==='no'?'not topped':'result not marked'}${fl.length?`, fell because of: ${fl.join(', ')}`:''}${y.nb?', changed beta after falling':''}${y.dur!=null&&y.dur!==''?`, ${y.dur} min on it`:''}${String(y.why||'').trim()?`, note: "${String(y.why).trim()}"`:''}${String(y.fwhy||'').trim()?`, flash note: "${String(y.fwhy).trim()}"`:''}`; }).join('; '); }
+    case 'A': { if(typeof x!=='number') return ''; const [lo,hi]=slEnds(it.name); return `slider ${x}/100 (0 = ${lo.toLowerCase()}, 100 = ${hi.toLowerCase()})`; }
+    case 'Q': { const z=qZone(x); if(!z) return ''; return `mood meter: energy ${x.e}/100, pleasant ${x.p}/100 = ${z} zone (${QZ[z][0].toLowerCase()})${x.w?`, word: "${x.w}"`:''}`; }
+    case 'X': return filledPart(it,'X')?xExport(it):'';
     case 'P': { if(!x||typeof x.p!=='number') return ''; const fl=Object.entries(x.flags||{}).filter(([,v])=>v).map(([k])=>({pop:'heard a pop',sharp:'sharp pain',swell:'swelling',bruise:'bruising',bow:'finger lifts when crimping',rom:'can\u2019t fully bend or straighten'}[k]||k));
       return [`finger pain ${x.p}/10`,(x.fingers||[]).length?`fingers: ${(x.fingers||[]).map(k=>FNAME(k).toLowerCase()+(/1$/.test(k)?'':' finger')).join(', ')}`:'',(x.when||[]).length?`hurts: ${(x.when||[]).map(w=>({during:'while climbing',after:'after climbing',rest:'at rest',morning:'stiff in the morning'}[w]||w)).join(', ')}`:'',
         (x.grip||[]).length?`grips: ${(x.grip||[]).join(', ')}`:'',x.trend?`vs yesterday: ${x.trend}`:'',fl.length?`WARNING SIGNS: ${fl.join(', ')}`:'',x.where?`note: "${x.where}"`:''].filter(Boolean).join('; '); }
@@ -1817,17 +1912,20 @@ function exportDays(range){ const D=[]; const start=range?dAdd(todayStr,-range+1
 function exportClaude(range){ const D=exportDays(range); if(!D.length) return '';
   const L=[`${shownName()?shownName()+'\'s ':''}CLIMB LOG (${D[0]} to ${D[D.length-1]}, ${D.length} days with logs)`,'',
     'How to read it:','- Scores are 1–10 (5 = normal for me). Finger pain is 0–10. Body ratings are 0 (fresh) to 100 (pain): 15+ tired, 40+ sore, 65+ very sore, 85+ pain.',
-    '- Training load = effort (1–10) × minutes. Times are 24h clock. Text in quotes is exactly what I wrote.',...(NT.pid===showPid()&&NT.list.length?['- [Coach notes] are what my coach wrote about that day.']:[]),
-    `- Log types: ${S.cfg.templates.map(t=>t.name).join(', ')}.`,''];
+    '- Training load = effort (1–10) × minutes. Times are 24h clock. Text in quotes is exactly what I wrote.',
+    '- Sliders are 0–100. Mood Meter = energy 0–100 (low → high) and pleasant 0–100 (unpleasant → pleasant): red zone = high energy + unpleasant (stressed), yellow = high energy + pleasant (excited), blue = low energy + unpleasant (tired, down), green = low energy + pleasant (calm).',
+    '- Performance tests: % of bodyweight = kg on the hand ÷ bodyweight (lift), or (bodyweight + added kg) ÷ bodyweight (hang).',...(NT.pid===showPid()&&NT.list.length?['- [Coach notes] are what my coach wrote about that day.']:[]),
+    `- Daily log types: ${S.cfg.templates.filter(t=>!t.perf).map(t=>t.name).join(', ')}.`,...(S.cfg.templates.some(t=>t.perf)?[`- Performance tests (separate calendar): ${S.cfg.templates.filter(t=>t.perf).map(t=>t.name).join(', ')}.`]:[]),''];
   D.forEach(d=>{ XDAY=d; const [y,m,dd]=d.split('-'), mo=S.months[`${y}-${m}`], es=(mo.days[String(+dd)]||[]); const blocks=[];
-    es.forEach(e=>{ const lines=(e.items||[]).map(it=>{ const t=compsList(it).map(c=>partText(it,c)).filter(Boolean).join('; '), sn=GUEST?'':secGet(e.id+'|'+it.fid).trim().replace(/\s+/g,' '); return [t?`- ${it.name}: ${t}`:'', sn?`- ${it.name} (my secret note): "${sn}"`:GUEST&&it.sec?`- ${it.name}: [secret note, private]`:''].filter(Boolean).join('\n'); }).filter(Boolean);
+    es.forEach(e=>{ XENT=e; const lines=(e.items||[]).map(it=>{ const t=compsList(it).map(c=>partText(it,c)).filter(Boolean).join('; '), sn=GUEST?'':secGet(e.id+'|'+it.fid).trim().replace(/\s+/g,' '); return [t?`- ${it.name}: ${t}`:'', sn?`- ${it.name} (my secret note): "${sn}"`:GUEST&&it.sec?`- ${it.name}: [secret note, private]`:''].filter(Boolean).join('\n'); }).filter(Boolean);
       const tp=S.cfg.templates.find(t=>t.id===e.tid); if(tp&&tp.fingerTest){ const rv=r=>{ const fd=tp.fields.find(x=>x.role===r), it=fd&&(e.items||[]).find(i=>i.fid===fd.id), x=it?parseFloat(getP(it,'N')):NaN; return isNaN(x)?null:x; }, bw=rv('bw'), ad=rv('add'); if(bw>0&&ad!=null) lines.push(`- Finger strength: ${Math.round((bw+ad)/bw*100)}% of bodyweight (bodyweight ${bw} kg + ${ad} kg on a ${rv('edge')||20} mm edge, 10 s)`); }
-      if(lines.length) blocks.push(`[${tplName(e)}]`,...lines); });
+      if(lines.length) blocks.push(`[${tplName(e)}${isPerfE(e)?' · performance test':''}]`,...lines); }); XENT=null;
     const cn=[], q=t=>String(t||'').replace(/\s+/g,' ').trim(); notesFor(d).forEach(n=>{ cn.push(`- ${n.byName||'Coach'}: "${q(n.text)}"`); repliesOf(n).forEach(r=>cn.push(`  - reply from ${r.byName||'?'}: "${q(r.text)}"`)); }); if(cn.length) blocks.push('[Coach notes]',...cn);
     if(blocks.length) L.push(`=== ${d} ${WDLT[new Date(d+'T12:00').getDay()]} ===`,...blocks,''); });
   XDAY=null; const start=D[0], ch=(S.coach.checks||[]).filter(c=>c.date>=start).slice().reverse();
   if(ch.length){ L.push('=== Weekly body check answers (last 7 days each time) ===');
     ch.forEach(c=>Object.entries(checkAreas(c)).forEach(([k,x])=>L.push(`- ${c.date} ${areaName(k)}: ${fcq(k).map(([q,o],i)=>`${q.replace(/ in the last 7 days despite [^?]+ problems\?|\?$/g,'')}: ${o[x.a[i]]||'–'}`).join('; ')}`))); }
+  const GL=goalsExport(); if(GL.length) L.push('',...GL);
   return L.join('\n').replace(/\n{3,}/g,'\n\n').trim(); }
 
 function exportCSV(range){ const D=exportDays(range), q=s=>/[",\n]/.test(s)?`"${String(s).replace(/"/g,'""')}"`:String(s); const rows=[['date','weekday','log','field','part','value']];
@@ -1955,6 +2053,8 @@ function savedOf(c,mom){ const it=c.stats?(c.be&&c.be.it):c.it; if(!it) return n
 function baseOf(c){ const sv=savedOf(c);
   if(!c.stats&&sv&&hasRatings(sv)) return {s:sv,kind:'saved',t:sv.t,src:{}};
   const L=stateSnap(c.stats||c.day===todayStr||c.day===dAdd(todayStr,-1)?Date.now()+1:dayEndTs(c.day)+1);
+  // a new check starts from where you left your body (the levels), but with empty notes: a note belongs to the moment you wrote it
+  L.s.n={}; Object.keys(L.s.m||{}).forEach(rg=>{ L.s.m[rg]=(L.s.m[rg]||[]).map(y=>Object.assign({},y,{note:''})); });
   return {s:L.s,kind:hasRatings(L.s)?'last':'empty',from:L.from,src:L.src}; }
 // unsaved changes live in a draft on this phone (they survive closing the app) until you tap Save or Undo changes
 const BD=(()=>{ const x=ls.get('bdraft'); return x&&typeof x==='object'&&!Array.isArray(x)?x:{}; })();
@@ -2351,6 +2451,8 @@ app.addEventListener('click',async ev=>{
   const tp=ev.target.closest('[data-tip]'); if(tp){ const w=tp.closest('.cw'), t=w&&w.querySelector('.tip'); if(t) t.textContent=tp.dataset.tip; if(w) w.querySelectorAll('.hit.sel').forEach(x=>x.classList.remove('sel')); tp.classList.add('sel'); ev.stopPropagation(); return; }
   if(bodyClick(ev)) return;
   const b=ev.target.closest('button'); if(!b) return; const ds=b.dataset;
+  if(ds.qpad!==undefined){ if(!GUEST) qpadSet(b,ev); return; }
+  if(goalClick(ds,b)) return;
   if(ds.secopen&&!GUEST){ S.st.secOpen=ds.secopen; render(); const ta=document.querySelector(`[data-sec="${ds.secopen}"]`); if(ta) ta.focus(); return; }
   if(ds.act==='weakfix'){ S.view='set'; S.st.myCode=''; S.st.myCodeErr=''; render(); const m=document.getElementById('mycode'); if(m){ m.scrollIntoView({block:'center'}); m.focus(); } return; }
   if(!GUEST&&S.view==='ath'&&atClick(ds)) return;
@@ -2420,7 +2522,7 @@ app.addEventListener('click',async ev=>{
   if(ds.act==='packno'){ S.cfg.packNo=1; saveCfg(); render(); return; }
   if(ds.act==='aistop'){ const c=ds.which==='sci'?sciCtl:aiCtl; if(c) c.abort(); return; }
   if(ds.add){ if(Date.now()-lastAdd<600) return; lastAdd=Date.now(); const t=S.cfg.templates.find(t=>t.id===ds.add); if(!t) return; const [y,m,d]=S.sel.split('-'); const k=`${y}-${m}`; const mo=month(k);
-    const e={id:rid(),tid:t.id,name:t.name,color:t.color,items:t.fields.map(newItem)};
+    const e={id:rid(),tid:t.id,name:t.name,color:t.color,items:t.fields.map(newItem)}; if(t.perf) e.perf=1;
     (mo.days[String(+d)]=mo.days[String(+d)]||[]).push(e); S.open=e.id; saveMonth(k); render(); const el=document.querySelector(`[data-toggle="${e.id}"]`); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); toast(`${t.name} added`); return; }
   if(ds.toggle){ const was=S.open===ds.toggle; S.open=was?null:ds.toggle; S.typeOpen=null; render(); if(was){ const el=document.querySelector(`[data-toggle="${ds.toggle}"]`); if(el) el.scrollIntoView({block:'nearest'}); } return; }
   if(ds.delentry){ if(!armed(b,'Tap again to delete')) return; const {k,arr}=findEntry(ds.delentry); arr.splice(arr.findIndex(x=>x.id===ds.delentry),1); saveMonth(k); render(); toast('Log deleted'); return; }
@@ -2433,14 +2535,18 @@ app.addEventListener('click',async ev=>{
   // settings
   const T=S.cfg.templates;
   if(ds.color){ const [ti,c]=ds.color.split('|'); T[ti].color=c; }
-  else if(ds.tmove){ const [ti,dir]=ds.tmove.split('|').map(Number); const j=ti+dir; if(j<0||j>=T.length) return; [T[ti],T[j]]=[T[j],T[ti]]; }
+  else if(ds.tmove){ const [ti,dir]=ds.tmove.split('|').map(Number); let j=ti+dir; while(j>=0&&j<T.length&&!!T[j].perf!==!!T[ti].perf) j+=dir; if(j<0||j>=T.length) return; [T[ti],T[j]]=[T[j],T[ti]]; }
   else if(ds.fmove){ const [ti,fi,dir]=ds.fmove.split('|').map(Number); const F=T[ti].fields, j=fi+dir; if(j<0||j>=F.length) return; [F[fi],F[j]]=[F[j],F[fi]]; }
   else if(ds.cpo){ S.st.cpOpen=S.st.cpOpen===ds.cpo?null:ds.cpo; render(); return; }
   else if(ds.cp){ const [ti,fi,c]=ds.cp.split('|'); const f=T[+ti].fields[+fi]; const cs=compsOf(f); const nx=cs.includes(c)?cs.filter(x=>x!==c):sortC(cs.concat(c)); if(!nx.length){ toast('Keep at least one part'); return; } f.type='mix'; f.comps=nx; }
   else if(ds.fdel){ if(!armed(b,'Sure?')) return; const [ti,fi]=ds.fdel.split('|').map(Number); T[ti].fields.splice(fi,1); }
-  else if(ds.fadd!==undefined){ T[+ds.fadd].fields.push({id:rid(),name:'Naujas laukas',type:'mix',comps:['S','T']}); }
-  else if(ds.tdel!==undefined){ if(T.length<=1){ toast('Keep at least one log type'); return; } if(!armed(b,'Tap again to delete')) return; T.splice(+ds.tdel,1); toast('Log type deleted. Past logs stay.'); }
-  else if(ds.act==='tadd'){ T.push({id:rid(),name:'Naujas tipas',color:HOLD[T.length%HOLD.length],fields:[{id:rid(),name:'Pastabos',type:'mix',comps:['T']}]}); saveCfg(); render(); const secs=document.querySelectorAll('.sec'); if(secs.length) secs[secs.length-1].scrollIntoView({block:'center'}); toast('New log type added'); return; }
+  else if(ds.fadd!==undefined){ const tp=T[+ds.fadd]; tp.fields.push(tp.perf?{id:rid(),name:'Rezultatas',type:'mix',comps:['X'],x:{u:'kg',lr:false,bw:'',role:''}}:{id:rid(),name:'Naujas laukas',type:'mix',comps:['S','T']}); }
+  else if(ds.xc){ const [ti,fi,prop,val]=ds.xc.split('|'), f=T[+ti]&&T[+ti].fields[+fi]; if(!f) return; f.x=normX(f.x||{}); xcfgSet(f.x,prop,val); }
+  else if(ds.tdel!==undefined){ const tp=T[+ds.tdel]; if(!tp) return; if(!tp.perf&&T.filter(t=>!t.perf).length<=1){ toast('Keep at least one log type'); return; } if(!armed(b,'Tap again to delete')) return; T.splice(+ds.tdel,1); toast(`${tp.perf?'Test':'Log type'} deleted. Past logs stay.`); }
+  else if(ds.act==='tadd'){ T.push({id:rid(),name:'Naujas tipas',color:HOLD[T.length%HOLD.length],fields:[{id:rid(),name:'Pastabos',type:'mix',comps:['T']}]}); saveCfg(); render(); const secs=document.querySelectorAll('.sec'); const lastDaily=[...secs].filter(s=>!s.querySelector('[data-thow]')).pop(); if(lastDaily) lastDaily.scrollIntoView({block:'center'}); toast('New log type added'); return; }
+  else if(ds.act==='taddp'){ T.push({id:rid(),name:'Naujas testas',color:HOLD[T.length%HOLD.length],perf:true,how:'',fields:[{id:rid(),name:'Rezultatas',type:'mix',comps:['X'],x:{u:'kg',lr:false,bw:'',role:''}},{id:rid(),name:'Pastabos',type:'mix',comps:['T']}]}); saveCfg(); render(); const secs=document.querySelectorAll('.sec'); if(secs.length) secs[secs.length-1].scrollIntoView({block:'center'}); toast('New test added. Name it and choose how it is measured'); return; }
+  else if(ds.act==='setupv2'){ applySetupV2(); return; }
+  else if(ds.act==='setupno'){ S.cfg.setupV2=1; saveCfg(); render(); return; }
   else return;
   saveCfg(); render();
 });
@@ -2465,6 +2571,10 @@ app.addEventListener('change',ev=>{
   if(ds.owner!==undefined){ S.cfg.owner=t.value.trim().slice(0,40); t.value=S.cfg.owner; saveCfg(); return; }
   if((ds.bin||ds.lin)&&t.value.trim()){ addToList(ds.bin||ds.lin,t.id); return; }
   if(ds.bmnew&&t.value.trim()){ const i=ds.bmnew.lastIndexOf('|'); addItem(ds.bmnew.slice(0,i),ds.bmnew.slice(i+1),t.value); return; }
+  if(ds.xcu){ const [ti,fi]=ds.xcu.split('|').map(Number), f=T[ti]&&T[ti].fields[fi]; if(!f) return; f.x=normX(Object.assign({},f.x||{},{u:t.value})); saveCfg(); render(); return; }
+  if(ds.xiu){ const {k,e,it}=itemAt(ds.xiu); if(!it) return; it.x=normX(Object.assign({},xcfg(e,it),{u:t.value})); saveMonth(k); render(); return; }
+  if(ds.thow!==undefined){ const tp=T[+ds.thow]; if(tp){ tp.how=t.value.trim().slice(0,600); saveCfg(); } return; }
+  if(ds.gfield!==undefined||ds.gdate!==undefined||ds.glabel!==undefined||ds.gitarget!==undefined||ds.giname!==undefined||ds.gicount!==undefined||ds.gidays!==undefined){ goalChange(t,ds); return; }
   if(ds.tname!==undefined) T[+ds.tname].name=t.value.trim()||'Be pavadinimo';
   else if(ds.fname){ const [ti,fi]=ds.fname.split('|').map(Number); T[ti].fields[fi].name=t.value.trim()||'Laukas'; }
   else if(ds.ccolor!==undefined){ T[+ds.ccolor].color=safeColor(t.value); saveCfg(); render(); return; }
@@ -2917,11 +3027,11 @@ app.addEventListener('keydown',ev=>{ if(ev.key!=='Enter') return; const t=ev.tar
 // ---- a coach looking at someone's calendar: read only. Their logs are shown as text (no boxes to type in, nothing to tap
 //      that changes them); only the owner can change their calendar. Notes and "Copy for AI" still work. ----
 // taps that are allowed while looking; every other tap is ignored
-const RO_KEYS=['brogo','toggle','fcol','fcolall','bview','bmm','day','dnav','xr','cnopen','cnedit','cnsave','cndel','cnreply','cnrsend','crdel'];
+const RO_KEYS=['brogo','toggle','fcol','fcolall','bview','bmm','day','dnav','xr','cnopen','cnedit','cnsave','cndel','cnreply','cnrsend','crdel','gopen','pwin'];
 const RO_ACTS=['prev','next','gotoday','gclose','xcopy','xmd','cnsend','cneditx','cnreplyx'];
 function roBlocked(ev){ const t=ev.target; if(!t||!t.closest) return true; if(t.closest('[data-tip]')) return false; if(t.closest('[data-bmr],[data-bsl]')) return true;
   const b=t.closest('button'); if(!b) return false; const ds=b.dataset;
-  if(ds.tab!==undefined) return ds.tab!=='cal'; if(ds.act!==undefined) return !RO_ACTS.includes(ds.act);
+  if(ds.tab!==undefined) return !['cal','perf','goals'].includes(ds.tab); if(ds.act!==undefined) return !RO_ACTS.includes(ds.act);
   return !RO_KEYS.some(k=>ds[k]!==undefined); }
 // tap a body part (or its chip) to open it: what they named, the level on the scale, their note
 function roClick(ev){ const t=ev.target; if(!t||!t.closest) return false; const el=t.closest('[data-bro]')||t.closest('button[data-brogo]'); if(!el) return false;
@@ -2951,9 +3061,12 @@ function roCompHTML(e,it,c,key){ const x=getP(it,c), sl=sleepLike(it.name), cs=c
   if(c==='F'){ const o=x||{}, T=+o.t||0; if(!T) return ''; const O=Math.min(Math.max(+o.o||0,+o.f||0),T), F=Math.min(+o.f||0,O), A=has(o.a)?Math.max(+o.a||0,T):null;
     return roLab('Problems')+roVal(`Tried ${T} · Flashed ${F} · Topped ${O}${A!=null?` · Attempts ${A}`:''}`)+`<p class="note" style="margin:2px 0 0"><b>${Math.round(F/T*100)}%</b> flash rate · <b>${Math.round(O/T*100)}%</b> top rate${A&&O?` · <b>${Math.round(A/O*10)/10}</b> attempts per top`:''}</p>`; }
   if(c==='G'){ const a=Array.isArray(x)?x:[]; if(!a.length) return '';
-    return roLab('Routes')+a.map((y,i)=>{ const at=+y.a||1, w=String(y.why||'').trim(), fw=String(y.fwhy||'').trim();
-      return `<div class="rorow"><span class="t">#${i+1}</span><div><b>${esc(String(y.g||'').trim()||'Grade ?')}</b>${y.at?` <small class="note">${esc(y.at)}</small>`:''}<br>${at} attempt${at>1?'s':''} · ${y.top===true?'Topped ✓':y.top===false?'Not topped ✗':'Top not marked'} · ${y.fl===true?'Flashed ⚡':y.fl===false?'No flash':'Flash not marked'}${has(y.dur)?` · ${esc(y.dur)} min`:''}${w?`<br><small class="note">Top:</small> ${roQ(w)}`:''}${fw?`<br><small class="note">Flash:</small> ${roQ(fw)}`:''}</div></div>`; }).join('')
-      +`<p class="note" style="margin:6px 0 0">${a.length} route${a.length>1?'s':''} · <b>${a.filter(y=>y.top).length}</b> topped · <b>${a.filter(y=>y.fl).length}</b> flashed · <b>${a.reduce((t,y)=>t+(+y.a||1),0)}</b> attempts</p>`; }
+    return roLab('Routes')+a.map((y,i)=>{ const at=+y.a||1, w=String(y.why||'').trim(), fw=String(y.fwhy||'').trim(), r=rresOf(y), fl=Array.isArray(y.fall)?y.fall:[];
+      return `<div class="rorow"><span class="t">#${i+1}</span><div><b>${esc(String(y.g||'').trim()||'Grade ?')}</b>${y.at?` <small class="note">${esc(y.at)}</small>`:''}<br>${at} attempt${at>1?'s':''} · ${r==='flash'?'Flashed ⚡':r==='top'?'Topped ✓':r==='zone'?'Zone':r==='no'?'No top ✗':'Result not marked'}${has(y.dur)?` · ${esc(y.dur)} min`:''}${fl.length?`<br><small class="note">Fell:</small> ${esc(fl.map(f=>(FALLS.find(z=>z[0]===f)||[f,f])[1]).join(', '))}`:''}${y.nb?'<br><small class="note">Changed beta after falling</small>':''}${w?`<br>${roQ(w)}`:''}${fw?`<br><small class="note">Flash:</small> ${roQ(fw)}`:''}</div></div>`; }).join('')
+      +`<p class="note" style="margin:6px 0 0">${routeSum(a)}</p>`; }
+  if(c==='A'){ if(typeof x!=='number') return ''; const [lo,hi]=slEnds(it.name); return (cs.length>1?roLab('Slider'):'')+`<div class="robar abar"><i style="width:${Math.max(x,2)}%"></i></div>`+roVal(`<b>${x}</b>/100 <small>· 0 = ${esc(lo)}, 100 = ${esc(hi)}</small>`); }
+  if(c==='Q'){ const z=qZone(x); if(!z) return ''; const Z=QZ[z]; return (cs.length>1?roLab('Mood Meter'):'')+`<div class="qpad ro" aria-hidden="true">${qPadInner(x)}</div>`+roVal(`<b style="color:${Z[1]}">${Z[0]}</b>${x.w?` · ${esc(x.w)}`:''} <small>· energy ${esc(x.e)} · pleasant ${esc(x.p)}</small>`); }
+  if(c==='X'){ if(!filledPart(it,'X')) return ''; return (cs.length>1?roLab('Measure'):'')+roVal(esc(xShort(it)))+`<p class="note" style="margin:2px 0 0">${xResText(e,it)}</p>`; }
   if(c==='P'){ const o=x||{}, F=Object.entries(o.flags||{}).filter(([,v])=>v).map(([k])=>RO_FLAG[k]||k), fg=o.fingers||[], wh=o.when||[], gr=o.grip||[];
     if(typeof o.p!=='number'&&!F.length&&!fg.length&&!wh.length&&!gr.length&&!o.trend&&!String(o.where||'').trim()) return '';
     return roLab('Finger pain')+roVal(typeof o.p==='number'?`${o.p}/10 <small>· ${esc(ANCH.pain[o.p]||'')}</small>`:'Not rated')
@@ -2988,6 +3101,223 @@ function bodyRO(ek){ let c=edCtx(ek); if(!c) return ''; const has=m=>{ const x=s
   return `<p class="clab">Body map</p><div class="bed bro" data-bedro="${ek}">${moms}${stat}${chips}${notes}
     <p class="note" style="margin:6px 0 0">Tap a body part or a name to see what they rated and wrote.</p>
     <p class="note blegline"><b style="color:${lvlColor(0)}">0 fresh</b> → <b style="color:${lvlColor(50)}">50 sore</b> → <b style="color:${lvlColor(100)}">100 pain</b></p>${svg}</div>`; }
+// ================= Performance tab, Milestones, sliders, Mood Meter and measures =================
+const untag=h=>String(h||'').replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&amp;/g,'&');
+const n1=v=>Math.round(v*10)/10, sgnN=v=>(v>=0?'+':'−')+n1(Math.abs(v));
+const dmyy=d=>String(d).split('-').reverse().join('.');
+const LTWD=['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'];
+// ---- Measure part: a number with a unit, optionally left + right, optionally as % of bodyweight
+// (lift = kg on the hand ÷ bodyweight, hang = (bodyweight + added) ÷ bodyweight), or "this is my bodyweight"
+function normX(x){ x=x&&typeof x==='object'?x:{}; return {u:String(x.u==null?'':x.u).replace(/[<>"`&|]/g,'').trim().slice(0,12),lr:!!x.lr,bw:x.bw==='lift'||x.bw==='hang'?x.bw:'',role:x.role==='bw'?'bw':''}; }
+function fieldById(fid){ for(const t of S.cfg.templates){ const f=t.fields.find(f=>f.id===fid); if(f) return f; } return null; }
+function xcfg(e,it){ if(it&&it.x) return normX(it.x); const t=e&&S.cfg.templates.find(t=>t.id===e.tid), f=(t&&t.fields.find(f=>f.id===it.fid))||fieldById(it&&it.fid); return normX(f&&f.x); }
+function xcfgSet(x,prop,val){ if(prop==='u') x.u=x.u===val?'':val; else if(prop==='lr') x.lr=!x.lr; else if(prop==='bw'){ x.bw=val==='off'?'':val; if(x.bw) x.role=''; } else if(prop==='role'){ x.role=x.role==='bw'?'':'bw'; if(x.role){ x.bw=''; x.lr=false; x.u='kg'; } } Object.assign(x,normX(x)); }
+function xcfgHTML(kind,ref,cfg){ const U=['kg','s','reps','cm'], at=(p,v)=>`data-${kind}="${ref}|${p}|${v}"`, on=b=>b?' class="on" aria-pressed="true"':' aria-pressed="false"';
+  return `<div class="xcfg"><p class="clab">Measured in</p><div class="chips">${U.map(u=>`<button ${at('u',u)}${on(cfg.u===u)}>${u}</button>`).join('')}<input type="text" class="xu" data-${kind}u="${ref}" value="${U.includes(cfg.u)?'':esc(cfg.u)}" placeholder="other unit" aria-label="Other unit"></div>
+    ${cfg.role==='bw'?'':`<div class="chips"><button ${at('lr','x')}${on(cfg.lr)}>Left and right</button></div>`}
+    ${cfg.u==='kg'?`${cfg.role==='bw'?'':`<p class="clab">% of bodyweight</p><div class="chips"><button ${at('bw','off')}${on(!cfg.bw)}>Off</button><button ${at('bw','lift')}${on(cfg.bw==='lift')}>Lift: kg on the hand</button><button ${at('bw','hang')}${on(cfg.bw==='hang')}>Hang: bodyweight + added</button></div>`}
+      <div class="chips"><button ${at('role','bw')}${on(cfg.role==='bw')}>This is my bodyweight</button></div>`:''}</div>`; }
+function bwList(){ return cached('BWL',()=>{ const out=[]; Object.values(S.months).forEach(mo=>Object.entries((mo&&mo.days)||{}).forEach(([d,es])=>{ const ds=`${mo.key}-${pad(+d)}`; (es||[]).forEach(e=>(e.items||[]).forEach(it=>{ if(!compsList(it).includes('X')||xcfg(e,it).role!=='bw') return; const v=num((getP(it,'X')||{}).v); if(v!=null&&v>20&&v<250) out.push({d:ds,v}); })); })); return out.sort((a,b)=>a.d<b.d?-1:1); }); }
+function bwOf(e,day){ if(e) for(const it of (e.items||[])){ if(!compsList(it).includes('X')||xcfg(e,it).role!=='bw') continue; const v=num((getP(it,'X')||{}).v); if(v!=null&&v>20&&v<250) return v; }
+  const L=bwList().filter(x=>x.d<=day); return L.length?L[L.length-1].v:null; }
+const xPct=(c,v,bw)=>Math.round((c.bw==='hang'?bw+v:v)/bw*100);
+function xVals(it){ const o=getP(it,'X')||{}; return {v:num(o.v),l:num(o.l),r:num(o.r)}; }
+function xShort(it){ const c=xcfg(null,it), V=xVals(it), u=c.u?' '+c.u:''; return c.lr?`L ${V.l??'–'} · R ${V.r??'–'}${u}`:`${V.v??'–'}${u}`; }
+function prevX(e,it,day){ let best=null; Object.values(S.months).forEach(mo=>Object.entries((mo&&mo.days)||{}).forEach(([d,es])=>{ const ds=`${mo.key}-${pad(+d)}`; if(ds>=day) return;
+  (es||[]).forEach(e2=>{ if(e2.tid!==e.tid) return; const i2=(e2.items||[]).find(i=>i.fid===it.fid); if(!i2||!filledPart(i2,'X')) return; if(!best||ds>best.d) best={d:ds,e:e2,it:i2}; }); })); return best; }
+function xResText(e,it){ const c=xcfg(e,it), day=XDAY||S.sel; if(c.role==='bw') return 'Morning, after the toilet, before food. Same way every time.';
+  const V=xVals(it), sides=c.lr?[['l','L'],['r','R']]:[['v','']], has=sides.some(([k])=>V[k]!=null), out=[];
+  if(c.u==='kg'&&c.bw){ const bw=bwOf(e,day); if(!bw) out.push('Add your bodyweight to see % of bodyweight.'); else if(has) out.push(`= <b>${sides.filter(([k])=>V[k]!=null).map(([k,l])=>`${l?l+' ':''}${xPct(c,V[k],bw)}%`).join(' · ')}</b> of bodyweight <span>(${bw} kg)</span>`); }
+  const p=e&&has?prevX(e,it,day):null; if(p){ const P=xVals(p.it), pbw=c.u==='kg'&&c.bw?bwOf(p.e,p.d):null, f=k=>P[k]==null?null:pbw?xPct(c,P[k],pbw)+'%':P[k]+(c.u?' '+c.u:''); const t=sides.map(([k,l])=>f(k)==null?'':`${l?l+' ':''}${f(k)}`).filter(Boolean).join(' · '); if(t) out.push(`Last time (${dmy(p.d)}): ${t}`); }
+  if(c.lr&&V.l>0&&V.r>0){ const lo=Math.min(V.l,V.r), hi=Math.max(V.l,V.r); out.push(`${V.l<V.r?'Left':V.r<V.l?'Right':'Both hands'}${V.l===V.r?' equal':` is at ${Math.round(lo/hi*100)}% of the other`}.`); }
+  return out.join('<br>'); }
+function xExport(it){ const c=xcfg(XENT,it), V=xVals(it), u=c.u?' '+c.u:'', day=XDAY||S.sel; if(c.role==='bw') return `bodyweight ${V.v} kg`;
+  const parts=c.lr?[['l','left'],['r','right']]:[['v','']]; let s=parts.filter(([k])=>V[k]!=null).map(([k,l])=>`${l?l+' ':''}${V[k]}${u}`).join(', ');
+  if(c.u==='kg'&&c.bw){ const bw=bwOf(XENT,day); if(bw) s+=` = ${parts.filter(([k])=>V[k]!=null).map(([k,l])=>`${l?l+' ':''}${xPct(c,V[k],bw)}%`).join(', ')} of bodyweight (${bw} kg; ${c.bw==='hang'?'bodyweight + added':'kg on the hand'})`; }
+  return s; }
+// ---- Slider part: 0–100, compared with your own normal for this log type (the research: compare to yourself, same time each day)
+function slEnds(name){ const n=String(name||'').toLowerCase(); return /energ/.test(n)?['Empty','Full of energy']:/fok|focus/.test(n)?['Scattered','Locked in']:/emoc|emot|nuotaik|mood|jaus/.test(n)?['Very bad','Very good']:/motyv|motiv/.test(n)?['No drive','Fired up']:/stres/.test(n)?['Calm','Very stressed']:/oda|skin/.test(n)?['Destroyed','Perfect']:/nusiteik|mindset|pasiruo/.test(n)?['Not ready','Fully ready']:/mieg|sleep/.test(n)?['Terrible','Perfect']:['Low','High']; }
+function slBase(e,it,day){ const tid=e?e.tid:''; return cached('SLB:'+tid+':'+nk(it.name)+':'+day,()=>{ const xs=[]; for(let i=1;i<=28;i++){ const d=dAdd(day,-i), [y,m,dd]=d.split('-'), mo=S.months[`${y}-${m}`];
+  ((mo&&mo.days&&mo.days[String(+dd)])||[]).forEach(e2=>{ if(tid&&e2.tid!==tid) return; (e2.items||[]).forEach(i2=>{ if(nk(i2.name)!==nk(it.name)||!compsList(i2).includes('A')) return; const v=getP(i2,'A'); if(typeof v==='number') xs.push(v); }); }); } return xs; }); }
+function slNormHTML(e,it,v){ const xs=slBase(e,it,S.sel); if(xs.length<5) return `<p class="note anorm">Rate it at about the same time each day. After ${5-xs.length} more day${5-xs.length===1?'':'s'} your normal shows here.</p>`;
+  const m=mean(xs), s=sdev(xs), thr=Math.max(8,s), tag=v==null?'':v<m-thr?' · <b>lower than your normal</b>':v>m+thr?' · <b>higher than your normal</b>':' · about your normal';
+  return `<p class="note anorm">Your normal here: <b>${Math.round(m)}</b> (last 4 weeks)${tag}</p>`; }
+let AS=null;
+function aslPaint(el,v){ el.classList.remove('unset'); el.style.setProperty('--p',v/100); el.dataset.v=v; el.setAttribute('aria-valuenow',v); const box=el.closest('.comp'); if(box){ const av=box.querySelector('.aval'); if(av) av.textContent=v; box.querySelectorAll('.aquick button').forEach(q=>q.classList.toggle('on',+q.dataset.aq.split('|').pop()===v)); } }
+function aslCommit(el,v){ const {k,it}=itemAt(el.dataset.asl); if(!it) return; setP(it,'A',v); saveMonth(k); render(); }
+function aslStart(ev){ AS.drag=true; AS.el.classList.add('drag'); try{ AS.el.setPointerCapture(AS.id); }catch(e){} AS.v=slVal(AS.el,ev.clientX); aslPaint(AS.el,AS.v); }
+app.addEventListener('pointerdown',ev=>{ if(GUEST) return; const el=ev.target.closest&&ev.target.closest('[data-asl]'); if(!el) return; AS={el,id:ev.pointerId,x0:ev.clientX,y0:ev.clientY,drag:false,v:null}; if(ev.target.closest('.bsl-thumb')){ ev.preventDefault(); aslStart(ev); } });
+app.addEventListener('pointermove',ev=>{ if(!AS||ev.pointerId!==AS.id) return; if(!AS.drag){ const dx=Math.abs(ev.clientX-AS.x0), dy=Math.abs(ev.clientY-AS.y0); if(dx>8&&dx>dy*1.5) aslStart(ev); else if(dy>8) AS=null; return; } ev.preventDefault(); AS.v=slVal(AS.el,ev.clientX); aslPaint(AS.el,AS.v); });
+app.addEventListener('pointerup',ev=>{ if(!AS||ev.pointerId!==AS.id) return; const s=AS; AS=null; if(s.drag&&s.v!=null){ s.el.classList.remove('drag'); aslCommit(s.el,s.v); } });
+app.addEventListener('pointercancel',ev=>{ if(!AS||ev.pointerId!==AS.id) return; const s=AS; AS=null; if(s.drag) render(); });
+app.addEventListener('keydown',ev=>{ if(GUEST) return; const el=ev.target.closest&&ev.target.closest('[data-asl]'); if(!el) return; const st={ArrowLeft:-1,ArrowDown:-1,ArrowRight:1,ArrowUp:1,PageDown:-10,PageUp:10}[ev.key], cur=el.dataset.v===''?50:+el.dataset.v;
+  const v=ev.key==='Home'?0:ev.key==='End'?100:st!=null?Math.max(0,Math.min(100,cur+st)):null; if(v==null) return; ev.preventDefault(); const key=el.dataset.asl, {k,it}=itemAt(key); if(!it) return; setP(it,'A',v); saveMonth(k); render(); const again=[...document.querySelectorAll('[data-asl]')].find(x=>x.dataset.asl===key); if(again) again.focus(); });
+// ---- Mood Meter part: energy (low → high) × pleasantness (unpleasant → pleasant), four zones, an optional word
+const QZ={red:['High energy · unpleasant','#D23F63',['Stressed','Nervous','Frustrated','Angry','Anxious','Tense'],'🔴'],yellow:['High energy · pleasant','#B8860B',['Motivated','Excited','Confident','Happy','Energized','Focused'],'🟡'],
+  blue:['Low energy · unpleasant','#2F6FD1',['Tired','Drained','Down','Bored','Sad','Unmotivated'],'🔵'],green:['Low energy · pleasant','#2E8B5E',['Calm','Relaxed','Rested','Content','Balanced','Peaceful'],'🟢']};
+function qZone(o){ return o&&typeof o==='object'&&typeof o.e==='number'&&typeof o.p==='number'?(o.e>=50?(o.p>=50?'yellow':'red'):(o.p>=50?'green':'blue')):null; }
+function qPadInner(o){ const z=qZone(o); return `<span class="qq qr">Stressed</span><span class="qq qy">Excited</span><span class="qq qb">Drained</span><span class="qq qg">Calm</span><span class="qax qay">energy ↑</span><span class="qax qaxx">pleasant →</span>${z?`<i class="mmdot" style="left:${o.p}%;top:${100-o.e}%"></i>`:''}`; }
+function qWeekHTML(e,it){ const cnt={red:0,yellow:0,blue:0,green:0}; let n=0; for(let i=0;i<7;i++){ const d=dAdd(S.sel,-i), [y,m,dd]=d.split('-'), mo=S.months[`${y}-${m}`];
+  ((mo&&mo.days&&mo.days[String(+dd)])||[]).forEach(e2=>{ if(e2.tid!==e.tid) return; (e2.items||[]).forEach(i2=>{ if(nk(i2.name)!==nk(it.name)||!compsList(i2).includes('Q')) return; const z=qZone(getP(i2,'Q')); if(z){ cnt[z]++; n++; } }); }); }
+  if(n<2) return ''; return `<p class="note qweek">Last 7 days: ${Object.entries(cnt).filter(([,c])=>c).map(([z,c])=>`<span><i style="background:${QZ[z][1]}"></i>${c}× ${z}</span>`).join(' ')}</p>`; }
+function qpadSet(b,ev){ const {k,it}=itemAt(b.dataset.qpad); if(!it||ev.detail===0) return; const r=b.getBoundingClientRect(); if(!r.width) return; const cl=v=>Math.max(0,Math.min(100,Math.round(v)));
+  const o=objP(it,'Q'); o.p=cl((ev.clientX-r.left)/r.width*100); o.e=cl(100-(ev.clientY-r.top)/r.height*100); const z=qZone(o); if(o.w&&!QZ[z][2].includes(o.w)) o.w=''; setP(it,'Q',o); saveMonth(k); render(); }
+app.addEventListener('keydown',ev=>{ if(GUEST) return; const b=ev.target.closest&&ev.target.closest('[data-qpad]'); if(!b) return; const st={ArrowLeft:[-5,0],ArrowRight:[5,0],ArrowUp:[0,5],ArrowDown:[0,-5]}[ev.key]; if(!st) return; ev.preventDefault();
+  const key=b.dataset.qpad, {k,it}=itemAt(key); if(!it) return; const o=objP(it,'Q'); o.p=Math.max(0,Math.min(100,(typeof o.p==='number'?o.p:50)+st[0])); o.e=Math.max(0,Math.min(100,(typeof o.e==='number'?o.e:50)+st[1])); setP(it,'Q',o); saveMonth(k); render(); const again=[...document.querySelectorAll('[data-qpad]')].find(x=>x.dataset.qpad===key); if(again) again.focus(); });
+// ---- route cards: grade, attempts, one result, why you fell, did you change your beta
+const FALLS=[['fing','Fingers opened'],['pump','Pump'],['shou','Shoulders / lock-off'],['core','Core / tension'],['foot','Foot slipped'],['coord','Coordination / timing'],['beta','Wrong beta / misread'],['fear','Hesitated / fear'],['skin','Skin'],['pain','Pain']];
+const RRES=[['flash','⚡ Flash'],['top','✓ Top'],['zone','Zone'],['no','✗ No top']];
+function rresOf(y){ return !y?null:y.fl===true?'flash':y.top===true?'top':y.top===false?(y.zone?'zone':'no'):null; }
+function routeSum(a){ const r=a.map(rresOf), att=a.reduce((t,y)=>t+(+y.a||1),0); return `${a.length} route${a.length>1?'s':''} · <b>${r.filter(x=>x==='flash').length}</b> flashed · <b>${r.filter(x=>x==='flash'||x==='top').length}</b> topped · <b>${r.filter(x=>x==='zone').length}</b> zone only · <b>${att}</b> attempts`; }
+function routeCard(key,y,i){ const r=rresOf(y), at=+y.a||1, fl=Array.isArray(y.fall)?y.fall:[], ask=r!=='flash'&&(r!=null||at>1), old=String(y.fwhy||'').trim();
+  return `<div class="route${r?' r-'+r:''}">
+    <div class="rtop"><b>#${i+1}</b><input class="rg" type="text" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="g" value="${esc(y.g||'')}" placeholder="Grade, e.g. 7A" aria-label="Grade of route ${i+1}" autocapitalize="characters" enterkeyhint="done">${y.at?`<span class="note">${esc(y.at)}</span>`:''}<button class="x" data-rdel="${key}|${y.id}" aria-label="Remove route ${i+1}">✕</button></div>
+    <div class="rrow"><span class="rlab">Attempts</span><span class="step"><button data-ratt="${key}|${y.id}|-1" aria-label="One less attempt">−</button><b>${at}</b><button data-ratt="${key}|${y.id}|1" aria-label="One more attempt">+</button></span>
+      <label class="rmin"><input type="number" inputmode="decimal" min="0" step="any" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="dur" value="${esc(y.dur??'')}" placeholder="–" aria-label="Minutes on route ${i+1}"><span>min</span></label></div>
+    <div class="rres" role="group" aria-label="Result">${RRES.map(([k,l])=>`<button data-rres="${key}|${y.id}|${k}" class="rr-${k}${r===k?' on':''}" aria-pressed="${r===k}">${l}</button>`).join('')}</div>
+    ${ask?`<p class="clab rfl">Why did you fall? <small>tap all that happened</small></p><div class="chips rfall">${FALLS.map(([k,l])=>`<button data-rfall="${key}|${y.id}|${k}" class="${fl.includes(k)?'on':''}" aria-pressed="${fl.includes(k)}">${l}</button>`).join('')}</div>${at>1?`<button class="rnb${y.nb?' on':''}" data-rnb="${key}|${y.id}" aria-pressed="${!!y.nb}">${y.nb?'✓ Changed my beta after a fall':'Changed my beta after a fall?'}</button>`:''}`:''}
+    <textarea rows="1" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="why" placeholder="Note (optional)" aria-label="Note for route ${i+1}">${esc(y.why||'')}</textarea>${old?`<p class="note">Flash note: “${esc(old)}”</p>`:''}</div>`; }
+const FONT=g=>{ const m=String(g||'').trim().toUpperCase().match(/^([3-9])([ABC])(\+)?$/); return m?(+m[1]-3)*6+{A:0,B:2,C:4}[m[2]]+(m[3]?1:0):null; };
+function allRoutes(){ return cached('ALLR',()=>{ const out=[]; Object.values(S.months).forEach(mo=>Object.entries((mo&&mo.days)||{}).forEach(([d,es])=>{ const ds=`${mo.key}-${pad(+d)}`; if(ds>todayStr) return;
+  (es||[]).forEach(e=>(e.items||[]).forEach(it=>{ if(!compsList(it).includes('G')) return; const a=getP(it,'G'); (Array.isArray(a)?a:[]).forEach(y=>{ if(y&&typeof y==='object') out.push(Object.assign({d:ds},y)); }); })); })); return out.sort((a,b)=>a.d<b.d?-1:1); }); }
+// ---- Performance tab: the tests and route cards, on their own calendar
+const PERF_TESTS=()=>{ const f=(name,comps,x)=>Object.assign({id:rid(),name,type:'mix',comps},x?{x:normX(x)}:{}), bw=()=>f('Kūno svoris',['X'],{u:'kg',role:'bw'}), notes=()=>f('Pastabos',['T']);
+  return [{id:rid(),name:'Pirštai 7 s',color:'#2F6FD1',perf:true,how:'Warm up 15 min first. One arm, 20 mm edge, half crimp. Pull (or hang) as hard as you can for 7 seconds. Best of 3 tries, 3 min rest between. Same edge and same time of day every test. Skip it if a finger hurts.',fields:[bw(),f('Max 7 s · 20 mm · half crimp',['X'],{u:'kg',lr:true,bw:'lift'}),notes()]},
+    {id:rid(),name:'Prisitraukimai',color:'#8E52CC',perf:true,how:'Warm up. Find the heaviest added weight you can do 2 clean pull-ups with. 3 min rest between tries.',fields:[bw(),f('Pridėtas svoris · 2 kartai',['X'],{u:'kg',bw:'hang'}),notes()]},
+    {id:rid(),name:'Lock-off',color:'#E86A2C',perf:true,how:'One arm locked at the angle, hold as long as you can. 3 min rest between arms.',fields:[f('90° laikymas',['X'],{u:'s',lr:true}),f('120° laikymas',['X'],{u:'s',lr:true}),notes()]},
+    {id:rid(),name:'Lipimas',color:'#35A071',perf:true,how:'One card per boulder: grade, attempts, result, and why you fell.',fields:[f('Boulderiai',['G']),notes()]},
+    {id:rid(),name:'Varžybos',color:'#D23F63',perf:true,how:'One card per boulder. Tap Zone when you got the zone but not the top.',fields:[f('Boulderiai',['G']),f('Vieta',['X'],{u:'vieta'}),notes()]}]; };
+// once per person, after the setup has synced: the tests are added (and an old weekly finger test moves here)
+function ensurePerf(){ if(GUEST||S.cfg.perfMig||ACC.role==='coach') return false; if(col&&!PULLED) return false; const T=S.cfg.templates; T.forEach(t=>{ if(t.fingerTest) t.perf=true; });
+  if(!T.some(t=>t.perf&&!t.fingerTest)) PERF_TESTS().forEach(t=>T.push(t)); S.cfg.perfMig=1; saveCfgQuiet(); return true; }
+// a setup change the app makes by itself: saved and synced, but not an undo step
+function saveCfgQuiet(){ bump(); ls.set('config',S.cfg); queue('config',()=>col.doc('config').set(S.cfg)); if(HIST.base.config!==undefined) HIST.base.config=docJSON('config'); }
+function perfHowHTML(e){ const t=S.cfg.templates.find(t=>t.id===e.tid); if(!t||!t.perf) return ''; const fing=/pir[sš]t|finger|hang/i.test(t.name)||t.fields.some(f=>{ const c=normX(f.x); return c.u==='kg'&&c.bw==='lift'; });
+  return `${t.how?`<p class="note phow">ⓘ ${esc(t.how)}</p>`:''}${fing&&!GUEST&&fingersSore()?'<div class="alert amber">Your fingers hurt in the last few days. Skip the max test, or ask your kinez first. A max pull on a sore finger is how pulleys go.</div>':''}`; }
+function fingersSore(){ let bad=false; try{ bad=ftPainRecent(); }catch(e){} try{ return bad||stateEntries().some(x=>/^f[LR]\d$/.test(x.r)&&x.v>=SORE); }catch(e){ return bad; } }
+function metricSeries(tid,fid,side,as){ return cached(`MS:${tid}:${fid}:${side}:${as}`,()=>{ const out=[]; Object.values(S.months).forEach(mo=>Object.entries((mo&&mo.days)||{}).forEach(([d,es])=>{ const ds=`${mo.key}-${pad(+d)}`; if(ds>todayStr) return;
+  (es||[]).forEach(e=>{ if(e.tid!==tid) return; const it=(e.items||[]).find(i=>i.fid===fid); if(!it||!compsList(it).includes('X')) return; const raw=xVals(it)[side]; if(raw==null) return; let v=raw;
+    if(as==='pct'){ const c=xcfg(e,it), bw=bwOf(e,ds); if(!bw||!c.bw) return; v=xPct(c,raw,bw); } out.push({d:ds,v}); }); })); return out.sort((a,b)=>a.d<b.d?-1:1); }); }
+function perfNowCard(){ const rows=[]; S.cfg.templates.filter(t=>t.perf).forEach(t=>t.fields.forEach(f=>{ if(!compsOf(f).includes('X')) return; const c=normX(f.x); if(c.role==='bw') return;
+    const pct=c.u==='kg'&&!!c.bw, sides=c.lr?['l','r']:['v'], ser=sides.map(s=>metricSeries(t.id,f.id,s,pct?'pct':'raw')); if(!ser.some(x=>x.length)) return;
+    const unit=pct?'%':(c.u?' '+c.u:''), cell=(x,p,l)=>x?`<span class="pv">${l?`<small>${l}</small>`:''}<b>${n1(x.v)}${unit}</b>${p?`<small class="${x.v>p.v?'up':x.v<p.v?'dn':''}">${x.v>p.v?'▲':x.v<p.v?'▼':'='}${x.v!==p.v?n1(Math.abs(x.v-p.v)):''}</small>`:''}</span>`:'';
+    const d=ser.map(x=>x.length?x[x.length-1].d:'').sort().pop();
+    rows.push(`<div class="pnrow"><span class="pnl"><i style="background:${t.color}"></i><span><b>${esc(t.name)}</b><small>${esc(f.name)}</small></span></span><span class="pnv">${sides.map((s,j)=>cell(ser[j][ser[j].length-1],ser[j][ser[j].length-2],c.lr?s.toUpperCase():'')).join('')}</span><small class="pnd">${dmy(d)}</small></div>`); }));
+  const bw=bwList(), lb=bw[bw.length-1];
+  if(!rows.length&&!lb) return `<div class="card pnow"><h3>Latest tests</h3><p class="note">${GUEST?'No tests logged yet.':'No tests yet. Pick a day below and tap a test to log it. Your numbers and how they change show up here.'}</p></div>`;
+  return `<div class="card pnow"><h3>Latest tests</h3>${rows.join('')}${lb?`<p class="note" style="margin:8px 0 0">Bodyweight ${lb.v} kg (${dmy(lb.d)})</p>`:''}</div>`; }
+function fallCard(){ const cut=dAdd(todayStr,-29), R=allRoutes().filter(y=>y.d>=cut); if(!R.length) return '';
+  const res=R.map(rresOf), tops=res.filter(r=>r==='flash'||r==='top').length, fl=res.filter(r=>r==='flash').length, cnt={}; R.forEach(y=>(Array.isArray(y.fall)?y.fall:[]).forEach(f=>cnt[f]=(cnt[f]||0)+1));
+  const L=Object.entries(cnt).sort((a,b)=>b[1]-a[1]), mx=L.length?L[0][1]:1, tagged=R.filter(y=>Array.isArray(y.fall)&&y.fall.length).length, multi=R.filter(y=>(+y.a||1)>1), nb=multi.filter(y=>y.nb), nn=multi.filter(y=>!y.nb), rate=a=>Math.round(a.filter(y=>y.top===true).length/a.length*100);
+  const hard=R.filter(y=>y.top===true&&FONT(y.g)!=null).sort((a,b)=>FONT(b.g)-FONT(a.g))[0], fname=f=>(FALLS.find(z=>z[0]===f)||[f,f])[1];
+  return `<div class="card fallc"><h3>Why you fall</h3><p class="note">Last 30 days, from all your route cards: ${R.length} route${R.length>1?'s':''} · ${tops} topped · ${fl} flashed${hard?` · hardest top ${esc(hard.g)}`:''}</p>
+    ${L.length?`<div class="fbars">${L.map(([f,n])=>`<div class="fbar"><span>${esc(fname(f))}</span><span class="fbt"><i style="width:${Math.max(6,n/mx*100)}%"></i></span><b>${n}</b></div>`).join('')}</div><p class="note">${L[0][1]>1?`Most common: <b>${esc(fname(L[0][0]).toLowerCase())}</b>. That's what to train first. `:''}Reasons tagged on ${tagged} of ${R.length} routes.</p>`:'<p class="note">Tap the reasons on your route cards when you fall. After a few sessions this shows what fails most, so you train that instead of guessing.</p>'}
+    ${nb.length>=3&&nn.length>=3?`<p class="note">After a fall: when you changed your beta you topped <b>${rate(nb)}%</b>, when you kept it <b>${rate(nn)}%</b>.</p>`:''}</div>`; }
+function renderPerf(){ ensurePerf(); const k=mkey(S.y,S.m); month(k); const PT=S.cfg.templates.filter(t=>t.perf);
+  const first=new Date(S.y,S.m,1), lead=(first.getDay()+6)%7, days=new Date(S.y,S.m+1,0).getDate(); let cells=WD.map(w=>`<div class="wd">${w}</div>`).join(''); for(let i=0;i<lead;i++) cells+=`<div class="day out"></div>`;
+  for(let d=1;d<=days;d++){ const ds=`${S.y}-${pad(S.m+1)}-${pad(d)}`, es=(month(k).days[String(d)]||[]).filter(isPerfE);
+    cells+=`<button class="day${ds===todayStr?' today':''}${ds===S.sel?' sel':''}" data-day="${ds}" aria-label="${d} ${MONTHS[S.m]}, ${es.length} tests"><span class="n">${d}</span><span class="tapes">${es.slice(0,4).map(e=>`<span class="tape" style="background:${tplColor(e)}"></span>`).join('')}</span></button>`; }
+  const sd=new Date(S.sel+'T12:00'), sel=entriesOn(S.sel).filter(isPerfE);
+  app.innerHTML=`${topBar()}${goalStrip()}${perfNowCard()}
+  <div class="month"><h1>${MONTHS[S.m]}<span>${S.y}</span></h1><div class="arrows"><button data-act="prev" aria-label="Previous month">‹</button><button data-act="next" aria-label="Next month">›</button></div></div>
+  <div class="grid">${cells}</div>
+  <div class="legend">${PT.map(t=>`<span><i style="background:${t.color}"></i>${esc(t.name)}</span>`).join('')}</div>
+  <div class="dayhead" id="dayhead"><button class="mini" data-dnav="-1" aria-label="Previous day">‹</button><span>${LTWD[sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}</span><button class="mini" data-dnav="1" aria-label="Next day">›</button></div>
+  ${S.sel!==todayStr?'<button class="btn ghost gotoday" data-act="gotoday">Back to today</button>':''}
+  ${GUEST?'':PT.length?`<div class="adds">${PT.map(t=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)}" data-add="${t.id}">+ ${esc(t.name)}</button>`).join('')}</div>`:`<div class="empty">${col&&!PULLED?'Connecting… your tests show up once you are online.':'No tests yet. Add one in Customize → Performance tests.'}</div>`}
+  ${sel.length?sel.map(entryHTML).join(''):`<div class="empty">${GUEST?'No tests on this day.':'Nothing on this day yet. Tap a test above.'}</div>`}
+  ${fallCard()}`;
+  app.querySelectorAll('textarea').forEach(grow); }
+// ---- Milestones: the roadmap with real numbers, and how close you are today
+function normGoals(g){ if(!Array.isArray(g)) return []; const S2=s=>String(s==null?'':s).replace(/[<>"`]/g,'').slice(0,80), okid=v=>/^[A-Za-z0-9_-]{1,64}$/.test(String(v));
+  return g.filter(m=>m&&typeof m==='object').slice(0,30).map(m=>({id:okid(m.id)?String(m.id):rid(),label:S2(m.label)||'Milestone',date:/^\d{4}-\d{2}-\d{2}$/.test(String(m.date))?String(m.date):'2027-12-31',
+    items:(Array.isArray(m.items)?m.items:[]).filter(i=>i&&typeof i==='object').slice(0,20).map(i=>{ const k=['metric','grade','check'].includes(i.kind)?i.kind:'check', o={id:okid(i.id)?String(i.id):rid(),kind:k,name:S2(i.name)||'Goal'};
+      if(k==='metric'){ o.tid=okid(i.tid)?String(i.tid):''; o.fid=okid(i.fid)?String(i.fid):''; o.side=['l','r','v'].includes(i.side)?i.side:'v'; o.as=i.as==='raw'?'raw':'pct'; o.target=isFinite(+i.target)?+i.target:0; }
+      if(k==='grade'){ o.target=S2(i.target).toUpperCase().slice(0,4)||'7C'; o.count=Math.max(1,Math.min(50,Math.round(+i.count)||1)); o.days=Math.max(0,Math.min(3650,Math.round(+i.days)||0)); }
+      if(k==='check') o.done=!!i.done; return o; })})).sort((a,b)=>a.date<b.date?-1:1); }
+function roadmapGoals(){ const isF=f=>{ const c=normX(f.x); return compsOf(f).includes('X')&&c.u==='kg'&&c.lr&&!!c.bw; }; let fing=S.cfg.templates.find(t=>t.perf&&t.fields.some(isF)); if(!fing){ fing=PERF_TESTS()[0]; S.cfg.templates.push(fing); }
+  const fd=fing.fields.find(isF), met=(side,t)=>({id:rid(),kind:'metric',name:`Fingers ${side==='l'?'left':'right'} · 7 s`,tid:fing.id,fid:fd.id,side,as:'pct',target:t}), gr=(t,c,d,n)=>({id:rid(),kind:'grade',name:n,target:t,count:c,days:d}), ck=n=>({id:rid(),kind:'check',name:n,done:false}), M=(label,date,items)=>({id:rid(),label,date,items});
+  return [M('Mid 2027','2027-06-30',[met('l',95),met('r',80),gr('7C',3,90,'Boulder 7C, consistent'),ck('Start lead · 7b+'),ck('Compete at a European Cup')]),
+    M('End 2027','2027-12-31',[met('l',97),met('r',88),gr('8A',1,0,'First 8A boulder'),ck('Lead 7c+'),ck('European Cup semi-final')]),
+    M('End 2028','2028-12-31',[met('l',100),met('r',95),gr('8A',3,90,'Boulder 8A, consistent'),ck('Lead 8a'),ck('Training in Japan'),ck('First World Cups · top 40')]),
+    M('End 2030','2030-12-31',[met('l',103),met('r',101),gr('8B',1,0,'Boulder 8B'),ck('Lead 8b'),ck('World Cup semi-final')]),
+    M('End 2033','2033-12-31',[met('l',106),met('r',106),gr('8B+',1,0,'Boulder 8B+'),ck('Lead 8b+'),ck('Regular World Cup semis, some finals')]),
+    M('2036','2036-07-31',[ck('World Cup finals and podiums'),ck('Olympic Games')])]; }
+const monthsTo=d=>(new Date(d+'T12:00')-new Date(todayStr+'T12:00'))/864e5/30.44;
+function goalItemState(i,m){
+  if(i.kind==='check') return {done:!!i.done,pct:i.done?1:0,main:i.done?'Done ✓':'Not yet',sub:'',short:i.name};
+  if(i.kind==='grade'){ const tg=FONT(i.target); if(tg==null) return {done:false,pct:0,main:esc(i.target),sub:'Use a Font grade like 7C or 8A.',short:i.name};
+    const R=allRoutes().filter(y=>y.top===true&&FONT(y.g)!=null), best=R.slice().sort((a,b)=>FONT(b.g)-FONT(a.g))[0], win=i.days?R.filter(y=>y.d>=dAdd(todayStr,-i.days+1)):R, n=win.filter(y=>FONT(y.g)>=tg).length, done=n>=i.count;
+    return {done,pct:i.count>1?Math.min(1,n/i.count):done?1:best?Math.min(0.95,(FONT(best.g)+1)/(tg+1)):0,main:i.count>1?`<b>${n}</b> of ${i.count} tops at ${esc(i.target)} or harder`:best?`Hardest top <b>${esc(best.g)}</b> → ${esc(i.target)}`:`No tops logged yet → ${esc(i.target)}`,
+      sub:done?'Reached ✓':i.count>1?`${i.days?`In the last ${i.days} days, from`:'From'} your route cards.${best?` Hardest top so far: ${esc(best.g)}.`:''}`:'From your route cards.',short:i.count>1?`${i.target} or harder: ${n}/${i.count} tops`:best?`Hardest ${best.g} → ${i.target}`:`${i.name}`}; }
+  const t=S.cfg.templates.find(t=>t.id===i.tid), f=t&&t.fields.find(f=>f.id===i.fid); if(!f) return {done:false,pct:0,main:'Test not found',sub:'Tap Edit and pick a test.',short:`${i.name}: no test`};
+  const c=normX(f.x), as=c.u==='kg'&&c.bw&&i.as==='pct'?'pct':'raw', unit=as==='pct'?'%':(c.u?' '+c.u:''), ser=metricSeries(i.tid,i.fid,i.side,as);
+  if(!ser.length) return {done:false,pct:0,main:`– → <b>${i.target}${unit}</b>`,sub:`No test yet: log “${esc(t.name)}” in the Performance tab.`,short:`${i.name}: no test yet`};
+  const fst=ser[0], lst=ser[ser.length-1], done=lst.v>=i.target, ml=monthsTo(m.date), need=ml>0?(i.target-lst.v)/ml:null, span=dayIdx(fst.d,lst.d), act=span>=21?(lst.v-fst.v)/(span/30.44):null, behind=!done&&act!=null&&need!=null&&act<need;
+  const sub=done?'Reached ✓':ml<=0?'Date passed':`Need ${sgnN(need)}${unit} a month${act!=null?` · you're doing ${sgnN(act)}${unit} a month · ${behind?'<b class="neg">behind</b>':'<b class="pos">on pace</b>'}`:' · test again to see your pace'}`;
+  return {done,behind,pct:Math.max(0,Math.min(1,lst.v/(i.target||1))),main:`<b>${n1(lst.v)}${unit}</b> → ${i.target}${unit}`,sub:`${sub} <span>(last test ${dmy(lst.d)})</span>`,short:`${i.name.replace(/ · 7 s$/,'')} ${n1(lst.v)}→${i.target}${unit}`}; }
+const nextGoal=()=>{ const G=S.cfg.goals||[]; return G.find(x=>x.date>=todayStr)||G[G.length-1]||null; };
+function goalStrip(){ const m=nextGoal(); if(!m) return GUEST||ACC.role==='coach'?'':`<button class="card gstrip gempty" data-tab="goals"><span class="gstop"><b>🎯 Add your milestones</b></span><span class="note">See every day how close you are to the next one.</span></button>`;
+  const st=m.items.map(i=>goalItemState(i,m)), done=st.filter(x=>x.done).length, dl=dayIdx(todayStr,m.date), avg=st.length?st.reduce((a,x)=>a+x.pct,0)/st.length:0, focus=st.filter(x=>!x.done).slice(0,3);
+  return `<button class="card gstrip" data-tab="goals" aria-label="Next milestone ${esc(m.label)}, open Milestones"><span class="gstop"><b>🎯 ${esc(m.label)}</b><span>${dl>0?`${dl} days left`:dl===0?'today':'date passed'} · ${done}/${st.length} done</span></span><span class="gsbar"><i style="width:${Math.round(avg*100)}%"></i></span>${focus.length?`<span class="gsl">${focus.map(x=>`<span${x.behind?' class="neg"':''}>${esc(x.short)}</span>`).join('')}</span>`:''}</button>`; }
+function goalCardHTML(m,nx){ const st=m.items.map(i=>goalItemState(i,m)), done=st.filter(x=>x.done).length, dl=dayIdx(todayStr,m.date), op=(S.st.gopen||{})[m.id], open=op===undefined?nx:op;
+  return `<div class="card goal${nx?' gnext':''}"><button class="ghead" data-gopen="${m.id}" aria-expanded="${open}"><span><b>${esc(m.label)}</b><small>${dmyy(m.date)} · ${dl>0?`${dl} days left`:dl===0?'today':'date passed'}</small></span><span class="gcount">${done}/${st.length}</span></button>
+    ${open?`<div class="gitems">${m.items.map((i,j)=>{ const x=st[j]; return `<div class="gitem${x.done?' done':''}">${i.kind==='check'?`<button class="gchk${i.done?' on':''}" data-gchk="${m.id}|${i.id}" aria-pressed="${!!i.done}" aria-label="${esc(i.name)}: ${i.done?'done':'not done'}">${i.done?'✓':''}</button>`:`<span class="gico${x.done?' on':''}">${x.done?'✓':i.kind==='grade'?'▲':'%'}</span>`}<div class="gtxt"><b>${esc(i.name)}</b>${i.kind!=='check'?`<span class="gmain">${x.main}</span><span class="mbar${x.behind?' neg':''}"><i style="width:${Math.round(x.pct*100)}%"></i></span><span class="note">${x.sub}</span>`:''}</div></div>`; }).join('')||'<p class="note">No goals here yet.</p>'}
+      ${GUEST?'':`<button class="btn ghost gedbtn" data-gedit="${m.id}">Edit</button>`}</div>`:''}</div>`; }
+function metricOptions(){ const out=[]; S.cfg.templates.filter(t=>t.perf).forEach(t=>t.fields.forEach(f=>{ if(!compsOf(f).includes('X')) return; const c=normX(f.x); if(c.role==='bw') return;
+  (c.lr?[['l','left'],['r','right']]:[['v','']]).forEach(([s,l])=>out.push({v:`${t.id}|${f.id}|${s}`,l:`${t.name} · ${f.name}${l?' · '+l:''}${c.u==='kg'&&c.bw?' (% bodyweight)':c.u?` (${c.u})`:''}`})); })); return out; }
+function goalEditHTML(m){ const O=metricOptions();
+  return `<div class="card goal gedit"><div class="ftgrid"><label class="ftin">Name<input type="text" data-glabel="${m.id}" value="${esc(m.label)}"></label><label class="ftin">Date<input type="date" data-gdate="${m.id}" value="${esc(m.date)}"></label></div>
+    ${m.items.map(i=>{ const cur=`${i.tid}|${i.fid}|${i.side}`; return `<div class="giedit"><div class="row" style="margin:0"><input type="text" data-giname="${m.id}|${i.id}" value="${esc(i.name)}" aria-label="Goal name"><button class="x" data-gidel="${m.id}|${i.id}" aria-label="Remove ${esc(i.name)}">✕</button></div>
+      ${i.kind==='metric'?`<div class="ftgrid"><label class="ftin">Test<select data-gfield="${m.id}|${i.id}">${O.some(o=>o.v===cur)?'':'<option value="" selected>Pick a test</option>'}${O.map(o=>`<option value="${o.v}"${o.v===cur?' selected':''}>${esc(o.l)}</option>`).join('')}</select></label><label class="ftin">Target<input type="number" inputmode="decimal" step="any" data-gitarget="${m.id}|${i.id}" value="${esc(i.target)}"></label></div>`
+       :i.kind==='grade'?`<div class="ftgrid g3"><label class="ftin">Grade<input type="text" data-gitarget="${m.id}|${i.id}" value="${esc(i.target)}" autocapitalize="characters"></label><label class="ftin">Tops<input type="number" inputmode="numeric" min="1" data-gicount="${m.id}|${i.id}" value="${esc(i.count)}"></label><label class="ftin">In days <small>0 = ever</small><input type="number" inputmode="numeric" min="0" data-gidays="${m.id}|${i.id}" value="${esc(i.days)}"></label></div>`:''}</div>`; }).join('')}
+    <p class="clab" style="margin-top:10px">Add a goal</p><div class="chips"><button data-giadd="${m.id}|metric">+ Test number</button><button data-giadd="${m.id}|grade">+ Boulder grade</button><button data-giadd="${m.id}|check">+ Tick box</button></div>
+    <div class="row" style="margin:12px 0 0"><button class="btn" data-gdone="1">Done</button><span style="flex:1"></span><button class="del" data-gdel="${m.id}">Delete milestone</button></div></div>`; }
+function renderGoals(){ ensurePerf(); const G=S.cfg.goals||[], ed=S.st.gedit||null, nx=(nextGoal()||{}).id;
+  app.innerHTML=`${topBar()}<div class="h2">Milestones</div>
+    ${G.length?'':GUEST?'<div class="empty">No milestones yet.</div>':`<div class="card"><h3>Your roadmap</h3><p class="note">Milestones with real numbers: finger strength per hand (% of bodyweight, 7 s test), boulder grades from your route cards, and lead and comp goals you tick off. Every day the calendars show how close you are.</p>
+      <div class="row" style="flex-wrap:wrap;margin:10px 0 0"><button class="btn" data-groad="1">Add my roadmap (2027–2036)</button><button class="btn ghost" data-gadd="1">Start empty</button></div>
+      <p class="note" style="margin:8px 0 0">The roadmap we made: fingers left/right 95/80% by mid 2027 up to 106/106% by 2033, first 8A by end of 2027, World Cup semis by 2030, the Olympics in 2036. Change any number after.</p></div>`}
+    ${G.map(m=>ed===m.id&&!GUEST?goalEditHTML(m):goalCardHTML(m,m.id===nx)).join('')}
+    ${G.length&&!GUEST?'<button class="btn ghost gaddbtn" data-gadd="1">+ Add milestone</button>':''}
+    ${G.length?'<p class="note">Finger goals read the “Pirštai 7 s” test in the Performance tab (one arm, 20 mm, half crimp, 7 seconds). Grades read your route cards (Font grades like 7C or 8A). Pace = how fast your tests are rising compared with what the date needs.</p>':''}`; }
+function goalItem(mid,iid){ const m=(S.cfg.goals||[]).find(x=>x.id===mid); return m&&m.items.find(i=>i.id===iid); }
+function goalClick(ds,b){
+  if(ds.gopen){ const nx=(nextGoal()||{}).id, cur=(S.st.gopen||{})[ds.gopen]; S.st.gopen=Object.assign({},S.st.gopen,{[ds.gopen]:!(cur===undefined?ds.gopen===nx:cur)}); render(); return true; }
+  if(GUEST) return false;
+  if(ds.groad){ S.cfg.goals=normGoals(roadmapGoals()); saveCfg(); render(); toast('Roadmap added. Tap Edit on a milestone to change it'); return true; }
+  if(ds.gadd){ const G=(S.cfg.goals||[]).slice(), last=G[G.length-1], m={id:rid(),label:'New milestone',date:last&&last.date>todayStr?dAdd(last.date,365):dAdd(todayStr,180),items:[]}; G.push(m); S.cfg.goals=normGoals(G); S.st.gedit=m.id; saveCfg(); render(); return true; }
+  if(ds.gedit){ S.st.gedit=ds.gedit; render(); return true; }
+  if(ds.gdone){ S.st.gedit=null; S.cfg.goals=normGoals(S.cfg.goals); saveCfg(); render(); return true; }
+  if(ds.gdel){ if(!armed(b,'Tap again to delete')) return true; S.cfg.goals=(S.cfg.goals||[]).filter(m=>m.id!==ds.gdel); S.st.gedit=null; saveCfg(); render(); toast('Milestone deleted. ↶ to undo'); return true; }
+  if(ds.gchk){ const [mid,iid]=ds.gchk.split('|'), i=goalItem(mid,iid); if(!i) return true; i.done=!i.done; saveCfg(); render(); if(i.done) toast(`✓ ${i.name}`); return true; }
+  if(ds.gidel){ const [mid,iid]=ds.gidel.split('|'), m=(S.cfg.goals||[]).find(x=>x.id===mid); if(!m) return true; m.items=m.items.filter(i=>i.id!==iid); saveCfg(); render(); return true; }
+  if(ds.giadd){ const [mid,kind]=ds.giadd.split('|'), m=(S.cfg.goals||[]).find(x=>x.id===mid); if(!m) return true; const o=metricOptions()[0], ref=o?o.v.split('|'):['','','v'];
+    m.items.push(kind==='metric'?{id:rid(),kind,name:'Test goal',tid:ref[0],fid:ref[1],side:ref[2],as:'pct',target:100}:kind==='grade'?{id:rid(),kind,name:'Boulder grade',target:'7C',count:1,days:0}:{id:rid(),kind:'check',name:'New goal',done:false}); saveCfg(); render(); return true; }
+  return false; }
+function goalChange(t,ds){ const G=S.cfg.goals||[];
+  if(ds.glabel!==undefined){ const m=G.find(x=>x.id===ds.glabel); if(m) m.label=t.value.replace(/[<>"`]/g,'').trim().slice(0,80)||'Milestone'; }
+  else if(ds.gdate!==undefined){ const m=G.find(x=>x.id===ds.gdate); if(m&&/^\d{4}-\d{2}-\d{2}$/.test(t.value)) m.date=t.value; }
+  else { const raw=ds.giname||ds.gitarget||ds.gicount||ds.gidays||ds.gfield||'', [mid,iid]=raw.split('|'), i=goalItem(mid,iid); if(!i) return;
+    if(ds.giname!==undefined) i.name=t.value.replace(/[<>"`]/g,'').trim().slice(0,80)||'Goal';
+    else if(ds.gitarget!==undefined) i.target=i.kind==='grade'?t.value.trim().toUpperCase().slice(0,4):(t.value!==''&&isFinite(+t.value)?+t.value:i.target);
+    else if(ds.gicount!==undefined) i.count=Math.max(1,Math.round(+t.value)||1);
+    else if(ds.gidays!==undefined) i.days=Math.max(0,Math.round(+t.value)||0);
+    else if(ds.gfield!==undefined&&t.value){ const [tid,fid,side]=t.value.split('|'), f=fieldById(fid), c=normX(f&&f.x); Object.assign(i,{tid,fid,side,as:c.u==='kg'&&c.bw?'pct':'raw'}); } }
+  saveCfg(); }
+function goalsExport(){ const G=S.cfg.goals||[]; if(!G.length) return []; const L=['=== Milestones (status on '+todayStr+') ==='];
+  G.forEach(m=>{ L.push(`- ${m.label} (${m.date}):`); m.items.forEach(i=>{ const x=goalItemState(i,m); L.push(`  - ${i.name}: ${untag(x.main)}${x.sub?' · '+untag(x.sub):''}`); }); }); return L; }
+// ---- one tap: the calendar setup we decided (feelings as slider / Mood Meter, routes move to the Performance tab)
+function setupPlan(){ const out=[]; S.cfg.templates.forEach(t=>{ if(t.perf) return; t.fields.forEach(f=>{ const cs=compsOf(f), n=String(f.name||'');
+    if(cs.includes('G')){ const keep=cs.filter(c=>c==='E'||c==='T'), ren=/perform/i.test(n)&&keep.includes('E'); out.push({f,to:keep.length?keep:['T'],name:ren?'Krūvis':null,txt:`${t.name} · ${n}: keep ${keep.length?keep.map(c=>COMP[c].toLowerCase()).join(' + '):'text'}${ren?', renamed Krūvis':''}. Route cards move to the Performance tab.`}); return; }
+    if(/emoc|emot|nuotaik|mood/i.test(n)&&!cs.includes('Q')&&(cs.includes('S')||cs.includes('V'))){ out.push({f,to:['Q','T'],txt:`${t.name} · ${n}: Mood Meter + note`}); return; }
+    if(/energ|fok|focus/i.test(n)&&!cs.includes('A')&&(cs.includes('S')||cs.includes('V'))) out.push({f,to:['A','T'],txt:`${t.name} · ${n}: slider + note`}); }); }); return out; }
+function setupUpdateCard(){ if(S.cfg.setupV2) return ''; const P=setupPlan(); if(!P.length) return '';
+  return `<div class="card pack"><h3>Update my calendar setup</h3><p class="note">One tap does what we decided: energy and focus become sliders, emotions become the Mood Meter, and route cards move out of the daily calendar into the Performance tab. Only new logs change. Old logs keep everything, and ↶ undoes it.</p>
+    <ul class="setuplist">${P.map(x=>`<li>${esc(x.txt)}</li>`).join('')}</ul>
+    <div class="row" style="margin:8px 0 0"><button class="btn" data-act="setupv2">Update</button><button class="btn ghost" data-act="setupno">No thanks</button></div></div>`; }
+function applySetupV2(){ const P=setupPlan(); P.forEach(x=>{ x.f.type='mix'; x.f.comps=sortC(x.to); if(x.name) x.f.name=x.name; }); S.cfg.setupV2=1; saveCfg(); render(); toast(P.length?`Updated ${P.length} field${P.length>1?'s':''}. ↶ to undo`:'Nothing to update'); }
+
 loadLocalMonths(); cleanDrafts();
 render();
 document.addEventListener('visibilitychange',()=>{ if(!ALIVE) return; if(document.visibilityState==='visible'){ const n=dstr(new Date()); if(n!==todayStr){ if(S.sel===todayStr) S.sel=n; todayStr=n; if(!GUEST){ loadLocalMonths(); cleanDrafts(); } render(); sumQueue(); } if(col&&dirty.size&&!GUEST) flushDirty(); } });
