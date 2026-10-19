@@ -70,9 +70,12 @@ service cloud.firestore {
     }
     match /people/{pid} {
       // logs: only you; a coach may read athletes' logs (not other coaches'); the supervisor reads only his own
+      // a comp simulation the coach locked: nobody can change its results any more
+      function simLocked(d) { return d.matches('sim-[A-Za-z0-9_-]+')
+        && get(/databases/$(database)/documents/team/info).data.get('sims', {}).get(d.split('-')[1], {}).get('locked', false) == true; }
       match /docs/{d} {
         allow read: if member() && (pid == me() || (isCoach() && roleOf(pid) != 'coach'));
-        allow create, update: if member() && pid == me();
+        allow create, update: if member() && pid == me() && !simLocked(d);
         allow delete: if (member() && pid == me()) || (isStaff() && pid != me() && !accExists(pid));
       }
       // coach notes: the athlete and coaches read them; coaches write their own; the athlete only replies
