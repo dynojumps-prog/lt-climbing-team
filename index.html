@@ -525,6 +525,8 @@ function inkFor(c){ const m=/^#?([0-9a-f]{6})$/i.exec(c||''); if(!m) return '#ff
 const MONTHS=['Sausis','Vasaris','Kovas','Balandis','Gegužė','Birželis','Liepa','Rugpjūtis','Rugsėjis','Spalis','Lapkritis','Gruodis'];
 const WD=['Pr','An','Tr','Kt','Pn','Š','S'];
 // ---------- field building blocks (v2): every field is a set of parts you add ----------
+// milestone sections: defined up here because saved milestones are cleaned when the app starts
+const GSEC={fing:'Finger strength',bould:'Bouldering',style:'Every style',lead:'Lead',comp:'Competitions',other:'Other goals'}, GSECO=['fing','bould','style','lead','comp','other'];
 const COMP={R:'Time range',C:'Time',Q:'Mood Meter',A:'Scale 1–7',S:'1–10',V:'Timed scores',X:'Measure',N:'Number',D:'Minutes',K:'Count',Y:'Yes / No',E:'Training load',F:'Flash & tops',G:'Routes',P:'Pain check',M:'Body map',B:'Timed blocks',L:'Checklist',T:'Text'};
 const CORDER=['R','C','Q','A','S','V','X','N','D','K','Y','E','F','G','P','M','B','L','T'];
 const LEG={text:'T',scale:'S',both:'ST',range:'R',sleep:'RT',rangeScale:'RS',all:'RST',blocks:'B',list:'L',load:'E',pain:'P',flash:'F',number:'N'};
@@ -3338,7 +3340,6 @@ function renderPerf(){ ensurePerf(); const k=mkey(S.y,S.m); month(k); const PT=S
   ${fallCard()}`;
   app.querySelectorAll('textarea').forEach(grow); }
 // ---- Milestones: the roadmap with real numbers, and how close you are today
-const GSEC={fing:'Finger strength',bould:'Bouldering',style:'Every style',lead:'Lead',comp:'Competitions',other:'Other goals'}, GSECO=['fing','bould','style','lead','comp','other'];
 const secOf=i=>GSEC[i.sec]?i.sec:i.kind==='metric'?'fing':i.kind==='grade'?'bould':i.kind==='styles'?'style':'other';
 function normGoals(g){ if(!Array.isArray(g)) return []; const S2=s=>String(s==null?'':s).replace(/[<>"`]/g,'').slice(0,80), okid=v=>/^[A-Za-z0-9_-]{1,64}$/.test(String(v));
   return g.filter(m=>m&&typeof m==='object').slice(0,30).map(m=>({id:okid(m.id)?String(m.id):rid(),label:S2(m.label)||'Milestone',date:/^\d{4}-\d{2}-\d{2}$/.test(String(m.date))?String(m.date):'2027-12-31',
