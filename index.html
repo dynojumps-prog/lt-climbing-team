@@ -813,6 +813,12 @@ button{transition:transform .12s ease,background-color .18s ease,color .18s ease
 .rdc.pos{border-color:var(--pos)}.rdc.pos i{color:var(--pos)}.rdc.amb{border-color:#D69E2E}.rdc.amb i{color:#D69E2E}.rdc.neg{border-color:var(--neg)}.rdc.neg i{color:var(--neg)}
 .atmeta .pos{color:var(--pos)}.atmeta .neg{color:var(--neg)}
 .attbl{display:grid;font-size:.86rem}.atth,.attr{display:grid;grid-template-columns:1.4fr .8fr .7fr .7fr 1.4fr;gap:6px;padding:6px 0;border-top:1px solid var(--line);align-items:baseline}.atth{border-top:0;font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;color:var(--soft)}.attr small{color:var(--soft)}
+.newsov{position:fixed;inset:0;z-index:9999;background:rgba(5,8,12,.6);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:16px;animation:rise .25s ease both}
+.newsbox{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:var(--r,16px);width:100%;max-width:460px;max-height:88vh;overflow:auto;padding:20px 18px 16px;box-shadow:0 24px 60px rgba(0,0,0,.4)}
+.newsbox h2{font-family:var(--fh);font-size:1.6rem;margin:4px 0 10px}.newsk{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+.newsl{font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin:12px 0 4px}
+.newsul{list-style:none;margin:0;padding:0}.newsul li{display:flex;flex-direction:column;padding:8px 0;border-top:1px solid var(--line)}.newsul li:first-child{border-top:0}.newsul b{font-size:.95rem}.newsul span{color:var(--soft);font-size:.88rem;line-height:1.35}
+.newsf{position:sticky;bottom:-16px;background:var(--panel);margin:8px -18px -16px;padding:12px 18px 14px;border-top:1px solid var(--line)}.newsok{width:100%}.newsn{text-align:center;margin:8px 0 0}
 </style>
 </head>
 <body>
@@ -977,7 +983,7 @@ function normCfg(c){ cleanIds(c); if(!c||!Array.isArray(c.templates)) return def
   c.templates=c.templates.filter(t=>t&&typeof t==='object').map(t=>Object.assign({id:String(t.id||rid()),name:String(t.name||'Log'),color:safeColor(t.color),bodyCheck:!!t.bodyCheck,fingerTest:!!t.fingerTest},t.perf?{perf:true}:{},t.comp?{comp:true}:{},['daily','super','climb','comp'].includes(t.grp)?{grp:t.grp}:{},t.how&&typeof t.how==='string'?{how:t.how.slice(0,600)}:{},{
     fields:(Array.isArray(t.fields)?t.fields:[]).filter(f=>f&&typeof f==='object').map(f=>Object.assign({id:String(f.id||rid()),name:String(f.name||'Laukas'),type:VTYPES.includes(f.type)?f.type:'text'},Array.isArray(f.opts)?{opts:f.opts.map(String)}:{},f.type==='mix'?{comps:sortC((Array.isArray(f.comps)?f.comps:['T']).filter(c=>COMP[c]))}:{},typeof f.role==='string'?{role:f.role}:{},f.x&&typeof f.x==='object'?{x:normX(f.x)}:{}))}));
   if(!c.templates.length) return defaultCfg(); if(!c.templates.some(t=>!t.perf)) c.templates=defaultCfg().templates.concat(c.templates);
-  c.goals=normGoals(c.goals); c.perfMig=c.perfMig?1:0; c.setupV2=c.setupV2?1:0; c.setupV3=c.setupV3?1:0; c.perfV2=c.perfV2?1:0; c.perfV3=c.perfV3?1:0; c.perfV4=c.perfV4?1:0; c.perfV5=c.perfV5?1:0; c.perfV6=c.perfV6?1:0; c.perfV7=c.perfV7?1:0; c.tfont=['orbitron','archivo','marker'].includes(c.tfont)?c.tfont:''; c.skin=['vilnius','granite','chalk','comp','forest','obsidian','royal','glacier','sandstone','mono','xmas','halloween'].includes(c.skin)?c.skin:'vilnius'; c.styles=Array.isArray(c.styles)?c.styles.map(t=>String(t||'').replace(/[|<>"`&\\]/g,'').trim().slice(0,24)).filter(Boolean).slice(0,24):[]; c.setupV4=c.setupV4?1:0; c.pack=c.pack?1:0; c.packNo=c.packNo?1:0; c.bodyMig=c.bodyMig?1:0; c.routesMig=c.routesMig?1:0; const hs={}; if(c.hideSug&&typeof c.hideSug==='object') Object.entries(c.hideSug).forEach(([k,a])=>{ if(Array.isArray(a)) hs[String(k)]=a.map(String).slice(0,200); }); c.hideSug=hs; const nm={}; if(c.names&&typeof c.names==='object') Object.entries(c.names).forEach(([k,a])=>{ if(Array.isArray(a)){ const L=a.filter(x=>typeof x==='string'&&x.trim()).map(x=>x.trim().slice(0,60)).slice(-80); if(L.length) nm[String(k)]=L; } }); c.names=nm; c.lastBackup=Math.max(0,+c.lastBackup||0); c.owner=String(c.owner||'').trim().slice(0,40); return c; }
+  c.goals=normGoals(c.goals); c.perfMig=c.perfMig?1:0; c.setupV2=c.setupV2?1:0; c.setupV3=c.setupV3?1:0; c.perfV2=c.perfV2?1:0; c.perfV3=c.perfV3?1:0; c.perfV4=c.perfV4?1:0; c.perfV5=c.perfV5?1:0; c.perfV6=c.perfV6?1:0; c.perfV7=c.perfV7?1:0; c.news=typeof c.news==='string'?c.news.slice(0,20):''; c.tfont=['orbitron','archivo','marker'].includes(c.tfont)?c.tfont:''; c.skin=['vilnius','granite','chalk','comp','forest','obsidian','royal','glacier','sandstone','mono','xmas','halloween'].includes(c.skin)?c.skin:'vilnius'; c.styles=Array.isArray(c.styles)?c.styles.map(t=>String(t||'').replace(/[|<>"`&\\]/g,'').trim().slice(0,24)).filter(Boolean).slice(0,24):[]; c.setupV4=c.setupV4?1:0; c.pack=c.pack?1:0; c.packNo=c.packNo?1:0; c.bodyMig=c.bodyMig?1:0; c.routesMig=c.routesMig?1:0; const hs={}; if(c.hideSug&&typeof c.hideSug==='object') Object.entries(c.hideSug).forEach(([k,a])=>{ if(Array.isArray(a)) hs[String(k)]=a.map(String).slice(0,200); }); c.hideSug=hs; const nm={}; if(c.names&&typeof c.names==='object') Object.entries(c.names).forEach(([k,a])=>{ if(Array.isArray(a)){ const L=a.filter(x=>typeof x==='string'&&x.trim()).map(x=>x.trim().slice(0,60)).slice(-80); if(L.length) nm[String(k)]=L; } }); c.names=nm; c.lastBackup=Math.max(0,+c.lastBackup||0); c.owner=String(c.owner||'').trim().slice(0,40); return c; }
 function migM(i){ if(i&&i.type==='mix'&&i.val&&i.val.M&&i.val.M.now){ const M=Object.assign({},i.val.M); if(!M.rest) M.rest=M.now; delete M.now; return Object.assign({},i,{val:Object.assign({},i.val,{M})}); } return i; }
 function normMonth(k,m){ cleanIds(m); const days={}; const src=m&&m.days&&typeof m.days==='object'?m.days:{};
   Object.entries(src).forEach(([d,es])=>{ if(!Array.isArray(es)) return; days[String(+d)]=es.filter(e=>e&&typeof e==='object').map(e=>Object.assign({},e,{id:String(e.id||rid()),items:(Array.isArray(e.items)?e.items:[]).filter(i=>i&&typeof i==='object').map(migM).map(i=>Object.assign({},i,{fid:String(i.fid||rid()),name:String(i.name||''),type:VTYPES.includes(i.type)?i.type:'text'},i.type==='mix'?{comps:sortC((Array.isArray(i.comps)?i.comps:['T']).filter(c=>COMP[c]))}:{}))})); });
@@ -1302,7 +1308,7 @@ function tplColor(e){ const t=S.cfg.templates.find(t=>t.id===e.tid); return safe
 const app=document.getElementById('app');
 
 // ---------- render ----------
-function render(){ applySkin(); const viewNow=S.view+'|'+(S.st.pgrp||''); if(viewNow!==SKIN.lastView){ SKIN.lastView=viewNow; app.classList.add('enter'); clearTimeout(SKIN.t); SKIN.t=setTimeout(()=>app.classList.remove('enter'),450); } const y=window.scrollY, fsEl=app.querySelector('.simfs'), fsY=fsEl?fsEl.scrollTop:0; app.style.minHeight=app.offsetHeight+'px'; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; ({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth}[S.view]||renderSettings)(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); const fs2=app.querySelector('.simfs'); if(fs2&&fsY) fs2.scrollTop=fsY; app.style.minHeight=''; tapFx(); }
+function render(){ applySkin(); setTimeout(newsCheck,0); const viewNow=S.view+'|'+(S.st.pgrp||''); if(viewNow!==SKIN.lastView){ SKIN.lastView=viewNow; app.classList.add('enter'); clearTimeout(SKIN.t); SKIN.t=setTimeout(()=>app.classList.remove('enter'),450); } const y=window.scrollY, fsEl=app.querySelector('.simfs'), fsY=fsEl?fsEl.scrollTop:0; app.style.minHeight=app.offsetHeight+'px'; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; ({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth}[S.view]||renderSettings)(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); const fs2=app.querySelector('.simfs'); if(fs2&&fsY) fs2.scrollTop=fsY; app.style.minHeight=''; tapFx(); }
 function toast(t){ let el=document.getElementById('toast'); if(!el){ el=document.createElement('div'); el.id='toast'; el.setAttribute('role','status'); document.body.appendChild(el); } el.textContent=t; el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),1800); }
 function say(t){ const m=document.getElementById('msg'); if(m) m.textContent=t; }
 function armed(b,label){ if(b.dataset.armed) return true; b.dataset.armed='1'; const old=b.textContent; b.textContent=label; b.classList.add('armed'); setTimeout(()=>{ if(b.isConnected){ delete b.dataset.armed; b.textContent=old; b.classList.remove('armed'); } },3000); return false; }
@@ -1562,10 +1568,28 @@ function fieldInput(t){ if(GUEST) return true; if(!t.dataset.k) return false; co
 
 function grow(t){ t.style.height='auto'; t.style.height=t.scrollHeight+2+'px'; }
 
+
+// ---- What's new: shows once per account after an update (OK saves it to your setup, so it doesn't come back on other phones); Customize → What's new shows it again
+const NEWS_V='2026-10';
+const NEWS_ALL=[['Performance tab','Tests, route cards and comps on their own calendar.'],['Daily tests','A short finger, pull-up and lock-off test every training. Shows if you are fresh or tired today.'],['Super tests','Big max tests, only when you are rested.'],['Route cards','Tries, the try you got the zone, the try you topped, and why you fell.'],['After training','How you feel, stress, how hard it was compared with last time, and if it went well.'],['Practice comps','The coach starts one, everyone’s phone shows the same timer, and you see your place at the end.'],['Goals','Set goals with dates and see how close you are.'],['New looks','12 colour themes in Customize, plus Christmas and Halloween.'],['Safer login','Wrong codes lock you out for a while, and you get an alert when you log in on a new phone.'],['Your data','All your old logs are still there.']];
+const NEWS_COACH=[['Stats tab','Everyone’s tests in one place. Green = fresh, yellow = a bit tired, red = very tired.'],['Comps tab','Make a practice comp, pick athletes, set the order, see results live, then lock them.']];
+function newsHTML(){ const staff=ACC.role==='coach'||ACC.role==='supervisor', C=ACC.role==='coach'?NEWS_COACH:ACC.role==='supervisor'?NEWS_COACH.slice(1):[];
+  const li=([t,d])=>`<li><b>${t}</b><span>${d}</span></li>`;
+  return `<div class="newsbox" role="dialog" aria-modal="true" aria-labelledby="newsh"><div class="newsk"><span class="flagbar"></span>Update</div><h2 id="newsh">What’s new</h2>
+    ${C.length?`<p class="newsl">For you as ${ACC.role==='coach'?'coach':'supervisor'}</p><ul class="newsul">${C.map(li).join('')}</ul><p class="newsl">For everyone</p>`:''}
+    <ul class="newsul">${NEWS_ALL.map(li).join('')}</ul>
+    <div class="newsf"><button class="btn newsok" data-newsok="1">OK</button><p class="note newsn">You can see this again in Customize → What’s new.</p></div></div>`; }
+function newsOpen(){ if(document.getElementById('news')) return; const o=document.createElement('div'); o.id='news'; o.className='newsov'; o.innerHTML=newsHTML(); document.body.appendChild(o);
+  o.addEventListener('click',ev=>{ if(ev.target.closest('[data-newsok]')) newsClose(); }); const b=o.querySelector('.newsok'); if(b) try{ b.focus({preventScroll:true}); }catch(e){} }
+function newsClose(){ const o=document.getElementById('news'); if(o) o.remove(); if(!GUEST&&S.cfg.news!==NEWS_V){ S.cfg.news=NEWS_V; saveCfg(); } }
+function newsCheck(){ if(GUEST||!ALIVE||NEWS.done) return; if(col&&!PULLED) return; if(S.cfg.news===NEWS_V){ NEWS.done=true; return; } NEWS.done=true; setTimeout(()=>{ if(ALIVE&&!GUEST) newsOpen(); },400); }
+const NEWS={done:false};
+function newsCard(){ if(GUEST) return ''; return `<div class="card"><h3>What’s new</h3><p class="note">Everything the last update changed, in short.</p><button class="btn ghost" data-act="newsopen" style="margin-top:8px">Show what’s new</button></div>`; }
 function renderSettings(){
   app.innerHTML=`
   ${topBar()}
   ${skinCardHTML()}
+  ${newsCard()}
   ${accountCard()}
   ${backupCard()}
   ${aiCard()}
@@ -2994,6 +3018,7 @@ app.addEventListener('click',async ev=>{
   if(ds.secopen&&!GUEST){ S.st.secOpen=ds.secopen; render(); const ta=document.querySelector(`[data-sec="${ds.secopen}"]`); if(ta) ta.focus(); return; }
   if(ds.act==='lgme'){ ls.set('loginSeen',Date.now()); render(); return; }
   if(ds.act==='weakfix'){ ls.set('loginSeen',Date.now()); S.view='set'; S.st.myCode=''; S.st.myCodeErr=''; render(); const m=document.getElementById('mycode'); if(m){ m.scrollIntoView({block:'center'}); m.focus(); } return; }
+  if(ds.act==='newsopen'){ newsOpen(); return; }
   if(!GUEST&&S.view==='ath'&&atClick(ds)) return;
   if(fieldClick(ds,b)) return;
   if(ds.act==='ftopen'){ const L=fingerTests(), last=L[L.length-1]||{}; S.st.ftOpen=true; S.st.ft={bw:last.bw??'',add:'',edge:last.edge??20,reps:'',grip:'half',note:''}; render(); return; }
