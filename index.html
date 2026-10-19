@@ -822,6 +822,10 @@ button{transition:transform .12s ease,background-color .18s ease,color .18s ease
 /* long words without spaces (a pasted link, a long name) wrap instead of pushing the page sideways */
 .card,.entry,.phead,.gstrip,.simday,.siminv,.simboard,.sbinv,.bkprev,.alert,.bnudge,.newsbox,.tmrow,.atrow,.atrd,.rdc,.goal,.gitem{overflow-wrap:anywhere}
 .gstop,.gstop>*,.simm,.simm>*,.atname,.tmrow>*{min-width:0}
+.newsdet{width:100%;margin-bottom:8px}.newsf .newsok2{flex:0 0 auto}.newsf:has(.newsok2){display:flex;gap:8px}.newsf:has(.newsok2) .newsok{flex:1}
+.ndkey{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.78rem;color:var(--soft);margin:0 0 4px}.ndkey span{display:flex;align-items:center;gap:6px}
+.nd{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle;flex:0 0 auto}.nd.r{background:#2FA36B}.nd.c{background:#E0A526}.nd.o{background:var(--soft);opacity:.8}
+.ndh{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}.ndi{flex:0 0 auto;font-style:normal;font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:var(--pill);border:1px solid var(--line);color:var(--soft)}.ndi.high{color:var(--ink);border-color:var(--ink)}
 </style>
 </head>
 <body>
@@ -1570,17 +1574,59 @@ function grow(t){ t.style.height='auto'; t.style.height=t.scrollHeight+2+'px'; }
 
 
 // ---- What's new: shows once per account after an update (OK saves it to your setup, so it doesn't come back on other phones); Customize → What's new shows it again
-const NEWS_V='2026-10';
+const NEWS_V='2026-10b';
 const NEWS_ALL=[['Performance tab','Tests, route cards and comps on their own calendar.'],['Daily tests','A short finger, pull-up and lock-off test every training. Shows if you are fresh or tired today.'],['Super tests','Big max tests, only when you are rested.'],['Route cards','Tries, the try you got the zone, the try you topped, and why you fell.'],['After training','How you feel, stress, how hard it was (0 = normal, − easier, + harder), and if it went well.'],['Practice comps','The coach starts one, everyone’s phone shows the same timer, and you see your place at the end.'],['Goals','Set goals with dates and see how close you are.'],['New looks','12 colour themes in Customize, plus Christmas and Halloween.'],['Safer login','Wrong codes lock you out for a while, and you get an alert when you log in on a new phone.'],['Your data','All your old logs are still there.']];
 const NEWS_COACH=[['Stats tab','Everyone’s tests in one place. Green = fresh, yellow = a bit tired, red = very tired.'],['Comps tab','Make a practice comp, pick athletes, set the order, see results live, then lock them.']];
+
+// the detailed log: what each change is based on and how much it matters. r = research or official rules, c = common practice, o = our own choice
+const NEWS_DETAIL=[['Training and health',[
+  ['Training load = effort × minutes','Session-RPE (Foster et al. 2001), the most used load method in sport','r','High'],
+  ['Load scale: 0 = normal, − easier, + harder','The Borg 0–10 effort scale, shown around a normal session (0 = effort 5)','r','High'],
+  ['Warning when load jumps over 30% in a week','The acute:chronic workload idea (Gabbett 2016), still debated by researchers','c','Medium'],
+  ['1–7 feeling scales compared with your normal','Wellness questionnaires like the Hooper index. How athletes feel catches fatigue better than most measurements (Saw et al. 2016)','r','High'],
+  ['Feelings grid','The Affect Grid (Russell et al. 1989)','r','Medium'],
+  ['Stress: how strong, and did it help or hurt','Jones & Swain: athletes who read stress as helping perform better','r','Medium'],
+  ['Session quality: physical, technical, mental','Our own split, not a tested questionnaire','o','Medium'],
+  ['Finger pain 0–10 and warning signs','The pain scale used in medicine, and pulley-injury warning signs from climbing medicine (Schöffl)','r','High'],
+  ['Weekly body check','The OSTRC overuse-injury questionnaire (Clarsen et al. 2013)','r','High']]],
+ ['Tests',[
+  ['Finger test: one arm, 20 mm edge, 7 s, % of bodyweight','Finger strength is one of the strongest predictors of climbing grade (e.g. Baláš et al. 2012). 20 mm is the standard research edge','r','High'],
+  ['Same warm-up before every super test','A published finger-test protocol, so results compare','r','High'],
+  ['Super tests only after 48 h without hard training','Standard practice for max tests','c','High'],
+  ['Daily tests show how fresh you are','The same idea as daily jump tests in other sports','c','Medium'],
+  ['Tired = 5% below your normal, very tired = 10%','Our own cut-offs. Your own data will show the real ones','o','Medium'],
+  ['Milestones use your best daily test of 14 days','Our choice, so one tired day doesn’t count against you','o','Medium'],
+  ['Pull-ups with weight, 90° lock-off','Common climbing tests, less linked to grade than fingers','c','Medium'],
+  ['Same tests for the whole team','Needed so numbers compare over time and between athletes','c','High']]],
+ ['Climbing and comps',[
+  ['Points: top 25, zone 10, −0.1 per failed try','IFSC 2025 boulder rules','r','High'],
+  ['Route cards: tries, zone try, top try','How the IFSC records results','r','High'],
+  ['Why you fell, in your own words','Coaching practice: reviewing your attempts helps learning','c','Medium'],
+  ['Practice comps: rotations, one climber per boulder, signals','IFSC competition rules','r','High'],
+  ['15 s change time','Our choice','o','Low'],
+  ['Grade goals use your hardest top in 6 months','How climbing studies report ability (IRCRA)','r','Medium']]],
+ ['Coach, app and safety',[
+  ['Coach Stats: everyone’s tests in one place','Standard athlete monitoring','c','High'],
+  ['Safer login and protected data','Standard web security practice (OWASP)','r','High'],
+  ['Backup with everything','Standard data-safety practice','c','High'],
+  ['AI file explains the ratings','So an AI reads your data correctly','o','Medium'],
+  ['Themes, Christmas and Halloween','Just for fun and motivation','o','Low']]]];
+const NEWS_MINE=['Your milestone path',[['Finger % goals per year','Estimated from published finger strength of elite climbers. The steps between years are our estimates','c','High'],['Grade, lead and comp goals per year','Your own plan toward the top level and the Olympics','o','High']]];
+const NEWS_KIND={r:'Research or official rules',c:'Common practice',o:'Our choice'};
+function newsDetailHTML(){ const G=NEWS_DETAIL.concat(pathMine()?[NEWS_MINE]:[]);
+  return `<div class="newsbox" role="dialog" aria-modal="true" aria-labelledby="newsh"><div class="newsk"><span class="flagbar"></span>Update · details</div><h2 id="newsh">What it’s based on</h2>
+    <div class="ndkey">${Object.entries(NEWS_KIND).map(([k,l])=>`<span><i class="nd ${k}"></i>${l}</span>`).join('')}</div>
+    ${G.map(([t,R])=>`<p class="newsl">${t}</p><ul class="newsul">${R.map(([n,b,k,imp])=>`<li><div class="ndh"><b><i class="nd ${k}" title="${NEWS_KIND[k]}"></i>${n}</b><em class="ndi ${imp.toLowerCase()}">${imp}</em></div><span>${b}</span></li>`).join('')}</ul>`).join('')}
+    <p class="note" style="margin:12px 0 0">Most important: training load, finger pain warning signs, the weekly body check and the finger test. They are the best proven, and they help most with getting stronger without getting hurt.</p>
+    <div class="newsf"><button class="btn ghost newsok2" data-newsback="1">‹ Back</button><button class="btn newsok" data-newsok="1">OK</button></div></div>`; }
 function newsHTML(){ const staff=ACC.role==='coach'||ACC.role==='supervisor', C=ACC.role==='coach'?NEWS_COACH:ACC.role==='supervisor'?NEWS_COACH.slice(1):[];
   const li=([t,d])=>`<li><b>${t}</b><span>${d}</span></li>`;
   return `<div class="newsbox" role="dialog" aria-modal="true" aria-labelledby="newsh"><div class="newsk"><span class="flagbar"></span>Update</div><h2 id="newsh">What’s new</h2>
     ${C.length?`<p class="newsl">For you as ${ACC.role==='coach'?'coach':'supervisor'}</p><ul class="newsul">${C.map(li).join('')}</ul><p class="newsl">For everyone</p>`:''}
     <ul class="newsul">${NEWS_ALL.map(li).join('')}</ul>
-    <div class="newsf"><button class="btn newsok" data-newsok="1">OK</button><p class="note newsn">You can see this again in Customize → What’s new.</p></div></div>`; }
+    <div class="newsf"><button class="btn ghost newsdet" data-newsdet="1">Details: what each change is based on</button><button class="btn newsok" data-newsok="1">OK</button><p class="note newsn">You can see this again in Customize → What’s new.</p></div></div>`; }
 function newsOpen(){ if(document.getElementById('news')) return; const o=document.createElement('div'); o.id='news'; o.className='newsov'; o.innerHTML=newsHTML(); document.body.appendChild(o);
-  o.addEventListener('click',ev=>{ if(ev.target.closest('[data-newsok]')) newsClose(); }); const b=o.querySelector('.newsok'); if(b) try{ b.focus({preventScroll:true}); }catch(e){} }
+  o.addEventListener('click',ev=>{ if(ev.target.closest('[data-newsok]')) newsClose(); else if(ev.target.closest('[data-newsdet]')){ o.innerHTML=newsDetailHTML(); o.scrollTop=0; const bx=o.querySelector('.newsbox'); if(bx) bx.scrollTop=0; } else if(ev.target.closest('[data-newsback]')){ o.innerHTML=newsHTML(); } }); const b=o.querySelector('.newsok'); if(b) try{ b.focus({preventScroll:true}); }catch(e){} }
 function newsClose(){ const o=document.getElementById('news'); if(o) o.remove(); if(!GUEST&&S.cfg.news!==NEWS_V){ S.cfg.news=NEWS_V; saveCfg(); } }
 function newsCheck(){ if(GUEST||!ALIVE||NEWS.done) return; if(col&&!PULLED) return; if(S.cfg.news===NEWS_V){ NEWS.done=true; return; } NEWS.done=true; setTimeout(()=>{ if(ALIVE&&!GUEST) newsOpen(); },400); }
 const NEWS={done:false};
