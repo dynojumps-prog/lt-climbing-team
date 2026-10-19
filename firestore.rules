@@ -74,7 +74,7 @@ service cloud.firestore {
       function simLocked(d) { return d.matches('sim-[A-Za-z0-9_-]+')
         && get(/databases/$(database)/documents/team/info).data.get('sims', {}).get(d.split('-')[1], {}).get('locked', false) == true; }
       match /docs/{d} {
-        allow read: if member() && (pid == me() || (isCoach() && roleOf(pid) != 'coach'));
+        allow read: if member() && (pid == me() || (isCoach() && roleOf(pid) != 'coach') || (isStaff() && d.matches('sim-[A-Za-z0-9_-]+')));
         allow create, update: if member() && pid == me() && !simLocked(d);
         allow delete: if (member() && pid == me()) || (isStaff() && pid != me() && !accExists(pid));
       }
