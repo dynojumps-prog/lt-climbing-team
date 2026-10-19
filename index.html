@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- LT climbing team app. Copyright (c) 2026 Kajus Žeimys. All rights reserved. No copying, modifying or reuse without written permission. See LICENSE. -->
 <html lang="lt">
 <head>
 <meta charset="utf-8">
@@ -830,6 +831,18 @@ button{transition:transform .12s ease,background-color .18s ease,color .18s ease
 .qh::after{content:"";position:absolute;inset:-11px}.qh:active{transform:scale(.9)}.lrow .qh{margin:0 6px 0 2px;align-self:center}.simbar .qh{width:34px;height:34px;color:#fff;border-color:rgba(255,255,255,.5)}
 .hp{margin:2px 0 6px;line-height:1.45}.hb{color:var(--soft);font-size:.9rem}.hhr{border:0;border-top:1px solid var(--line);margin:16px 0}
 .lexp{margin:10px 0 0;padding:0;list-style:none;font-size:.86rem;color:var(--soft);line-height:1.4}.lexp li{padding:4px 0;border-top:1px solid var(--line)}.lexp li:first-child{border-top:0}.lexp b{color:var(--ink)}
+
+/* tracking levels */
+:root[data-lvl="1"] .lv2,:root[data-lvl="1"] .lv3,:root[data-lvl="2"] .lv3{display:none!important}
+:root[data-lvl="1"] .ebody p.note:not(.eanc),:root[data-lvl="1"] .ebody .s7e,:root[data-lvl="1"] .ebody .collbar{display:none}
+.lvlopts{display:grid;gap:8px;margin-top:10px}.lvlo{display:flex;gap:12px;align-items:flex-start;text-align:left;padding:12px;border-radius:var(--r2,12px);border:1.5px solid var(--line);background:var(--field);color:var(--ink);min-height:0}
+.lvlo b{display:block;font-size:1rem}.lvlo small{display:block;color:var(--soft);font-size:.84rem;line-height:1.35;margin-top:2px}.lvlo.on{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold) inset}
+.lvn{flex:0 0 auto;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.05rem;background:var(--panel);border:1.5px solid var(--line)}.lvlo.on .lvn{background:var(--gold);border-color:var(--gold);color:var(--onacc)}
+.lvlchip{display:inline-flex;align-items:center;gap:8px;margin:0 0 8px;padding:6px 12px;border-radius:var(--pill);border:1px solid var(--line);background:var(--field);color:var(--ink);font-weight:700;font-size:.82rem;min-height:0}.lvlchip span{color:var(--soft);font-weight:600}
+.lvtag{font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);border-radius:var(--pill);padding:1px 7px;margin-right:6px;color:var(--soft)}
+.flvrow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:6px 0 0}.flvrow .mini.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+:root[data-lvl="1"] .secadd,:root[data-lvl="1"] [data-c="V"][data-p="note"]:placeholder-shown,:root[data-lvl="1"] .addf{display:none!important}
+.copyr{text-align:center;margin:24px 0 8px;font-size:.78rem}
 </style>
 </head>
 <body>
@@ -992,9 +1005,9 @@ function weakCode(c){ c=String(c||''); if(!/^\d{8,10}$/.test(c)) return true; if
 const WEAKMSG='Use 8–10 digits, not an easy pattern like 12345678 or 11111111.';
 function normCfg(c){ cleanIds(c); if(!c||!Array.isArray(c.templates)) return defaultCfg();
   c.templates=c.templates.filter(t=>t&&typeof t==='object').map(t=>Object.assign({id:String(t.id||rid()),name:String(t.name||'Log'),color:safeColor(t.color),bodyCheck:!!t.bodyCheck,fingerTest:!!t.fingerTest},t.perf?{perf:true}:{},t.comp?{comp:true}:{},['daily','super','climb','comp'].includes(t.grp)?{grp:t.grp}:{},t.how&&typeof t.how==='string'?{how:t.how.slice(0,600)}:{},{
-    fields:(Array.isArray(t.fields)?t.fields:[]).filter(f=>f&&typeof f==='object').map(f=>Object.assign({id:String(f.id||rid()),name:String(f.name||'Laukas'),type:VTYPES.includes(f.type)?f.type:'text'},Array.isArray(f.opts)?{opts:f.opts.map(String)}:{},f.type==='mix'?{comps:sortC((Array.isArray(f.comps)?f.comps:['T']).filter(c=>COMP[c]))}:{},typeof f.role==='string'?{role:f.role}:{},f.x&&typeof f.x==='object'?{x:normX(f.x)}:{}))}));
+    fields:(Array.isArray(t.fields)?t.fields:[]).filter(f=>f&&typeof f==='object').map(f=>Object.assign({id:String(f.id||rid()),name:String(f.name||'Laukas'),type:VTYPES.includes(f.type)?f.type:'text'},Array.isArray(f.opts)?{opts:f.opts.map(String)}:{},f.type==='mix'?{comps:sortC((Array.isArray(f.comps)?f.comps:['T']).filter(c=>COMP[c]))}:{},typeof f.role==='string'?{role:f.role}:{},f.x&&typeof f.x==='object'?{x:normX(f.x)}:{},[1,2,3].includes(+f.lv)?{lv:+f.lv}:{}))}));
   if(!c.templates.length) return defaultCfg(); if(!c.templates.some(t=>!t.perf)) c.templates=defaultCfg().templates.concat(c.templates);
-  c.goals=normGoals(c.goals); c.perfMig=c.perfMig?1:0; c.setupV2=c.setupV2?1:0; c.setupV3=c.setupV3?1:0; c.perfV2=c.perfV2?1:0; c.perfV3=c.perfV3?1:0; c.perfV4=c.perfV4?1:0; c.perfV5=c.perfV5?1:0; c.perfV6=c.perfV6?1:0; c.perfV7=c.perfV7?1:0; c.news=typeof c.news==='string'?c.news.slice(0,20):''; c.tfont=['orbitron','archivo','marker'].includes(c.tfont)?c.tfont:''; c.skin=['vilnius','granite','chalk','comp','forest','obsidian','royal','glacier','sandstone','mono','xmas','halloween'].includes(c.skin)?c.skin:'vilnius'; c.styles=Array.isArray(c.styles)?c.styles.map(t=>String(t||'').replace(/[|<>"`&\\]/g,'').trim().slice(0,24)).filter(Boolean).slice(0,24):[]; c.setupV4=c.setupV4?1:0; c.pack=c.pack?1:0; c.packNo=c.packNo?1:0; c.bodyMig=c.bodyMig?1:0; c.routesMig=c.routesMig?1:0; const hs={}; if(c.hideSug&&typeof c.hideSug==='object') Object.entries(c.hideSug).forEach(([k,a])=>{ if(Array.isArray(a)) hs[String(k)]=a.map(String).slice(0,200); }); c.hideSug=hs; const nm={}; if(c.names&&typeof c.names==='object') Object.entries(c.names).forEach(([k,a])=>{ if(Array.isArray(a)){ const L=a.filter(x=>typeof x==='string'&&x.trim()).map(x=>x.trim().slice(0,60)).slice(-80); if(L.length) nm[String(k)]=L; } }); c.names=nm; c.lastBackup=Math.max(0,+c.lastBackup||0); c.owner=String(c.owner||'').trim().slice(0,40); return c; }
+  c.goals=normGoals(c.goals); c.perfMig=c.perfMig?1:0; c.setupV2=c.setupV2?1:0; c.setupV3=c.setupV3?1:0; c.perfV2=c.perfV2?1:0; c.perfV3=c.perfV3?1:0; c.perfV4=c.perfV4?1:0; c.perfV5=c.perfV5?1:0; c.perfV6=c.perfV6?1:0; c.perfV7=c.perfV7?1:0; c.news=typeof c.news==='string'?c.news.slice(0,20):''; c.lvl=[1,2,3].includes(+c.lvl)?+c.lvl:null; c.tfont=['orbitron','archivo','marker'].includes(c.tfont)?c.tfont:''; c.skin=['vilnius','granite','chalk','comp','forest','obsidian','royal','glacier','sandstone','mono','xmas','halloween'].includes(c.skin)?c.skin:'vilnius'; c.styles=Array.isArray(c.styles)?c.styles.map(t=>String(t||'').replace(/[|<>"`&\\]/g,'').trim().slice(0,24)).filter(Boolean).slice(0,24):[]; c.setupV4=c.setupV4?1:0; c.pack=c.pack?1:0; c.packNo=c.packNo?1:0; c.bodyMig=c.bodyMig?1:0; c.routesMig=c.routesMig?1:0; const hs={}; if(c.hideSug&&typeof c.hideSug==='object') Object.entries(c.hideSug).forEach(([k,a])=>{ if(Array.isArray(a)) hs[String(k)]=a.map(String).slice(0,200); }); c.hideSug=hs; const nm={}; if(c.names&&typeof c.names==='object') Object.entries(c.names).forEach(([k,a])=>{ if(Array.isArray(a)){ const L=a.filter(x=>typeof x==='string'&&x.trim()).map(x=>x.trim().slice(0,60)).slice(-80); if(L.length) nm[String(k)]=L; } }); c.names=nm; c.lastBackup=Math.max(0,+c.lastBackup||0); c.owner=String(c.owner||'').trim().slice(0,40); return c; }
 function migM(i){ if(i&&i.type==='mix'&&i.val&&i.val.M&&i.val.M.now){ const M=Object.assign({},i.val.M); if(!M.rest) M.rest=M.now; delete M.now; return Object.assign({},i,{val:Object.assign({},i.val,{M})}); } return i; }
 function normMonth(k,m){ cleanIds(m); const days={}; const src=m&&m.days&&typeof m.days==='object'?m.days:{};
   Object.entries(src).forEach(([d,es])=>{ if(!Array.isArray(es)) return; days[String(+d)]=es.filter(e=>e&&typeof e==='object').map(e=>Object.assign({},e,{id:String(e.id||rid()),items:(Array.isArray(e.items)?e.items:[]).filter(i=>i&&typeof i==='object').map(migM).map(i=>Object.assign({},i,{fid:String(i.fid||rid()),name:String(i.name||''),type:VTYPES.includes(i.type)?i.type:'text'},i.type==='mix'?{comps:sortC((Array.isArray(i.comps)?i.comps:['T']).filter(c=>COMP[c]))}:{}))})); });
@@ -1081,7 +1094,7 @@ async function pullAll(){ if(!col||GUEST) return;
     if(cc.exists&&!dirty.has('coach')){ S.coach=migrateCoach(JSON.parse(JSON.stringify(cc.data()))); bump(); }
     else if(dirty.has('coach')||S.coach.history.length||S.coach.hyps.length) saveCoach();
     setSync(dirty.size?'Saving…':'Synced'); render();
-    await loadRemoteMonth(mkey(S.y,S.m)); await loadRemoteMonth(prevMonthKey()); flushDirty(); await secLoadAll();
+    await loadRemoteMonth(mkey(S.y,S.m)); await loadRemoteMonth(prevMonthKey()); flushDirty(); lvlInit(); await secLoadAll();
   }catch(e){ setSync('Saved on phone, syncs later'); }
 }
 db=TEAM.db||null; col=db?db.collection('people/'+ACC.id+'/docs'):null;
@@ -1319,7 +1332,7 @@ function tplColor(e){ const t=S.cfg.templates.find(t=>t.id===e.tid); return safe
 const app=document.getElementById('app');
 
 // ---------- render ----------
-function render(){ applySkin(); setTimeout(newsCheck,0); const viewNow=S.view+'|'+(S.st.pgrp||''); if(viewNow!==SKIN.lastView){ SKIN.lastView=viewNow; app.classList.add('enter'); clearTimeout(SKIN.t); SKIN.t=setTimeout(()=>app.classList.remove('enter'),450); } const y=window.scrollY, fsEl=app.querySelector('.simfs'), fsY=fsEl?fsEl.scrollTop:0; app.style.minHeight=app.offsetHeight+'px'; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; ({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth}[S.view]||renderSettings)(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); const fs2=app.querySelector('.simfs'); if(fs2&&fsY) fs2.scrollTop=fsY; app.style.minHeight=''; tapFx(); }
+function render(){ applySkin(); document.documentElement.dataset.lvl=TLV(); setTimeout(newsCheck,0); const viewNow=S.view+'|'+(S.st.pgrp||''); if(viewNow!==SKIN.lastView){ SKIN.lastView=viewNow; app.classList.add('enter'); clearTimeout(SKIN.t); SKIN.t=setTimeout(()=>app.classList.remove('enter'),450); } const y=window.scrollY, fsEl=app.querySelector('.simfs'), fsY=fsEl?fsEl.scrollTop:0; app.style.minHeight=app.offsetHeight+'px'; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; ({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth}[S.view]||renderSettings)(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); const fs2=app.querySelector('.simfs'); if(fs2&&fsY) fs2.scrollTop=fsY; app.style.minHeight=''; tapFx(); }
 function toast(t){ let el=document.getElementById('toast'); if(!el){ el=document.createElement('div'); el.id='toast'; el.setAttribute('role','status'); document.body.appendChild(el); } el.textContent=t; el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),1800); }
 function say(t){ const m=document.getElementById('msg'); if(m) m.textContent=t; }
 function armed(b,label){ if(b.dataset.armed) return true; b.dataset.armed='1'; const old=b.textContent; b.textContent=label; b.classList.add('armed'); setTimeout(()=>{ if(b.isConnected){ delete b.dataset.armed; b.textContent=old; b.classList.remove('armed'); } },3000); return false; }
@@ -1339,15 +1352,15 @@ function renderCal(){
   const sd=new Date(S.sel+'T12:00'), sel=entriesOn(S.sel).filter(e=>!isPerfE(e)), CT=S.cfg.templates.filter(t=>!t.perf);
   app.innerHTML=`
   ${topBar()}
-  ${seasonBanner()}${alertsHTML(healthAlerts())}${GUEST?'':todayNotesHTML()}${simInviteCards()}${goalStrip()}${todayCard()}${loadCard()}${GUEST?aiCard():packCard(true)+backupNudge()}
+  ${seasonBanner()}${alertsHTML(healthAlerts())}${GUEST?'':todayNotesHTML()}${simInviteCards()}${goalStrip()}${TLV()>=2?todayCard()+loadCard():''}${GUEST?aiCard():packCard(true)+backupNudge()}
   <div class="month"><h1>${MONTHS[S.m]}<span>${S.y}</span></h1>
     <div class="arrows"><button data-act="prev" aria-label="Previous month">‹</button><button data-act="next" aria-label="Next month">›</button></div></div>
   <div class="grid">${cells}</div>
-  <div class="legend">${CT.map(t=>`<span><i style="background:${t.color}"></i>${esc(t.name)}</span>`).join('')}</div>
+  <div class="legend">${CT.filter(tplShown).map(t=>`<span><i style="background:${t.color}"></i>${esc(t.name)}</span>`).join('')}</div>
   <div class="dayhead" id="dayhead"><button class="mini" data-dnav="-1" aria-label="Previous day">‹</button><span>${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}</span><button class="mini" data-dnav="1" aria-label="Next day">›</button></div>
   ${S.sel!==todayStr?'<button class="btn ghost gotoday" data-act="gotoday">Back to today</button>':''}
   ${dayNotesHTML()}${GUEST?'':simDayHTML(S.sel)}
-  <div class="adds"${GUEST?' style="display:none"':''}>${CT.map(t=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)}" data-add="${t.id}">+ ${esc(t.name)}</button>`).join('')}</div>
+  ${GUEST?'':lvlChip()}<div class="adds"${GUEST?' style="display:none"':''}>${CT.filter(tplShown).map(t=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)}" data-add="${t.id}">+ ${esc(t.name)}</button>`).join('')}</div>
   ${sel.length?sel.map(entryHTML).join(''):`<div class="empty">${GUEST?'Nothing logged on this day.':'Nothing logged yet. Pick a log type above to start.'}</div>`}`;
   app.querySelectorAll('textarea').forEach(grow);
 }
@@ -1355,7 +1368,7 @@ function renderCal(){
 function isPerfE(e){ if(!e) return false; if(e.perf) return true; const t=S.cfg.templates.find(t=>t.id===e.tid); return !!(t&&t.perf); }
 
 
-function headSmall(e,open){ const q=entryQuality(e), filled=e.items.filter(filledItem).length; return `${e.items.some(it=>it.sec)?'<span class="elock" title="Has a secret note"></span>':''}${filled}/${e.items.length} ${open?'▴':'▾'}`; }
+function headSmall(e,open){ const I=e.items.filter(it=>itemLv(e,it)<=TLV()), filled=I.filter(filledItem).length; return `${GUEST&&e.lv?`<span class="lvtag">Level ${e.lv}</span>`:''}${e.items.some(it=>it.sec)?'<span class="elock" title="Has a secret note"></span>':''}${filled}/${I.length} ${open?'▴':'▾'}`; }
 function tplName(e){ const t=S.cfg.templates.find(t=>t.id===e.tid); return t?t.name:e.name; }
 function refreshItem(el,e,it){ const f=el.closest('.f'), qm=f&&f.querySelector('.qm'); if(qm) qm.innerHTML=qHTML(itemQuality(it,prevNote(it.name,S.sel))); const pw=f&&f.querySelector('.plaus'); if(pw) pw.outerHTML=plausHTML(it); else if(f){ const ph=plausHTML(it); if(ph) f.insertAdjacentHTML('beforeend',ph); } const hs=el.closest('.entry'), sm=hs&&hs.querySelector('.ehead small'); if(sm) sm.innerHTML=headSmall(e,true); }
 function compHTML(e,it,c,key,fid){ const x=getP(it,c), sl=sleepLike(it.name), cs=compsList(it), lab=t=>`<p class="clab">${t}</p>`;
@@ -1366,6 +1379,7 @@ function compHTML(e,it,c,key,fid){ const x=getP(it,c), sl=sleepLike(it.name), cs
   if(c==='D') return `${lab('Minutes')}<input type="number" inputmode="numeric" min="0" max="600" data-k="${key}" data-c="D" value="${esc(x??'')}" placeholder="How many minutes?" aria-label="${esc(it.name)} minutes">`;
   if(c==='K') return `${lab('Count')}<div class="flash" style="grid-template-columns:1fr auto"><span class="note">How many?</span><span class="step"><button data-kk="${key}|-1" aria-label="One less">−</button><b>${+x||0}</b><button data-kk="${key}|1" aria-label="One more">+</button></span></div>`;
   if(c==='Y') return `${lab('Yes or no')}<div class="yn"><button data-yn="${key}|1" class="${x===true?'on':''}" aria-pressed="${x===true}">Yes</button><button data-yn="${key}|0" class="${x===false?'on':''}" aria-pressed="${x===false}">No</button></div>`;
+  if(c==='T'&&cs.length>1&&TLV()<2) return '';
   if(c==='T') return `${cs.length>1?lab('Text'):''}<textarea rows="1" data-k="${key}" data-c="T" aria-label="${esc(it.name)} text" placeholder="${sl?'How did you sleep, and why?':'What happened, and why?'}">${esc(x||'')}</textarea>`;
   if(c==='E'){ const o=x||{}, mins=`<div class="eload"><label class="emin"><input type="number" inputmode="numeric" min="0" max="600" data-k="${key}" data-c="E" data-p="m" value="${esc(o.m??'')}" placeholder="–" aria-label="Minutes trained"><span>min</span></label><span class="dur" id="e${fid}">${loadText(o)}</span></div>`;
     // one fixed scale (Borg CR-10 session effort) shown around a normal session: 0 = normal = effort 5, −1 = 4, +1 = 6 … (not chained to the last session, so it can't drift)
@@ -1433,7 +1447,7 @@ function fieldHTML(e,it){ const key=`${e.id}|${it.fid}`, fid='f'+e.id+it.fid, cs
   if(shut){ const sm=itemSummary(it,true), q=itemQuality(it,prevNote(it.name,S.sel));
     return `<div class="f fcard2 shut" data-fkey="${key}"><button class="fhd" data-fcol="${it.fid}" aria-expanded="false"><span class="fl">${esc(it.name)}</span><span class="fsm">${sm?esc(sm):it.sec?'':'<i>empty</i>'}${it.sec?(sm?' · ':'')+'secret note':''}</span><span class="chev">▸</span></button></div>`; }
   if(GUEST) return roFieldHTML(e,it,key);
-  return `<div class="f fcard2" data-fkey="${key}"><div class="lrow"><button class="fhd" data-fcol="${it.fid}" aria-expanded="true"><span class="fl">${esc(it.name)}</span><span class="chev">▾</span></button>${(()=>{ const K=helpKeysFor(e,it); return K.length?helpBtn(K.join(','),`What is ${esc(it.name)}?`):''; })()}${isPerfE(e)?'':`<button class="fmt" data-ft="${key}" aria-expanded="${op}">${op?'Close':'Format'}</button>`}</div>${op&&!isPerfE(e)?pickerHTML(e,it,key):''}
+  return `<div class="f fcard2" data-fkey="${key}"><div class="lrow"><button class="fhd" data-fcol="${it.fid}" aria-expanded="true"><span class="fl">${esc(it.name)}</span><span class="chev">▾</span></button>${(()=>{ const K=helpKeysFor(e,it); return K.length?helpBtn(K.join(','),`What is ${esc(it.name)}?`):''; })()}${isPerfE(e)?'':`<button class="fmt lv2" data-ft="${key}" aria-expanded="${op}">${op?'Close':'Format'}</button>`}</div>${op&&!isPerfE(e)?pickerHTML(e,it,key):''}
     ${cs.map(c=>{ const h=compHTML(e,it,c,key,fid); return h?`<div class="comp c${c}">${h}</div>`:''; }).join('')}
     ${plausHTML(it)}${secHTML(e,it,key)}</div>`; }
 function pickerHTML(e,it,key){ const R=compRatings(it.name), cs=compsList(it), tp=S.cfg.templates.find(t=>t.id===e.tid), tf=tp&&tp.fields.find(f=>f.id===it.fid);
@@ -1463,8 +1477,8 @@ function entrySummary(e){ const out=[]; (e.items||[]).forEach(it=>{ if(out.lengt
 function entryHTML(e){ const open=S.open===e.id;
   return `<div class="entry" style="--c:${tplColor(e)}">
     <button class="ehead" data-toggle="${e.id}" aria-expanded="${open}"><span class="etitle"><b>${esc(tplName(e))}</b>${open?'':`<span class="esum">${esc(entrySummary(e))||'Nothing filled in yet'}</span>`}</span><small>${headSmall(e,open)}</small></button>
-    ${open?`<div class="ebody"><div class="collbar"><button data-fcolall="${e.id}|1">Close all</button><button data-fcolall="${e.id}|0">Open all</button></div>${perfHowHTML(e)}${GUEST?roItems(e):e.items.map(it=>fieldHTML(e,it)).join('')}${GUEST?'':`
-      ${isPerfE(e)?`<details class="more"><summary>Delete this test</summary>`:`<details class="more"><summary>Add a field or delete this log</summary>
+    ${open?`<div class="ebody"><div class="collbar"><button data-fcolall="${e.id}|1">Close all</button><button data-fcolall="${e.id}|0">Open all</button></div>${perfHowHTML(e)}${GUEST?roItems(e):e.items.filter(it=>itemLv(e,it)<=TLV()).map(it=>fieldHTML(e,it)).join('')}${GUEST?'':`
+      ${isPerfE(e)?`<details class="more"><summary>Delete this test</summary>`:`<details class="more"><summary>${TLV()<2?'Delete this log':'Add a field or delete this log'}</summary>
       <div class="addf"><label class="note" for="nf${e.id}">New field name</label>
         <div class="row"><input type="text" id="nf${e.id}" placeholder="e.g. Emocijos"><button class="btn" data-newf="${e.id}">Add</button></div>
         <p class="note">It starts as 1–10 + text; tap Format to change its parts.</p></div>`}
@@ -1579,6 +1593,37 @@ function grow(t){ t.style.height='auto'; t.style.height=t.scrollHeight+2+'px'; }
 
 // ---- What's new: shows once per account after an update (OK saves it to your setup, so it doesn't come back on other phones); Customize → What's new shows it again
 
+
+// ================= Tracking levels =================
+// Level 1 = only the essentials (how hard + how long, sleep, energy, finger pain, your climbs), no stats, little text.
+// Level 2 = more to log and your stats (readiness, load, today). Level 3 = everything.
+// Based on progressive disclosure (Nielsen Norman Group: show the most important things first, the rest one clear step away)
+// and athlete self-report research (Saw et al. 2015: good data with the least burden; short wellness checks like McLean et al. 2010).
+// Coaches don't pick a level: they always see everything an athlete logged.
+const lvlUser=()=>!GUEST&&(ACC.role==='athlete'||ACC.role==='supervisor');
+const TLV=()=>lvlUser()?(S.cfg.lvl||3):3;
+// a field's level: what you set in Customize, otherwise from what kind of field it is
+function fieldLv(t,f){ if(f&&[1,2,3].includes(+f.lv)) return +f.lv; return defLv(t,f); }
+function defLv(t,f){ if(!f) return 2; const cs=compsOf(f), n=String(f.name||'');
+  if(t&&t.perf) return 1;
+  if(cs.includes('E')||cs.includes('P')||cs.includes('G')) return 1;
+  if(sleepLike(n)||cs.includes('R')) return 1;
+  if(/energ|nuovarg|fatig|savijaut/i.test(n)&&cs.some(c=>'ASV'.includes(c))) return 1;
+  if(/maist|food|papild|supp|vitam|oda\b|skin|vanduo|water|protein/i.test(n)) return 3;
+  if(cs.includes('Q')||cs.includes('B')||cs.includes('L')||cs.includes('C')||['blocks','all','list'].includes(f.type)) return 3;
+  return 2; }
+function itemLv(e,it){ const t=S.cfg.templates.find(t=>t.id===e.tid), f=t&&t.fields.find(f=>f.id===it.fid); return f?fieldLv(t,f):2; }
+const tplShown=t=>TLV()>=3||t.fields.some(f=>fieldLv(t,f)<=TLV());
+const PG_LV={climb:1,comp:1,daily:2,super:2};
+const LVLS=[[1,'Level 1 · Simple','Just the basics: how hard and how long you trained, sleep, energy, finger pain and your climbs. No stats, very little text.'],[2,'Level 2 · More','Adds feelings, stress, session quality, the body map, daily and super tests, and your stats: today’s readiness and training load.'],[3,'Level 3 · Full','Everything: the feelings grid, food, supplements, minutes on each route, notes and every detail.']];
+function lvlCard(){ if(!lvlUser()) return ''; const L=TLV();
+  return `<div class="card lvlc" id="lvlcard"><h3>Tracking level ${helpBtn('levels')}</h3><p class="note">How much do you want to track today? Change it any day. Your coach sees everything you log.</p>
+    <div class="lvlopts">${LVLS.map(([n,t,d])=>`<button class="lvlo${L===n?' on':''}" data-lvl="${n}" aria-pressed="${L===n}"><span class="lvn">${n}</span><span><b>${t}</b><small>${d}</small></span></button>`).join('')}</div></div>`; }
+const lvlChip=()=>lvlUser()?`<button class="lvlchip" data-act="lvlgo" aria-label="Tracking level ${TLV()}, change">Level ${TLV()} <span>Change</span></button>`:'';
+// a new account starts on Level 1 (and skips the long What's new); anyone who already logged stays on Level 3
+function lvlInit(){ if(!lvlUser()||S.cfg.lvl) return; const has=logDays(S.months).length>0||(S.cfg.goals||[]).length>0||!!S.cfg.lastBackup;
+  S.cfg.lvl=has?3:1; if(!has&&typeof NEWS_V!=='undefined') S.cfg.news=NEWS_V; saveCfg(); render(); }
+
 // ---- "?" buttons: what a thing is, how to read it, why it helps, what it's based on
 const HELP={
  load:['Training load','How much you trained: how hard × how long. One number per day.','Each bar is one day (rest days are 0). “7 days” is this week’s total, and the % compares it with your usual week. Monotony = how alike your days are: above 2 means almost the same load every day. Strain = week total × monotony.','Big jumps in load (around 30% or more in a week), and weeks where every day is the same and hard, are when athletes most often get sick or hurt. Seeing it early lets you and your coach change the plan in time.','Session-RPE: effort × minutes (Foster et al. 2001), the most used load method in sport. Monotony and strain: Foster (1998). The load-jump warning comes from the acute:chronic workload idea (Gabbett 2016), which researchers still debate.'],
@@ -1598,6 +1643,7 @@ const HELP={
  comp:['Competition log','One log per round, with every boulder’s tries, zone try and top try.','Points like the IFSC 2025 rules: top = 25, zone = 10, minus 0.1 for every failed try before it. Equal points: more tops, then more zones, then fewer tries.','You see exactly where points were lost: tries, zones or tops.','IFSC 2025 boulder scoring rules.'],
  goals:['Milestones','Goals with a date: test numbers, grades, styles and comps.','Now → goal. On pace = at your current speed you’ll reach it by the date. Behind = you need to improve faster. Finger goals use your best daily test of the last 14 days.','Big goals split into dated steps keep training focused and show early if something needs to change.','Goal-setting research (Locke & Latham): specific goals with a deadline work better than “do your best”.'],
  sim:['Practice comps','A practice round run like a real competition.','Each boulder has climbing time, then a short change time. In a comp order, one athlete is on each boulder at a time, and you rest while others climb. Signals: a long beep at the start and end, one beep at 1 minute left, short beeps in the last 5 seconds.','Practising the real rhythm and nerves makes real comps feel normal.','IFSC competition rules. The 15-second change time is our choice.'],
+ levels:['Tracking levels','How much the app asks you to log. Level 1 is the simplest, Level 3 is everything.','Level 1: how hard and how long you trained, sleep, energy, finger pain and your climbs. Level 2 adds feelings, stress, session quality, the body map, tests and your stats. Level 3 adds the feelings grid, food, supplements and every detail. You can change level any day, and you can set each field’s level in Customize.','Logging only a little but every day is worth more than logging everything for a week and then stopping. Start simple and add more when it feels easy.','Progressive disclosure (Nielsen Norman Group): show the most important things first and the rest one clear step away. Athlete monitoring research: good data with the least burden (Saw et al. 2015), and short wellness checks of about 5 items (McLean et al. 2010).'],
  coach:['Team performance','Every athlete’s tests, climbing and comps side by side.','Readiness: green = fresh, yellow = 5% or more below their own normal, red = 10% or more below. Test cards: “now” (for daily tests the best of the last 14 days), their best, and how much it changed since their first test in the period.','You can see who is tired before a hard session, and who is improving.','The same rules as the athletes see: daily and super tests, finger strength research (Baláš et al. 2012).']};
 const helpBtn=(k,lbl)=>`<button class="qh" data-help="${k}" aria-label="${lbl||'What is this?'}" title="What is this?">?</button>`;
 function helpOpen(keys){ keys=keys.filter(k=>HELP[k]); if(!keys.length||document.getElementById('help')) return; const o=document.createElement('div'); o.id='help'; o.className='newsov';
@@ -1664,12 +1710,13 @@ function newsHTML(){ const staff=ACC.role==='coach'||ACC.role==='supervisor', C=
 function newsOpen(){ if(document.getElementById('news')) return; const o=document.createElement('div'); o.id='news'; o.className='newsov'; o.innerHTML=newsHTML(); document.body.appendChild(o);
   o.addEventListener('click',ev=>{ if(ev.target.closest('[data-newsok]')) newsClose(); else if(ev.target.closest('[data-newsdet]')){ o.innerHTML=newsDetailHTML(); o.scrollTop=0; const bx=o.querySelector('.newsbox'); if(bx) bx.scrollTop=0; } else if(ev.target.closest('[data-newsback]')){ o.innerHTML=newsHTML(); } }); const b=o.querySelector('.newsok'); if(b) try{ b.focus({preventScroll:true}); }catch(e){} }
 function newsClose(){ const o=document.getElementById('news'); if(o) o.remove(); if(!GUEST&&S.cfg.news!==NEWS_V){ S.cfg.news=NEWS_V; saveCfg(); } }
-function newsCheck(){ if(GUEST||!ALIVE||NEWS.done) return; if(col&&!PULLED) return; if(S.cfg.news===NEWS_V){ NEWS.done=true; return; } NEWS.done=true; setTimeout(()=>{ if(ALIVE&&!GUEST) newsOpen(); },400); }
+function newsCheck(){ if(GUEST||!ALIVE||NEWS.done) return; if(col&&!PULLED) return; if(lvlUser()&&!S.cfg.lvl&&col) return; if(S.cfg.news===NEWS_V){ NEWS.done=true; return; } NEWS.done=true; setTimeout(()=>{ if(ALIVE&&!GUEST) newsOpen(); },400); }
 const NEWS={done:false};
 function newsCard(){ if(GUEST) return ''; return `<div class="card"><h3>What’s new</h3><p class="note">Everything the last update changed, in short.</p><button class="btn ghost" data-act="newsopen" style="margin-top:8px">Show what’s new</button></div>`; }
 function renderSettings(){
   app.innerHTML=`
   ${topBar()}
+  ${lvlCard()}
   ${skinCardHTML()}
   ${newsCard()}
   ${accountCard()}
@@ -1683,7 +1730,8 @@ function renderSettings(){
   <button class="btn" data-act="tadd">+ New log type</button>
   <div class="h2">Performance tests</div>
   <p class="note">Fixed for the whole team, so test numbers stay comparable over time and milestones keep reading them. Only the calendar above is yours to change.</p>
-  <div class="card ptlist">${PGRP.map(([g,l])=>{ const L=S.cfg.templates.filter(t=>t.perf&&pgOf(t)===g); return L.length?`<div class="ptg"><span class="clab">${l}</span>${L.map(t=>`<div class="ptrow"><i style="background:${t.color}"></i><b>${esc(t.name)}</b></div>`).join('')}</div>`:''; }).join('')}</div>`;
+  <div class="card ptlist">${PGRP.map(([g,l])=>{ const L=S.cfg.templates.filter(t=>t.perf&&pgOf(t)===g); return L.length?`<div class="ptg"><span class="clab">${l}</span>${L.map(t=>`<div class="ptrow"><i style="background:${t.color}"></i><b>${esc(t.name)}</b></div>`).join('')}</div>`:''; }).join('')}</div>
+  <p class="note copyr">LT climbing team app · © 2026 Kajus Žeimys · All rights reserved</p>`;
   app.querySelectorAll('textarea').forEach(grow);
 }
 function tplSecHTML(t,ti){ return `<div class="sec" style="--c:${t.color}">
@@ -1697,6 +1745,7 @@ function tplSecHTML(t,ti){ return `<div class="sec" style="--c:${t.color}">
       <button class="mini" data-fmove="${ti}|${fi}|-1" aria-label="Move up">↑</button><button class="mini" data-fdel="${ti}|${fi}" aria-label="Remove field">✕</button></div>
       <button class="cpsum" data-cpo="${ti}|${fi}" aria-expanded="${S.st.cpOpen===ti+'|'+fi}"><span>Parts: <b>${cs.map(c=>COMP[c]).join(' + ')}</b></span><span class="note">${S.st.cpOpen===ti+'|'+fi?'Done':'Change'}</span></button>
       ${S.st.cpOpen===ti+'|'+fi?`<div class="chips cparts">${CORDER.map(c=>`<button data-cp="${ti}|${fi}|${c}" class="${cs.includes(c)?'on':''}" style="--rc:${RCOL[R.rate[c]??1]}" aria-pressed="${cs.includes(c)}"><i></i>${COMP[c]}</button>`).join('')}</div><p class="note" style="margin:4px 0 0">Best for ${esc(f.name)}: ${R.best.map(c=>COMP[c]).join(' + ')}.</p>`:''}
+      ${t.perf?'':`<div class="flvrow"><span class="note">Shows from</span>${[1,2,3].map(n=>`<button class="mini${fieldLv(t,f)===n?' on':''}" data-flv="${ti}|${fi}|${n}" aria-pressed="${fieldLv(t,f)===n}">Level ${n}</button>`).join('')}</div>`}
       ${cs.includes('X')?xcfgHTML('xc',`${ti}|${fi}`,normX(f.x||{})):''}
       ${cs.includes('L')?`<div class="row" style="margin:6px 0 0"><input type="text" value="${esc((f.opts||[]).join(', '))}" data-fopts="${ti}|${fi}" placeholder="Checklist items, e.g. Vitaminai, Omega3" aria-label="Checklist items"></div>`:''}</div>`; }).join('')}
     <div class="row"><button class="btn ghost" data-fadd="${ti}">+ Add field</button>
@@ -3102,6 +3151,9 @@ app.addEventListener('click',async ev=>{
   if(ds.act==='lgme'){ ls.set('loginSeen',Date.now()); render(); return; }
   if(ds.act==='weakfix'){ ls.set('loginSeen',Date.now()); S.view='set'; S.st.myCode=''; S.st.myCodeErr=''; render(); const m=document.getElementById('mycode'); if(m){ m.scrollIntoView({block:'center'}); m.focus(); } return; }
   if(ds.act==='newsopen'){ newsOpen(); return; }
+  if(ds.lvl&&lvlUser()&&b.closest('.lvlopts')){ const n=+ds.lvl; if([1,2,3].includes(n)&&S.cfg.lvl!==n){ S.cfg.lvl=n; saveCfg(); render(); toast(`Level ${n}: ${['','simple','more','full'][n]} tracking`); } return; }
+  if(ds.act==='lvlgo'){ S.view='set'; render(); const c=document.getElementById('lvlcard'); if(c) c.scrollIntoView({block:'start'}); return; }
+  if(ds.flv&&!GUEST){ const [ti,fi,n]=ds.flv.split('|').map(Number), t=S.cfg.templates[ti], f=t&&t.fields[fi]; if(f&&!t.perf){ f.lv=n; saveCfg(); render(); } return; }
   if(!GUEST&&S.view==='ath'&&atClick(ds)) return;
   if(fieldClick(ds,b)) return;
   if(ds.act==='ftopen'){ const L=fingerTests(), last=L[L.length-1]||{}; S.st.ftOpen=true; S.st.ft={bw:last.bw??'',add:'',edge:last.edge??20,reps:'',grip:'half',note:''}; render(); return; }
@@ -3169,7 +3221,7 @@ app.addEventListener('click',async ev=>{
   if(ds.act==='packno'){ S.cfg.packNo=1; saveCfg(); render(); return; }
   if(ds.act==='aistop'){ const c=ds.which==='sci'?sciCtl:aiCtl; if(c) c.abort(); return; }
   if(ds.add){ if(Date.now()-lastAdd<600) return; lastAdd=Date.now(); const t=S.cfg.templates.find(t=>t.id===ds.add); if(!t) return; const [y,m,d]=S.sel.split('-'); const k=`${y}-${m}`; const mo=month(k);
-    const e={id:rid(),tid:t.id,name:t.name,color:t.color,items:t.fields.map(newItem)}; if(t.perf) e.perf=1; if(t.comp) e.items.forEach(it=>{ if(compsList(it).includes('G')) setP(it,'G',[newComp(),newComp(),newComp(),newComp()]); });
+    const e={id:rid(),tid:t.id,name:t.name,color:t.color,items:t.fields.map(newItem)}; if(lvlUser()) e.lv=TLV(); if(t.perf) e.perf=1; if(t.comp) e.items.forEach(it=>{ if(compsList(it).includes('G')) setP(it,'G',[newComp(),newComp(),newComp(),newComp()]); });
     (mo.days[String(+d)]=mo.days[String(+d)]||[]).push(e); S.open=e.id; saveMonth(k); render(); const el=document.querySelector(`[data-toggle="${e.id}"]`); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); toast(`${t.name} added`); return; }
   if(ds.toggle){ const was=S.open===ds.toggle; S.open=was?null:ds.toggle; S.typeOpen=null; render(); if(was){ const el=document.querySelector(`[data-toggle="${ds.toggle}"]`); if(el) el.scrollIntoView({block:'nearest'}); } return; }
   if(ds.delentry){ if(!armed(b,'Tap again to delete')) return; const {k,arr}=findEntry(ds.delentry); arr.splice(arr.findIndex(x=>x.id===ds.delentry),1); saveMonth(k); render(); toast('Log deleted'); return; }
@@ -3867,12 +3919,12 @@ function routeUp(y){ if(!y||('ta' in y)||('za' in y)) return y; const a=+y.a||1;
 function routeCard(key,y0,i){ const y=routeUp(Object.assign({},y0)), at=+y.a||0, ta=+y.ta||0, za=+y.za||0, st=ta?(ta===1?'flash':'top'):za?'zone':at?'no':'', old=String(y.fwhy||'').trim();
   return `<div class="route${st?' r-'+st:''}">
     <div class="rtop"><b>#${i+1}</b><input class="rg" type="text" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="g" value="${esc(y.g||'')}" placeholder="Grade" aria-label="Grade of route ${i+1}" autocapitalize="characters" enterkeyhint="done">
-      <label class="rmin"><input type="number" inputmode="decimal" min="0" step="any" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="dur" value="${esc(y.dur??'')}" placeholder="–" aria-label="Minutes on route ${i+1}"><span>min</span></label><button class="x" data-rdel="${key}|${y.id}" aria-label="Remove route ${i+1}">✕</button></div>
+      <label class="rmin lv3"><input type="number" inputmode="decimal" min="0" step="any" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="dur" value="${esc(y.dur??'')}" placeholder="–" aria-label="Minutes on route ${i+1}"><span>min</span></label><button class="x" data-rdel="${key}|${y.id}" aria-label="Remove route ${i+1}">✕</button></div>
     <p class="rlbl"><b>${{flash:'Flash',top:'Top',zone:'Zone, no top',no:'No zone','':'Not tried yet'}[st]}</b>${ta>1?` <span>on attempt ${ta}</span>`:''}${y.at?` <span>· ${esc(y.at)}</span>`:''}</p>
-    ${compStepHTML(key,y,'a','Attempts','all goes')}${compStepHTML(key,y,'za','Zone on attempt','– = no zone')}${compStepHTML(key,y,'ta','Top on attempt','– = no top')}
-    ${tagRowHTML('rst',key+'|'+y.id,y.st)}
-    ${za||ta?goodHTML(key,y):''}${at>0&&ta!==1?fallsHTML(key,y,at):''}
-    <textarea rows="1" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="why" placeholder="Note (optional)" aria-label="Note for route ${i+1}">${esc(y.why||'')}</textarea>${old?`<p class="note">Flash note: “${esc(old)}”</p>`:''}</div>`; }
+    ${compStepHTML(key,y,'a','Attempts','all goes')}<div class="lv2">${compStepHTML(key,y,'za','Zone on attempt','– = no zone')}</div>${compStepHTML(key,y,'ta','Top on attempt','– = no top')}
+    <div class="lv2">${tagRowHTML('rst',key+'|'+y.id,y.st)}
+    ${za||ta?goodHTML(key,y):''}${at>0&&ta!==1?fallsHTML(key,y,at):''}</div>
+    <textarea class="lv3" rows="1" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="why" placeholder="Note (optional)" aria-label="Note for route ${i+1}">${esc(y.why||'')}</textarea>${old?`<p class="note">Flash note: “${esc(old)}”</p>`:''}</div>`; }
 // why you fell: in your own words (the old tap-a-reason chips stay readable on old cards)
 function fallsHTML(key,y,at){ const fl=Array.isArray(y.fall)?y.fall:[];
   return `<p class="clab rfl">Why did you fall? <small>your own words</small></p><textarea rows="2" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="fw" placeholder="What happened, what would you change?" aria-label="Why did you fall">${esc(y.fw||'')}</textarea>${fl.length?`<p class="note">Tagged before: ${esc(fl.map(f=>(FALLS.find(z=>z[0]===f)||[f,f])[1]).join(', '))}</p>`:''}`; }
@@ -3985,14 +4037,14 @@ function readyCard(){ const DT=S.cfg.templates.filter(t=>t.perf&&pgOf(t)==='dail
       rows.push(`<div class="rdy ${cls}"><span>${nm}</span><b>${n1(last.v)}${unit}</b><small>${d>=0?'+':'−'}${n1(Math.abs(d))}% vs your last ${prev.length} (${n1(m)}${unit})${last.d!==todayStr?` · ${dmy(last.d)}`:''}</small></div>`); }); }));
   if(!rows.length) return `<div class="card"><h3>Readiness ${helpBtn('daily')}</h3><p class="note">Do the daily tests every session. After 3 days this shows how fresh you are compared with your own normal.</p></div>`;
   return `<div class="card"><h3>Readiness ${helpBtn('daily')}</h3>${rows.join('')}<p class="note" style="margin:8px 0 0">5% or more below your normal = tired today: go easier on max efforts.</p></div>`; }
-function renderPerf(){ ensurePerf(); const k=mkey(S.y,S.m); month(k); const g=S.st.pgrp||'daily', ALL=S.cfg.templates.filter(t=>t.perf), PT=ALL.filter(t=>pgOf(t)===g), inG=e=>{ const t=S.cfg.templates.find(t=>t.id===e.tid); return t?pgOf(t)===g:g==='super'; };
+function renderPerf(){ ensurePerf(); const k=mkey(S.y,S.m); month(k); if(S.st.pgrp&&PG_LV[S.st.pgrp]>TLV()) S.st.pgrp=null; const g=S.st.pgrp||(TLV()>=2?'daily':'climb'), ALL=S.cfg.templates.filter(t=>t.perf), PT=ALL.filter(t=>pgOf(t)===g), inG=e=>{ const t=S.cfg.templates.find(t=>t.id===e.tid); return t?pgOf(t)===g:g==='super'; };
   const first=new Date(S.y,S.m,1), lead=(first.getDay()+6)%7, days=new Date(S.y,S.m+1,0).getDate(); let cells=WD.map(w=>`<div class="wd">${w}</div>`).join(''); for(let i=0;i<lead;i++) cells+=`<div class="day out"></div>`;
   for(let d=1;d<=days;d++){ const ds=`${S.y}-${pad(S.m+1)}-${pad(d)}`, es=(month(k).days[String(d)]||[]).filter(isPerfE).filter(inG);
     cells+=`<button class="day${ds===todayStr?' today':''}${ds===S.sel?' sel':''}" data-day="${ds}" aria-label="${d} ${MONTHS[S.m]}, ${es.length} logs"><span class="n">${d}</span><span class="tapes">${es.slice(0,4).map(e=>`<span class="tape" style="background:${tplColor(e)}"></span>`).join('')}</span></button>`; }
   const sd=new Date(S.sel+'T12:00'), sel=entriesOn(S.sel).filter(isPerfE).filter(inG), cnt=k2=>entriesOn(S.sel).filter(isPerfE).filter(e=>{ const t=S.cfg.templates.find(t=>t.id===e.tid); return t&&pgOf(t)===k2; }).length;
   const sub={daily:'Short tests every session. They show how fresh you are today.',super:'Max tests. No hard training in the 48 h before, so they are rare and comparable.',climb:'One card per boulder: grade, attempts, result, why you fell.',comp:'One log per round: your boulders with attempts to zone and top, points like the IFSC.'}[g];
   app.innerHTML=`${topBar()}<div class="phead"><div><h1>Performance</h1><p>Tests, climbing and competitions, on their own calendar.</p></div>${fig('perf')}</div>
-  <div class="pseg" role="tablist">${PGRP.map(([k2,l])=>`<button data-pgrp="${k2}" class="${g===k2?'on':''}" role="tab" aria-selected="${g===k2}">${k2==='daily'?'+ ':k2==='super'?'+++ ':''}${l}${cnt(k2)?` <i>${cnt(k2)}</i>`:''}</button>`).join('')}</div>
+  <div class="pseg" role="tablist">${PGRP.filter(([k2])=>(PG_LV[k2]||1)<=TLV()).map(([k2,l])=>`<button data-pgrp="${k2}" class="${g===k2?'on':''}" role="tab" aria-selected="${g===k2}">${k2==='daily'?'+ ':k2==='super'?'+++ ':''}${l}${cnt(k2)?` <i>${cnt(k2)}</i>`:''}</button>`).join('')}</div>
   <p class="note psub">${sub} ${helpBtn({daily:'daily',super:'super',climb:'routes',comp:'comp'}[g]||'daily')}</p>
   ${g==='daily'?readyCard():''}${g==='super'?goalStrip()+perfNowCard('super'):''}
   <div class="month"><h1>${MONTHS[S.m]}<span>${S.y}</span></h1><div class="arrows"><button data-act="prev" aria-label="Previous month">‹</button><button data-act="next" aria-label="Next month">›</button></div></div>
