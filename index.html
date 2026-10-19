@@ -719,6 +719,15 @@ button{transition:transform .12s ease,background-color .18s ease,color .18s ease
 .simroute .taged{grid-column:1/-1}
 .tflag i:nth-child(1){background:#FDB913!important}.tflag i:nth-child(2){background:#006A44!important}.tflag i:nth-child(3){background:#C1272D!important}
 :root[data-skin]:not([data-skin="vilnius"]){--acc:var(--ink)}
+.simord{display:flex;flex-direction:column;gap:4px;margin:6px 0 10px}.sord{display:grid;grid-template-columns:30px 1fr 44px 44px;gap:6px;align-items:center;background:var(--field);border:1px solid var(--line);border-radius:var(--r2);padding:4px 6px}.sord b{font-family:var(--fh);font-size:1.3rem;text-align:center;color:var(--gold)}.sord button{min-height:38px;border:1px solid var(--line);background:var(--panel);border-radius:var(--r2);font-weight:800}.sord button:disabled{opacity:.3}
+.simbox[data-ph=rest] .simlab{color:#21B573}.simbox[data-ph=prep] .simlab,.simbox[data-ph=prep] .simt{color:#FF9F1C}.simbox[data-ph=move] .simlab{color:#8FB8FF}
+/* the comp screen keeps its own dark colours in every look */
+.simfs{--bg:#06080A;--panel:#0D1115;--ink:#ECEFF1;--soft:#8A959E;--line:#1D252C;--field:#141A20;--acc:#ECEFF1;color:#ECEFF1;background:#06080A}
+/* medals: gold, silver, bronze */
+.sbr .pos{color:#8A959E}.sbr.p1 .pos{color:#FDB913}.sbr.p2 .pos{color:#C9D1D8}.sbr.p3 .pos{color:#D08A4E}
+.rkr.p1,.sbr.p1{background:linear-gradient(90deg,rgba(253,185,19,.16),transparent 70%)}.rkr.p2,.sbr.p2{background:linear-gradient(90deg,rgba(201,209,216,.13),transparent 70%)}.rkr.p3,.sbr.p3{background:linear-gradient(90deg,rgba(208,138,78,.14),transparent 70%)}
+.rkp,.sbr .pos{position:relative}.rkr.p1 .rkp::after,.rkr.p2 .rkp::after,.rkr.p3 .rkp::after{content:"";position:absolute;left:-2px;top:50%;width:30px;height:30px;margin-top:-15px;border-radius:50%;z-index:-1}.rkr.p1 .rkp::after{background:rgba(253,185,19,.18)}.rkr.p2 .rkp::after{background:rgba(201,209,216,.15)}.rkr.p3 .rkp::after{background:rgba(208,138,78,.17)}
+.place.m2{border-color:#C9D1D8;background:radial-gradient(120% 100% at 50% 0%,rgba(201,209,216,.18),transparent 70%),#0D1115}.place.m2 b{color:#C9D1D8}.place.m3{border-color:#D08A4E;background:radial-gradient(120% 100% at 50% 0%,rgba(208,138,78,.2),transparent 70%),#0D1115}.place.m3 b{color:#D08A4E}.place.m0{border-color:#2A333B;background:#0D1115}.place.m0 b{color:#ECEFF1}
 </style>
 </head>
 <body>
@@ -3834,16 +3843,36 @@ function sims(){ const o=(TEAM.info&&TEAM.info.sims)||{}; return Object.entries(
 const simById=id=>sims().find(x=>x.id===id)||null;
 const iAmIn=x=>x.inv.some(a=>a.id===ACC.id);
 const myStart=x=>{ const a=x.inv.find(a=>a.id===ACC.id); return a?a.s:1; };
-// the timeline everyone shares: observation, then for each boulder a climbing period and (between boulders) a rest
-function simPhases(x){ const P=[]; let t=0; if(x.obs) { P.push({k:'obs',t0:t,len:x.obs*x.n}); t+=x.obs*x.n; }
-  for(let i=0;i<x.n;i++){ if(x.chg){ P.push({k:'move',i,t0:t,len:x.chg}); t+=x.chg; } P.push({k:'climb',i,t0:t,len:x.climb}); t+=x.climb; if(i<x.n-1&&x.rr){ const L=x.climb+(x.chg||0); P.push({k:'rest',i,t0:t,len:L}); t+=L; } } return {P,total:t}; }
-function simState(x){ if(x.status!=='live'&&x.status!=='done'||!x.startAt) return {k:'wait'}; const ref=x.status==='done'&&x.endAt?x.endAt:x.pausedAt||simNow(), el=(ref-x.startAt-(x.pausedMs||0))/1000; if(el<0) return {k:'count',left:-el,paused:!!x.pausedAt};
-  const {P,total}=simPhases(x); if(el>=total) return {k:'end'}; if(x.status==='done'){ const p=P.find(p=>el<p.t0+p.len)||P[P.length-1]; return Object.assign({},p,{k:'stop',left:p.t0+p.len-el,el,total}); } const p=P.find(p=>el<p.t0+p.len)||P[P.length-1]; return Object.assign({},p,{left:p.t0+p.len-el,el,total,paused:!!x.pausedAt}); }
-const boulderFor=(x,start,i)=>((start-1+i)%x.n);   // rotation i → boulder index for an athlete who starts on boulder <start>
-function simLabel(x,st,start,staff){ if(st.k==='wait') return staff?['Ready','Tap Start when everyone is at the wall']:['Waiting for the coach','The timer starts on every phone at the same time']; if(st.k==='count') return [st.paused?'Paused':'Starting in','']; if(st.k==='end') return ['Finished','']; if(st.k==='stop') return ['Stopped','The coach ended the round'];
+// Order like the IFSC: with the same boulders only one athlete is on a boulder at a time. Athletes go in the coach's order:
+// athlete number p climbs boulder j in rotation p + k·j (k = 2 with a rest rotation between boulders, k = 1 without),
+// so while you rest the next athlete climbs the boulder you just left. With each athlete's own boulders everyone starts together.
+const simK=x=>x.rr?2:1;
+const simPos=(x,id)=>x.mode==='same'?Math.max(0,x.inv.findIndex(a=>a.id===id)):0;
+const simRots=x=>(x.mode==='same'?Math.max(0,x.inv.length-1):0)+simK(x)*(x.n-1)+1;
+const simRotLen=x=>(x.chg||0)+x.climb;
+function simNoteText(x){ const T=simRotLen(x), total=(x.obs?x.obs*x.n:0)+simRots(x)*T;
+  return (x.mode==='same'?(x.rr?`Like the IFSC: one athlete per boulder. You climb, then rest one rotation (${mmss(T)}) while the next athlete climbs the boulder you left.`:'One athlete per boulder, no rest: as soon as you finish, you go to your next boulder.'):(x.rr?`Everyone starts together on their own boulders and rests one rotation (${mmss(T)}) between boulders.`:'Everyone starts together on their own boulders, straight from one to the next.'))+` Whole round about ${Math.ceil(total/60)} min.`; }
+function simPhases(x){ const P=[]; let t=0; if(x.obs){ P.push({k:'obs',t0:t,len:x.obs*x.n}); t+=x.obs*x.n; }
+  for(let r=0;r<simRots(x);r++){ if(x.chg){ P.push({k:'move',i:r,t0:t,len:x.chg}); t+=x.chg; } P.push({k:'climb',i:r,t0:t,len:x.climb}); t+=x.climb; } return {P,total:t}; }
+function simState(x){ if(x.status!=='live'&&x.status!=='done'||!x.startAt) return {k:'wait'}; const ref=x.status==='done'&&x.endAt?x.endAt:x.pausedAt||simNow(), el=(ref-x.startAt-(x.pausedMs||0))/1000; if(el<0) return {k:'count',left:-el,el,paused:!!x.pausedAt};
+  const {P,total}=simPhases(x); if(el>=total) return {k:'end',el}; if(x.status==='done'){ const p=P.find(p=>el<p.t0+p.len)||P[P.length-1]; return Object.assign({},p,{k:'stop',left:p.t0+p.len-el,el,total}); } const p=P.find(p=>el<p.t0+p.len)||P[P.length-1]; return Object.assign({},p,{left:p.t0+p.len-el,el,total,paused:!!x.pausedAt}); }
+// what one athlete (number p in the order) is doing right now
+function athAt(x,st,p){ const k=simK(x), R=simRots(x), base=x.obs?x.obs*x.n:0, T=simRotLen(x), at=r=>{ const d=r-p; return d>=0&&d%k===0&&d/k<x.n?d/k:-1; };
+  if(st.k==='end'||st.k==='stop') return {act:'done'};
+  if(st.k==='move'||st.k==='climb'){ const b=at(st.i); if(b>=0) return {act:st.k,b,left:st.left}; }
+  const from=st.k==='move'||st.k==='climb'?st.i+1:0, el=st.el==null?0:st.el, first=at(from)<0&&from===0?null:null;
+  for(let r=from;r<R;r++){ const b=at(r); if(b>=0){ const climbStart=base+r*T+(x.chg||0); return {act:'wait',b,r,next:st.k==='move'||st.k==='climb'?r===st.i+1:false,first:r===p,until:climbStart-el}; } }
+  return {act:'done'}; }
+const boulderFor=(x,start,i)=>((start-1+i)%x.n);
+function simLabel(x,st,me,staff){ if(st.k==='wait') return staff&&me==null?['Ready','Tap Start when everyone is at the wall']:['Waiting for the coach','The timer starts on every phone at the same time']; if(st.k==='end') return ['Finished','']; if(st.k==='stop') return ['Stopped','The coach ended the round'];
+  if(st.k==='count') return [st.paused?'Paused':'Starting in',me!=null&&x.mode==='same'?`You are number ${me+1} in the order`:''];
   if(st.k==='obs') return ['Observation',`All ${x.n} boulders · touch only the start holds`];
-  const b=start?boulderFor(x,start,st.i)+1:null; if(st.k==='move') return ['Change',start?`Go to boulder ${b}`:`Rotation ${st.i+1} of ${x.n} starts`]; if(st.k==='climb') return [start?`Boulder ${b}`:`Rotation ${st.i+1} of ${x.n}`,st.paused?'Paused':'Climbing'];
-  const nb=start?boulderFor(x,start,st.i+1)+1:null; return ['Rest',(st.paused?'Paused · ':'Others are climbing · ')+(start?`next: boulder ${nb}`:`next: rotation ${st.i+2}`)]; }
+  if(me==null) return st.k==='move'?['Change',`Rotation ${st.i+1} of ${simRots(x)} starts`]:[`Rotation ${st.i+1} of ${simRots(x)}`,st.paused?'Paused':'Climbing'];
+  const A=athAt(x,st,me); if(A.act==='move') return ['Change',`Go to boulder ${A.b+1}`]; if(A.act==='climb') return [`Boulder ${A.b+1}`,st.paused?'Paused':'Climbing'];
+  if(A.act==='wait') return A.next?['Prepare',`You climb boulder ${A.b+1} next`]:A.first?['Waiting',`You start on boulder ${A.b+1}`]:['Rest',`Others are climbing · next: boulder ${A.b+1}`];
+  return ['Done','Your round is over · others are still climbing']; }
+// the big number: your own countdown (to your climb when you wait), or the hall clock for the coach
+function simShow(x,st,me){ if(st.k==='wait') return '–:––'; if(st.k==='end') return '0:00'; if(me==null||st.k==='count'||st.k==='obs') return mmss(st.left); const A=athAt(x,st,me); return A.act==='wait'?mmss(A.until):A.act==='done'?'–:––':mmss(st.left); }
 // ---- server clock + live data
 async function simClock(){ if(!TEAM.clock||GUEST) return; try{ SIM.off=await TEAM.clock(ACC.id); SIM.offOk=true; }catch(e){ SIM.offOk=false; } }
 function simSub(){ if(SIM.sub||!TEAM.db||GUEST||!ALIVE) return;
@@ -3875,12 +3904,12 @@ async function simEnter(){ try{ if(document.fullscreenElement==null&&document.do
   try{ if(navigator.wakeLock) SIM.wake=await navigator.wakeLock.request('screen'); }catch(e){} simAudio(); }
 async function simExit(){ try{ if(screen.orientation&&screen.orientation.unlock) screen.orientation.unlock(); }catch(e){} try{ if(document.fullscreenElement) await document.exitFullscreen(); }catch(e){} try{ if(SIM.wake) await SIM.wake.release(); }catch(e){} SIM.wake=null; }
 function simTickStart(){ if(SIM.tick) return; SIM.tick=setInterval(()=>{ if(!ALIVE||S.view!=='sim'){ clearInterval(SIM.tick); SIM.tick=null; return; } const x=simById(S.st.simId); if(!x||S.st.simDraft) return; const st=simState(x);
-  const sec=st.k==='wait'?-1:st.k==='end'?0:Math.max(0,Math.ceil(st.left)), me=iAmIn(x)?myStart(x):null, staff=ACC.role==='coach'||ACC.role==='supervisor';
+  const sec=st.k==='wait'?-1:st.k==='end'?0:Math.max(0,Math.ceil(st.left)), me=iAmIn(x)?simPos(x,ACC.id):null, staff=ACC.role==='coach'||ACC.role==='supervisor';
   if((ACC.role==='coach'||ACC.role==='supervisor')&&Date.now()-(SIM.poll||0)>2500){ SIM.poll=Date.now(); simPoll(x); }
-  if(sec!==SIM.lastSec||st.k!==SIM.lastK){ SIM.lastSec=sec; SIM.lastK=st.k; const t=document.getElementById('simt'), l=document.getElementById('siml'), sb=document.getElementById('simsub'), box=document.getElementById('simbox');
-    if(t) t.textContent=st.k==='wait'?'–:––':st.k==='end'?'0:00':mmss(st.left); const [L1,L2]=simLabel(x,st,me,staff); if(l&&l.textContent!==L1) l.textContent=L1; if(sb&&sb.textContent!==L2) sb.textContent=L2;
-    if(box){ box.dataset.ph=st.k; box.classList.toggle('last',st.k==='climb'&&st.left<=60); box.classList.toggle('paused',!!st.paused); }
-    const cur=(st.k==='climb'||st.k==='move')&&me?boulderFor(x,me,st.i):-1; document.querySelectorAll('.simb').forEach(b=>b.classList.toggle('now',+b.dataset.simb===cur));
+  if(sec!==SIM.lastSec||st.k!==SIM.lastK||me!=null){ SIM.lastSec=sec; SIM.lastK=st.k; const t=document.getElementById('simt'), l=document.getElementById('siml'), sb=document.getElementById('simsub'), box=document.getElementById('simbox');
+    const show=simShow(x,st,me); if(t&&t.textContent!==show) t.textContent=show; const [L1,L2]=simLabel(x,st,me,staff); if(l&&l.textContent!==L1) l.textContent=L1; if(sb&&sb.textContent!==L2) sb.textContent=L2;
+    const A=me!=null&&['move','climb','obs'].includes(st.k)?athAt(x,st,me):null; if(box){ box.dataset.ph=A&&A.act==='wait'?(A.next?'prep':'rest'):A&&A.act==='done'?'end':st.k; box.classList.toggle('last',st.k==='climb'&&st.left<=60&&(!A||A.act==='climb')); box.classList.toggle('paused',!!st.paused); }
+    const cur=A&&(A.act==='climb'||A.act==='move')?A.b:-1; document.querySelectorAll('.simb').forEach(b=>b.classList.toggle('now',+b.dataset.simb===cur));
     simSignals(st,sec); const pk=st.k+':'+(st.i??''); if(pk!==SIM.boardPh){ SIM.boardPh=pk; const el=document.getElementById('simboard'); if(el) el.outerHTML=simBoardHTML(x); } }
   const bar=document.getElementById('simbar'); if(bar) bar.style.width=st.len?Math.min(100,(1-st.left/st.len)*100)+'%':st.k==='end'||st.k==='stop'?'100%':'0%'; },100); }
 function simSoft(){ const ae=document.activeElement; if(ae&&app.contains(ae)&&(ae.tagName==='INPUT'||ae.tagName==='TEXTAREA'||ae.tagName==='SELECT')) return; render(); }
@@ -3893,7 +3922,7 @@ function simRank(x){ const W=SIM.watch[x.id]||{}; return x.inv.map(a=>({a,m:W[a.
 // ---- screens
 function simCardsForDay(day){ return sims().filter(x=>x.date===day&&(iAmIn(x)||ACC.role==='coach'||ACC.role==='supervisor')&&x.status!=='draft'); }
 function simInviteCards(){ if(GUEST) return ''; return sims().filter(x=>iAmIn(x)&&x.status!=='draft'&&x.status!=='done'&&SIM.mine[x.id]&&!SIM.mine[x.id].loading&&!SIM.mine[x.id].ans).map(x=>`<div class="card siminv"><div class="sikick"><span class="flagbar"></span>Comp simulation · invite</div><b class="sititle">${esc(x.name)}</b>
-  <p class="note">${esc(x.byName)} · ${dmyy(x.date)} · ${x.n} boulders · ${mmss(x.climb)} per boulder${x.mode==='own'?' · your own boulders':''} · you start on boulder ${myStart(x)}</p>
+  <p class="note">${esc(x.byName)} · ${dmyy(x.date)} · ${x.n} boulders · ${mmss(x.climb)} per boulder${x.mode==='own'?' · your own boulders':''} · ${x.mode==='same'?`you are number ${simPos(x,ACC.id)+1} in the climbing order`:'everyone starts together'}</p>
   <div class="row" style="margin:10px 0 0"><button class="btn" data-simans="${x.id}|yes">Accept</button><button class="btn ghost" data-simans="${x.id}|no">Decline</button></div></div>`).join(''); }
 function simDayHTML(day){ const L=simCardsForDay(day); if(!L.length) return ''; return L.map(x=>{ const st=simState(x), m=SIM.mine[x.id];
   return `<button class="card simday" data-simopen="${x.id}"><span class="sikick"><span class="flagbar"></span>Comp simulation${x.status==='live'?' · <b class="live">LIVE</b>':x.status==='done'?' · finished':''}</span><b class="sititle">${esc(x.name)}</b><span class="note">${x.n} boulders · ${mmss(x.climb)} per boulder${m&&m.ans==='no'?' · you declined':''}${iAmIn(x)&&m&&m.ans==='yes'?` · ${simScore(x,m).T}T ${simScore(x,m).Z}Z`:''}</span><span class="simgo">Open ›</span></button>`; }).join(''); }
@@ -3912,22 +3941,23 @@ function simEditHTML(x){ const ath=(TM.list||[]).filter(a=>seenRole(a)==='athlet
     <p class="clab">Round <small>IFSC times</small></p><div class="chips">${Object.entries(SIMP).map(([k,v])=>`<button data-simround="${k}" class="${x.round===k?'on':''}">${v[0]}</button>`).join('')}<button data-simround="c" class="${x.round==='c'?'on':''}">Custom</button></div>
     <div class="tsteps">${tStep('climb',x.climb,'Climb','per boulder')}${tStep('chg',x.chg,'Change','walk to the boulder, before each climb')}${tStep('obs',x.obs,'Observation','per boulder, before the start')}</div>
     <div class="chips" style="margin:8px 0 2px"><button data-simrr="1" class="${x.rr?'on':''}" aria-pressed="${x.rr}">Rest a rotation between boulders</button></div>
-    <p class="note">${x.rr?`Like the IFSC: you climb, then rest one rotation (${mmss(x.climb+(x.chg||0))}) while the others climb, then ${x.chg?mmss(x.chg)+' to change and ':''}your next boulder.`:`No rest: ${x.chg?mmss(x.chg)+' to change, then ':''}straight to the next boulder.`}</p>
+    <p class="note" id="simnote">${simNoteText(x)}</p>
     <p class="clab">Boulders</p><div class="chips"><button data-simmode="same" class="${x.mode==='same'?'on':''}">Same for everyone</button><button data-simmode="own" class="${x.mode==='own'?'on':''}">Each athlete their own</button></div>
     ${x.mode==='same'?x.routes.map((r,i)=>`<div class="simroute"><b>B${i+1}</b><input type="text" data-simr="${i}|g" value="${esc(r.g)}" placeholder="Grade" autocapitalize="characters">${tagRowHTML('simrst',String(i),r.st)}<input type="text" data-simr="${i}|note" value="${esc(r.note)}" placeholder="Note (optional)"></div>`).join(''):'<p class="note">Athletes write the grade and style of each boulder themselves. You see their results, no ranking.</p>'}
-    <p class="clab">Invite <small>and the boulder each one starts on</small></p>
-    ${ath.length?ath.map(a=>{ const on=inv.get(a.id); return `<div class="siminv-row"><button class="gchk${on?' on':''}" data-siminv="${a.id}" aria-pressed="${!!on}">${on?'✓':''}</button><span>${esc(a.name)}</span>${on?`<select data-simstart="${a.id}" aria-label="${esc(a.name)} starts on">${Array.from({length:x.n},(_,i)=>sel(String(i+1),String(on.s),'Starts B'+(i+1))).join('')}</select>`:''}</div>`; }).join(''):`<p class="note">${TM.loaded?'No athletes in the team yet.':'Loading the team…'}</p>`}
+    <p class="clab">Invite <small>${x.mode==='same'?'and the climbing order: number 1 climbs first':'everyone starts together on their own boulders'}</small></p>
+    ${x.inv.length&&x.mode==='same'?`<div class="simord">${x.inv.map((a,i)=>`<div class="sord"><b>${i+1}</b><span>${esc(a.name)}</span><button data-simord="${a.id}|-1" aria-label="Climb earlier"${i?'':' disabled'}>↑</button><button data-simord="${a.id}|1" aria-label="Climb later"${i<x.inv.length-1?'':' disabled'}>↓</button></div>`).join('')}</div>`:''}
+    ${ath.length?ath.map(a=>{ const on=inv.get(a.id); return `<div class="siminv-row"><button class="gchk${on?' on':''}" data-siminv="${a.id}" aria-pressed="${!!on}">${on?'✓':''}</button><span>${esc(a.name)}</span>${on&&x.mode==='same'?`<small class="note">#${x.inv.findIndex(z=>z.id===a.id)+1}</small>`:''}</div>`; }).join(''):`<p class="note">${TM.loaded?'No athletes in the team yet.':'Loading the team…'}</p>`}
     <div class="row" style="margin:14px 0 0"><button class="btn" data-act="simsave">${x.status==='draft'?'Send invites':'Save'}</button><button class="btn ghost" data-act="simcancel">Cancel</button><span style="flex:1"></span>${x.created&&(ACC.role==='supervisor'||x.by===ACC.id)?`<button class="del" data-act="simdel">Delete</button>`:''}</div></div>`; }
 // what the coach needs at a glance: who leads, each boulder as the comp result boards show it, where everyone is now, how stressed they are
 function simCell(r){ return +r.ta?`<i class="t" title="Top on attempt ${r.ta}">T${r.ta}</i>`:+r.za?`<i class="z" title="Zone on attempt ${r.za}">Z${r.za}</i>`:+r.a?`<i class="f" title="${r.a} attempts, no zone">${r.a}×</i>`:'<i>–</i>'; }
 function simRows(x){ const W=SIM.watch[x.id]||{}; return x.mode==='same'?simRank(x):x.inv.filter(a=>W[a.id]&&W[a.id].ans==='yes').map(a=>({a,m:W[a.id],sc:simScore(x,W[a.id])})); }
 // the table, the same for the coach (live) and for everyone once the coach locks the results
 function simTableHTML(x,rows,opt){ const st=simState(x), live=opt.live, ranked=x.mode==='same';
-  const where=a=>{ if(!live) return ''; if(st.k==='move') return `going to B${boulderFor(x,a.s,st.i)+1}`; if(st.k==='climb') return `on B${boulderFor(x,a.s,st.i)+1}`; if(st.k==='rest') return `resting · next B${boulderFor(x,a.s,st.i+1)+1}`; if(st.k==='obs') return 'observation'; if(st.k==='end'||st.k==='stop') return 'finished'; return `starts on B${a.s}`; };
+  const where=a=>{ if(!live) return ''; const p=simPos(x,a.id); if(st.k==='wait'||st.k==='count') return x.mode==='same'?`number ${p+1} in the order`:'starts with everyone'; if(st.k==='obs') return 'observation'; const A=athAt(x,st,p); if(A.act==='move') return `going to B${A.b+1}`; if(A.act==='climb') return `on B${A.b+1}`; if(A.act==='wait') return A.next?`next up · B${A.b+1}`:`${A.first?'waiting':'resting'} · B${A.b+1} in ${mmss(A.until)}`; return 'finished'; };
   const cols=`grid-template-columns:26px minmax(96px,1fr) repeat(${x.n},36px) 70px`;
   const head=`<div class="sbr sbhead" style="${cols}"><span>${ranked?'#':''}</span><span>Athlete</span>${Array.from({length:x.n},(_,j)=>`<span class="bxh">B${j+1}</span>`).join('')}<span class="sch">Points</span></div>`;
   return `<div class="sbscroll">${head}${rows.map((o,i)=>{ const me=o.a.id===ACC.id, open=opt.click&&S.st.simAth===o.a.id;
-    return `<div class="sbr${me?' me':''}" style="${cols}"><b class="pos">${ranked?i+1:'·'}</b>${opt.click?`<button class="nm" data-simath="${o.a.id}" aria-expanded="${open}"><b>${esc(o.a.name)} <span class="chev">${open?'▾':'▸'}</span></b><small>${where(o.a)||'tap for details'}</small></button>`:`<span class="nm"><b>${esc(o.a.name)}${me?' (you)':''}</b>${where(o.a)?`<small>${where(o.a)}</small>`:''}</span>`}${Array.from({length:x.n},(_,j)=>simCell(simRes(o.m,j))).join('')}<span class="sc"><b>${ranked?n1(o.sc.pts):o.sc.T}</b><small>${ranked?`${plural(o.sc.T,'top')}<br>${plural(o.sc.Z,'zone')}`:'tops'}</small></span></div>${open?simAthHTML(x,o):''}`; }).join('')}</div>`; }
+    return `<div class="sbr${me?' me':''}${ranked&&i<3?' p'+(i+1):''}" style="${cols}"><b class="pos">${ranked?i+1:'·'}</b>${opt.click?`<button class="nm" data-simath="${o.a.id}" aria-expanded="${open}"><b>${esc(o.a.name)} <span class="chev">${open?'▾':'▸'}</span></b><small>${where(o.a)||'tap for details'}</small></button>`:`<span class="nm"><b>${esc(o.a.name)}${me?' (you)':''}</b>${where(o.a)?`<small>${where(o.a)}</small>`:''}</span>`}${Array.from({length:x.n},(_,j)=>simCell(simRes(o.m,j))).join('')}<span class="sc"><b>${ranked?n1(o.sc.pts):o.sc.T}</b><small>${ranked?`${plural(o.sc.T,'top')}<br>${plural(o.sc.Z,'zone')}`:'tops'}</small></span></div>${open?simAthHTML(x,o):''}`; }).join('')}</div>`; }
 function simAthHTML(x,o){ const m=o.m, z=m.z||{}, L=Array.from({length:x.n},(_,j)=>{ const r=simRes(m,j), R=x.routes[j]||{}, g=x.mode==='own'?r.g:R.g, tags=(x.mode==='own'?r.st:R.st)||[], res=+r.ta?(+r.ta===1?'Flash':`Top on attempt ${r.ta}`):+r.za?`Zone on attempt ${r.za}, no top`:+r.a?'No zone':'Not tried';
     return `<div class="sad"><b>B${j+1}${g?' · '+esc(g):''}${tags.length?' · '+esc(tags.map(styName).join(', ')):''}</b><span>${res}${+r.a?` · ${plural(+r.a,'attempt')}`:''}</span>${String(r.good||'').trim()?`<span class="sfw">What went well: “${esc(String(r.good).trim())}”</span>`:''}${String(r.fw||'').trim()?`<span class="sfw">Why they fell: “${esc(String(r.fw).trim())}”</span>`:''}</div>`; }).join('');
   return `<div class="sadwrap">${+z.bi||+z.mi?`<p class="sadz">Stress: body ${+z.bi||'–'}/4${z.bd!=null&&z.bd!==''?` (effect ${sgn3(z.bd)})`:''} · mind ${+z.mi||'–'}/4${z.md!=null&&z.md!==''?` (effect ${sgn3(z.md)})`:''}</p>`:'<p class="sadz">No stress rating yet.</p>'}${L}</div>`; }
@@ -3935,11 +3965,11 @@ function simLegend(x){ return `<p class="note sbp sblegend"><b>T2</b> = top on a
 function simBoardHTML(x){ const W=SIM.watch[x.id]||{}, rows=simRows(x), inN=x.inv.filter(a=>(W[a.id]||{}).ans==='yes').length;
   return `<div class="simboard" id="simboard"><div class="sbh"><span>${x.mode==='same'?'Ranking':'Results'}</span><small>${inN} of ${x.inv.length} in · ${x.locked?'locked':'live'}</small></div>
     ${inN?simTableHTML(x,rows,{live:true,click:true}):'<p class="note sbp">Nobody has accepted yet.</p>'}${simLegend(x)}
-    <div class="sbinv">${x.inv.map(a=>{ const v=(W[a.id]||{}).ans; return `<span class="${v==='yes'?'y':v==='no'?'n':''}">${esc(a.name)} · starts B${a.s} · ${v==='yes'?'in':v==='no'?'declined':'not answered'}</span>`; }).join('')}</div></div>`; }
+    <div class="sbinv">${x.inv.map(a=>{ const v=(W[a.id]||{}).ans; return `<span class="${v==='yes'?'y':v==='no'?'n':''}">${esc(a.name)}${x.mode==='same'?` · #${simPos(x,a.id)+1}`:''} · ${v==='yes'?'in':v==='no'?'declined':'not answered'}</span>`; }).join('')}</div></div>`; }
 // when the coach locks the results, the table is published for the athletes too (they can't read each other's logs)
 function simFinal(x){ return simRows(x).map(o=>({a:{id:o.a.id,name:o.a.name,s:o.a.s},m:{res:o.m.res.slice(0,x.n).map(r=>({a:+r.a||0,za:+r.za||0,ta:+r.ta||0})),z:{}},sc:o.sc})); }
 function simFinalHTML(x){ const F=Array.isArray(x.final)?x.final:[]; if(!F.length) return ''; const ranked=x.mode==='same', mi=F.findIndex(o=>o.a.id===ACC.id), ord=n=>n+(n%100>=11&&n%100<=13?'th':['th','st','nd','rd'][n%10]||'th');
-  const you=mi>=0?(ranked?`<div class="place"><span class="pl1">Your place</span><b>${ord(mi+1)}</b><span class="pl2">of ${F.length} · ${n1(F[mi].sc.pts)} points · ${plural(F[mi].sc.T,'top')}, ${plural(F[mi].sc.Z,'zone')}</span></div>`:`<div class="place"><span class="pl1">Your result</span><b>${plural(F[mi].sc.T,'top')}</b><span class="pl2">${plural(F[mi].sc.Z,'zone')}. Everyone climbed their own boulders, so there is no ranking.</span></div>`):'';
+  const you=mi>=0?(ranked?`<div class="place ${mi===0?'m1':mi===1?'m2':mi===2?'m3':'m0'}"><span class="pl1">Your place</span><b>${ord(mi+1)}</b><span class="pl2">of ${F.length} · ${n1(F[mi].sc.pts)} points · ${plural(F[mi].sc.T,'top')}, ${plural(F[mi].sc.Z,'zone')}</span></div>`:`<div class="place"><span class="pl1">Your result</span><b>${plural(F[mi].sc.T,'top')}</b><span class="pl2">${plural(F[mi].sc.Z,'zone')}. Everyone climbed their own boulders, so there is no ranking.</span></div>`):'';
   const rows=ranked?`<div class="rk"><div class="rkr rkh"><span>Rank</span><span>Athlete</span><span>Tops</span><span>Zones</span><span>Points</span></div>${F.map((o,i)=>`<div class="rkr${o.a.id===ACC.id?' me':''}${i<3?' p'+(i+1):''}"><b class="rkp">${i+1}</b><span class="rkn">${esc(o.a.name)}${o.a.id===ACC.id?' <small>you</small>':''}</span><span><b>${o.sc.T}</b><small>${o.sc.ta} att.</small></span><span><b>${o.sc.Z}</b><small>${o.sc.za} att.</small></span><b class="rkpt">${n1(o.sc.pts)}</b></div>`).join('')}</div>`:'';
   return `${you}<div class="simboard"><div class="sbh"><span>${ranked?'Final ranking':'Results'}</span><small>locked</small></div>${rows}<p class="clab sbp" style="margin:10px 0 0">Per boulder</p>${simTableHTML(x,F,{live:false,click:false})}${simLegend(x)}</div>`; }
 function simCtlHTML(x,st){ const live=x.status==='live', paused=!!x.pausedAt;
@@ -3955,9 +3985,9 @@ function renderSim(){ if(GUEST){ S.view='cal'; renderCal(); return; } simSub(); 
   const x=simById(id); if(!x){ app.innerHTML=`${topBar()}<div class="empty">This simulation was deleted.</div><button class="btn ghost" data-tab="sims">Back</button>`; return; }
   const staff=ACC.role==='coach'||ACC.role==='supervisor', coach=staff, me=iAmIn(x), m=SIM.mine[x.id]||{res:[]}, st=simState(x);
   if(staff) simWatch(x); if(!SIM.offOk) simClock(); simTickStart(); SIM.cur=JSON.stringify(x); SIM.lastSec=null;
-  const [L1,L2]=simLabel(x,st,me?myStart(x):null,staff), timer=`<div class="simbox${st.paused?' paused':''}" id="simbox" data-ph="${st.k}"><div class="simtop"><span class="flagbar"></span><span>${esc(x.name)}</span><span>${SIMP[x.round]?SIMP[x.round][0]:'Custom'}</span></div>
-    <div class="simlab" id="siml">${esc(L1)}</div><div class="simt" id="simt">${st.k==='wait'?'–:––':st.k==='end'?'0:00':mmss(st.left)}</div><div class="simsub" id="simsub">${esc(L2)}</div><div class="simprog"><i id="simbar"></i></div></div>`;
-  const cur=(st.k==='climb'||st.k==='move')&&me?boulderFor(x,myStart(x),st.i):-1;
+  const mp=me?simPos(x,ACC.id):null, [L1,L2]=simLabel(x,st,mp,staff), timer=`<div class="simbox${st.paused?' paused':''}" id="simbox" data-ph="${st.k}"><div class="simtop"><span class="flagbar"></span><span>${esc(x.name)}</span><span>${SIMP[x.round]?SIMP[x.round][0]:'Custom'}</span></div>
+    <div class="simlab" id="siml">${esc(L1)}</div><div class="simt" id="simt">${simShow(x,st,mp)}</div><div class="simsub" id="simsub">${esc(L2)}</div><div class="simprog"><i id="simbar"></i></div></div>`;
+  const A0=mp!=null&&['move','climb'].includes(st.k)?athAt(x,st,mp):null, cur=A0&&(A0.act==='climb'||A0.act==='move')?A0.b:-1;
   const pane=me&&m.ans==='yes'?`${x.locked?'':simZHTML(x,m)}<div class="simbs">${Array.from({length:x.n},(_,i)=>{ const r=simRes(m,i), t=+r.ta?(+r.ta===1?'F':'T'):+r.za?'Z':+r.a?'×':''; return `<button class="simb${S.st.simB===i?' on':''}${cur===i?' now':''}${t?' has':''}" data-simb="${i}"><small>B${i+1}</small><b>${t||'–'}</b></button>`; }).join('')}</div>
       ${S.st.simB!=null&&S.st.simB<x.n?simResHTML(x,m,S.st.simB):x.locked?'':`<p class="note simhint">Tap a boulder to log attempts, zone and top.</p>`}
       ${sumBoxes(simScore(x,m))}`
@@ -3992,6 +4022,7 @@ function simClick(ds,b){
     if(ds.simround){ D.round=ds.simround; const p=SIMP[ds.simround]; if(p){ D.climb=p[1]; D.rest=p[2]; D.obs=p[3]; D.chg=p[4]; if(ds.simround==='f'){ D.n=Math.min(D.n,4); fix(); } else if(ds.simround==='q'&&D.n<5){ D.n=5; fix(); } else if(ds.simround==='s'&&D.n!==4){ D.n=4; fix(); } } render(); return true; }
     if(ds.simmode){ D.mode=ds.simmode; render(); return true; }
     if(ds.simrr){ D.rr=!D.rr; render(); return true; }
+    if(ds.simord){ const [id,d]=ds.simord.split('|'), i=D.inv.findIndex(z=>z.id===id), j=i+(+d); if(i<0||j<0||j>=D.inv.length) return true; const t=D.inv[i]; D.inv[i]=D.inv[j]; D.inv[j]=t; render(); return true; }
     if(ds.simrst){ const [i,...rest]=ds.simrst.split('|'), r=D.routes[+i]; r.st=tagToggle(r.st,rest.join('|')); render(); return true; }
     if(ds.siminv){ const a=(TM.list||[]).find(z=>z.id===ds.siminv); if(!a) return true; const i=D.inv.findIndex(z=>z.id===a.id); if(i>=0) D.inv.splice(i,1); else D.inv.push({id:a.id,name:a.name,s:(D.inv.length%D.n)+1}); render(); return true; }
     if(ds.act==='simcancel'){ S.st.simDraft=null; S.view=D.created?'sim':'sims'; render(); return true; }
@@ -4021,7 +4052,7 @@ function simClick(ds,b){
 function simChange(t){ const ds=t.dataset, D=S.st.simDraft; { const lx=simById(S.st.simId); if(lx&&lx.locked&&(ds.simg!==undefined||ds.simfw!==undefined||ds.simgood!==undefined)){ toast('The coach locked the results'); render(); return true; } }
   if(ds.simg!==undefined||ds.simfw!==undefined||ds.simgood!==undefined){ const [id,i]=(ds.simg||ds.simfw||ds.simgood).split('|'), m=SIM.mine[id]; if(!m) return true; while(m.res.length<=+i) m.res.push({}); m.res[+i]=Object.assign({},m.res[+i],ds.simg!==undefined?{g:t.value.trim().toUpperCase().slice(0,4)}:ds.simfw!==undefined?{fw:t.value.slice(0,500)}:{good:t.value.slice(0,500)}); simSaveMine(id); return true; }
   if(!D) return false;
-  if(ds.simtm){ const [k,u]=ds.simtm.split('|'), v=+t.value, cur=+D[k]||0; D[k]=u==='m'?v*60+cur%60:Math.floor(cur/60)*60+v; if(k==='climb'&&D[k]<5) D[k]=5; D.round='c'; render(); return true; }
+  if(ds.simtm){ const [k,u]=ds.simtm.split('|'), v=+t.value, cur=+D[k]||0; D[k]=u==='m'?v*60+cur%60:Math.floor(cur/60)*60+v; if(k==='climb'&&D[k]<5) D[k]=5; D.round='c'; document.querySelectorAll('[data-simround]').forEach(b=>b.classList.toggle('on',b.dataset.simround==='c')); const n=document.getElementById('simnote'); if(n) n.textContent=simNoteText(D); return true; }
   if(ds.sime){ const k=ds.sime; if(k==='name') D.name=t.value.trim().slice(0,60)||'Comp simulation'; else if(k==='date'){ if(/^\d{4}-\d{2}-\d{2}$/.test(t.value)) D.date=t.value; } return true; }
   if(ds.simr){ const [i,k]=ds.simr.split('|'); D.routes[+i][k]=k==='g'?t.value.trim().toUpperCase().slice(0,4):t.value.slice(0,200); return true; }
   if(ds.simstart){ const a=D.inv.find(z=>z.id===ds.simstart); if(a) a.s=+t.value; return true; }
