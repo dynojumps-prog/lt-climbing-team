@@ -819,6 +819,9 @@ button{transition:transform .12s ease,background-color .18s ease,color .18s ease
 .newsl{font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin:12px 0 4px}
 .newsul{list-style:none;margin:0;padding:0}.newsul li{display:flex;flex-direction:column;padding:8px 0;border-top:1px solid var(--line)}.newsul li:first-child{border-top:0}.newsul b{font-size:.95rem}.newsul span{color:var(--soft);font-size:.88rem;line-height:1.35}
 .newsf{position:sticky;bottom:-16px;background:var(--panel);margin:8px -18px -16px;padding:12px 18px 14px;border-top:1px solid var(--line)}.newsok{width:100%}.newsn{text-align:center;margin:8px 0 0}
+/* long words without spaces (a pasted link, a long name) wrap instead of pushing the page sideways */
+.card,.entry,.phead,.gstrip,.simday,.siminv,.simboard,.sbinv,.bkprev,.alert,.bnudge,.newsbox,.tmrow,.atrow,.atrd,.rdc,.goal,.gitem{overflow-wrap:anywhere}
+.gstop,.gstop>*,.simm,.simm>*,.atname,.tmrow>*{min-width:0}
 </style>
 </head>
 <body>
