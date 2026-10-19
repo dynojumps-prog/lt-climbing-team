@@ -625,6 +625,11 @@ body{background:var(--bg);font-variant-numeric:tabular-nums}
 .erel{display:grid;grid-template-columns:repeat(11,1fr);gap:3px}.erel button{border:1px solid var(--line);background:var(--field);min-height:42px;padding:0;font-weight:700;font-size:.82rem;font-family:"Barlow Condensed",sans-serif}.erel button.mid{border-color:var(--soft)}.erel button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .cbar{display:flex;gap:12px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap}.ccount .step b{min-width:28px;text-align:center;font-family:"Barlow Condensed",sans-serif;font-size:1.4rem}
 .tsel{display:flex;gap:6px}.tsel select{width:auto;min-height:44px;font-weight:700;font-size:1rem;padding:6px 8px}
+.loginal{display:flex;flex-direction:column;gap:4px;border-left:4px solid var(--neg)}.loginal .row{margin:6px 0 0;gap:8px}
+.sbscroll{overflow-x:auto}.sbr.sbhead{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8A959E;padding-top:6px;padding-bottom:6px}.sbr.sbhead .bxh,.sbr.sbhead .sch{text-align:center}
+.sbr{display:grid;gap:4px;align-items:center;padding:8px 12px;border-bottom:1px solid #1D252C;min-width:max-content}.sbr .nm{display:flex;flex-direction:column;min-width:0}.sbr .nm b{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sbr .nm small{color:#8A959E;font-size:.72rem}.sbs{color:#B8C1C8;font-size:.7rem}
+.sbr>i{font-style:normal;height:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;background:#141A20;border:1px solid #1D252C;border-radius:6px;color:#5E6B73;line-height:1}.sbr>i.t{background:var(--gold);color:#06080A;border-color:var(--gold)}.sbr>i.z{background:#2A333B;color:#ECEFF1}.sbr>i.f{color:#B8C1C8}.sbr>i u{text-decoration:none;font-size:.55rem;font-weight:600}
+.sblegend b{color:#ECEFF1}
 </style>
 </head>
 <body>
@@ -880,7 +885,7 @@ async function pullAll(){ if(!col||GUEST) return;
   }catch(e){ setSync('Saved on phone, syncs later'); }
 }
 db=TEAM.db||null; col=db?db.collection('people/'+ACC.id+'/docs'):null;
-if(col){ window.addEventListener('online',()=>{ if(ALIVE) pullAll(); }); setTimeout(async()=>{ if(!ALIVE) return; if(!(await verifyMe())) return; await pullAll(); if(ALIVE){ sumQueue(); pendingImport(); simSub(); simClock(); } },0); }
+if(col){ window.addEventListener('online',()=>{ if(ALIVE) pullAll(); }); setTimeout(async()=>{ if(!ALIVE) return; if(!(await verifyMe())) return; await pullAll(); if(ALIVE){ sumQueue(); pendingImport(); simSub(); simClock(); loginCheck(); } },0); }
 
 // ---------- secret notes: only you can read them. The text lives in people/<you>/secret, which the database gives to nobody else;
 // the log your coach can open only gets a mark (it.sec) that says a secret note exists ----------
@@ -1056,7 +1061,7 @@ function tplColor(e){ const t=S.cfg.templates.find(t=>t.id===e.tid); return safe
 const app=document.getElementById('app');
 
 // ---------- render ----------
-function render(){ const y=window.scrollY; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; ({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth}[S.view]||renderSettings)(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); }
+function render(){ const y=window.scrollY, fsEl=app.querySelector('.simfs'), fsY=fsEl?fsEl.scrollTop:0; app.style.minHeight=app.offsetHeight+'px'; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; ({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth}[S.view]||renderSettings)(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); const fs2=app.querySelector('.simfs'); if(fs2&&fsY) fs2.scrollTop=fsY; app.style.minHeight=''; }
 function toast(t){ let el=document.getElementById('toast'); if(!el){ el=document.createElement('div'); el.id='toast'; el.setAttribute('role','status'); document.body.appendChild(el); } el.textContent=t; el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),1800); }
 function say(t){ const m=document.getElementById('msg'); if(m) m.textContent=t; }
 function armed(b,label){ if(b.dataset.armed) return true; b.dataset.armed='1'; const old=b.textContent; b.textContent=label; b.classList.add('armed'); setTimeout(()=>{ if(b.isConnected){ delete b.dataset.armed; b.textContent=old; b.classList.remove('armed'); } },3000); return false; }
@@ -1635,8 +1640,16 @@ const FIGS={
  cal:'<svg viewBox="0 0 160 110" aria-hidden="true"><g fill="currentColor"><circle cx="86" cy="22" r="7"/><path d="M80 31l-14 18 5 4 11-13 3 18-12 22 6 4 13-23 8 11 3 21h7l-3-25-11-15-2-16 13 8 11-12-4-4-8 9z"/></g><path d="M118 10l9 4-4 8-9-4zM40 58l12-3 3 8-12 4zM56 16l9 1-1 8-9-1zM132 58l9 4-4 8-9-4z" fill="currentColor" opacity=".35"/><path d="M118 10l9 4-4 8-9-4z" fill="#FDB913"/></svg>'};
 const fig=k=>`<span class="fig">${FIGS[k]||''}</span>`;
 const ROLEW={athlete:'Athlete',coach:'Coach',supervisor:'Head of team'};
+// ---- safety: logins from other phones or computers since you last looked
+const LG={list:[]};
+async function loginCheck(){ if(!col||GUEST||!TEAM.dev) return; try{ const r=col.doc('logins'), sn=await r.get(); let L=(sn.exists&&Array.isArray((sn.data()||{}).list))?cleanText(sn.data().list):[]; const me=TEAM.dev();
+  if(!L.some(x=>x.dev===me)){ L.push({t:Date.now(),dev:me,name:TEAM.devName()}); L=L.slice(-20); await r.set({list:L}); }
+  LG.list=L; if(ls.get('loginSeen')==null) ls.set('loginSeen',Date.now()-3*864e5); if(loginNew().length&&ALIVE) render(); }catch(e){} }
+function loginNew(){ const me=TEAM.dev?TEAM.dev():'', seen=+ls.get('loginSeen')||0; return LG.list.filter(x=>x&&x.dev!==me&&+x.t>seen); }
+function loginAlertHTML(){ if(GUEST) return ''; const L=loginNew(); if(!L.length) return ''; const x=L[L.length-1], d=new Date(+x.t);
+  return `<div class="alert red loginal"><b>New login on another device</b><span>${esc(x.name||'Unknown device')} · ${d.getDate()}.${pad(d.getMonth()+1)} ${pad(d.getHours())}:${pad(d.getMinutes())}${L.length>1?` · and ${L.length-1} more`:''}</span><span>If it wasn’t you, change your code now. Someone else has it.</span><div class="row"><button class="btn" data-act="lgme">It was me</button><button class="btn danger" data-act="weakfix">Change my code</button></div></div>`; }
 const teamName=()=>{ try{ return (TEAM.info&&TEAM.info.name)||'LT climbing team'; }catch(e){ return 'LT climbing team'; } };
-const topBar=()=>`${!GUEST&&isWeakCode()&&!(S.view==='set'&&S.st.myCode!=null)?'<div class="alert amber weakc"><span>Your code is easy to guess. Change it to 8–10 digits that only you know.</span><button class="btn" data-act="weakfix">Change it</button></div>':''}<div class="top"><span class="tflag" aria-hidden="true"><i></i><i></i><i></i></span><span class="brand"><b class="tname">${esc(teamName())}</b><span class="bwho">${esc(ACC.name)} · ${ROLEW[ACC.role]||'Athlete'} · <span class="sync" id="sync">${GUEST?'Read only':syncState}</span></span></span>${GUEST||S.view==='ath'?'':histBar()}${GUEST?'':`<button class="gear${S.view==='set'?' on':''}" data-tab="set" aria-label="Customize"${S.view==='set'?' aria-current="page"':''}><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.6 7.6 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7.6 7.6 0 0 0 1.7 1l.4 2.5h4l.4-2.5a7.6 7.6 0 0 0 1.7-1l2.4 1 2-3.4zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg></button>`}</div>${GUEST?`<div class="gbar" role="status"><span><b>${GUEST.name?esc(GUEST.name)+'’s':'Shared'} log</b><br><span>Read only. Only ${GUEST.name?esc(GUEST.name):'they'} can change it.</span></span><button class="btn" data-act="gclose">Back to mine</button></div>`:''}`;
+const topBar=()=>`${loginAlertHTML()}${!GUEST&&isWeakCode()&&!(S.view==='set'&&S.st.myCode!=null)?'<div class="alert amber weakc"><span>Your code is easy to guess. Change it to 8–10 digits that only you know.</span><button class="btn" data-act="weakfix">Change it</button></div>':''}<div class="top"><span class="tflag" aria-hidden="true"><i></i><i></i><i></i></span><span class="brand"><b class="tname">${esc(teamName())}</b><span class="bwho">${esc(ACC.name)} · ${ROLEW[ACC.role]||'Athlete'} · <span class="sync" id="sync">${GUEST?'Read only':syncState}</span></span></span>${GUEST||S.view==='ath'?'':histBar()}${GUEST?'':`<button class="gear${S.view==='set'?' on':''}" data-tab="set" aria-label="Customize"${S.view==='set'?' aria-current="page"':''}><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.6 7.6 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7.6 7.6 0 0 0 1.7 1l.4 2.5h4l.4-2.5a7.6 7.6 0 0 0 1.7-1l2.4 1 2-3.4zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg></button>`}</div>${GUEST?`<div class="gbar" role="status"><span><b>${GUEST.name?esc(GUEST.name)+'’s':'Shared'} log</b><br><span>Read only. Only ${GUEST.name?esc(GUEST.name):'they'} can change it.</span></span><button class="btn" data-act="gclose">Back to mine</button></div>`:''}`;
 
 // ---------- patterns (weekday + timing) ----------
 function weekdayChart(t){ const s=Array(7).fill(0),c=Array(7).fill(0); for(const d in t.vals){ const w=(new Date(d+'T12:00').getDay()+6)%7; s[w]+=t.vals[d]; c[w]++; }
@@ -2671,7 +2684,8 @@ app.addEventListener('click',async ev=>{
   if(goalClick(ds,b)) return;
   if(!GUEST&&simClick(ds,b)) return;
   if(ds.secopen&&!GUEST){ S.st.secOpen=ds.secopen; render(); const ta=document.querySelector(`[data-sec="${ds.secopen}"]`); if(ta) ta.focus(); return; }
-  if(ds.act==='weakfix'){ S.view='set'; S.st.myCode=''; S.st.myCodeErr=''; render(); const m=document.getElementById('mycode'); if(m){ m.scrollIntoView({block:'center'}); m.focus(); } return; }
+  if(ds.act==='lgme'){ ls.set('loginSeen',Date.now()); render(); return; }
+  if(ds.act==='weakfix'){ ls.set('loginSeen',Date.now()); S.view='set'; S.st.myCode=''; S.st.myCodeErr=''; render(); const m=document.getElementById('mycode'); if(m){ m.scrollIntoView({block:'center'}); m.focus(); } return; }
   if(!GUEST&&S.view==='ath'&&atClick(ds)) return;
   if(fieldClick(ds,b)) return;
   if(ds.act==='ftopen'){ const L=fingerTests(), last=L[L.length-1]||{}; S.st.ftOpen=true; S.st.ft={bw:last.bw??'',add:'',edge:last.edge??20,reps:'',grip:'half',note:''}; render(); return; }
@@ -3712,7 +3726,7 @@ function simTickStart(){ if(SIM.tick) return; SIM.tick=setInterval(()=>{ if(!ALI
     if(t) t.textContent=st.k==='wait'?'–:––':st.k==='end'?'0:00':mmss(st.left); const [L1,L2]=simLabel(x,st,me,staff); if(l&&l.textContent!==L1) l.textContent=L1; if(sb&&sb.textContent!==L2) sb.textContent=L2;
     if(box){ box.dataset.ph=st.k; box.classList.toggle('last',st.k==='climb'&&st.left<=60); box.classList.toggle('paused',!!st.paused); }
     const cur=st.k==='climb'&&me?boulderFor(x,me,st.i):-1; document.querySelectorAll('.simb').forEach(b=>b.classList.toggle('now',+b.dataset.simb===cur));
-    simSignals(st,sec); }
+    simSignals(st,sec); const pk=st.k+':'+(st.i??''); if(pk!==SIM.boardPh){ SIM.boardPh=pk; const el=document.getElementById('simboard'); if(el) el.outerHTML=simBoardHTML(x); } }
   const bar=document.getElementById('simbar'); if(bar) bar.style.width=st.len?Math.min(100,(1-st.left/st.len)*100)+'%':st.k==='end'||st.k==='stop'?'100%':'0%'; },100); }
 function simSoft(){ const ae=document.activeElement; if(ae&&app.contains(ae)&&(ae.tagName==='INPUT'||ae.tagName==='TEXTAREA'||ae.tagName==='SELECT')) return; render(); }
 // ---- results
@@ -3748,18 +3762,26 @@ function simEditHTML(x){ const ath=(TM.list||[]).filter(a=>seenRole(a)==='athlet
     <p class="clab">Invite <small>and the boulder each one starts on</small></p>
     ${ath.length?ath.map(a=>{ const on=inv.get(a.id); return `<div class="siminv-row"><button class="gchk${on?' on':''}" data-siminv="${a.id}" aria-pressed="${!!on}">${on?'✓':''}</button><span>${esc(a.name)}</span>${on?`<select data-simstart="${a.id}" aria-label="${esc(a.name)} starts on">${Array.from({length:x.n},(_,i)=>sel(String(i+1),String(on.s),'Starts B'+(i+1))).join('')}</select>`:''}</div>`; }).join(''):`<p class="note">${TM.loaded?'No athletes in the team yet.':'Loading the team…'}</p>`}
     <div class="row" style="margin:14px 0 0"><button class="btn" data-act="simsave">${x.status==='draft'?'Send invites':'Save'}</button><button class="btn ghost" data-act="simcancel">Cancel</button><span style="flex:1"></span>${x.created?`<button class="del" data-act="simdel">Delete</button>`:''}</div></div>`; }
-function simBoardHTML(x){ const W=SIM.watch[x.id]||{}, rank=simRank(x);
-  return `<div class="simboard" id="simboard"><div class="sbh"><span>${x.mode==='same'?'Ranking':'Results'}</span><small>live</small></div>${x.mode==='same'?rank.map((o,i)=>`<div class="sbr"><b class="pos">${i+1}</b><span class="nm">${esc(o.a.name)}</span><span class="bx">${Array.from({length:x.n},(_,j)=>{ const r=simRes(o.m,j); return `<i class="${+r.ta?'t':+r.za?'z':+r.a?'f':''}">${+r.ta?r.ta:+r.za?r.za:+r.a?'·':''}</i>`; }).join('')}</span><span class="sc"><b>${n1(o.sc.pts)}</b><small>${o.sc.T}T${o.sc.Z}Z ${o.sc.ta}/${o.sc.za}</small></span></div>`).join('')||'<p class="note sbp">Nobody has accepted yet.</p>'
-      :x.inv.filter(a=>W[a.id]&&W[a.id].ans==='yes').map(a=>{ const mm=W[a.id], sc=simScore(x,mm); return `<div class="sbr own"><span class="nm">${esc(a.name)}</span><span class="sc"><b>${sc.T}T ${sc.Z}Z</b></span><div class="ownl">${Array.from({length:x.n},(_,j)=>{ const r=simRes(mm,j); return `<span>B${j+1} ${esc(r.g||'?')}${(r.st||[]).length?' · '+esc(r.st.map(styName).join(', ')):''}: ${+r.ta?`top ${r.ta}`:+r.za?`zone ${r.za}`:+r.a?`${r.a} att.`:'–'}</span>`; }).join('')}</div></div>`; }).join('')||'<p class="note sbp">Nobody has accepted yet.</p>'}
-    <div class="sbz">${x.inv.filter(a=>W[a.id]&&W[a.id].z&&(+W[a.id].z.bi||+W[a.id].z.mi)).map(a=>{ const z=W[a.id].z; return `<span>${esc(a.name)}: body ${+z.bi||'–'}/4${z.bd!=null&&z.bd!==''?' ('+sgn3(z.bd)+')':''} · mind ${+z.mi||'–'}/4${z.md!=null&&z.md!==''?' ('+sgn3(z.md)+')':''}</span>`; }).join('')}</div>
-    <div class="sbinv">${x.inv.map(a=>{ const v=(W[a.id]||{}).ans; return `<span class="${v==='yes'?'y':v==='no'?'n':''}">${esc(a.name)} · B${a.s} · ${v==='yes'?'in':v==='no'?'declined':'waiting'}</span>`; }).join('')}</div></div>`; }
+// what the coach needs at a glance: who leads, each boulder as the comp result boards show it, where everyone is now, how stressed they are
+function simCell(r){ return +r.ta?`<i class="t" title="Top on attempt ${r.ta}">T${r.ta}</i>`:+r.za?`<i class="z" title="Zone on attempt ${r.za}">Z${r.za}</i>`:+r.a?`<i class="f" title="${r.a} attempts, no zone">${r.a}×</i>`:'<i>–</i>'; }
+function simBoardHTML(x){ const W=SIM.watch[x.id]||{}, st=simState(x), rank=simRank(x), inN=x.inv.filter(a=>(W[a.id]||{}).ans==='yes').length;
+  const where=a=>{ if(st.k==='climb') return `on B${boulderFor(x,a.s,st.i)+1}`; if(st.k==='rest') return `resting · next B${boulderFor(x,a.s,st.i+1)+1}`; if(st.k==='obs') return 'observation'; if(st.k==='end'||st.k==='stop') return 'finished'; return `starts on B${a.s}`; };
+  const zTxt=z=>z&&(+z.bi||+z.mi)?`<span class="sbs">Stress: body ${+z.bi||'–'}/4${z.bd!=null&&z.bd!==''?' ('+sgn3(z.bd)+')':''} · mind ${+z.mi||'–'}/4${z.md!=null&&z.md!==''?' ('+sgn3(z.md)+')':''}</span>`:'';
+  const cols=`grid-template-columns:26px minmax(90px,1fr) repeat(${x.n},34px) 62px`;
+  const head=`<div class="sbr sbhead" style="${cols}"><span></span><span>Athlete</span>${Array.from({length:x.n},(_,j)=>`<span class="bxh">B${j+1}</span>`).join('')}<span class="sch">Points</span></div>`;
+  const body=x.mode==='same'?rank.map((o,i)=>`<div class="sbr" style="${cols}"><b class="pos">${i+1}</b><span class="nm"><b>${esc(o.a.name)}</b><small>${where(o.a)}</small>${zTxt(o.m.z)}</span>${Array.from({length:x.n},(_,j)=>simCell(simRes(o.m,j))).join('')}<span class="sc"><b>${n1(o.sc.pts)}</b><small>${o.sc.T}T ${o.sc.Z}Z</small></span></div>`).join('')
+    :x.inv.filter(a=>W[a.id]&&W[a.id].ans==='yes').map(a=>{ const mm=W[a.id], sc=simScore(x,mm); return `<div class="sbr" style="${cols}"><b class="pos">·</b><span class="nm"><b>${esc(a.name)}</b><small>${where(a)}</small>${zTxt(mm.z)}</span>${Array.from({length:x.n},(_,j)=>{ const r=simRes(mm,j); return simCell(r).replace('</i>',`${r.g?`<u>${esc(r.g)}</u>`:''}</i>`); }).join('')}<span class="sc"><b>${sc.T}T ${sc.Z}Z</b><small>${sc.ta}/${sc.za} att.</small></span></div>`; }).join('');
+  return `<div class="simboard" id="simboard"><div class="sbh"><span>${x.mode==='same'?'Ranking':'Results'}</span><small>${inN} of ${x.inv.length} in · live</small></div>
+    ${inN?`<div class="sbscroll">${head}${body}</div>`:'<p class="note sbp">Nobody has accepted yet.</p>'}
+    <p class="note sbp sblegend"><b>T2</b> top on attempt 2 · <b>Z1</b> zone on attempt 1 · <b>3×</b> 3 attempts, no zone.${x.mode==='same'?' Order: points (IFSC 2025), then tops, zones, fewer attempts.':' Each athlete climbs their own boulders, so there is no ranking.'}</p>
+    <div class="sbinv">${x.inv.map(a=>{ const v=(W[a.id]||{}).ans; return `<span class="${v==='yes'?'y':v==='no'?'n':''}">${esc(a.name)} · starts B${a.s} · ${v==='yes'?'in':v==='no'?'declined':'not answered'}</span>`; }).join('')}</div></div>`; }
 function simCtlHTML(x,st){ const live=x.status==='live', paused=!!x.pausedAt;
   if(!live) return `<div class="simctl">${x.status==='done'?`<button class="btn" data-act="simreset">Reset</button><button class="btn go" data-act="simstart">Run again</button>`:`<button class="btn go" data-act="simstart">Start · 10 s countdown</button>`}<button class="btn ghost" data-act="simedit">Edit</button></div>`;
   return `<div class="simctl">${paused?`<button class="btn go" data-act="simresume">Resume</button>`:`<button class="btn" data-act="simpause">Pause</button>`}<button class="btn danger" data-act="simend">End</button><button class="btn ghost" data-act="simreset">Reset</button></div>`; }
 function simZHTML(x,m){ const o=m.z||{}, I=['Not at all','A bit','Moderately','Very much'], row=(f,df,t,sub)=>{ const v=+o[f]||0, d=o[df]==null||o[df]===''?null:+o[df];
   return `<div class="zrow"><div class="zh"><b>${t}</b><small>${sub}</small></div><div class="zi">${I.map((l,n)=>`<button data-simzz="${x.id}|${f}|${n+1}" class="${v===n+1?'on':''}"><b>${n+1}</b><small>${l}</small></button>`).join('')}</div>${v>1?`<p class="zq">Did it help or hurt?</p><div class="zd">${[-3,-2,-1,0,1,2,3].map(n=>`<button data-simzz="${x.id}|${df}|${n}" class="${d===n?'on':''} ${n<0?'neg':n>0?'pos':''}">${n>0?'+'+n:n}</button>`).join('')}</div><div class="s7e"><span>Hurt a lot</span><span>Helped a lot</span></div>`:''}</div>`; };
-  const open=S.st.simZ||!(+o.bi||+o.mi);
-  return `<div class="simz"><button class="simzh" data-act="simztog"><span>Stress & adrenaline</span><small>${+o.bi||+o.mi?`body ${+o.bi||'–'}/4 · mind ${+o.mi||'–'}/4`:'rate it before you start'}</small></button>${open?row('bi','bd','Body','adrenaline, heart pounding, butterflies')+row('mi','md','Mind','worry, pressure, doubts'):''}</div>`; }
+  const done=+o.bi&&+o.mi&&(+o.bi<=1||(o.bd!=null&&o.bd!==''))&&(+o.mi<=1||(o.md!=null&&o.md!=='')), open=S.st.simZ===true||(S.st.simZ!==false&&!done);
+  return `<div class="simz"><button class="simzh" data-act="simztog"><span>Stress & adrenaline</span><small>${+o.bi||+o.mi?`body ${+o.bi||'–'}/4 · mind ${+o.mi||'–'}/4 · ${open?'hide':'change'}`:'rate it before you start'}</small></button>${open?row('bi','bd','Body','adrenaline, heart pounding, butterflies')+row('mi','md','Mind','worry, pressure, doubts'):''}</div>`; }
 function renderSim(){ if(GUEST){ S.view='cal'; renderCal(); return; } simSub(); const id=S.st.simId;
   if(S.st.simDraft){ const x=S.st.simDraft; teamSub(); app.innerHTML=`${topBar()}<div class="phead"><h1>${x.created?'Edit simulation':'New simulation'}</h1><p>Times, boulders, who climbs and where they start.</p></div>${simEditHTML(x)}`; return; }
   const x=simById(id); if(!x){ app.innerHTML=`${topBar()}<div class="empty">This simulation was deleted.</div><button class="btn ghost" data-tab="sims">Back</button>`; return; }
@@ -3792,7 +3814,7 @@ function simClick(ds,b){
   if(ds.act==='simnew'){ S.view='sim'; S.st.simDraft=simDraftNew(); render(); scrollTo(0,0); return true; }
   if(ds.act==='simback'){ simExit(); S.st.simFull=false; simUnwatch(); S.view='sims'; render(); return true; }
   if(ds.act==='simfull'){ S.st.simFull=!S.st.simFull; if(S.st.simFull) simEnter(); else simExit(); render(); return true; }
-  if(ds.act==='simztog'){ S.st.simZ=!S.st.simZ; render(); return true; }
+  if(ds.act==='simztog'){ const o=(SIM.mine[S.st.simId]||{}).z||{}, done=+o.bi&&+o.mi; S.st.simZ=S.st.simZ===true?false:S.st.simZ===false?true:!done?false:true; render(); return true; }
   const D=S.st.simDraft;
   if(D){ const fix=()=>{ D.routes=Array.from({length:D.n},(_,i)=>D.routes[i]||{g:'',st:[],note:''}); D.inv.forEach(a=>{ if(a.s>D.n) a.s=1; }); };
     if(ds.simn){ D.n=Math.max(1,Math.min(8,D.n+(+ds.simn))); fix(); render(); return true; }
@@ -3814,7 +3836,7 @@ function simClick(ds,b){
   if(x&&ds.act==='simend'){ if(!armed(b,'Tap again to end')) return true; put(Object.assign({},x,{status:'done',endAt:x.pausedAt||simNow()})); return true; }
   if(x&&ds.act==='simreset'){ if(!armed(b,'Tap again to reset')) return true; put(Object.assign({},x,{status:'open',startAt:0,pausedAt:0,pausedMs:0,endAt:0})); toast('Timer reset. Results are kept.'); return true; }
   if(x&&ds.simb!==undefined){ S.st.simB=S.st.simB===+ds.simb?null:+ds.simb; render(); return true; }
-  if(ds.simzz){ const [id,f,n]=ds.simzz.split('|'), m=SIM.mine[id]; if(!m) return true; const o=m.z=Object.assign({},m.z||{}), v=+n; o[f]=o[f]===v?null:v; if((f==='bi'||f==='mi')&&!(+o[f]>1)) o[f==='bi'?'bd':'md']=null; S.st.simZ=true; simSaveMine(id); render(); return true; }
+  if(ds.simzz){ const [id,f,n]=ds.simzz.split('|'), m=SIM.mine[id]; if(!m) return true; const o=m.z=Object.assign({},m.z||{}), v=+n; o[f]=o[f]===v?null:v; if((f==='bi'||f==='mi')&&!(+o[f]>1)) o[f==='bi'?'bd':'md']=null; const done=+o.bi&&+o.mi&&(+o.bi<=1||(o.bd!=null&&o.bd!==''))&&(+o.mi<=1||(o.md!=null&&o.md!=='')); S.st.simZ=done?false:true; simSaveMine(id); render(); if(done) toast('Stress saved. Tap the bar to change it.'); return true; }
   const rk=ds.simz||ds.simfo||ds.simst; if(rk){ const [id,i]=rk.split('|'), m=SIM.mine[id]; if(!m) return true; const res=m.res; while(res.length<=+i) res.push({}); const r=res[+i]=Object.assign({},res[+i]);
     if(ds.simz){ const f=ds.simz.split('|')[2], d=+ds.simz.split('|')[3]; compStep(r,f,d); }
     else if(ds.simfo){ r.fo=1; }
@@ -3905,7 +3927,7 @@ const TEAM={
   // the app asks for a "hash" of a new code: here that creates the code's login and returns its id
   async hash(code){ return makeLogin(code); },
   async taken(){ return false; },
-  bind, uid:()=>AUTH&&AUTH.currentUser?AUTH.currentUser.uid:'',
+  bind, uid:()=>AUTH&&AUTH.currentUser?AUTH.currentUser.uid:'', dev:()=>devId(), devName:()=>devName(),
   // server clock: how far this phone's clock is from Google's (ms). Used so every phone shows the same comp timer.
   async clock(acc){ const r=FS.doc(FS.getFirestore(),'people/'+acc+'/docs/clock'), t0=Date.now(); await FS.setDoc(r,{t:FS.serverTimestamp()}); const t1=Date.now();
     const g=FS.getDocFromServer||FS.getDoc, d=(await g(r)).data()||{}, v=d.t, ms=typeof v==='number'?v:v&&v.toMillis?v.toMillis():null; if(ms==null) throw new Error('no clock'); return ms-(t0+t1)/2; },
@@ -3936,13 +3958,13 @@ async function doLogin(code,c){ const err=c.querySelector('#gerr'), btn=c.queryS
   if(!validCode(code)){ err.textContent='Codes are 6–10 digits.'; return; }
   btn.disabled=true; btn.textContent='Checking…'; err.textContent=''; try{ localStorage.setItem('ct:weak',/^\d{8,10}$/.test(code)&&!/^(\d)\1+$/.test(code)&&!'01234567890123456789'.includes(code)&&!'98765432109876543210'.includes(code)?'0':'1'); }catch(e){}
   try{ if(!PUB) await loadPub(); if(!PUB){ err.textContent='This team isn’t set up yet.'; return; }
-    if(fails>=3) await new Promise(r=>setTimeout(r,Math.min(8000,1000*(fails-2))));
+    const lk=lockLeft(); if(lk>0){ err.textContent=`Too many wrong codes. Wait ${Math.ceil(lk/1000)} s.`; return; }
     const cr=await creds(code); let u=null;
     try{ u=await A.signInWithEmailAndPassword(AUTH,cr.email,cr.password); }
     catch(e){ const k=String(e&&e.code||''); if(k==='auth/too-many-requests'){ err.textContent='Too many tries. Wait a few minutes.'; return; } if(k==='auth/network-request-failed'){ err.textContent='No internet. Check your connection.'; return; } u=null; }
     const w=u?await whoIs(u.user.uid):null;
-    if(!w){ if(u) try{ await A.signOut(AUTH); }catch(e){} fails++; err.textContent='Wrong code. Try again.'; const i=c.querySelector('#gcode'); if(i){ i.value=''; try{ i.focus(); }catch(e){} } return; }
-    fails=0; try{ localStorage.removeItem('ct:msg'); }catch(e){} await loadInfo(); setWho(w); boot(w); }
+    if(!w){ if(u) try{ await A.signOut(AUTH); }catch(e){} fails++; lockFail(); const lk2=lockLeft(); err.textContent=lk2>0?`Wrong code. Locked for ${Math.ceil(lk2/1000)} s.`:'Wrong code. Try again.'; const i=c.querySelector('#gcode'); if(i){ i.value=''; try{ i.focus(); }catch(e){} } return; }
+    fails=0; lockReset(); try{ localStorage.removeItem('ct:msg'); }catch(e){} await loadInfo(); setWho(w); logLogin(w.id); boot(w); }
   catch(e){ err.textContent='Can’t reach the team right now. Try again.'; }
   finally{ if(btn.isConnected){ btn.disabled=false; btn.textContent='Log in'; } } }
 function showSetup(resume){
@@ -3972,6 +3994,16 @@ async function doSetup(c){ const v=s=>{ const el=c.querySelector(s); return el?e
     await loadInfo(); const w={id,name,role:'supervisor',hv:uid.slice(0,12)}; setWho(w); boot(w); }
   catch(e){ try{ await loadPub(); }catch(e2){} err.textContent='Couldn’t create the team. Check your connection and try again.'; }
   finally{ if(btn.isConnected){ btn.disabled=false; btn.textContent='Create team'; } } }
+// ---- safety: wrong codes lock this phone for longer each time (3 free tries, then 15 s, 30 s, 1 min … up to 15 min)
+const LOCK='ct:lock';
+function lockGet(){ try{ const o=JSON.parse(localStorage.getItem(LOCK)||'{}'); return {n:+o.n||0,until:+o.until||0}; }catch(e){ return {n:0,until:0}; } }
+function lockLeft(){ return Math.max(0,lockGet().until-Date.now()); }
+function lockFail(){ const o=lockGet(); o.n++; if(o.n>=3) o.until=Date.now()+Math.min(900000,15000*Math.pow(2,o.n-3)); try{ localStorage.setItem(LOCK,JSON.stringify(o)); }catch(e){} }
+function lockReset(){ try{ localStorage.removeItem(LOCK); }catch(e){} }
+// every login is written to your own log (people/<you>/docs/logins), so a login from a phone that isn't yours shows up in the app
+const devId=()=>{ try{ let d=localStorage.getItem('ct:dev'); if(!d){ d=newId(); localStorage.setItem('ct:dev',d); } return d; }catch(e){ return 'unknown'; } };
+const devName=()=>{ const u=navigator.userAgent||''; const os=/Android/.test(u)?'Android':/iPhone|iPad/.test(u)?'iPhone':/Mac/.test(u)?'Mac':/Windows/.test(u)?'Windows':/Linux/.test(u)?'Linux':'Device'; const br=/Edg\//.test(u)?'Edge':/OPR\//.test(u)?'Opera':/Firefox\//.test(u)?'Firefox':/Chrome\//.test(u)?'Chrome':/Safari\//.test(u)?'Safari':'Browser'; return os+' · '+br; };
+async function logLogin(acc){ try{ const r=DB.doc('people/'+acc+'/docs/logins'), s=await r.get(), L=(s.exists&&Array.isArray((s.data()||{}).list))?s.data().list:[]; L.push({t:Date.now(),dev:devId(),name:devName()}); await r.set({list:L.slice(-20)}); }catch(e){} }
 let started=false;
 async function start(){
   showLoading();
