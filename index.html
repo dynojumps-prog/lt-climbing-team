@@ -730,6 +730,7 @@ button{transition:transform .12s ease,background-color .18s ease,color .18s ease
 .place.m2{border-color:#C9D1D8;background:radial-gradient(120% 100% at 50% 0%,rgba(201,209,216,.18),transparent 70%),#0D1115}.place.m2 b{color:#C9D1D8}.place.m3{border-color:#D08A4E;background:radial-gradient(120% 100% at 50% 0%,rgba(208,138,78,.2),transparent 70%),#0D1115}.place.m3 b{color:#D08A4E}.place.m0{border-color:#2A333B;background:#0D1115}.place.m0 b{color:#ECEFF1}
 .gih{display:flex;align-items:center;justify-content:space-between;gap:8px}.gname{font-weight:700}.gpill{flex:0 0 auto;font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:var(--pill);border:1px solid var(--line);color:var(--soft)}.gpill.done{background:var(--pos);border-color:var(--pos);color:#fff}.gpill.ok{color:var(--pos);border-color:var(--pos)}.gpill.behind{color:var(--neg);border-color:var(--neg)}.gpill.none{opacity:.7}
 .gnums{display:flex;align-items:flex-end;gap:12px;margin:6px 0 6px}.gnums span{display:flex;flex-direction:column;line-height:1}.gnums small{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin-bottom:3px}.gnums b{font-size:1.9rem}.gnums i{font-style:normal;color:var(--soft);font-size:1.2rem;padding-bottom:4px}.gitem .mbar{height:10px}.gitem .note{display:block;margin-top:4px}
+.ptlist{padding:12px 14px}.ptg+.ptg{margin-top:10px}.ptrow{display:flex;align-items:center;gap:10px;padding:5px 0}.ptrow i{width:10px;height:10px;border-radius:3px;flex:0 0 auto}
 </style>
 </head>
 <body>
@@ -1278,7 +1279,7 @@ function fieldHTML(e,it){ const key=`${e.id}|${it.fid}`, fid='f'+e.id+it.fid, cs
   if(shut){ const sm=itemSummary(it,true), q=itemQuality(it,prevNote(it.name,S.sel));
     return `<div class="f fcard2 shut" data-fkey="${key}"><button class="fhd" data-fcol="${it.fid}" aria-expanded="false"><span class="fl">${esc(it.name)}</span><span class="fsm">${sm?esc(sm):it.sec?'':'<i>empty</i>'}${it.sec?(sm?' · ':'')+'secret note':''}</span><span class="chev">▸</span></button></div>`; }
   if(GUEST) return roFieldHTML(e,it,key);
-  return `<div class="f fcard2" data-fkey="${key}"><div class="lrow"><button class="fhd" data-fcol="${it.fid}" aria-expanded="true"><span class="fl">${esc(it.name)}</span><span class="chev">▾</span></button><button class="fmt" data-ft="${key}" aria-expanded="${op}">${op?'Close':'Format'}</button></div>${op?pickerHTML(e,it,key):''}
+  return `<div class="f fcard2" data-fkey="${key}"><div class="lrow"><button class="fhd" data-fcol="${it.fid}" aria-expanded="true"><span class="fl">${esc(it.name)}</span><span class="chev">▾</span></button>${isPerfE(e)?'':`<button class="fmt" data-ft="${key}" aria-expanded="${op}">${op?'Close':'Format'}</button>`}</div>${op&&!isPerfE(e)?pickerHTML(e,it,key):''}
     ${cs.map(c=>{ const h=compHTML(e,it,c,key,fid); return h?`<div class="comp c${c}">${h}</div>`:''; }).join('')}
     ${plausHTML(it)}${secHTML(e,it,key)}</div>`; }
 function pickerHTML(e,it,key){ const R=compRatings(it.name), cs=compsList(it), tp=S.cfg.templates.find(t=>t.id===e.tid), tf=tp&&tp.fields.find(f=>f.id===it.fid);
@@ -1309,10 +1310,10 @@ function entryHTML(e){ const open=S.open===e.id;
   return `<div class="entry" style="--c:${tplColor(e)}">
     <button class="ehead" data-toggle="${e.id}" aria-expanded="${open}"><span class="etitle"><b>${esc(tplName(e))}</b>${open?'':`<span class="esum">${esc(entrySummary(e))||'Nothing filled in yet'}</span>`}</span><small>${headSmall(e,open)}</small></button>
     ${open?`<div class="ebody"><div class="collbar"><button data-fcolall="${e.id}|1">Close all</button><button data-fcolall="${e.id}|0">Open all</button></div>${perfHowHTML(e)}${GUEST?roItems(e):e.items.map(it=>fieldHTML(e,it)).join('')}${GUEST?'':`
-      <details class="more"><summary>Add a field or delete this log</summary>
+      ${isPerfE(e)?`<details class="more"><summary>Delete this test</summary>`:`<details class="more"><summary>Add a field or delete this log</summary>
       <div class="addf"><label class="note" for="nf${e.id}">New field name</label>
         <div class="row"><input type="text" id="nf${e.id}" placeholder="e.g. Emocijos"><button class="btn" data-newf="${e.id}">Add</button></div>
-        <p class="note">It starts as 1–10 + text; tap Format to change its parts.</p></div>
+        <p class="note">It starts as 1–10 + text; tap Format to change its parts.</p></div>`}
       <button class="del" data-delentry="${e.id}">Delete this log</button></details>`}
       <button class="btn edone" data-toggle="${e.id}">Done</button></div>`:''}
   </div>`; }
@@ -1435,9 +1436,8 @@ function renderSettings(){
   ${S.cfg.templates.map((t,ti)=>t.perf?'':tplSecHTML(t,ti)).join('')}
   <button class="btn" data-act="tadd">+ New log type</button>
   <div class="h2">Performance tests</div>
-  <p class="note">The Performance tab: tests and route cards on their own calendar. Name any test and choose how it's measured (kg with % of bodyweight, seconds, reps, left and right).</p>
-  ${S.cfg.templates.map((t,ti)=>t.perf?tplSecHTML(t,ti):'').join('')}
-  <button class="btn" data-act="taddp">+ New test</button>`;
+  <p class="note">Fixed for the whole team, so test numbers stay comparable over time and milestones keep reading them. Only the calendar above is yours to change.</p>
+  <div class="card ptlist">${PGRP.map(([g,l])=>{ const L=S.cfg.templates.filter(t=>t.perf&&pgOf(t)===g); return L.length?`<div class="ptg"><span class="clab">${l}</span>${L.map(t=>`<div class="ptrow"><i style="background:${t.color}"></i><b>${esc(t.name)}</b></div>`).join('')}</div>`:''; }).join('')}</div>`;
   app.querySelectorAll('textarea').forEach(grow);
 }
 function tplSecHTML(t,ti){ return `<div class="sec" style="--c:${t.color}">
@@ -2900,11 +2900,12 @@ app.addEventListener('click',async ev=>{
   if(ds.newf){ const inp=document.getElementById('nf'+ds.newf), name=inp.value.trim(); if(!name){ inp.focus(); return; }
     const {k,e}=findEntry(ds.newf); if(!e) return;
     if(e.items.some(i=>i.name.trim().toLowerCase()===name.toLowerCase())){ toast(`${name} is already in this log`); return; }
-    const t=S.cfg.templates.find(t=>t.id===e.tid), ex=t&&t.fields.find(f=>f.name.toLowerCase()===name.toLowerCase());
+    if(isPerfE(e)) return; const t=S.cfg.templates.find(t=>t.id===e.tid), ex=t&&t.fields.find(f=>f.name.toLowerCase()===name.toLowerCase());
     const R=compRatings(name), f=ex||{id:rid(),name,type:'mix',comps:R.best.slice()}; e.items.push(newItem(f));
     if(t&&!ex){ t.fields.push(f); saveCfg(); } S.typeOpen=`${e.id}|${f.id}`; saveMonth(k); render(); toast('Field added. Choose its parts below'); return; }
   // settings
-  const T=S.cfg.templates;
+  const T=S.cfg.templates, tiOf=v=>v===undefined?null:+String(v).split('|')[0];
+  for(const k of ['color','tmove','fmove','cp','fdel','fadd','tdel','tgrp','xcu','xlr','xbw','xrole']) if(ds[k]!==undefined){ const tp=T[tiOf(ds[k])]; if(tp&&tp.perf) return; }
   if(ds.color){ const [ti,c]=ds.color.split('|'); T[ti].color=c; }
   else if(ds.tmove){ const [ti,dir]=ds.tmove.split('|').map(Number); let j=ti+dir; while(j>=0&&j<T.length&&!!T[j].perf!==!!T[ti].perf) j+=dir; if(j<0||j>=T.length) return; [T[ti],T[j]]=[T[j],T[ti]]; }
   else if(ds.fmove){ const [ti,fi,dir]=ds.fmove.split('|').map(Number); const F=T[ti].fields, j=fi+dir; if(j<0||j>=F.length) return; [F[fi],F[j]]=[F[j],F[fi]]; }
@@ -2916,7 +2917,6 @@ app.addEventListener('click',async ev=>{
   else if(ds.tdel!==undefined){ const tp=T[+ds.tdel]; if(!tp) return; if(!tp.perf&&T.filter(t=>!t.perf).length<=1){ toast('Keep at least one log type'); return; } if(!armed(b,'Tap again to delete')) return; T.splice(+ds.tdel,1); toast(`${tp.perf?'Test':'Log type'} deleted. Past logs stay.`); }
   else if(ds.act==='tadd'){ T.push({id:rid(),name:'Naujas tipas',color:HOLD[T.length%HOLD.length],fields:[{id:rid(),name:'Pastabos',type:'mix',comps:['T']}]}); saveCfg(); render(); const secs=document.querySelectorAll('.sec'); const lastDaily=[...secs].filter(s=>!s.querySelector('[data-thow]')).pop(); if(lastDaily) lastDaily.scrollIntoView({block:'center'}); toast('New log type added'); return; }
   else if(ds.tgrp){ const [ti,g]=ds.tgrp.split('|'), tp=T[+ti]; if(tp){ tp.grp=g; saveCfg(); render(); } return; }
-  else if(ds.act==='taddp'){ T.push({id:rid(),name:'Naujas testas',color:HOLD[T.length%HOLD.length],perf:true,grp:S.st.pgrp||'super',how:'',fields:[{id:rid(),name:'Rezultatas',type:'mix',comps:['X'],x:{u:'kg',lr:false,bw:'',role:''}},{id:rid(),name:'Pastabos',type:'mix',comps:['T']}]}); saveCfg(); render(); const secs=document.querySelectorAll('.sec'); if(secs.length) secs[secs.length-1].scrollIntoView({block:'center'}); toast('New test added. Name it and choose how it is measured'); return; }
   else if(ds.act==='setupv2'){ applySetupV2(); return; }
   else if(ds.act==='setupno'){ S.cfg.setupV2=1; S.cfg.setupV3=1; S.cfg.setupV4=1; saveCfg(); render(); return; }
   else return;
@@ -2946,6 +2946,7 @@ app.addEventListener('change',ev=>{
   if(ds.bmnew&&t.value.trim()){ const i=ds.bmnew.lastIndexOf('|'); addItem(ds.bmnew.slice(0,i),ds.bmnew.slice(i+1),t.value); return; }
   if(ds.xcu){ const [ti,fi]=ds.xcu.split('|').map(Number), f=T[ti]&&T[ti].fields[fi]; if(!f) return; f.x=normX(Object.assign({},f.x||{},{u:t.value})); saveCfg(); render(); return; }
   if(ds.xiu){ const {k,e,it}=itemAt(ds.xiu); if(!it) return; it.x=normX(Object.assign({},xcfg(e,it),{u:t.value})); saveMonth(k); render(); return; }
+  for(const k of ['thow','tname','xcu','fname','xlr','xbw','xrole']) if(ds[k]!==undefined){ const tp=T[+String(ds[k]).split('|')[0]]; if(tp&&tp.perf) return; }
   if(ds.thow!==undefined){ const tp=T[+ds.thow]; if(tp){ tp.how=t.value.trim().slice(0,600); saveCfg(); } return; }
   if(ds.gfield!==undefined||ds.gdate!==undefined||ds.glabel!==undefined||ds.gitarget!==undefined||ds.giname!==undefined||ds.gicount!==undefined||ds.gidays!==undefined){ goalChange(t,ds); return; }
   if(ds.tname!==undefined) T[+ds.tname].name=t.value.trim()||'Be pavadinimo';
@@ -3710,7 +3711,7 @@ function renderPerf(){ ensurePerf(); const k=mkey(S.y,S.m); month(k); const g=S.
   <div class="dayhead" id="dayhead"><button class="mini" data-dnav="-1" aria-label="Previous day">‹</button><span>${LTWD[sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}</span><button class="mini" data-dnav="1" aria-label="Next day">›</button></div>
   ${S.sel!==todayStr?'<button class="btn ghost gotoday" data-act="gotoday">Back to today</button>':''}
   ${GUEST||g!=='comp'?'':simDayHTML(S.sel)}
-  ${GUEST?'':PT.length?`<div class="adds">${PT.map(t=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)}" data-add="${t.id}">${/^\+/.test(t.name)?'':'+ '}${esc(t.name)}</button>`).join('')}</div>`:`<div class="empty">${col&&!PULLED?'Connecting… your tests show up once you are online.':'Nothing here yet. Add a test in Customize → Performance tests.'}</div>`}
+  ${GUEST?'':PT.length?`<div class="adds">${PT.map(t=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)}" data-add="${t.id}">${/^\+/.test(t.name)?'':'+ '}${esc(t.name)}</button>`).join('')}</div>`:`<div class="empty">${col&&!PULLED?'Connecting… your tests show up once you are online.':'No tests in this group.'}</div>`}
   ${sel.length?sel.map(entryHTML).join(''):`<div class="empty">${GUEST?'Nothing on this day.':'Nothing on this day yet. Tap above to log.'}</div>`}
   ${g==='climb'||g==='comp'?fallCard():''}`;
   app.querySelectorAll('textarea').forEach(grow); }
@@ -3772,7 +3773,7 @@ function goalCardHTML(m,nx){ const st=m.items.map(i=>goalItemState(i,m)), done=s
   return `<div class="card goal${nx?' gnext':''}${past?' gpast':''}"><button class="ghead" data-gopen="${m.id}" aria-expanded="${open}"><span class="gring" style="--p:${avg}"><span>${Math.round(avg*100)}</span></span><span class="gttl"><b>${esc(m.label)}</b><small>${dmyy(m.date)} · ${dl>0?`${dl} days left`:dl===0?'today':'date passed'}</small></span><span class="gcount">${done}/${st.length}</span></button>
     ${open?`<div class="gitems">${secs.map(([k,L])=>`<p class="gsec">${GSEC[k]}</p>${L.map(row).join('')}`).join('')||'<p class="note">No goals here yet.</p>'}
       ${GUEST?'':`<button class="btn ghost gedbtn" data-gedit="${m.id}">Edit</button>`}</div>`:''}</div>`; }
-function metricOptions(){ const out=[]; S.cfg.templates.filter(t=>t.perf).forEach(t=>t.fields.forEach(f=>{ if(!compsOf(f).includes('X')) return; const c=normX(f.x); if(c.role==='bw') return;
+function metricOptions(){ const out=[]; S.cfg.templates.filter(t=>t.perf&&pgOf(t)!=='super').forEach(t=>t.fields.forEach(f=>{ if(!compsOf(f).includes('X')) return; const c=normX(f.x); if(c.role==='bw') return;
   (c.lr?[['l','left'],['r','right']]:[['v','']]).forEach(([s,l])=>out.push({v:`${t.id}|${f.id}|${s}`,l:`${t.name} · ${f.name}${l?' · '+l:''}${c.u==='kg'&&c.bw?' (% bodyweight)':c.u?` (${c.u})`:''}`})); })); return out; }
 function goalEditHTML(m){ const O=metricOptions();
   return `<div class="card goal gedit"><div class="ftgrid"><label class="ftin">Name<input type="text" data-glabel="${m.id}" value="${esc(m.label)}"></label><label class="ftin">Date<input type="date" data-gdate="${m.id}" value="${esc(m.date)}"></label></div>
@@ -3890,7 +3891,8 @@ function simSub(){ if(SIM.sub||!TEAM.db||GUEST||!ALIVE) return;
 function simLoadMine(){ if(!col) return; sims().filter(x=>iAmIn(x)&&!SIM.mine[x.id]).forEach(x=>{ SIM.mine[x.id]={loading:true,res:[]};
   col.doc('sim-'+x.id).get().then(s=>{ const v=s.exists?cleanText(s.data()||{}):{}; SIM.mine[x.id]=simMineNorm(v); if(ALIVE&&['sims','sim','cal','perf'].includes(S.view)) softRender(); }).catch(()=>{ SIM.mine[x.id]={res:[]}; }); }); }
 function simMineNorm(v){ return {ans:v.ans==='yes'||v.ans==='no'?v.ans:'',res:(Array.isArray(v.res)?v.res:[]).map(r=>r&&typeof r==='object'?r:{}),z:v.z&&typeof v.z==='object'?v.z:{},t:+v.t||0}; }
-function simSaveMine(id){ const m=SIM.mine[id]; if(!m||!col) return; m.t=Date.now(); col.doc('sim-'+id).set({ans:m.ans,res:m.res,z:m.z||{},t:m.t}).catch(()=>toast('Not saved: no connection')); }
+function simSaveMine(id){ const m=SIM.mine[id]; if(!m||!col) return; m.t=Date.now(); col.doc('sim-'+id).set({ans:m.ans,res:m.res,z:m.z||{},t:m.t}).catch(e=>{ const den=/permission/i.test(String(e&&(e.code||e.message)));
+  if(den){ delete SIM.mine[id]; simLoadMine(); render(); } toast(den?(simById(id)&&simById(id).locked?'Not saved: the coach locked the results':'Not saved: this login can’t save here. Reload the app.'):'Not saved: no connection'); }); }
 function simWatch(x){ if(!TEAM.db||!(ACC.role==='coach'||ACC.role==='supervisor')) return; x.inv.forEach(a=>{ const k=x.id+'|'+a.id; if(SIM.unw[k]) return;
   SIM.unw[k]=TEAM.db.doc('people/'+a.id+'/docs/sim-'+x.id).onSnapshot(s=>{ (SIM.watch[x.id]=SIM.watch[x.id]||{})[a.id]=simMineNorm(s.exists?cleanText(s.data()||{}):{}); simPublish(x.id); if(ALIVE&&S.view==='sim'){ const el=document.getElementById('simboard'), y=simById(S.st.simId); if(el&&y) el.outerHTML=simBoardHTML(y); } },()=>{}); }); }
 // locked results are published for the athletes (they can't read each other's logs); kept up to date while a coach has it open
@@ -4000,7 +4002,7 @@ function renderSim(){ if(GUEST){ S.view='cal'; renderCal(); return; } simSub(); 
   const pane=me&&m.ans==='yes'?`${x.locked?'':simZHTML(x,m)}<div class="simbs">${Array.from({length:x.n},(_,i)=>{ const r=simRes(m,i), t=+r.ta?(+r.ta===1?'F':'T'):+r.za?'Z':+r.a?'×':''; return `<button class="simb${S.st.simB===i?' on':''}${cur===i?' now':''}${t?' has':''}" data-simb="${i}"><small>B${i+1}</small><b>${t||'–'}</b></button>`; }).join('')}</div>
       ${S.st.simB!=null&&S.st.simB<x.n?simResHTML(x,m,S.st.simB):x.locked?'':`<p class="note simhint">Tap a boulder to log attempts, zone and top.</p>`}
       ${sumBoxes(simScore(x,m))}`
-    :me&&m.ans!=='no'?`<div class="card"><p class="note">Accept the invite to log results.</p><div class="row"><button class="btn" data-simans="${x.id}|yes">Accept</button><button class="btn ghost" data-simans="${x.id}|no">Decline</button></div></div>`:me?'<p class="note">You declined this simulation.</p>':'';
+    :me&&x.locked?'<p class="note">You didn’t join before the results were locked.</p>':me&&m.ans!=='no'?`<div class="card"><p class="note">Accept the invite to log results.</p><div class="row"><button class="btn" data-simans="${x.id}|yes">Accept</button><button class="btn ghost" data-simans="${x.id}|no">Decline</button></div></div>`:me?'<p class="note">You declined this simulation.</p>':'';
   const board=coach?simBoardHTML(x):x.locked?(x.final?simFinalHTML(x):'<div class="simboard"><p class="note sbp">Final results show here as soon as the coach’s phone sends them.</p></div>'):'';
   app.innerHTML=`<div class="simfs"><div class="simbar"><button class="btn ghost" data-act="simback">‹ Back</button><button class="btn ghost" data-act="simfull">${S.st.simFull?'Exit full screen':'Full screen · landscape ⤢'}</button></div>
     <div class="simgrid"><div class="simleft">${timer}${staff?simCtlHTML(x,st):''}${!SIM.offOk?'<p class="note">Syncing the clock…</p>':''}</div><div class="simright">${x.locked&&!coach?board+pane:pane+board}</div></div></div>`;
@@ -4019,7 +4021,7 @@ function simDraftNew(){ return {id:'',name:'Comp simulation',by:ACC.id,byName:AC
 function simClick(ds,b){
   if(S.view==='sim') simAudio();
   if(ds.simopen){ S.view='sim'; S.st.simId=ds.simopen; S.st.simB=null; S.st.simDraft=null; SIM.sigK=undefined; render(); scrollTo(0,0); return true; }
-  if(ds.simans){ const [id,v]=ds.simans.split('|'), m=SIM.mine[id]||(SIM.mine[id]={res:[]}); m.ans=v; simSaveMine(id); render(); toast(v==='yes'?'You’re in. It shows on your calendar.':'Declined'); return true; }
+  if(ds.simans){ if(simById(ds.simans.split('|')[0])&&simById(ds.simans.split('|')[0]).locked){ toast('The coach already locked the results'); return true; } const [id,v]=ds.simans.split('|'), m=SIM.mine[id]||(SIM.mine[id]={res:[]}); m.ans=v; simSaveMine(id); render(); toast(v==='yes'?'You’re in. It shows on your calendar.':'Declined'); return true; }
   if(ds.act==='simnew'){ S.view='sim'; S.st.simDraft=simDraftNew(); render(); scrollTo(0,0); return true; }
   if(ds.act==='simback'){ simExit(); S.st.simFull=false; simUnwatch(); S.view='sims'; render(); return true; }
   if(ds.act==='simfull'){ S.st.simFull=!S.st.simFull; if(S.st.simFull) simEnter(); else simExit(); render(); return true; }
@@ -4046,7 +4048,7 @@ function simClick(ds,b){
   if(x&&ds.act==='simresume'){ put(Object.assign({},x,{pausedMs:(x.pausedMs||0)+Math.max(0,simNow()-x.pausedAt),pausedAt:0})); return true; }
   if(x&&ds.act==='simend'){ if(!armed(b,'Tap again to end')) return true; put(Object.assign({},x,{status:'done',endAt:x.pausedAt||simNow()})); return true; }
   if(x&&ds.act==='simreset'){ if(!armed(b,'Tap again to reset')) return true; put(Object.assign({},x,{status:'open',startAt:0,pausedAt:0,pausedMs:0,endAt:0})); toast('Timer reset. Results are kept.'); return true; }
-  if(x&&ds.act==='simlock'){ const F=!x.locked?simFinal(x):[]; put(Object.assign({},x,{locked:!x.locked,final:F.length?F:null})); toast(x.locked?'Unlocked: athletes can change results':'Locked: nobody can change results now'); return true; }
+  if(x&&ds.act==='simlock'){ if(!x.locked){ const W=SIM.watch[x.id]||{}, nn=x.inv.filter(z=>!(W[z.id]&&W[z.id].ans)).map(z=>z.name); if(nn.length&&!armed(b,`${nn.join(', ')} not answered · tap again to lock`)) return true; } const F=!x.locked?simFinal(x):[]; put(Object.assign({},x,{locked:!x.locked,final:F.length?F:null})); toast(x.locked?'Unlocked: athletes can change results':'Locked: nobody can change results now'); return true; }
   if(x&&ds.act==='simdel2'){ if(!(ACC.role==='supervisor'||x.by===ACC.id)) return true; if(!armed(b,'Tap again to delete')) return true; TEAM.db.doc('team/info').update({sims:{[x.id]:null}}).then(()=>{ if(TEAM.info.sims) delete TEAM.info.sims[x.id]; simExit(); simUnwatch(); S.view='sims'; render(); toast('Simulation deleted'); }).catch(()=>toast('Couldn’t delete. Check the connection.')); return true; }
   if(x&&x.locked&&(ds.simzz||ds.simz||ds.simfo||ds.simst)){ toast('The coach locked the results'); return true; }
   if(x&&ds.simath){ S.st.simAth=S.st.simAth===ds.simath?null:ds.simath; const el=document.getElementById('simboard'); if(el) el.outerHTML=simBoardHTML(x); return true; }
@@ -4153,6 +4155,9 @@ const TEAM={
 function fresh(){ const old=$app(), n=old.cloneNode(false); old.replaceWith(n); return n; }
 function boot(w){ if(booted) return; booted=true; fresh(); const my=++SESSION;
   const T=Object.create(TEAM,{setWho:{value:x=>{ if(my===SESSION) setWho(x); }},logout:{value:m=>{ if(my===SESSION) TEAM.logout(m); }}});
+  // one browser holds one login for all its windows: if another window signs in as someone else, this window would save under the wrong account and be refused
+  A.onAuthStateChanged(AUTH,u=>{ if(my!==SESSION||!booted||(u&&u.uid.slice(0,12)===String(w.hv||u.uid.slice(0,12)))) return; SESSION++; booted=false; fresh();
+    showNote('Signed in as someone else',`Another window of this browser signed in with a different code, and a browser keeps one login for all its windows. Nothing more is saved here as ${esc(String(w.name||''))}. To use two accounts on one computer, open the second in a private window or another browser.`,true); });
   try{ bootApp({id:w.id,name:String(w.name||'Me'),role:normRole(w.role),hv:w.hv||''},T); }
   catch(e){ booted=false; showNote('Something went wrong',esc(String(e&&e.message||e)),true); } }
 function card(inner){ $app().innerHTML=`<div class="gate"><div class="gcard">${inner}</div></div>`; return $app().querySelector('.gcard'); }
