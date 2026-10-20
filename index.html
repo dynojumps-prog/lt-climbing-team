@@ -917,6 +917,24 @@ button{transition:transform .12s ease,background-color .18s ease,color .18s ease
 .gchips{display:flex;gap:6px;overflow-x:auto;margin:8px 0 2px;padding-bottom:4px;scrollbar-width:none}.gchips::-webkit-scrollbar{display:none}
 .gchips button{flex:0 0 auto;min-height:38px;min-width:48px;padding:6px 10px;border-radius:12px;border:1.5px solid var(--line);background:var(--field);color:var(--ink);font-weight:800}.gchips button.on{background:var(--ink);color:var(--bg);border-color:var(--ink);animation:pop .3s cubic-bezier(.3,1.7,.5,1)}
 .empty b{font-size:1.05rem;color:var(--ink)}
+
+/* feel */
+.rip{position:absolute;border-radius:50%;background:currentColor;opacity:.18;transform:scale(0);animation:rip .55s ease-out forwards;pointer-events:none}@keyframes rip{to{transform:scale(1);opacity:0}}
+.flcard.inf .fltile,.flcard.inb .fltile,.flcard.inf .flchips button,.flcard.inb .flchips button{animation:tilein .34s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:calc(var(--i,0) * 22ms + 60ms)}
+@keyframes tilein{from{opacity:0;transform:translateY(10px) scale(.94)}}
+.btn.ready{animation:ready .5s cubic-bezier(.3,1.7,.5,1)}@keyframes ready{40%{transform:scale(1.05)}}
+.floth{width:100%;margin-top:12px;min-height:52px;font-size:1.05rem;border-radius:16px;border:1.5px solid var(--fc);background:var(--field);color:var(--ink);padding:10px 14px;animation:rise .25s ease both}
+.orb{animation:orbspin 18s linear infinite,breathe 4s ease-in-out infinite}@keyframes breathe{50%{scale:1.04}}
+.orb::after{content:"";position:absolute;inset:-12%;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--oc) 35%,transparent),transparent 65%);opacity:calc(.25 + .6 * var(--v));transition:opacity .4s;z-index:-1}
+.spk.cf0{border-radius:2px;width:8px;height:12px}.spk.cf1{border-radius:50%}.spk.cf2{width:10px;height:4px;border-radius:2px}
+.spk.cf0,.spk.cf1,.spk.cf2{animation:cfly 1.25s cubic-bezier(.15,.6,.35,1) forwards}@keyframes cfly{to{transform:translate(var(--dx),var(--dy)) rotate(var(--rot));opacity:0}}
+.fdone .wkd i{animation:pop .4s cubic-bezier(.3,1.7,.5,1) both;animation-delay:calc(var(--i) * 70ms + .5s)}
+.wkd.todo i{animation:nudge 2.2s ease-in-out infinite;border-color:var(--gold)}@keyframes nudge{50%{box-shadow:0 0 0 2px var(--bg),0 0 0 6px color-mix(in srgb,var(--gold) 45%,transparent)}}
+.fdone h2{animation:rise .4s .35s ease both}.fdone .flsub,.pbbox{animation:rise .4s .45s ease both}
+.ldv{display:inline-block;animation:pop .35s cubic-bezier(.3,1.7,.5,1)}
+.flprog i.c{position:relative;overflow:hidden}.flprog i.c::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);animation:shine 1.6s ease-in-out infinite}@keyframes shine{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.day{transition:transform .15s}.day:active{transform:scale(.94)}
+@media (prefers-reduced-motion:reduce){.rip,.orb::after{display:none}}
 </style>
 </head>
 <body>
@@ -1514,7 +1532,7 @@ function compHTML(e,it,c,key,fid){ const x=getP(it,c), sl=sleepLike(it.name), cs
 // compared with your last session that has a load (computed from the numbers, so nothing extra to rate)
 function prevLoadHTML(o){ const ld=dataset(0,{all:true}).vars.find(v=>v.key==='ld:day'); if(!ld) return ''; const d=Object.keys(ld.vals).filter(x=>x<S.sel&&ld.vals[x]>0).sort().pop(); if(!d) return '';
   const p=ld.vals[d], e=+o.e, m=parseFloat(o.m), now=e&&m>0?e*m:null; return `<p class="note eprev">Last session (${dmy(d)}): <b>${Math.round(p)}</b>${now?` · today <b class="${now>p*1.1?'neg':now<p*0.9?'pos':''}">${now>=p?'+':'−'}${Math.round(Math.abs(now/p-1)*100)}%</b>`:''}</p>`; }
-function loadText(o){ const e=+o.e, m=parseFloat(o.m); return e&&m>0?`Load <b>${Math.round(e*m)}</b> <small>= effort ${n1(e)} × ${n1(m)} min</small>`:e?'Add the minutes to get the load':typeof o.c==='number'?'Add the minutes to get the load':'Rate it, then add the minutes'; }
+function loadText(o){ const e=+o.e, m=parseFloat(o.m); return e&&m>0?`Load <b class="ldv">${Math.round(e*m)}</b> <small>= effort ${n1(e)} × ${n1(m)} min</small>`:e?'Add the minutes to get the load':typeof o.c==='number'?'Add the minutes to get the load':'Rate it, then add the minutes'; }
 const COLL=new Set((()=>{ try{ return JSON.parse(localStorage.getItem(PFX+'collapsed')||'[]'); }catch(e){ return []; } })());
 const saveColl=()=>{ try{ localStorage.setItem(PFX+'collapsed',JSON.stringify([...COLL])); }catch(e){} };
 function fieldHTML(e,it){ const key=`${e.id}|${it.fid}`, fid='f'+e.id+it.fid, cs=compsList(it), op=S.typeOpen===key, shut=GUEST?!GOPEN.has(key):COLL.has(it.fid)&&!op;
@@ -1689,13 +1707,14 @@ function flowKind(it){ const cs=compsList(it), n=String(it.name||'');
   if(cs.some(c=>'RMZPGXWBLFNDKYC'.includes(c))) return 'gen';
   if(cs.some(c=>'ASV'.includes(c))) return 'scale';
   return 'gen'; }
-const smOf=it=>Object.assign({v:null,w:[],imp:[]},(it.type==='mix'&&it.val&&it.val.SM&&typeof it.val.SM==='object')?it.val.SM:{});
+const smOf=it=>Object.assign({v:null,w:[],imp:[],ow:'',oi:''},(it.type==='mix'&&it.val&&it.val.SM&&typeof it.val.SM==='object')?it.val.SM:{});
 function moodSave(key,patch){ const {k,it}=itemAt(key); if(!it) return; const sm=Object.assign(smOf(it),patch); setP(it,'SM',sm); const cs=compsList(it), v=sm.v;
   if(v){ if(cs.includes('Q')){ const ar=sm.w.map(w=>MOODAR[w]).filter(x=>x!=null); setP(it,'Q',Object.assign(objP(it,'Q'),{p:Math.round((v-1)/6*100),e:Math.round(ar.length?meanOf(ar):50),w:sm.w.join(', ')})); }
     else if(cs.includes('A')) setP(it,'A',v); else if(cs.includes('S')) setP(it,'S',Math.round(1+(v-1)*1.5));
     else if(cs.includes('V')){ const a=arrP(it,'V'), n=Math.round(1+(v-1)*1.5); if(a.length) a[a.length-1].n=n; else a.push({id:rid(),at:nowHM(),n,note:''}); setP(it,'V',a); } }
   saveMonth(k); }
-const smText=it=>{ const m=smOf(it); if(!m.v&&!m.w.length&&!m.imp.length) return ''; return [m.v?`${MOODL[m.v].toLowerCase()} (${m.v}/7)`:'',m.w.length?`words: ${m.w.join(', ')}`:'',m.imp.length?`biggest impact: ${m.imp.join(', ')}`:''].filter(Boolean).join('; '); };
+const smList=(L,o)=>L.map(x=>x==='Other'&&String(o||'').trim()?`“${String(o).trim()}”`:x).join(', ');
+const smText=it=>{ const m=smOf(it); if(!m.v&&!m.w.length&&!m.imp.length) return ''; return [m.v?`${MOODL[m.v].toLowerCase()} (${m.v}/7)`:'',m.w.length?`words: ${smList(m.w,m.ow)}`:'',m.imp.length?`biggest impact: ${smList(m.imp,m.oi)}`:''].filter(Boolean).join('; '); };
 // this week: which days have a calendar log, and how many weeks in a row had 3 or more (never shown as broken)
 function weekInfo(){ const D=new Set(logDays(S.months)), t=new Date(todayStr+'T12:00'), mon=dAdd(todayStr,-((t.getDay()+6)%7));
   const days=Array.from({length:7},(_,i)=>dAdd(mon,i)), cnt=w=>Array.from({length:7},(_,i)=>dAdd(mon,i-7*w)).filter(d=>D.has(d)&&d<=todayStr).length;
@@ -1703,8 +1722,8 @@ function weekInfo(){ const D=new Set(logDays(S.months)), t=new Date(todayStr+'T1
   return {days,has:days.map(d=>D.has(d)),n:cnt(0),streak}; }
 const FLAME='<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M13.5 1.5s1 3.4-1.3 6.1C10.4 9.7 8 11.4 8 15a4 4 0 0 0 8 0c0-1.7-.8-2.9-1.6-3.8 2.7.9 4.6 3.3 4.6 6.1A7 7 0 0 1 5 17.3c0-4.6 3.3-7 5.4-9.4 2-2.3 3.1-4.4 3.1-6.4z"/></svg>';
 function weekStrip(){ if(GUEST) return ''; const W=weekInfo(), L=['Pr','An','Tr','Kt','Pn','Š','S'];
-  return `<div class="wkstrip"><div class="wkdays">${W.days.map((d,i)=>`<span class="wkd${W.has[i]?' on':''}${d===todayStr?' now':''}"><i>${W.has[i]?'<svg viewBox="0 0 12 12" width="10" height="10"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}</i><small>${L[i]}</small></span>`).join('')}</div>
-    <div class="wkn"><b>${W.n}<small>/7</small></b><span>this week</span>${W.streak>=1?`<em>${FLAME}${W.streak} week${W.streak>1?'s':''} in a row</em>`:''}</div></div>`; }
+  return `<div class="wkstrip"><div class="wkdays">${W.days.map((d,i)=>`<span class="wkd${W.has[i]?' on':''}${d===todayStr?' now':''}${d===todayStr&&!W.has[i]?' todo':''}" style="--i:${i}"><i>${W.has[i]?'<svg viewBox="0 0 12 12" width="10" height="10"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}</i><small>${L[i]}</small></span>`).join('')}</div>
+    <div class="wkn"><b><span data-cnt="${W.n}">${W.n}</span><small>/7</small></b><span>this week</span>${W.streak>=1?`<em>${FLAME}${W.streak} week${W.streak>1?'s':''} in a row</em>`:''}</div></div>`; }
 function flowStart(eid){ S.flow={eid,i:0,sub:0,dir:1,shown:''}; S.open=null; buzz(); render(); scrollTo(0,0); }
 function flowNext(){ const F=S.flow; if(!F) return; const {e}=findEntry(F.eid); if(!e) return; const I=flowItems(e), it=I[F.i];
   if(it&&flowKind(it)==='mood'&&F.sub<2&&(F.sub>0||smOf(it).v)) F.sub++; else { F.i++; F.sub=0; } F.dir=1; buzz(); render(); scrollTo(0,0); }
@@ -1734,8 +1753,10 @@ function flowMood(e,it,key,sub){ const m=smOf(it), v=m.v;
     <input type="range" class="mrange" min="1" max="7" step="1" value="${v||4}" data-flmood="${key}" aria-label="How you feel, from very unpleasant to very pleasant">
     <div class="flends"><span>Very unpleasant</span><span>Very pleasant</span></div>`;
   if(sub===1) return `<p class="flsub">What describes this feeling best? <small>up to 3</small></p>${v?`<p class="mtag" style="--oc:${MOODC[v]}"><i></i>${MOODL[v]}</p>`:''}
-    <div class="flchips big">${moodWords(v).map(([w])=>`<button class="${m.w.includes(w)?'on':''}" data-flw="${key}|${w}" aria-pressed="${m.w.includes(w)}">${w}</button>`).join('')}</div>`;
-  return `<p class="flsub">What’s having the biggest impact on you?</p><div class="flchips big">${IMPACT.map(w=>`<button class="${m.imp.includes(w)?'on':''}" data-fli="${key}|${w}" aria-pressed="${m.imp.includes(w)}">${w}</button>`).join('')}</div>`; }
+    <div class="flchips big">${moodWords(v).map(([w])=>w).concat('Other').map((w,i)=>`<button class="${m.w.includes(w)?'on':''}" style="--i:${i}" data-flw="${key}|${w}" aria-pressed="${m.w.includes(w)}">${w==='Other'?'Other…':w}</button>`).join('')}</div>
+    ${m.w.includes('Other')?`<input class="floth" type="text" maxlength="40" data-floth="${key}|ow" value="${esc(m.ow||'')}" placeholder="Your own word" aria-label="Your own word" autofocus>`:''}`;
+  return `<p class="flsub">What’s having the biggest impact on you?</p><div class="flchips big">${IMPACT.map((w,i)=>`<button class="${m.imp.includes(w)?'on':''}" style="--i:${i}" data-fli="${key}|${w}" aria-pressed="${m.imp.includes(w)}">${w==='Other'?'Other…':w}</button>`).join('')}</div>
+    ${m.imp.includes('Other')?`<input class="floth" type="text" maxlength="60" data-floth="${key}|oi" value="${esc(m.oi||'')}" placeholder="What is it? Write it here" aria-label="What is having the biggest impact" autofocus>`:''}`; }
 function flowGen(e,it,key,fid){ return compsList(it).map(c=>{ const h=compHTML(e,it,c,key,fid); return h?`<div class="flmore comp c${c}">${h}</div>`:''; }).join(''); }
 
 // one test number: big − / + around the value, last time underneath, % of bodyweight live
@@ -1768,15 +1789,17 @@ function renderFlow(){ const F=S.flow, {e}=findEntry(F.eid); if(!e){ S.flow=null
     app.innerHTML=`<div class="flow fdone" style="--fc:${tplColor(e)}"><div class="fdring"><svg viewBox="0 0 120 120" width="150" height="150" aria-hidden="true"><circle cx="60" cy="60" r="50" class="rbg"/><circle cx="60" cy="60" r="50" class="rfg"/><path d="M40 61l14 14 27-30" class="rck"/></svg></div>
       ${(()=>{ const pb=isPerfE(e)?testPBs(e):[]; return isPerfE(e)?`<h2>${pb.length?'New personal best!':'Test saved'}</h2><p class="flsub">${esc(tplName(e).replace(/^\+*\s*/,''))}</p>${pb.length?`<div class="pbbox">${pb.map(x=>`<b>${esc(x)}</b>`).join('')}</div>`:''}${e.items.filter(it=>compsList(it).includes('X')&&xcfg(e,it).role!=='bw').map(it=>`<p class="flload">${xResText(e,it).split('Last time')[0]}</p>`).join('')}`:`<h2>Check-in done</h2><p class="flsub">${esc(tplName(e))} · ${I.filter(filledItem).length} of ${N} filled</p>${weekStrip()}`; })()}
       <button class="btn flbig" data-flclose="1">${isPerfE(e)?'Done':'Back to calendar'}</button><button class="btn ghost" data-flall="${e.id}">See everything</button></div>`;
-    if(anim) setTimeout(()=>{ const f=app.querySelector('.fdring'); if(!f) return; const cols=['#FDB913','#006A44','#C1272D',tplColor(e),'#fff']; for(let i=0;i<26;i++){ const sp=document.createElement('span'), a=Math.random()*Math.PI*2, d=60+Math.random()*90; sp.className='spk'; sp.style.cssText=`--x:75px;--y:75px;--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d}px;--c:${cols[i%cols.length]}`; f.appendChild(sp); setTimeout(()=>sp.remove(),1000); } buzz(); },420);
+    if(anim){ countUp(app); setTimeout(()=>{ const f=app.querySelector('.fdring'); if(!f) return; const cols=['#FDB913','#006A44','#C1272D',tplColor(e),'#fff','#6EC8FF']; for(let i=0;i<40;i++){ const sp=document.createElement('span'), a=Math.random()*Math.PI*2, d=70+Math.random()*130; sp.className='spk cf'+(i%3); sp.style.cssText=`--x:75px;--y:75px;--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d+40}px;--c:${cols[i%cols.length]};--rot:${Math.round(Math.random()*720-360)}deg`; f.appendChild(sp); setTimeout(()=>sp.remove(),1300); } buzz(); chime(); },420); }
     return; }
-  const it=I[F.i], kind=flowKind(it), key=`${e.id}|${it.fid}`, fid='f'+e.id+it.fid, K=helpKeysFor(e,it), filled=kind==='mood'?(F.sub===0?!!smOf(it).v:F.sub===1?smOf(it).w.length>0:smOf(it).imp.length>0):filledItem(it);
+  const it=I[F.i], kind=flowKind(it), key=`${e.id}|${it.fid}`, fid='f'+e.id+it.fid, K=helpKeysFor(e,it); let filled=kind==='mood'?(F.sub===0?!!smOf(it).v:F.sub===1?smOf(it).w.length>0:smOf(it).imp.length>0):filledItem(it);
+  if(anim) F.wasEmpty=filled?'':mark; else if(F.wasEmpty&&F.wasEmpty!==mark) F.wasEmpty='';
   const body=kind==='mood'?flowMood(e,it,key,F.sub):kind==='scale'?flowScale(e,it,key):kind==='load'?flowLoad(e,it,key,fid):kind==='x'?flowX(e,it,key,fid):flowGen(e,it,key,fid);
   app.innerHTML=`<div class="flow" style="--fc:${tplColor(e)}">
     <div class="fltop"><button class="flx" data-flx="1" aria-label="Close check-in">✕</button><div class="flprog" aria-hidden="true">${I.map((_,j)=>`<i class="${j<F.i?'d':j===F.i?'c':''}"></i>`).join('')}</div><span class="flct">${F.i+1}/${N}</span></div>
     <div class="flcard${anim?(F.dir<0?' inb':' inf'):''}"><p class="flk">${esc(tplName(e))}</p><h2 class="flq">${esc(it.name)}${K.length?' '+helpBtn(K.join(',')):''}</h2>${body}</div>
-    <div class="flnav"><button class="btn ghost" data-flb="1"${F.i===0&&!F.sub?' disabled':''}>Back</button><button class="btn${filled?'':' ghost'}" data-fln="1">${filled?(F.i===N-1&&!(kind==='mood'&&F.sub<2)?'Done':'Next'):'Skip'}</button></div></div>`;
-  app.querySelectorAll('textarea').forEach(grow); }
+    <div class="flnav"><button class="btn ghost" data-flb="1"${F.i===0&&!F.sub?' disabled':''}>Back</button><button class="btn${filled?(F.wasEmpty===mark?' ready':''):' ghost'}" data-fln="1">${filled?(F.i===N-1&&!(kind==='mood'&&F.sub<2)?'Done':'Next'):'Skip'}</button></div></div>`;
+  app.querySelectorAll('textarea').forEach(grow); const ot=app.querySelector('.floth'); if(ot&&anim===false&&!ot.value) try{ ot.focus({preventScroll:false}); }catch(e){}
+  if(anim) app.querySelectorAll('.flcard .fltile,.flcard .flchips button').forEach((b,i)=>b.style.setProperty('--i',i)); }
 function moodLive(t){ const v=+t.value, o=document.getElementById('orb'), l=document.getElementById('orbl'); if(o){ o.classList.remove('idle'); o.style.setProperty('--oc',MOODC[v]); o.style.setProperty('--v',(v-1)/6); } if(l) l.textContent=MOODL[v]; if(t.dataset.lastv!==String(v)){ t.dataset.lastv=v; buzz(); } }
 function flowClick(ds,b){ if(!S.flow&&!ds.flstart&&!ds.rgq&&!ds.fltimer) return false;
   if(ds.flstart){ flowStart(ds.flstart); return true; }
@@ -1796,6 +1819,15 @@ function flowClick(ds,b){ if(!S.flow&&!ds.flstart&&!ds.rgq&&!ds.fltimer) return 
   if(ds.flw){ const [key,w]=splitTail(ds.flw,1), {it}=itemAt(key); if(!it) return true; let W=smOf(it).w.slice(); W=W.includes(w)?W.filter(x=>x!==w):W.concat(w).slice(-3); moodSave(key,{w:W}); buzz(); render(); return true; }
   if(ds.fli){ const [key,w]=splitTail(ds.fli,1), {it}=itemAt(key); if(!it) return true; let W=smOf(it).imp.slice(); W=W.includes(w)?W.filter(x=>x!==w):W.concat(w); moodSave(key,{imp:W}); buzz(); render(); return true; }
   return false; }
+
+
+// ---- feel: ripple where you touch, numbers that count up, a soft chime when a check-in is done
+document.addEventListener('pointerdown',ev=>{ const b=ev.target.closest&&ev.target.closest('.fltile,.flchips button,.flstep,.btn,.add,.gchips button,.lvlo,.xtimer,.day'); if(!b||b.disabled) return;
+  const r=b.getBoundingClientRect(), d=Math.max(r.width,r.height)*1.6, sp=document.createElement('span'); sp.className='rip'; sp.style.cssText=`width:${d}px;height:${d}px;left:${ev.clientX-r.left-d/2}px;top:${ev.clientY-r.top-d/2}px`;
+  if(getComputedStyle(b).position==='static') b.style.position='relative'; b.style.overflow='hidden'; b.appendChild(sp); setTimeout(()=>sp.remove(),600); },{passive:true});
+function countUp(root){ (root||document).querySelectorAll('[data-cnt]').forEach(el=>{ const to=parseFloat(el.dataset.cnt), dec=(String(el.dataset.cnt).split('.')[1]||'').length, suf=el.dataset.suf||''; if(isNaN(to)) return; const t0=performance.now(), D=700;
+  const step=t=>{ const k=Math.min(1,(t-t0)/D), e=1-Math.pow(1-k,3); el.textContent=(to*e).toFixed(dec)+suf; if(k<1) requestAnimationFrame(step); }; requestAnimationFrame(step); }); }
+function chime(){ try{ const A=simAudio(); if(!A) return; [[784,0],[1046,.11],[1318,.22]].forEach(([f,t])=>{ const g=A.createGain(), o=A.createOscillator(); o.type='sine'; o.frequency.value=f; o.connect(g); g.connect(A.destination); g.gain.setValueAtTime(0,A.currentTime+t); g.gain.linearRampToValueAtTime(.12,A.currentTime+t+.02); g.gain.exponentialRampToValueAtTime(.001,A.currentTime+t+.5); o.start(A.currentTime+t); o.stop(A.currentTime+t+.55); }); }catch(e){} }
 
 // ================= Tracking levels =================
 // Level 1 = only the essentials (how hard + how long, sleep, energy, finger pain, your climbs), no stats, little text.
@@ -3459,7 +3491,8 @@ app.addEventListener('click',async ev=>{
 document.addEventListener('keydown',ev=>{ if(!ALIVE||GUEST) return; if(!(ev.ctrlKey||ev.metaKey)||ev.key.toLowerCase()!=='z') return; const t=ev.target; if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA')) return; ev.preventDefault(); histStep(ev.shiftKey?1:-1); });
 app.addEventListener('keydown',ev=>{ const t=ev.target; if(GUEST) return; if((ev.key==='Enter'||ev.key===' ')&&t.getAttribute&&t.getAttribute('data-bmr')){ ev.preventDefault(); bodyClick(ev); return; } if(ev.key!=='Enter'&&ev.keyCode!==13) return; if(t.dataset&&t.dataset.bmnew){ ev.preventDefault(); const i=t.dataset.bmnew.lastIndexOf('|'), v=t.value; t.value=''; addItem(t.dataset.bmnew.slice(0,i),t.dataset.bmnew.slice(i+1),v); return; } if(t.dataset.bin||t.dataset.lin){ ev.preventDefault(); addToList(t.dataset.bin||t.dataset.lin,t.id); } else if(t.id&&t.id.startsWith('nf')){ ev.preventDefault(); const b=t.parentElement.querySelector('[data-newf]'); if(b) b.click(); } });
 app.addEventListener('input',ev=>{
-  const t=ev.target; if(t.dataset&&t.dataset.flmood!==undefined){ moodLive(t); return; } if(t.tagName==='TEXTAREA') grow(t);
+  const t=ev.target; if(t.dataset&&t.dataset.flmood!==undefined){ moodLive(t); return; }
+  if(t.dataset&&t.dataset.floth){ const [key,f]=splitTail(t.dataset.floth,1); moodSave(key,{[f]:t.value.slice(0,60)}); const nb=document.querySelector('[data-fln]'); if(nb&&t.value.trim()&&nb.textContent==='Skip'){ nb.textContent='Next'; nb.classList.remove('ghost'); nb.classList.add('ready'); } return; } if(t.tagName==='TEXTAREA') grow(t);
   if(t.id==='imp'){ S.st.impText=t.value; clearTimeout(TM.impT); if(!GUEST&&t.value.length>40) TM.impT=setTimeout(()=>{ if(GUEST||!S.st.bkPaste||S.st.impText!==t.value) return; const r=bkParse(t.value); if(!r.err) bkOpenText(t.value); },350); return; }
   if(teamInput(t)) return;
   if(S.view==='ath'&&atInput(t)) return;
