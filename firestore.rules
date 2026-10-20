@@ -38,6 +38,12 @@ service cloud.firestore {
         && request.resource.data.streak is int && request.resource.data.mo is int && request.resource.data.mo <= 31;
       allow delete: if (member() && id == me()) || isStaff();
     }
+    // Team log types: Kajus's app publishes them, every athlete's app follows them
+    match /team/tpl {
+      allow read: if member();
+      allow write: if member() && (isStaff() || (myRole() == 'athlete' && acct(me()).name.lower().matches('.*kajus.*')))
+        && request.resource.data.keys().hasOnly(['v','templates','at']) && request.resource.data.templates is list && request.resource.data.templates.size() <= 30;
+    }
     match /team/info {
       allow read: if member();
       allow create: if setupOwner();
