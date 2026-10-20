@@ -905,6 +905,18 @@ button{transition:transform .12s ease,background-color .18s ease,color .18s ease
 .inflow .tabs,.inflow #news{display:none!important}.inflow body{padding-top:0}
 .mtag{display:inline-flex;align-items:center;gap:8px;margin:0 0 6px;padding:6px 14px;border-radius:999px;background:color-mix(in srgb,var(--oc) 18%,transparent);color:var(--ink);font-weight:800}.mtag i{width:14px;height:14px;border-radius:50%;background:var(--oc);box-shadow:0 0 10px var(--oc)}
 .wkn em{white-space:nowrap}.wkn{min-width:92px}
+
+.xbig{margin:0 0 18px}.xbig small{display:block;font-size:.78rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin:0 0 6px}
+.xlast{display:block;margin:8px auto 0;min-height:0;padding:6px 12px;border-radius:999px;border:1px dashed var(--line);background:none;color:var(--soft);font-size:.82rem;font-weight:700}
+.xtimer{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;margin:0 0 18px;padding:10px 16px;border-radius:18px;border:1.5px solid var(--fc);background:color-mix(in srgb,var(--fc) 12%,transparent);color:var(--ink)}
+.xtimer b{font-size:1.5rem;width:56px;height:56px;border-radius:50%;background:var(--fc);color:#fff;display:flex;align-items:center;justify-content:center}.xtimer span{font-weight:800;font-size:1.05rem}
+.htov{align-items:center}.htbox{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;color:#fff}.htbox svg{transform:rotate(-90deg)}
+.htbox .rbg{fill:none;stroke:rgba(255,255,255,.18);stroke-width:9}.htbox .rfg{fill:none;stroke:#FDB913;stroke-width:9;stroke-linecap:round;stroke-dasharray:327;transition:stroke-dashoffset 1s linear}.htbox.hold .rfg{stroke:#2FD07A}
+.htbox b{position:absolute;top:72px;font-size:4.5rem;font-weight:800;font-variant-numeric:tabular-nums}.htbox span{font-size:1.2rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.pbbox{display:flex;flex-direction:column;gap:6px;margin:6px 0 10px;padding:12px 18px;border-radius:16px;background:linear-gradient(135deg,#FDB913,#F2742A);color:#1a1200;animation:pop .5s cubic-bezier(.3,1.7,.5,1)}.pbbox b{font-size:1.15rem}
+.gchips{display:flex;gap:6px;overflow-x:auto;margin:8px 0 2px;padding-bottom:4px;scrollbar-width:none}.gchips::-webkit-scrollbar{display:none}
+.gchips button{flex:0 0 auto;min-height:38px;min-width:48px;padding:6px 10px;border-radius:12px;border:1.5px solid var(--line);background:var(--field);color:var(--ink);font-weight:800}.gchips button.on{background:var(--ink);color:var(--bg);border-color:var(--ink);animation:pop .3s cubic-bezier(.3,1.7,.5,1)}
+.empty b{font-size:1.05rem;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -1394,7 +1406,7 @@ function tplColor(e){ const t=S.cfg.templates.find(t=>t.id===e.tid); return safe
 const app=document.getElementById('app');
 
 // ---------- render ----------
-function render(){ applySkin(); document.documentElement.dataset.lvl=TLV(); document.documentElement.classList.toggle('inflow',!!S.flow&&!GUEST); setTimeout(newsCheck,0); const viewNow=S.view+'|'+(S.st.pgrp||''); if(viewNow!==SKIN.lastView){ SKIN.lastView=viewNow; app.classList.add('enter'); clearTimeout(SKIN.t); SKIN.t=setTimeout(()=>app.classList.remove('enter'),450); } const y=window.scrollY, fsEl=app.querySelector('.simfs'), fsY=fsEl?fsEl.scrollTop:0; app.style.minHeight=app.offsetHeight+'px'; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; (S.flow&&!GUEST?renderFlow:({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth}[S.view]||renderSettings))(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); const fs2=app.querySelector('.simfs'); if(fs2&&fsY) fs2.scrollTop=fsY; app.style.minHeight=''; tapFx(); }
+function render(){ if(S.view==='goals'&&!S.flow) setTimeout(goalCelebrate,500); applySkin(); document.documentElement.dataset.lvl=TLV(); document.documentElement.classList.toggle('inflow',!!S.flow&&!GUEST); setTimeout(newsCheck,0); const viewNow=S.view+'|'+(S.st.pgrp||''); if(viewNow!==SKIN.lastView){ SKIN.lastView=viewNow; app.classList.add('enter'); clearTimeout(SKIN.t); SKIN.t=setTimeout(()=>app.classList.remove('enter'),450); } const y=window.scrollY, fsEl=app.querySelector('.simfs'), fsY=fsEl?fsEl.scrollTop:0; app.style.minHeight=app.offsetHeight+'px'; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; (S.flow&&!GUEST?renderFlow:({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth}[S.view]||renderSettings))(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); const fs2=app.querySelector('.simfs'); if(fs2&&fsY) fs2.scrollTop=fsY; app.style.minHeight=''; tapFx(); }
 function toast(t){ let el=document.getElementById('toast'); if(!el){ el=document.createElement('div'); el.id='toast'; el.setAttribute('role','status'); document.body.appendChild(el); } el.textContent=t; el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),1800); }
 function say(t){ const m=document.getElementById('msg'); if(m) m.textContent=t; }
 function armed(b,label){ if(b.dataset.armed) return true; b.dataset.armed='1'; const old=b.textContent; b.textContent=label; b.classList.add('armed'); setTimeout(()=>{ if(b.isConnected){ delete b.dataset.armed; b.textContent=old; b.classList.remove('armed'); } },3000); return false; }
@@ -1423,7 +1435,7 @@ function renderCal(){
   ${S.sel!==todayStr?'<button class="btn ghost gotoday" data-act="gotoday">Back to today</button>':''}
   ${dayNotesHTML()}${GUEST?'':simDayHTML(S.sel)}
   ${GUEST?'':lvlChip()}<div class="adds"${GUEST?' style="display:none"':''}>${CT.filter(tplShown).map(t=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)}" data-add="${t.id}">+ ${esc(t.name)}</button>`).join('')}</div>
-  ${sel.length?sel.map(entryHTML).join(''):`<div class="empty">${GUEST?'Nothing logged on this day.':'Nothing logged yet. Pick a log type above to start.'}</div>`}`;
+  ${sel.length?sel.map(entryHTML).join(''):`<div class="empty">${GUEST?'Nothing logged on this day.':TLV()<=2?'<b>Nothing logged yet</b><br>Tap one of the buttons above. It takes about a minute.':'Nothing logged yet. Pick a log type above to start.'}</div>`}`;
   app.querySelectorAll('textarea').forEach(grow);
 }
 // entries that belong to the Performance tab (their own calendar), not to the daily calendar
@@ -1539,7 +1551,7 @@ function entrySummary(e){ const out=[]; (e.items||[]).forEach(it=>{ if(out.lengt
 function entryHTML(e){ const open=S.open===e.id;
   return `<div class="entry" style="--c:${tplColor(e)}">
     <button class="ehead" data-toggle="${e.id}" aria-expanded="${open}"><span class="etitle"><b>${esc(tplName(e))}</b>${open?'':`<span class="esum">${esc(entrySummary(e))||'Nothing filled in yet'}</span>`}</span><small>${headSmall(e,open)}</small></button>
-    ${open?`<div class="ebody">${!GUEST&&!isPerfE(e)&&flowItems(e).length?`<button class="btn flgo" data-flstart="${e.id}">Step by step</button>`:''}<div class="collbar"><button data-fcolall="${e.id}|1">Close all</button><button data-fcolall="${e.id}|0">Open all</button></div>${perfHowHTML(e)}${GUEST?roItems(e):e.items.filter(it=>itemLv(e,it)<=TLV()).map(it=>fieldHTML(e,it)).join('')}${GUEST?'':`
+    ${open?`<div class="ebody">${!GUEST&&(!isPerfE(e)||e.items.some(it=>compsList(it).includes('X')))&&flowItems(e).length?`<button class="btn flgo" data-flstart="${e.id}">Step by step</button>`:''}<div class="collbar"><button data-fcolall="${e.id}|1">Close all</button><button data-fcolall="${e.id}|0">Open all</button></div>${perfHowHTML(e)}${GUEST?roItems(e):e.items.filter(it=>itemLv(e,it)<=TLV()).map(it=>fieldHTML(e,it)).join('')}${GUEST?'':`
       ${isPerfE(e)?`<details class="more"><summary>Delete this test</summary>`:`<details class="more"><summary>${TLV()<2?'Delete this log':'Add a field or delete this log'}</summary>
       <div class="addf"><label class="note" for="nf${e.id}">New field name</label>
         <div class="row"><input type="text" id="nf${e.id}" placeholder="e.g. Emocijos"><button class="btn" data-newf="${e.id}">Add</button></div>
@@ -1669,9 +1681,10 @@ const MOODAR={}; Object.values(MOODW).forEach(L=>L.forEach(([w,a])=>MOODAR[w]=a)
 const IMPACT=['Training','Competition','Sleep','Body','Health','School','Work','Family','Friends','Partner','Food','Weather','Money','Travel','Other'];
 const moodWords=v=>!v?[]:v>=5?[...MOODW.hp,...MOODW.lp,...MOODW.n]:v<=3?[...MOODW.hu,...MOODW.lu,...MOODW.n]:[...MOODW.n,...MOODW.lp.slice(0,3),...MOODW.lu.slice(0,3)];
 const buzz=()=>{ try{ if(navigator.vibrate) navigator.vibrate(8); }catch(e){} };
-const flowItems=e=>e.items.filter(it=>itemLv(e,it)<=TLV());
+const flowItems=e=>e.items.filter(it=>itemLv(e,it)<=TLV()&&(TLV()>=2||compsList(it).some(c=>c!=='T')));
 function flowKind(it){ const cs=compsList(it), n=String(it.name||'');
   if(cs.includes('Q')||(/emoc|emotion|nuotaik|mood|jausm/i.test(n)&&cs.some(c=>'ASV'.includes(c)))) return 'mood';
+  if(cs.includes('X')) return 'x';
   if(cs.includes('E')) return 'load';
   if(cs.some(c=>'RMZPGXWBLFNDKYC'.includes(c))) return 'gen';
   if(cs.some(c=>'ASV'.includes(c))) return 'scale';
@@ -1724,31 +1737,60 @@ function flowMood(e,it,key,sub){ const m=smOf(it), v=m.v;
     <div class="flchips big">${moodWords(v).map(([w])=>`<button class="${m.w.includes(w)?'on':''}" data-flw="${key}|${w}" aria-pressed="${m.w.includes(w)}">${w}</button>`).join('')}</div>`;
   return `<p class="flsub">What’s having the biggest impact on you?</p><div class="flchips big">${IMPACT.map(w=>`<button class="${m.imp.includes(w)?'on':''}" data-fli="${key}|${w}" aria-pressed="${m.imp.includes(w)}">${w}</button>`).join('')}</div>`; }
 function flowGen(e,it,key,fid){ return compsList(it).map(c=>{ const h=compHTML(e,it,c,key,fid); return h?`<div class="flmore comp c${c}">${h}</div>`:''; }).join(''); }
+
+// one test number: big − / + around the value, last time underneath, % of bodyweight live
+function flowX(e,it,key,fid){ const c=xcfg(e,it), o=objP(it,'X'), u=c.u||'', st=c.u==='kg'?(c.role==='bw'?0.5:1):1, p=prevX(e,it,S.sel), P=p?xVals(p.it):{};
+  const fing=c.u==='kg'&&c.bw==='lift'&&c.lr;
+  const box=(k,l)=>`<div class="xbig"><small>${l}</small><div class="flmin"><button class="flstep" data-flxs="${key}|${k}|-${st}" aria-label="${l} less">−</button><label><input type="number" inputmode="decimal" step="any" data-k="${key}" data-c="X" data-p="${k}" value="${esc(o[k]??'')}" placeholder="${P[k]!=null?esc(P[k]):'0'}" aria-label="${esc(it.name)} ${l}"><span>${esc(u)}</span></label><button class="flstep" data-flxs="${key}|${k}|${st}" aria-label="${l} more">+</button></div>${P[k]!=null?`<button class="xlast" data-flxs="${key}|${k}|=${P[k]}">Last time ${P[k]}${u?' '+esc(u):''} · use</button>`:''}</div>`;
+  return `${c.role==='bw'?'<p class="flsub">Morning, after the toilet, before food</p>':''}
+    ${fing?`<button class="xtimer" data-fltimer="7" aria-label="Start the 7 second timer"><b>7 s</b><span>Hang timer</span></button>`:''}
+    ${c.lr?box('l','Left hand')+box('r','Right hand'):box('v',c.role==='bw'?'Bodyweight':'Result')}
+    <p class="flload" id="xr${fid}">${xResText(e,it)}</p>`; }
+// 3-2-1, then hold for the test time, with the comp signals (short beeps, long tone at the end)
+function hangTimer(sec){ if(document.getElementById('htimer')) return; const o=document.createElement('div'); o.id='htimer'; o.className='newsov htov'; document.body.appendChild(o);
+  const A=simAudio(), tone=(f,d)=>{ try{ if(!A) return; const g=A.createGain(), os=A.createOscillator(); os.frequency.value=f; os.connect(g); g.connect(A.destination); g.gain.setValueAtTime(.25,A.currentTime); g.gain.exponentialRampToValueAtTime(.001,A.currentTime+d); os.start(); os.stop(A.currentTime+d); }catch(e){} };
+  let t=-3, iv=null; const draw=()=>{ const hold=t>=0, left=hold?sec-t:-t, frac=hold?t/sec:0;
+    o.innerHTML=`<div class="htbox${hold?' hold':''}"><svg viewBox="0 0 120 120" width="220" height="220"><circle cx="60" cy="60" r="52" class="rbg"/><circle cx="60" cy="60" r="52" class="rfg" style="stroke-dashoffset:${327*(1-frac)}"/></svg><b>${left}</b><span>${hold?'Pull!':'Get ready'}</span><button class="btn ghost" data-htx="1">Stop</button></div>`; };
+  const stop=()=>{ clearInterval(iv); o.remove(); };
+  o.addEventListener('click',ev=>{ if(ev.target.closest('[data-htx]')) stop(); });
+  draw(); tone(660,.12); buzz();
+  iv=setInterval(()=>{ t++; if(t>=sec){ tone(880,.7); try{ navigator.vibrate&&navigator.vibrate([80,60,80]); }catch(e){} draw(); clearInterval(iv); setTimeout(()=>{ o.querySelector('span').textContent='Done · enter the kg'; },50); setTimeout(stop,1600); return; }
+    if(t===0){ tone(880,.35); buzz(); } else if(t<0||sec-t<=3) tone(660,.1); draw(); },1000); }
+// was today's test your best ever? (% of bodyweight when it is a finger test, otherwise the raw number)
+function testPBs(e){ const out=[]; const t=S.cfg.templates.find(t=>t.id===e.tid); if(!t) return out;
+  e.items.forEach(it=>{ if(!compsList(it).includes('X')) return; const c=xcfg(e,it); if(c.role==='bw') return; const pct=c.u==='kg'&&!!c.bw, V=xVals(it);
+    (c.lr?[['l','Left'],['r','Right']]:[['v','']]).forEach(([k,l])=>{ if(V[k]==null) return; const ser=metricSeries(t.id,it.fid,k,pct?'pct':'raw'), now=ser.filter(x=>x.d===S.sel).map(x=>x.v), before=ser.filter(x=>x.d<S.sel).map(x=>x.v);
+      if(now.length&&before.length&&Math.max(...now)>Math.max(...before)) out.push(`${l?l+' hand':it.name} ${Math.round(Math.max(...now)*10)/10}${pct?'%':c.u?' '+c.u:''}`); }); });
+  return out; }
 function renderFlow(){ const F=S.flow, {e}=findEntry(F.eid); if(!e){ S.flow=null; renderCal(); return; } const I=flowItems(e), N=I.length;
   const mark=`${F.i}.${F.sub}`, anim=F.shown!==mark; F.shown=mark;
   if(F.i>=N){ const W=weekInfo();
     app.innerHTML=`<div class="flow fdone" style="--fc:${tplColor(e)}"><div class="fdring"><svg viewBox="0 0 120 120" width="150" height="150" aria-hidden="true"><circle cx="60" cy="60" r="50" class="rbg"/><circle cx="60" cy="60" r="50" class="rfg"/><path d="M40 61l14 14 27-30" class="rck"/></svg></div>
-      <h2>Check-in done</h2><p class="flsub">${esc(tplName(e))} · ${I.filter(filledItem).length} of ${N} filled</p>${weekStrip()}
-      <button class="btn flbig" data-flclose="1">Back to calendar</button><button class="btn ghost" data-flall="${e.id}">See everything</button></div>`;
+      ${(()=>{ const pb=isPerfE(e)?testPBs(e):[]; return isPerfE(e)?`<h2>${pb.length?'New personal best!':'Test saved'}</h2><p class="flsub">${esc(tplName(e).replace(/^\+*\s*/,''))}</p>${pb.length?`<div class="pbbox">${pb.map(x=>`<b>${esc(x)}</b>`).join('')}</div>`:''}${e.items.filter(it=>compsList(it).includes('X')&&xcfg(e,it).role!=='bw').map(it=>`<p class="flload">${xResText(e,it).split('Last time')[0]}</p>`).join('')}`:`<h2>Check-in done</h2><p class="flsub">${esc(tplName(e))} · ${I.filter(filledItem).length} of ${N} filled</p>${weekStrip()}`; })()}
+      <button class="btn flbig" data-flclose="1">${isPerfE(e)?'Done':'Back to calendar'}</button><button class="btn ghost" data-flall="${e.id}">See everything</button></div>`;
     if(anim) setTimeout(()=>{ const f=app.querySelector('.fdring'); if(!f) return; const cols=['#FDB913','#006A44','#C1272D',tplColor(e),'#fff']; for(let i=0;i<26;i++){ const sp=document.createElement('span'), a=Math.random()*Math.PI*2, d=60+Math.random()*90; sp.className='spk'; sp.style.cssText=`--x:75px;--y:75px;--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d}px;--c:${cols[i%cols.length]}`; f.appendChild(sp); setTimeout(()=>sp.remove(),1000); } buzz(); },420);
     return; }
   const it=I[F.i], kind=flowKind(it), key=`${e.id}|${it.fid}`, fid='f'+e.id+it.fid, K=helpKeysFor(e,it), filled=kind==='mood'?(F.sub===0?!!smOf(it).v:F.sub===1?smOf(it).w.length>0:smOf(it).imp.length>0):filledItem(it);
-  const body=kind==='mood'?flowMood(e,it,key,F.sub):kind==='scale'?flowScale(e,it,key):kind==='load'?flowLoad(e,it,key,fid):flowGen(e,it,key,fid);
+  const body=kind==='mood'?flowMood(e,it,key,F.sub):kind==='scale'?flowScale(e,it,key):kind==='load'?flowLoad(e,it,key,fid):kind==='x'?flowX(e,it,key,fid):flowGen(e,it,key,fid);
   app.innerHTML=`<div class="flow" style="--fc:${tplColor(e)}">
     <div class="fltop"><button class="flx" data-flx="1" aria-label="Close check-in">✕</button><div class="flprog" aria-hidden="true">${I.map((_,j)=>`<i class="${j<F.i?'d':j===F.i?'c':''}"></i>`).join('')}</div><span class="flct">${F.i+1}/${N}</span></div>
     <div class="flcard${anim?(F.dir<0?' inb':' inf'):''}"><p class="flk">${esc(tplName(e))}</p><h2 class="flq">${esc(it.name)}${K.length?' '+helpBtn(K.join(',')):''}</h2>${body}</div>
     <div class="flnav"><button class="btn ghost" data-flb="1"${F.i===0&&!F.sub?' disabled':''}>Back</button><button class="btn${filled?'':' ghost'}" data-fln="1">${filled?(F.i===N-1&&!(kind==='mood'&&F.sub<2)?'Done':'Next'):'Skip'}</button></div></div>`;
   app.querySelectorAll('textarea').forEach(grow); }
 function moodLive(t){ const v=+t.value, o=document.getElementById('orb'), l=document.getElementById('orbl'); if(o){ o.classList.remove('idle'); o.style.setProperty('--oc',MOODC[v]); o.style.setProperty('--v',(v-1)/6); } if(l) l.textContent=MOODL[v]; if(t.dataset.lastv!==String(v)){ t.dataset.lastv=v; buzz(); } }
-function flowClick(ds,b){ if(!S.flow&&!ds.flstart) return false;
+function flowClick(ds,b){ if(!S.flow&&!ds.flstart&&!ds.rgq&&!ds.fltimer) return false;
   if(ds.flstart){ flowStart(ds.flstart); return true; }
-  if(ds.flx||ds.flclose){ S.flow=null; render(); return true; }
+  if(ds.flx||ds.flclose){ S.flow=null; render(); scrollTo(0,0); return true; }
   if(ds.flall){ S.flow=null; S.open=ds.flall; render(); const el=document.querySelector(`[data-toggle="${ds.flall}"]`); if(el) el.scrollIntoView({block:'start'}); return true; }
   if(ds.fln){ flowNext(); return true; } if(ds.flb){ flowBack(); return true; }
   if(ds.flsc){ const [key,c,n]=splitTail(ds.flsc,2), {k,it}=itemAt(key); if(!it) return true; const v=+n; let off=false;
     if(c==='A'){ off=a7(getP(it,'A'))===v; setP(it,'A',off?null:v); } else if(c==='S'){ off=getP(it,'S')===v; setP(it,'S',off?null:v); }
     else { const a=arrP(it,'V'); if(a.length) a[a.length-1].n=v; else a.push({id:rid(),at:nowHM(),n:v,note:''}); setP(it,'V',a); }
     saveMonth(k); buzz(); render(); if(!off&&!(compsList(it).includes('T')&&TLV()>=2)) setTimeout(()=>{ if(S.flow&&S.flow.shown===`${S.flow.i}.${S.flow.sub}`) flowNext(); },360); return true; }
+  if(ds.fltimer){ hangTimer(+ds.fltimer||7); return true; }
+  if(ds.flxs){ const [key,k,d]=splitTail(ds.flxs,2), {k:mk,e,it}=itemAt(key); if(!it) return true; const o=objP(it,'X'), cur=parseFloat(o[k]); const nv=d[0]==='='?+d.slice(1):Math.max(0,Math.round(((isNaN(cur)?(parseFloat((prevX(e,it,S.sel)||{it:{}}).it&&xVals(prevX(e,it,S.sel).it)[k])||0):cur)+(+d))*10)/10);
+    o[k]=String(nv); setP(it,'X',o); saveMonth(mk); buzz(); render(); return true; }
+  if(ds.rgq){ const [key,gid,g]=splitTail(ds.rgq,2), {k,it}=itemAt(key); if(!it) return true; const a=arrP(it,'G'), r=a.find(z=>z.id===gid); if(!r) return true; r.g=r.g===g?'':g; setP(it,'G',a); saveMonth(k); buzz(); render(); return true; }
   if(ds.flld){ const [key,n]=splitTail(ds.flld,1), {k,it}=itemAt(key); if(!it) return true; const o=objP(it,'E'); if(o.e===+n){ delete o.e; delete o.c; } else { o.e=+n; o.c=+n; } setP(it,'E',o); saveMonth(k); buzz(); render(); return true; }
   if(ds.flm){ const [key,d]=splitTail(ds.flm,1), {k,it}=itemAt(key); if(!it) return true; const o=objP(it,'E'), cur=parseFloat(o.m)||0; o.m=String(d[0]==='='?+d.slice(1):Math.max(0,Math.min(600,cur+(+d)))); setP(it,'E',o); saveMonth(k); buzz(); render(); return true; }
   if(ds.flw){ const [key,w]=splitTail(ds.flw,1), {it}=itemAt(key); if(!it) return true; let W=smOf(it).w.slice(); W=W.includes(w)?W.filter(x=>x!==w):W.concat(w).slice(-3); moodSave(key,{w:W}); buzz(); render(); return true; }
@@ -3383,9 +3425,9 @@ app.addEventListener('click',async ev=>{
   if(ds.act==='packno'){ S.cfg.packNo=1; saveCfg(); render(); return; }
   if(ds.act==='aistop'){ const c=ds.which==='sci'?sciCtl:aiCtl; if(c) c.abort(); return; }
   if(ds.add){ if(Date.now()-lastAdd<600) return; lastAdd=Date.now(); const t=S.cfg.templates.find(t=>t.id===ds.add); if(!t) return; const [y,m,d]=S.sel.split('-'); const k=`${y}-${m}`; const mo=month(k);
-    const e={id:rid(),tid:t.id,name:t.name,color:t.color,items:t.fields.map(newItem)}; if(lvlUser()) e.lv=TLV(); if(lvlUser()&&TLV()<=2&&!t.perf) S.flowNew=e.id; if(t.perf) e.perf=1; if(t.comp) e.items.forEach(it=>{ if(compsList(it).includes('G')) setP(it,'G',[newComp(),newComp(),newComp(),newComp()]); });
+    const e={id:rid(),tid:t.id,name:t.name,color:t.color,items:t.fields.map(newItem)}; if(lvlUser()) e.lv=TLV(); if(lvlUser()&&TLV()<=2&&(!t.perf||t.fields.some(f=>compsOf(f).includes('X')))) S.flowNew=e.id; if(t.perf) e.perf=1; if(t.comp) e.items.forEach(it=>{ if(compsList(it).includes('G')) setP(it,'G',[newComp(),newComp(),newComp(),newComp()]); });
     (mo.days[String(+d)]=mo.days[String(+d)]||[]).push(e); S.open=e.id; saveMonth(k); if(S.flowNew===e.id){ S.flowNew=null; flowStart(e.id); return; } render(); const el=document.querySelector(`[data-toggle="${e.id}"]`); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); toast(`${t.name} added`); return; }
-  if(ds.toggle&&lvlUser()&&TLV()<=2&&S.open!==ds.toggle){ const {e}=findEntry(ds.toggle); if(e&&!isPerfE(e)&&flowItems(e).length){ flowStart(e.id); return; } }
+  if(ds.toggle&&lvlUser()&&TLV()<=2&&S.open!==ds.toggle){ const {e}=findEntry(ds.toggle); if(e&&(!isPerfE(e)||e.items.some(it=>compsList(it).includes('X')))&&flowItems(e).length){ flowStart(e.id); return; } }
   if(ds.toggle){ const was=S.open===ds.toggle; S.open=was?null:ds.toggle; S.typeOpen=null; render(); if(was){ const el=document.querySelector(`[data-toggle="${ds.toggle}"]`); if(el) el.scrollIntoView({block:'nearest'}); } return; }
   if(ds.delentry){ if(!armed(b,'Tap again to delete')) return; const {k,arr}=findEntry(ds.delentry); arr.splice(arr.findIndex(x=>x.id===ds.delentry),1); saveMonth(k); render(); toast('Log deleted'); return; }
   if(ds.newf){ const inp=document.getElementById('nf'+ds.newf), name=inp.value.trim(); if(!name){ inp.focus(); return; }
@@ -4080,10 +4122,16 @@ function tagAdd(){ const i=document.getElementById('tagnew'), t=cleanTag(i&&i.va
 app.addEventListener('keydown',ev=>{ if(ev.key==='Enter'&&ev.target&&ev.target.id==='tagnew'){ ev.preventDefault(); tagAdd(); } });
 // a route card counts like a comp card: all attempts, the attempt you got the zone, the attempt you topped (flash = top on attempt 1)
 function routeUp(y){ if(!y||('ta' in y)||('za' in y)) return y; const a=+y.a||1; if(y.fl===true){ y.ta=1; y.za=1; } else if(y.top===true){ y.ta=a; y.za=a; } else if(y.zone===true){ y.za=a; y.ta=null; } else { y.za=null; y.ta=null; } return y; }
+
+// grade chips around your level (your recent hardest top), so a grade is one tap
+const GRADES=(()=>{ const L=[]; for(let n=4;n<=9;n++) for(const x of ['A','B','C']) for(const p of ['','+']) L.push(`${n}${x}${p}`); return L; })();
+function gradeChips(key,y){ const tops=allRoutes().filter(r=>r.top===true||+r.ta>0).map(r=>FONT(r.g)).filter(v=>v!=null).slice(-40), c=tops.length?Math.max(...tops):FONT('6C'), cur=String(y.g||'').toUpperCase();
+  const ix=GRADES.findIndex(g=>FONT(g)===c), from=Math.max(0,ix-4), L=GRADES.slice(from,from+8);
+  return `<div class="gchips">${L.map(g=>`<button class="${cur===g?'on':''}" data-rgq="${key}|${y.id}|${g}" aria-pressed="${cur===g}">${g}</button>`).join('')}</div>`; }
 function routeCard(key,y0,i){ const y=routeUp(Object.assign({},y0)), at=+y.a||0, ta=+y.ta||0, za=+y.za||0, st=ta?(ta===1?'flash':'top'):za?'zone':at?'no':'', old=String(y.fwhy||'').trim();
   return `<div class="route${st?' r-'+st:''}">
     <div class="rtop"><b>#${i+1}</b><input class="rg" type="text" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="g" value="${esc(y.g||'')}" placeholder="Grade" aria-label="Grade of route ${i+1}" autocapitalize="characters" enterkeyhint="done">
-      <label class="rmin lv2"><input type="number" inputmode="decimal" min="0" step="any" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="dur" value="${esc(y.dur??'')}" placeholder="–" aria-label="Minutes on route ${i+1}"><span>min</span></label><button class="x" data-rdel="${key}|${y.id}" aria-label="Remove route ${i+1}">✕</button></div>
+      <label class="rmin lv2"><input type="number" inputmode="decimal" min="0" step="any" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="dur" value="${esc(y.dur??'')}" placeholder="–" aria-label="Minutes on route ${i+1}"><span>min</span></label><button class="x" data-rdel="${key}|${y.id}" aria-label="Remove route ${i+1}">✕</button></div>${gradeChips(key,y)}
     <p class="rlbl"><b>${{flash:'Flash',top:'Top',zone:'Zone, no top',no:'No zone','':'Not tried yet'}[st]}</b>${ta>1?` <span>on attempt ${ta}</span>`:''}${y.at?` <span>· ${esc(y.at)}</span>`:''}</p>
     ${compStepHTML(key,y,'a','Attempts','all goes')}<div class="lv2">${compStepHTML(key,y,'za','Zone on attempt','– = no zone')}</div>${compStepHTML(key,y,'ta','Top on attempt','– = no top')}
     <div class="lv2">${tagRowHTML('rst',key+'|'+y.id,y.st)}
@@ -4288,6 +4336,13 @@ function goalEditHTML(m){ const O=metricOptions();
        :i.kind==='styles'?`<div class="ftgrid"><label class="ftin">Grade in every style<input type="text" data-gitarget="${m.id}|${i.id}" value="${esc(i.target)}" autocapitalize="characters"></label><label class="ftin">In days <small>0 = ever</small><input type="number" inputmode="numeric" min="0" data-gidays="${m.id}|${i.id}" value="${esc(i.days)}"></label></div>`:''}</div>`; }).join('')}
     <p class="clab" style="margin-top:10px">Add a goal</p><div class="chips"><button data-giadd="${m.id}|metric">+ Test number</button><button data-giadd="${m.id}|grade">+ Boulder grade</button><button data-giadd="${m.id}|styles">+ Every style</button><button data-giadd="${m.id}|check">+ Tick box</button></div>
     <div class="row" style="margin:12px 0 0"><button class="btn" data-gdone="1">Done</button><span style="flex:1"></span><button class="del" data-gdel="${m.id}">Delete milestone</button></div></div>`; }
+
+function goalCelebrate(){ if(GUEST) return; let seen={}; try{ seen=JSON.parse(localStorage.getItem(PFX+'reached')||'{}'); }catch(e){} const fresh=[];
+  (S.cfg.goals||[]).forEach(m=>m.items.forEach(i=>{ const id=m.id+'|'+i.id; let done=false; try{ done=goalItemState(i,m).done; }catch(e){} if(done&&!seen[id]){ seen[id]=1; fresh.push(i.name); } }));
+  if(!fresh.length) return; try{ localStorage.setItem(PFX+'reached',JSON.stringify(seen)); }catch(e){}
+  if(Object.keys(seen).length===fresh.length&&fresh.length>2) return;   // first visit: just remember what was already reached
+  toast(`Milestone reached: ${fresh[0]}${fresh.length>1?` +${fresh.length-1}`:''}`); buzz();
+  const cols=['#FDB913','#006A44','#C1272D','#fff']; for(let i=0;i<34;i++){ const sp=document.createElement('span'), a=Math.random()*Math.PI*2, d=80+Math.random()*160; sp.className='spk'; sp.style.cssText=`position:fixed;--x:50vw;--y:30vh;--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d}px;--c:${cols[i%cols.length]};z-index:9999`; document.body.appendChild(sp); setTimeout(()=>sp.remove(),1000); } }
 function renderGoals(){ ensurePerf(); const G=S.cfg.goals||[], ed=S.st.gedit||null, nx=(nextGoal()||{}).id;
   app.innerHTML=`${topBar()}<div class="phead"><div><h1>Milestones ${helpBtn('goals')}</h1><p class="lvtxt">${G.length?'Where you are against each step, from your own tests and route cards. Updated every time you log.':'Set the steps between where you are and where you want to be.'}</p></div>${fig('goals')}</div>
     ${G.length?'':GUEST?'<div class="empty">No milestones yet.</div>':`<div class="card gpick">${pathMine()?`<button class="gopt" data-groad="1"><b>My path 2027–2036</b><span>The yearly path we made: finger strength per hand, boulder grades, every style, lead and competitions, up to the World Cup and the Olympic Games.</span><em>Use my path →</em></button>`:''}
@@ -4296,6 +4351,7 @@ function renderGoals(){ ensurePerf(); const G=S.cfg.goals||[], ed=S.st.gedit||nu
     ${G.map(m=>ed===m.id&&!GUEST?goalEditHTML(m):goalCardHTML(m,m.id===nx)).join('')}
     ${G.length&&!GUEST?'<button class="btn ghost gaddbtn" data-gadd="1">+ Add milestone</button>':''}
     ${G.length?'<div class="card gnotes lvtxt"><p class="gsec">How it is measured</p><p class="note"><b>Finger strength</b>: the Daily finger test, your best of the last 14 days, as % of bodyweight. <b>Bouldering</b>: Font grades from your route cards. “In the last 6 months” = your hardest top in that time, the way climbing research reports a climber’s level. <b>Every style</b>: your hardest top tagged with each style. <b>Pace</b>: how fast your tests rise compared with what the date needs.</p></div>':''}`; }
+
 function goalItem(mid,iid){ const m=(S.cfg.goals||[]).find(x=>x.id===mid); return m&&m.items.find(i=>i.id===iid); }
 function goalClick(ds,b){
   if(ds.gopen){ const nx=(nextGoal()||{}).id, cur=(S.st.gopen||{})[ds.gopen]; S.st.gopen=Object.assign({},S.st.gopen,{[ds.gopen]:!(cur===undefined?ds.gopen===nx:cur)}); render(); return true; }
