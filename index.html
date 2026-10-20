@@ -1171,6 +1171,71 @@ html,body{overscroll-behavior-y:none}
 .orb .o2 i{opacity:calc(.75 + .2 * var(--v))!important;background:radial-gradient(120% 90% at 50% 92%,color-mix(in srgb,var(--oc) 20%,#fff) 0%,color-mix(in srgb,var(--oc) 80%,#fff) 60%,var(--oc) 100%)!important}
 .orb b{z-index:2;box-shadow:0 0 36px color-mix(in srgb,var(--oc) 80%,transparent),inset 0 -6px 14px rgba(0,0,0,.12)!important}
 @media (prefers-reduced-motion:reduce){.orbp{animation:none}.sheet.in .sh,.sheet.in .shtop,.sh.anim .shb,.sh.anim .shbi>*{animation:none}}
+
+/* ===== calendar page in the same style as the check-in ===== */
+/* logs of the day */
+.entry{border-radius:20px!important;border:1.5px solid var(--line)!important;border-left-width:1.5px!important;overflow:hidden;transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .25s,border-color .25s}
+.entry:has(.ehead:active){transform:scale(.985)}
+.ehead{gap:12px;min-height:66px;padding:12px 16px!important}
+.ering{position:relative;flex:0 0 auto;width:40px;height:40px;display:flex;align-items:center;justify-content:center;color:var(--c)}
+.ering svg:first-child{position:absolute;inset:0;transform:rotate(-90deg)}
+.ering .rbg{fill:color-mix(in srgb,var(--c) 12%,transparent);stroke:color-mix(in srgb,var(--c) 28%,transparent);stroke-width:3.5}
+.ering .rfg{fill:none;stroke:var(--c);stroke-width:3.5;stroke-linecap:round;transition:stroke-dashoffset .7s cubic-bezier(.2,.8,.2,1)}
+.ering b{position:relative;font-size:.85rem;font-weight:800;color:var(--ink);display:flex}
+.etitle{flex:1}.etitle b{font-size:1.08rem}
+.ehead small{display:flex;align-items:center;gap:10px;color:var(--soft);font-weight:700}
+.ecnt{font-size:.8rem}
+.echev{display:inline-block;width:9px;height:9px;border-right:2px solid var(--soft);border-bottom:2px solid var(--soft);transform:rotate(-45deg);transition:transform .3s cubic-bezier(.2,.8,.2,1)}.echev.up{transform:rotate(225deg)}
+.enter .entry,.dayswap .entry{animation:rise .45s cubic-bezier(.16,1,.3,1) both}
+.enter .entry:nth-of-type(2),.dayswap .entry:nth-of-type(2){animation-delay:.05s}.enter .entry:nth-of-type(3),.dayswap .entry:nth-of-type(3){animation-delay:.1s}.enter .entry:nth-of-type(n+4),.dayswap .entry:nth-of-type(n+4){animation-delay:.15s}
+.dayr .entry,.dayr .adds{animation-name:fromr!important}.dayl .entry,.dayl .adds{animation-name:froml!important}
+@keyframes fromr{from{opacity:0;transform:translate3d(28px,0,0)}}@keyframes froml{from{opacity:0;transform:translate3d(-28px,0,0)}}
+.dayswap .adds{animation:fromr .4s cubic-bezier(.16,1,.3,1) both}
+.dayswap #dayhead span{animation:rise .35s cubic-bezier(.16,1,.3,1) both}
+/* add buttons */
+.adds{gap:10px!important}
+.add{position:relative;display:flex!important;align-items:center;gap:12px;min-height:60px;padding:0 16px 0 12px!important;border:0!important;border-radius:18px!important;text-align:left;overflow:hidden;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c) 85%,#fff) 0%,var(--c) 45%,color-mix(in srgb,var(--c) 72%,#000) 100%)!important;
+  box-shadow:0 8px 22px color-mix(in srgb,var(--c) 30%,transparent),inset 0 1px 0 rgba(255,255,255,.28)!important;transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .25s,filter .2s!important}
+.add::after{content:"";position:absolute;inset:-60% 40% auto -20%;height:160%;background:radial-gradient(closest-side,rgba(255,255,255,.22),transparent);pointer-events:none}
+.add i{flex:0 0 auto;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:1.3rem;font-weight:700;line-height:1;background:rgba(255,255,255,.22);transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.add span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.add:active{transform:scale(.96)!important;filter:brightness(1.06)}.add:active i{transform:rotate(90deg) scale(1.1)}
+.enter .add{animation:rise .45s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0) * 45ms + .1s)}
+/* day header */
+.dayhead{align-items:center}.dayhead>span{flex:1;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px}
+.dayhead .mini{width:44px!important;min-width:44px;height:44px!important;border-radius:50%!important;border:1.5px solid var(--line)!important;background:var(--panel)!important;font-size:1.2rem;transition:transform .2s cubic-bezier(.3,1.6,.5,1)}
+.dayhead .mini:active{transform:scale(.88)}
+.todaytag{border-radius:999px!important;padding:2px 10px!important;font-size:.72rem!important;letter-spacing:.08em;text-transform:uppercase}
+.todaypill{border:1.5px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:5px 14px;font-weight:800;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;font-family:inherit;animation:rise .3s ease both}
+/* calendar cells: soft press, selected day eases in */
+.grid .day{transition:transform .2s cubic-bezier(.2,.8,.2,1),outline-color .25s,box-shadow .25s,background-color .25s}
+.grid .day.sel{box-shadow:0 6px 18px rgba(0,0,0,.18)}
+/* every number scale looks the same: 1–7, 1–10, Krūvis −5…+5 */
+.scale,.erel{gap:5px!important}
+.scale button,.erel button,.s7 button{min-height:50px!important;padding:0!important;border-radius:12px!important;border:1.5px solid var(--line)!important;background:var(--field)!important;color:var(--ink);
+  font-family:var(--fh);font-weight:800!important;font-size:clamp(.92rem,4vw,1.18rem)!important;font-variant-numeric:tabular-nums;
+  transition:transform .26s cubic-bezier(.2,.9,.3,1.3),background-color .2s,color .2s,border-color .2s,box-shadow .2s!important}
+.erel button{font-size:clamp(.74rem,3.3vw,1rem)!important;border-radius:11px!important}
+.scale button.on,.erel button.on,.s7 button.on{background:var(--ink)!important;color:var(--bg)!important;border-color:var(--ink)!important;transform:scale(1.07);box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.scale button:active,.erel button:active,.s7 button:active{transform:scale(.9);background:color-mix(in srgb,var(--ink) 25%,var(--field))!important}
+.erel button.mid:not(.on){border-color:color-mix(in srgb,var(--ink) 50%,var(--line))!important}
+/* the ? in a test's box was cut off */
+.shtools{margin:0 0 6px!important;min-height:0}.shbi{padding-top:2px}
+/* + Log and undo: small glass buttons that don't cover the calendar */
+.logfab{left:16px!important;transform:none!important;min-height:46px!important;padding:0 18px!important;font-size:.9rem!important;background:color-mix(in srgb,var(--panel) 70%,transparent)!important;color:var(--ink)!important;border:1.5px solid var(--line)!important;-webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);box-shadow:0 8px 24px rgba(0,0,0,.2)!important}
+.logfab.off{transform:translate3d(0,20px,0) scale(.9)!important}.logfab:active{transform:scale(.94)!important}
+.hist{background:color-mix(in srgb,var(--panel) 70%,transparent)!important;-webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);border-radius:18px!important}
+.hist button{border-radius:12px!important;background:transparent!important}
+@media (prefers-reduced-motion:reduce){.enter .entry,.dayswap .entry,.dayswap .adds,.enter .add{animation:none!important}}
+
+.scale button,.erel button{min-height:44px!important;aspect-ratio:auto}
+.s7 button{min-height:0!important;aspect-ratio:1/1;max-height:56px}
+.ering.full .rbg{fill:var(--c);stroke:var(--c)}.ering.full b{color:#fff}
+.add span{white-space:normal!important;line-height:1.3;padding:3px 0;letter-spacing:.02em;font-size:.95rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.bbar{display:flex!important;gap:8px;flex-wrap:wrap}.bbar .btn{flex:1 1 auto;min-width:0;white-space:normal}
+.sheet .comp{padding-left:10px!important;padding-right:10px!important}.sheet .shbi{padding-left:12px;padding-right:12px}
+.scale,.erel{margin-left:-2px;margin-right:-2px}
 </style>
 </head>
 <body>
@@ -1665,7 +1730,7 @@ function tplColor(e){ const t=S.cfg.templates.find(t=>t.id===e.tid); return safe
 const app=document.getElementById('app');
 
 // ---------- render ----------
-function render(){ if(!GUEST&&!document.querySelector('.logfab')){ const b=document.createElement('button'); b.className='logfab off'; b.type='button'; b.innerHTML='<span>+</span> <b>Log</b>'; b.addEventListener('click',()=>{ const a=document.querySelector('#app .adds'); if(!a) return; a.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'}); a.classList.remove('hl'); void a.offsetWidth; a.classList.add('hl'); }); document.body.appendChild(b); } if(S.view==='goals'&&!S.flow) setTimeout(goalCelebrate,500); const mk2=S.view+S.y+'-'+S.m; if(SKIN.lastMonth&&SKIN.lastMonth!==mk2){ SKIN.lastView=''; } SKIN.lastMonth=mk2; applySkin(); document.documentElement.dataset.lvl=TLV(); document.documentElement.classList.toggle('inflow',!!S.flow&&!GUEST); setTimeout(newsCheck,0); const viewNow=S.view+'|'+(S.st.pgrp||''); if(viewNow!==SKIN.lastView){ SKIN.lastView=viewNow; app.classList.remove('enter'); void app.offsetWidth; app.classList.add('enter'); clearTimeout(SKIN.t); SKIN.t=setTimeout(()=>app.classList.remove('enter'),1400); SKIN.at=Date.now(); } else if(app.classList.contains('enter')&&Date.now()-(SKIN.at||0)>350){ clearTimeout(SKIN.t); app.classList.remove('enter'); } const y=window.scrollY, fsEl=app.querySelector('.simfs'), fsY=fsEl?fsEl.scrollTop:0; app.style.minHeight=app.offsetHeight+'px'; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; (S.flow&&!GUEST?renderFlow:({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth,crew:renderCrew}[S.view]||renderSettings))(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); requestAnimationFrame(fabSync); if(S.flow){ const bed=app.querySelector('.flow [data-bed]'); if(bed&&!bed.querySelector('.bcchips button')&&!bed.querySelector('.bstat.bok')){ bed.insertAdjacentHTML('beforebegin',`<button class="btn flfresh" data-bmfresh="${esc(bed.dataset.bed)}">Nothing hurts · all fresh</button><p class="flor">or tap where it hurts</p>`); } } const fs2=app.querySelector('.simfs'); if(fs2&&fsY) fs2.scrollTop=fsY; app.style.minHeight=''; tapFx(); }
+function render(){ if(!GUEST&&!document.querySelector('.logfab')){ const b=document.createElement('button'); b.className='logfab off'; b.type='button'; b.innerHTML='<span>+</span> <b>Log</b>'; b.addEventListener('click',()=>{ const a=document.querySelector('#app .adds'); if(!a) return; a.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'}); a.classList.remove('hl'); void a.offsetWidth; a.classList.add('hl'); }); document.body.appendChild(b); } if(S.view==='goals'&&!S.flow) setTimeout(goalCelebrate,500); const mk2=S.view+S.y+'-'+S.m; if(SKIN.lastSel&&SKIN.lastSel!==S.sel&&!S.flow){ app.classList.remove('dayswap','dayl','dayr'); void app.offsetWidth; app.classList.add('dayswap',S.sel<SKIN.lastSel?'dayl':'dayr'); clearTimeout(SKIN.dt); SKIN.dt=setTimeout(()=>app.classList.remove('dayswap','dayl','dayr'),700); } SKIN.lastSel=S.sel; if(SKIN.lastMonth&&SKIN.lastMonth!==mk2){ SKIN.lastView=''; } SKIN.lastMonth=mk2; applySkin(); document.documentElement.dataset.lvl=TLV(); document.documentElement.classList.toggle('inflow',!!S.flow&&!GUEST); setTimeout(newsCheck,0); const viewNow=S.view+'|'+(S.st.pgrp||''); if(viewNow!==SKIN.lastView){ SKIN.lastView=viewNow; app.classList.remove('enter'); void app.offsetWidth; app.classList.add('enter'); clearTimeout(SKIN.t); SKIN.t=setTimeout(()=>app.classList.remove('enter'),1400); SKIN.at=Date.now(); } else if(app.classList.contains('enter')&&Date.now()-(SKIN.at||0)>350){ clearTimeout(SKIN.t); app.classList.remove('enter'); } const y=window.scrollY, fsEl=app.querySelector('.simfs'), fsY=fsEl?fsEl.scrollTop:0; app.style.minHeight=app.offsetHeight+'px'; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; (S.flow&&!GUEST?renderFlow:({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth,crew:renderCrew}[S.view]||renderSettings))(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); requestAnimationFrame(fabSync); if(S.flow){ const bed=app.querySelector('.flow [data-bed]'); if(bed&&!bed.querySelector('.bcchips button')&&!bed.querySelector('.bstat.bok')){ bed.insertAdjacentHTML('beforebegin',`<button class="btn flfresh" data-bmfresh="${esc(bed.dataset.bed)}">Nothing hurts · all fresh</button><p class="flor">or tap where it hurts</p>`); } } const fs2=app.querySelector('.simfs'); if(fs2&&fsY) fs2.scrollTop=fsY; app.style.minHeight=''; tapFx(); }
 function toast(t){ let el=document.getElementById('toast'); if(!el){ el=document.createElement('div'); el.id='toast'; el.setAttribute('role','status'); document.body.appendChild(el); } el.textContent=t; el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),1800); }
 function say(t){ const m=document.getElementById('msg'); if(m) m.textContent=t; }
 function armed(b,label){ if(b.dataset.armed) return true; b.dataset.armed='1'; const old=b.textContent; b.textContent=label; b.classList.add('armed'); setTimeout(()=>{ if(b.isConnected){ delete b.dataset.armed; b.textContent=old; b.classList.remove('armed'); } },3000); return false; }
@@ -1726,10 +1791,9 @@ function renderCal(){
     <div class="arrows"><button data-act="prev" aria-label="Previous month">‹</button><button data-act="next" aria-label="Next month">›</button></div></div>
   <div class="grid">${cells}</div>
   <div class="legend">${CT.filter(tplShown).map(t=>`<span><i style="background:${t.color}"></i>${esc(t.name)}</span>`).join('')}</div>
-  <div class="dayhead" id="dayhead"><button class="mini" data-dnav="-1" aria-label="Previous day">‹</button><span>${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}</span><button class="mini" data-dnav="1" aria-label="Next day">›</button></div>
-  ${S.sel!==todayStr?'<button class="btn ghost gotoday" data-act="gotoday">Back to today</button>':''}
+  <div class="dayhead" id="dayhead"><button class="mini" data-dnav="-1" aria-label="Previous day">‹</button><span>${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}${S.sel!==todayStr?'<button class="todaypill" data-act="gotoday">Today</button>':''}</span><button class="mini" data-dnav="1" aria-label="Next day">›</button></div>
   ${dayNotesHTML()}${GUEST?'':simDayHTML(S.sel)}
-  ${GUEST?'':lvlChip()}<div class="adds"${GUEST?' style="display:none"':''}>${CT.filter(tplShown).map(t=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)}" data-add="${t.id}">+ ${esc(t.name)}</button>`).join('')}</div>
+  ${GUEST?'':lvlChip()}<div class="adds"${GUEST?' style="display:none"':''}>${CT.filter(tplShown).map((t,i)=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)};--i:${i}" data-add="${t.id}"><i aria-hidden="true">+</i><span>${esc(t.name)}</span></button>`).join('')}</div>
   ${sel.length?sel.map(entryHTML).join(''):`<div class="empty">${GUEST?'Nothing logged on this day.':TLV()<=2?'<b>Nothing logged yet</b><br>Tap one of the buttons above. It takes about a minute.':'Nothing logged yet. Pick a log type above to start.'}</div>`}`;
   app.querySelectorAll('textarea').forEach(grow);
 }
@@ -1737,7 +1801,9 @@ function renderCal(){
 function isPerfE(e){ if(!e) return false; if(e.perf) return true; const t=S.cfg.templates.find(t=>t.id===e.tid); return !!(t&&t.perf); }
 
 
-function headSmall(e,open){ const I=e.items.filter(it=>itemLv(e,it)<=TLV()), filled=I.filter(filledItem).length; return `${GUEST&&e.lv?`<span class="lvtag">Level ${e.lv}</span>`:''}${e.items.some(it=>it.sec)?'<span class="elock" title="Has a secret note"></span>':''}${filled}/${I.length} ${open?'▴':'▾'}`; }
+function headSmall(e,open){ const I=e.items.filter(it=>itemLv(e,it)<=TLV()), filled=I.filter(filledItem).length; return `${GUEST&&e.lv?`<span class="lvtag">Level ${e.lv}</span>`:''}${e.items.some(it=>it.sec)?'<span class="elock" title="Has a secret note"></span>':''}<span class="ecnt">${filled}/${I.length}</span><i class="echev${open?' up':''}" aria-hidden="true"></i>`; }
+function eRing(e){ const I=e.items.filter(it=>itemLv(e,it)<=TLV()), n=I.length, d=I.filter(filledItem).length, r=15, c=2*Math.PI*r;
+  return `<span class="ering${d===n&&n?' full':''}" aria-hidden="true"><svg viewBox="0 0 36 36" width="40" height="40"><circle cx="18" cy="18" r="${r}" class="rbg"/><circle cx="18" cy="18" r="${r}" class="rfg" style="stroke-dasharray:${c.toFixed(1)};stroke-dashoffset:${(c*(1-(n?d/n:0))).toFixed(1)}"/></svg><b>${d===n&&n?'<svg viewBox="0 0 12 12" width="14" height="14"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>':d}</b></span>`; }
 function tplName(e){ const t=S.cfg.templates.find(t=>t.id===e.tid); return t?t.name:e.name; }
 function refreshItem(el,e,it){ const f=el.closest('.f'), qm=f&&f.querySelector('.qm'); if(qm) qm.innerHTML=qHTML(itemQuality(it,prevNote(it.name,S.sel))); const pw=f&&f.querySelector('.plaus'); if(pw) pw.outerHTML=plausHTML(it); else if(f){ const ph=plausHTML(it); if(ph) f.insertAdjacentHTML('beforeend',ph); } const hs=el.closest('.entry'), sm=hs&&hs.querySelector('.ehead small'); if(sm) sm.innerHTML=headSmall(e,true); }
 function compHTML(e,it,c,key,fid){ const x=getP(it,c), sl=sleepLike(it.name), cs=compsList(it), lab=t=>`<p class="clab">${t}</p>`;
@@ -1846,7 +1912,7 @@ function itemSummary(it,long){ if(!filledItem(it)) return ''; const cs=compsList
 function entrySummary(e){ const out=[]; (e.items||[]).forEach(it=>{ if(out.length>=4) return; const s=itemSummary(it); if(s) out.push(`${it.name} ${s.replace(/ · /g,', ')}`); }); return out.join(' · '); }
 function entryHTML(e){ const open=S.open===e.id;
   return `<div class="entry" style="--c:${tplColor(e)}">
-    <button class="ehead" data-toggle="${e.id}" aria-expanded="${open}"><span class="etitle"><b>${esc(tplName(e))}</b>${open?'':`<span class="esum">${esc(entrySummary(e))||'Nothing filled in yet'}</span>`}</span><small>${headSmall(e,open)}</small></button>
+    <button class="ehead" data-toggle="${e.id}" aria-expanded="${open}">${eRing(e)}<span class="etitle"><b>${esc(tplName(e))}</b>${open?'':`<span class="esum">${esc(entrySummary(e))||'Nothing filled in yet'}</span>`}</span><small>${headSmall(e,open)}</small></button>
     ${open?`<div class="ebody">${!GUEST&&(!isPerfE(e)||e.items.some(it=>compsList(it).includes('X')))&&flowItems(e).length?`<button class="btn flgo" data-flstart="${e.id}">Step by step</button>`:''}<div class="collbar"><button data-fcolall="${e.id}|1">Close all</button><button data-fcolall="${e.id}|0">Open all</button></div>${perfHowHTML(e)}${GUEST?roItems(e):e.items.filter(it=>itemLv(e,it)<=TLV()).map(it=>fieldHTML(e,it)).join('')}${GUEST?'':`
       ${isPerfE(e)?`<details class="more"><summary>Delete this test</summary>`:`<details class="more"><summary>${TLV()<2?'Delete this log':'Add a field or delete this log'}</summary>
       <div class="addf"><label class="note" for="nf${e.id}">New field name</label>
@@ -4707,8 +4773,7 @@ function renderPerf(){ ensurePerf(); const k=mkey(S.y,S.m); month(k); if(S.st.pg
   ${TLV()>=3&&g==='daily'?readyCard():''}${TLV()>=3&&g==='super'?goalStrip()+perfNowCard('super'):''}
   <div class="month"><h1>${MONTHS[S.m]}<span>${S.y}</span></h1><div class="arrows"><button data-act="prev" aria-label="Previous month">‹</button><button data-act="next" aria-label="Next month">›</button></div></div>
   <div class="grid">${cells}</div>
-  <div class="dayhead" id="dayhead"><button class="mini" data-dnav="-1" aria-label="Previous day">‹</button><span>${LTWD[sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}</span><button class="mini" data-dnav="1" aria-label="Next day">›</button></div>
-  ${S.sel!==todayStr?'<button class="btn ghost gotoday" data-act="gotoday">Back to today</button>':''}
+  <div class="dayhead" id="dayhead"><button class="mini" data-dnav="-1" aria-label="Previous day">‹</button><span>${LTWD[sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}${S.sel!==todayStr?'<button class="todaypill" data-act="gotoday">Today</button>':''}</span><button class="mini" data-dnav="1" aria-label="Next day">›</button></div>
   ${GUEST||g!=='comp'?'':simDayHTML(S.sel)}
   ${GUEST?'':PT.length?`<div class="adds">${PT.filter(t=>TLV()>=2||pgOf(t)!=='daily'||isFingerTpl(t)).map(t=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)}" data-add="${t.id}">${/^\+/.test(t.name)?'':'+ '}${esc(t.name)}</button>`).join('')}</div>`:`<div class="empty">${col&&!PULLED?'Connecting… your tests show up once you are online.':'No tests in this group.'}</div>`}
   ${sel.length?sel.map(entryHTML).join(''):`<div class="empty">${GUEST?'Nothing on this day.':'Nothing on this day yet. Tap above to log.'}</div>`}
