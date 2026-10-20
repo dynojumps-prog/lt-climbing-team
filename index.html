@@ -796,7 +796,7 @@ button{transition:transform .12s ease,background-color .18s ease,color .18s ease
 :root[data-skin="xmas"] body::before{background:radial-gradient(70% 40% at 15% 0%,rgba(255,170,60,.16),transparent 70%),radial-gradient(60% 40% at 100% 100%,rgba(226,59,59,.12),transparent 70%)!important}
 :root[data-skin="xmas"] .card,:root[data-skin="xmas"] .entry{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='14'%3E%3Cpath d='M0 4q16 7 32 0t32 0' fill='none' stroke='%231E6B3A' stroke-width='5' stroke-linecap='round'/%3E%3Cpath d='M0 4q16 7 32 0t32 0' fill='none' stroke='%232E8A4E' stroke-width='1.4' stroke-dasharray='2 3'/%3E%3Ccircle cx='10' cy='7.5' r='2' fill='%23FF4D4D'/%3E%3Ccircle cx='32' cy='4' r='2' fill='%23FFD54A'/%3E%3Ccircle cx='52' cy='7.5' r='2' fill='%236EC8FF'/%3E%3Cg%3E%3Cpath d='M22 7v2' stroke='%23C9A35A' stroke-width='.7'/%3E%3Ccircle cx='22' cy='11' r='2.6' fill='%23A86B34'/%3E%3C/g%3E%3C/svg%3E")!important;background-repeat:repeat-x!important;background-position:0 0!important;background-size:64px 14px!important;padding-top:20px}
 :root[data-skin="xmas"] .entry{padding-top:12px}
-:root[data-skin="halloween"] .card,:root[data-skin="halloween"] .entry{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46'%3E%3Cg fill='none' stroke='%23C9B8E0' stroke-width='.7' opacity='.55'%3E%3Cpath d='M46 0L10 36M46 0L0 22M46 0L24 46M46 0L2 6'/%3E%3Cpath d='M38 0q-1 6 4 8 3-2 4-1M30 0q-2 12 6 16 6-3 10-2M20 0q-3 18 10 24 9-5 16-3M10 1q-4 26 14 32 13-7 22-4'/%3E%3C/g%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right top!important;background-size:46px 46px!important}
+:root[data-skin="halloween"] .card,:root[data-skin="halloween"] .entry{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='52'%3E%3Cg fill='none' stroke='%23C9B8E0' stroke-width='.7' opacity='.5'%3E%3Cpath d='M52 52L16 16M52 52L0 30M52 52L28 0M52 52L2 46'/%3E%3Cpath d='M44 52q-1-6 4-8 3 2 4 1M36 52q-2-12 6-16 6 3 10 2M26 52q-3-18 10-24 9 5 16 3M16 51q-4-26 14-32 13 7 22 4'/%3E%3C/g%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right bottom!important;background-size:52px 52px!important}
 :root[data-skin="halloween"] .tabs,:root[data-skin="xmas"] .tabs{position:relative}
 
 .sxr .sxsanta{animation:santaUp 9s ease-in-out infinite}@keyframes santaUp{0%{transform:translate(0,0);opacity:0}5%{opacity:1}74%{transform:translate(62px,-26px);opacity:1}84%{transform:translate(77px,-60px);opacity:1}93%{transform:translate(80px,-46px);opacity:0}100%{transform:translate(80px,-46px);opacity:0}}
@@ -898,7 +898,7 @@ button{transition:transform .12s ease,background-color .18s ease,color .18s ease
 .wkstrip{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r,16px);padding:12px 14px;margin:0 0 12px}
 .wkdays{flex:1;display:flex;justify-content:space-between;gap:4px}.wkd{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.66rem;color:var(--soft);font-weight:700}
 .wkd i{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:#fff;transition:all .3s}
-.wkd.on i{background:var(--gold);border-color:var(--gold);color:var(--onacc);animation:pop .4s cubic-bezier(.3,1.7,.5,1)}.wkd.now i{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--ink)}
+.wkd.on i{background:var(--gold);border-color:var(--gold);color:var(--onacc);animation:pop .4s cubic-bezier(.3,1.7,.5,1)}.wkd.wtd i{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--ink)}
 .wkn{display:flex;flex-direction:column;align-items:flex-end;line-height:1.1;min-width:76px}.wkn b{font-size:1.5rem}.wkn b small{font-size:.8rem;color:var(--soft)}.wkn span{font-size:.7rem;color:var(--soft)}
 .wkn em{font-style:normal;font-size:.72rem;font-weight:800;color:#F2742A;display:flex;align-items:center;gap:2px;margin-top:3px}
 @media (prefers-reduced-motion:reduce){.orb{animation:none}}
@@ -935,6 +935,30 @@ button{transition:transform .12s ease,background-color .18s ease,color .18s ease
 .flprog i.c{position:relative;overflow:hidden}.flprog i.c::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);animation:shine 1.6s ease-in-out infinite}@keyframes shine{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
 .day{transition:transform .15s}.day:active{transform:scale(.94)}
 @media (prefers-reduced-motion:reduce){.rip,.orb::after{display:none}}
+
+/* readable check-in colour on every look: the log colour mixed toward the text colour */
+.flow{--fct:color-mix(in srgb,var(--fc) 62%,var(--ink))}.flk{color:var(--fct)}.flprog i.d{background:var(--fct)}.flprog i.c{background:linear-gradient(90deg,var(--fct) 40%,var(--line) 40%)}
+.fltile.on,.flchips button.on{background:var(--fct);border-color:var(--fct);color:var(--bg)}.fdring .rfg,.fdring .rck{stroke:var(--fct)}.xtimer{border-color:var(--fct)}.xtimer b{background:var(--fct);color:var(--bg)}.floth{border-color:var(--fct)}
+.wkstrip .wkn>b{font-size:1.8rem;font-weight:800;line-height:1}
+.psub{display:flex;align-items:center;justify-content:space-between;gap:8px}
+:root[data-lvl="1"] .psub,:root[data-lvl="2"] .psub{justify-content:flex-end;margin:-6px 0 6px}
+/* more motion when a page opens */
+.enter .grid .day{animation:cellin .34s cubic-bezier(.2,.9,.3,1.15) both;animation-delay:calc(var(--d,0) * 11ms)}
+@keyframes cellin{from{opacity:0;transform:scale(.86)}}
+.enter .grid .day .tape{animation:tapein .4s ease both;animation-delay:calc(var(--d,0) * 11ms + .15s);transform-origin:left}
+@keyframes tapein{from{transform:scaleX(0)}}
+.enter .mbar i,.enter .gsbar i{animation:barfill .9s cubic-bezier(.2,.8,.2,1) both;transform-origin:left;animation-delay:.15s}
+@keyframes barfill{from{transform:scaleX(0)}}
+.enter .lbt i{animation:barup .7s cubic-bezier(.2,.8,.2,1) both;transform-origin:bottom}@keyframes barup{from{transform:scaleY(0)}}
+.enter .tabs button.on svg{animation:tabpop .45s cubic-bezier(.3,1.8,.5,1)}@keyframes tabpop{40%{transform:translateY(-3px) scale(1.18)}}
+.enter .wkd.on i{animation:pop .4s cubic-bezier(.3,1.7,.5,1) both;animation-delay:calc(var(--i,0) * 60ms + .1s)}
+.enter .gring{animation:spinin .7s cubic-bezier(.2,.9,.3,1.1) both}@keyframes spinin{from{transform:rotate(-90deg) scale(.7);opacity:0}}
+.enter .gpill{animation:rise .35s .3s ease both}
+.card.today .tline i{animation:dotpulse 2.4s ease-in-out infinite}@keyframes dotpulse{50%{transform:scale(1.35)}}
+.add{transition:transform .15s,filter .15s}.add:active{transform:scale(.96);filter:brightness(1.1)}
+.atbar{animation:barfill .8s cubic-bezier(.2,.8,.2,1) both;transform-origin:left}
+@media (prefers-reduced-motion:reduce){.enter .grid .day,.enter .mbar i,.enter .lbt i,.card.today .tline i{animation:none}}
+.wkn b span{font-size:inherit;color:inherit;font-weight:inherit}
 </style>
 </head>
 <body>
@@ -1424,7 +1448,7 @@ function tplColor(e){ const t=S.cfg.templates.find(t=>t.id===e.tid); return safe
 const app=document.getElementById('app');
 
 // ---------- render ----------
-function render(){ if(S.view==='goals'&&!S.flow) setTimeout(goalCelebrate,500); applySkin(); document.documentElement.dataset.lvl=TLV(); document.documentElement.classList.toggle('inflow',!!S.flow&&!GUEST); setTimeout(newsCheck,0); const viewNow=S.view+'|'+(S.st.pgrp||''); if(viewNow!==SKIN.lastView){ SKIN.lastView=viewNow; app.classList.add('enter'); clearTimeout(SKIN.t); SKIN.t=setTimeout(()=>app.classList.remove('enter'),450); } const y=window.scrollY, fsEl=app.querySelector('.simfs'), fsY=fsEl?fsEl.scrollTop:0; app.style.minHeight=app.offsetHeight+'px'; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; (S.flow&&!GUEST?renderFlow:({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth}[S.view]||renderSettings))(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); const fs2=app.querySelector('.simfs'); if(fs2&&fsY) fs2.scrollTop=fsY; app.style.minHeight=''; tapFx(); }
+function render(){ if(S.view==='goals'&&!S.flow) setTimeout(goalCelebrate,500); const mk2=S.view+S.y+'-'+S.m; if(SKIN.lastMonth&&SKIN.lastMonth!==mk2){ SKIN.lastView=''; } SKIN.lastMonth=mk2; applySkin(); document.documentElement.dataset.lvl=TLV(); document.documentElement.classList.toggle('inflow',!!S.flow&&!GUEST); setTimeout(newsCheck,0); const viewNow=S.view+'|'+(S.st.pgrp||''); if(viewNow!==SKIN.lastView){ SKIN.lastView=viewNow; app.classList.add('enter'); clearTimeout(SKIN.t); SKIN.t=setTimeout(()=>app.classList.remove('enter'),450); } const y=window.scrollY, fsEl=app.querySelector('.simfs'), fsY=fsEl?fsEl.scrollTop:0; app.style.minHeight=app.offsetHeight+'px'; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; (S.flow&&!GUEST?renderFlow:({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth}[S.view]||renderSettings))(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); const fs2=app.querySelector('.simfs'); if(fs2&&fsY) fs2.scrollTop=fsY; app.style.minHeight=''; tapFx(); }
 function toast(t){ let el=document.getElementById('toast'); if(!el){ el=document.createElement('div'); el.id='toast'; el.setAttribute('role','status'); document.body.appendChild(el); } el.textContent=t; el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),1800); }
 function say(t){ const m=document.getElementById('msg'); if(m) m.textContent=t; }
 function armed(b,label){ if(b.dataset.armed) return true; b.dataset.armed='1'; const old=b.textContent; b.textContent=label; b.classList.add('armed'); setTimeout(()=>{ if(b.isConnected){ delete b.dataset.armed; b.textContent=old; b.classList.remove('armed'); } },3000); return false; }
@@ -1438,7 +1462,7 @@ function renderCal(){
   for(let d=1;d<=days;d++){
     const ds=`${S.y}-${pad(S.m+1)}-${pad(d)}`, es=(month(k).days[String(d)]||[]).filter(e=>!isPerfE(e));
     const warn=dayPain(es);
-    cells+=`<button class="day${ds===todayStr?' today':''}${ds===S.sel?' sel':''}" data-day="${ds}" aria-label="${d} ${MONTHS[S.m]}, ${es.length} logs${warn?', pain marked':''}${nd.has(ds)?', coach note':''}${es.some(e=>(e.items||[]).some(it=>it.sec))?', secret note':''}">
+    cells+=`<button class="day${ds===todayStr?' today':''}${ds===S.sel?' sel':''}" style="--d:${d}" data-day="${ds}" aria-label="${d} ${MONTHS[S.m]}, ${es.length} logs${warn?', pain marked':''}${nd.has(ds)?', coach note':''}${es.some(e=>(e.items||[]).some(it=>it.sec))?', secret note':''}">
       <span class="n">${d}</span>${warn?'<i class="dwarn" aria-hidden="true"></i>':''}${nd.has(ds)?'<i class="dnote" aria-hidden="true"></i>':''}${!GUEST&&simCardsForDay(ds).length?'<i class="dsim" aria-hidden="true"></i>':''}${es.some(e=>(e.items||[]).some(it=>it.sec))?'<i class="dlock" aria-hidden="true"></i>':''}<span class="tapes">${es.slice(0,4).map(e=>`<span class="tape" style="background:${tplColor(e)}"></span>`).join('')}</span></button>`;
   }
   const sd=new Date(S.sel+'T12:00'), sel=entriesOn(S.sel).filter(e=>!isPerfE(e)), CT=S.cfg.templates.filter(t=>!t.perf);
@@ -1722,7 +1746,7 @@ function weekInfo(){ const D=new Set(logDays(S.months)), t=new Date(todayStr+'T1
   return {days,has:days.map(d=>D.has(d)),n:cnt(0),streak}; }
 const FLAME='<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M13.5 1.5s1 3.4-1.3 6.1C10.4 9.7 8 11.4 8 15a4 4 0 0 0 8 0c0-1.7-.8-2.9-1.6-3.8 2.7.9 4.6 3.3 4.6 6.1A7 7 0 0 1 5 17.3c0-4.6 3.3-7 5.4-9.4 2-2.3 3.1-4.4 3.1-6.4z"/></svg>';
 function weekStrip(){ if(GUEST) return ''; const W=weekInfo(), L=['Pr','An','Tr','Kt','Pn','Š','S'];
-  return `<div class="wkstrip"><div class="wkdays">${W.days.map((d,i)=>`<span class="wkd${W.has[i]?' on':''}${d===todayStr?' now':''}${d===todayStr&&!W.has[i]?' todo':''}" style="--i:${i}"><i>${W.has[i]?'<svg viewBox="0 0 12 12" width="10" height="10"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}</i><small>${L[i]}</small></span>`).join('')}</div>
+  return `<div class="wkstrip"><div class="wkdays">${W.days.map((d,i)=>`<span class="wkd${W.has[i]?' on':''}${d===todayStr?' wtd':''}${d===todayStr&&!W.has[i]?' todo':''}" style="--i:${i}"><i>${W.has[i]?'<svg viewBox="0 0 12 12" width="10" height="10"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}</i><small>${L[i]}</small></span>`).join('')}</div>
     <div class="wkn"><b><span data-cnt="${W.n}">${W.n}</span><small>/7</small></b><span>this week</span>${W.streak>=1?`<em>${FLAME}${W.streak} week${W.streak>1?'s':''} in a row</em>`:''}</div></div>`; }
 function flowStart(eid){ S.flow={eid,i:0,sub:0,dir:1,shown:''}; S.open=null; buzz(); render(); scrollTo(0,0); }
 function flowNext(){ const F=S.flow; if(!F) return; const {e}=findEntry(F.eid); if(!e) return; const I=flowItems(e), it=I[F.i];
@@ -4285,7 +4309,7 @@ function readyCard(){ const DT=S.cfg.templates.filter(t=>t.perf&&pgOf(t)==='dail
 function renderPerf(){ ensurePerf(); const k=mkey(S.y,S.m); month(k); if(S.st.pgrp&&PG_LV[S.st.pgrp]>TLV()) S.st.pgrp=null; const g=S.st.pgrp||'daily', ALL=S.cfg.templates.filter(t=>t.perf), PT=ALL.filter(t=>pgOf(t)===g), inG=e=>{ const t=S.cfg.templates.find(t=>t.id===e.tid); return t?pgOf(t)===g:g==='super'; };
   const first=new Date(S.y,S.m,1), lead=(first.getDay()+6)%7, days=new Date(S.y,S.m+1,0).getDate(); let cells=WD.map(w=>`<div class="wd">${w}</div>`).join(''); for(let i=0;i<lead;i++) cells+=`<div class="day out"></div>`;
   for(let d=1;d<=days;d++){ const ds=`${S.y}-${pad(S.m+1)}-${pad(d)}`, es=(month(k).days[String(d)]||[]).filter(isPerfE).filter(inG);
-    cells+=`<button class="day${ds===todayStr?' today':''}${ds===S.sel?' sel':''}" data-day="${ds}" aria-label="${d} ${MONTHS[S.m]}, ${es.length} logs"><span class="n">${d}</span><span class="tapes">${es.slice(0,4).map(e=>`<span class="tape" style="background:${tplColor(e)}"></span>`).join('')}</span></button>`; }
+    cells+=`<button class="day${ds===todayStr?' today':''}${ds===S.sel?' sel':''}" style="--d:${d}" data-day="${ds}" aria-label="${d} ${MONTHS[S.m]}, ${es.length} logs"><span class="n">${d}</span><span class="tapes">${es.slice(0,4).map(e=>`<span class="tape" style="background:${tplColor(e)}"></span>`).join('')}</span></button>`; }
   const sd=new Date(S.sel+'T12:00'), sel=entriesOn(S.sel).filter(isPerfE).filter(inG), cnt=k2=>entriesOn(S.sel).filter(isPerfE).filter(e=>{ const t=S.cfg.templates.find(t=>t.id===e.tid); return t&&pgOf(t)===k2; }).length;
   const sub={daily:'Short tests every session. They show how fresh you are today.',super:'Max tests. No hard training in the 48 h before, so they are rare and comparable.',climb:'One card per boulder: grade, attempts, result, why you fell.',comp:'One log per round: your boulders with attempts to zone and top, points like the IFSC.'}[g];
   app.innerHTML=`${topBar()}<div class="phead"><div><h1>Performance</h1><p class="lvtxt">Tests, climbing and competitions, on their own calendar.</p></div>${fig('perf')}</div>
