@@ -29,6 +29,15 @@ service cloud.firestore {
         || (isSuper() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name']));
       allow delete: if false;
     }
+    // Team board: a few motivating numbers each athlete chooses to share (no pain, feelings, notes, body or test data)
+    match /board/{id} {
+      allow read: if member();
+      allow create, update: if member() && id == me() && roleOf(id) == 'athlete'
+        && request.resource.data.keys().hasOnly(['name','streak','wk','mo','sleep','mins','climbs','at','wkey'])
+        && request.resource.data.name is string && request.resource.data.name.size() <= 40
+        && request.resource.data.streak is int && request.resource.data.mo is int && request.resource.data.mo <= 31;
+      allow delete: if (member() && id == me()) || isStaff();
+    }
     match /team/info {
       allow read: if member();
       allow create: if setupOwner();
