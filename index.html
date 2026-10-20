@@ -848,6 +848,63 @@ button{transition:transform .12s ease,background-color .18s ease,color .18s ease
 :root[data-lvl="1"] .lvtxt,:root[data-lvl="2"] .lvtxt{display:none!important}
 :root[data-lvl="2"] .ebody p.note:not(.eanc):not(.phow),:root[data-lvl="2"] .ebody .s7e,:root[data-lvl="1"] .gitem .note,:root[data-lvl="2"] .gitem .note{display:none}
 :root[data-lvl="1"] .ebody p.note.phow{display:block}
+
+/* ---- daily check-in ---- */
+.flow{min-height:100svh;display:flex;flex-direction:column;padding:6px 2px 110px;max-width:560px;margin:0 auto}
+.fltop{display:flex;align-items:center;gap:12px;padding:6px 0 14px;position:sticky;top:0;z-index:5;background:var(--bg)}
+.flx{width:40px;height:40px;min-height:0;border-radius:50%;border:1px solid var(--line);background:var(--field);color:var(--ink);font-size:1rem;flex:0 0 auto}
+.flprog{flex:1;display:flex;gap:4px}.flprog i{flex:1;height:5px;border-radius:3px;background:var(--line);transition:background .3s}.flprog i.d{background:var(--fc)}.flprog i.c{background:linear-gradient(90deg,var(--fc) 40%,var(--line) 40%);animation:pfill .5s ease both}
+@keyframes pfill{from{background:var(--line)}}.flct{font-size:.8rem;color:var(--soft);font-weight:700;min-width:34px;text-align:right}
+.flcard{padding:6px 4px 0}.flcard.inf{animation:flin .38s cubic-bezier(.2,.9,.3,1) both}.flcard.inb{animation:flinb .38s cubic-bezier(.2,.9,.3,1) both}
+@keyframes flin{from{opacity:0;transform:translateX(28px)}}@keyframes flinb{from{opacity:0;transform:translateX(-28px)}}
+.flk{margin:0;font-size:.74rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--fc)}
+.flq{font-family:var(--fh);font-size:2rem;line-height:1.1;margin:4px 0 6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.flsub{color:var(--soft);font-size:1rem;margin:0 0 16px}.flsub small{font-size:.8rem;opacity:.8}
+.fltiles{display:grid;gap:8px}.fltiles.t10{grid-template-columns:repeat(5,1fr)}.fltiles.t7{grid-template-columns:repeat(7,1fr)}.fltiles.tl{grid-template-columns:repeat(6,1fr)}.fltiles.tl2{grid-template-columns:repeat(5,1fr);margin-top:8px}
+.fltile{min-height:58px;border-radius:16px;border:1.5px solid var(--line);background:var(--field);color:var(--ink);font-size:1.3rem;font-weight:800;transition:transform .15s,background .2s,color .2s;padding:0}
+.fltile:active{transform:scale(.92)}.fltile.on{background:var(--fc);border-color:var(--fc);color:#fff;animation:pop .35s cubic-bezier(.3,1.7,.5,1)}.fltile.mid{border-width:2.5px}
+@keyframes pop{40%{transform:scale(1.12)}}
+.flends{display:flex;justify-content:space-between;color:var(--soft);font-size:.82rem;margin:8px 2px 0}.flword{text-align:center;font-size:1.15rem;font-weight:800;margin:18px 0 0;animation:rise .3s ease both}
+.flmin{display:flex;align-items:center;gap:10px}.flmin label{flex:1;display:flex;align-items:baseline;justify-content:center;gap:6px;background:var(--field);border:1.5px solid var(--line);border-radius:16px;padding:6px}
+.flmin input{width:90px;border:0;background:none;color:var(--ink);font-size:2rem;font-weight:800;text-align:center}.flmin span{color:var(--soft)}
+.flstep{width:58px;height:58px;min-height:0;border-radius:50%;border:1.5px solid var(--line);background:var(--field);color:var(--ink);font-size:1.6rem;font-weight:700}.flstep:active{transform:scale(.9)}
+.flchips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.flchips button{min-height:40px;padding:8px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--field);color:var(--ink);font-weight:700}
+.flchips.big button{min-height:48px;padding:10px 18px;font-size:1rem}.flchips button.on{background:var(--fc);border-color:var(--fc);color:#fff;animation:pop .3s cubic-bezier(.3,1.7,.5,1)}
+.flload{text-align:center;margin:16px 0 0;color:var(--soft)}.flload b{font-size:1.6rem;color:var(--ink)}
+.flmore{margin-top:18px}.flow .comp{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px}.flow .scale button,.flow .s7 button{min-height:48px}
+.flnav{position:fixed;left:0;right:0;bottom:0;display:flex;gap:10px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);z-index:20}
+.flnav .btn{flex:1;min-height:54px;font-size:1.05rem}.flnav .btn:first-child{flex:0 0 32%}
+/* the feeling orb (State of Mind style): purple and spiky when unpleasant, orange and round when pleasant */
+.orb{position:relative;width:min(62vw,240px);aspect-ratio:1;margin:8px auto 4px;--oc:#3E9BE6;--v:.5;transition:filter .3s}
+.orb i{position:absolute;left:50%;top:50%;width:calc(9% + 37% * var(--v));height:calc(52% - 6% * var(--v));margin-left:calc((9% + 37% * var(--v)) / -2);transform-origin:50% 0;transform:rotate(var(--r)) translateY(0);
+  border-radius:calc(50% * var(--v) + 2%) calc(50% * var(--v) + 2%) 50% 50% / calc(70% * var(--v) + 6%) calc(70% * var(--v) + 6%) 40% 40%;
+  background:radial-gradient(circle at 50% 80%,color-mix(in srgb,var(--oc) 70%,#fff),var(--oc));opacity:.78;mix-blend-mode:normal;transition:all .35s cubic-bezier(.3,1.4,.5,1)}
+.orb{animation:orbspin 18s linear infinite}.orb b{position:absolute;inset:30%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,color-mix(in srgb,var(--oc) 60%,#fff) 55%,var(--oc));box-shadow:0 0 40px var(--oc);transition:all .35s}
+.orb.idle{filter:saturate(.4);opacity:.85}.orb.mini{width:90px;margin:0 auto 6px}
+@keyframes orbspin{to{transform:rotate(360deg)}}
+.orbl{text-align:center;font-size:1.5rem;font-weight:800;margin:10px 0 18px;min-height:1.6em}
+.mrange{width:100%;height:44px;-webkit-appearance:none;appearance:none;background:transparent}
+.mrange::-webkit-slider-runnable-track{height:12px;border-radius:6px;background:linear-gradient(90deg,#6E4FD8,#3E9BE6 50%,#FF8A1A)}
+.mrange::-moz-range-track{height:12px;border-radius:6px;background:linear-gradient(90deg,#6E4FD8,#3E9BE6 50%,#FF8A1A)}
+.mrange::-webkit-slider-thumb{-webkit-appearance:none;width:34px;height:34px;margin-top:-11px;border-radius:50%;background:#fff;border:3px solid var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.mrange::-moz-range-thumb{width:30px;height:30px;border-radius:50%;background:#fff;border:3px solid var(--ink)}
+/* done */
+.fdone{align-items:center;text-align:center;padding-top:40px}.fdone h2{font-family:var(--fh);font-size:2rem;margin:10px 0 4px}.fdone .wkstrip{width:100%;margin:18px 0}
+.fdring{position:relative;width:150px;height:150px}.fdring .rbg{fill:none;stroke:var(--line);stroke-width:10}.fdring .rfg{fill:none;stroke:var(--fc);stroke-width:10;stroke-linecap:round;stroke-dasharray:315;stroke-dashoffset:315;transform:rotate(-90deg);transform-origin:50% 50%;animation:ring .9s .1s cubic-bezier(.3,.9,.3,1) forwards}
+.fdring .rck{fill:none;stroke:var(--fc);stroke-width:9;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:70;stroke-dashoffset:70;animation:ring .45s .75s ease forwards}
+@keyframes ring{to{stroke-dashoffset:0}}.flbig{width:100%;min-height:56px;margin-top:6px}.fdone .btn.ghost{width:100%;margin-top:8px}
+.flgo{width:100%;margin:0 0 10px}
+/* this week */
+.wkstrip{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r,16px);padding:12px 14px;margin:0 0 12px}
+.wkdays{flex:1;display:flex;justify-content:space-between;gap:4px}.wkd{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.66rem;color:var(--soft);font-weight:700}
+.wkd i{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:#fff;transition:all .3s}
+.wkd.on i{background:var(--gold);border-color:var(--gold);color:var(--onacc);animation:pop .4s cubic-bezier(.3,1.7,.5,1)}.wkd.now i{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--ink)}
+.wkn{display:flex;flex-direction:column;align-items:flex-end;line-height:1.1;min-width:76px}.wkn b{font-size:1.5rem}.wkn b small{font-size:.8rem;color:var(--soft)}.wkn span{font-size:.7rem;color:var(--soft)}
+.wkn em{font-style:normal;font-size:.72rem;font-weight:800;color:#F2742A;display:flex;align-items:center;gap:2px;margin-top:3px}
+@media (prefers-reduced-motion:reduce){.orb{animation:none}}
+.inflow .tabs,.inflow #news{display:none!important}.inflow body{padding-top:0}
+.mtag{display:inline-flex;align-items:center;gap:8px;margin:0 0 6px;padding:6px 14px;border-radius:999px;background:color-mix(in srgb,var(--oc) 18%,transparent);color:var(--ink);font-weight:800}.mtag i{width:14px;height:14px;border-radius:50%;background:var(--oc);box-shadow:0 0 10px var(--oc)}
+.wkn em{white-space:nowrap}.wkn{min-width:92px}
 </style>
 </head>
 <body>
@@ -1337,7 +1394,7 @@ function tplColor(e){ const t=S.cfg.templates.find(t=>t.id===e.tid); return safe
 const app=document.getElementById('app');
 
 // ---------- render ----------
-function render(){ applySkin(); document.documentElement.dataset.lvl=TLV(); setTimeout(newsCheck,0); const viewNow=S.view+'|'+(S.st.pgrp||''); if(viewNow!==SKIN.lastView){ SKIN.lastView=viewNow; app.classList.add('enter'); clearTimeout(SKIN.t); SKIN.t=setTimeout(()=>app.classList.remove('enter'),450); } const y=window.scrollY, fsEl=app.querySelector('.simfs'), fsY=fsEl?fsEl.scrollTop:0; app.style.minHeight=app.offsetHeight+'px'; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; ({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth}[S.view]||renderSettings)(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); const fs2=app.querySelector('.simfs'); if(fs2&&fsY) fs2.scrollTop=fsY; app.style.minHeight=''; tapFx(); }
+function render(){ applySkin(); document.documentElement.dataset.lvl=TLV(); document.documentElement.classList.toggle('inflow',!!S.flow&&!GUEST); setTimeout(newsCheck,0); const viewNow=S.view+'|'+(S.st.pgrp||''); if(viewNow!==SKIN.lastView){ SKIN.lastView=viewNow; app.classList.add('enter'); clearTimeout(SKIN.t); SKIN.t=setTimeout(()=>app.classList.remove('enter'),450); } const y=window.scrollY, fsEl=app.querySelector('.simfs'), fsY=fsEl?fsEl.scrollTop:0; app.style.minHeight=app.offsetHeight+'px'; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; (S.flow&&!GUEST?renderFlow:({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth}[S.view]||renderSettings))(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); const fs2=app.querySelector('.simfs'); if(fs2&&fsY) fs2.scrollTop=fsY; app.style.minHeight=''; tapFx(); }
 function toast(t){ let el=document.getElementById('toast'); if(!el){ el=document.createElement('div'); el.id='toast'; el.setAttribute('role','status'); document.body.appendChild(el); } el.textContent=t; el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),1800); }
 function say(t){ const m=document.getElementById('msg'); if(m) m.textContent=t; }
 function armed(b,label){ if(b.dataset.armed) return true; b.dataset.armed='1'; const old=b.textContent; b.textContent=label; b.classList.add('armed'); setTimeout(()=>{ if(b.isConnected){ delete b.dataset.armed; b.textContent=old; b.classList.remove('armed'); } },3000); return false; }
@@ -1358,7 +1415,7 @@ function renderCal(){
   app.innerHTML=`
   ${topBar()}
   ${seasonBanner()}${alertsHTML(healthAlerts())}${GUEST?'':todayNotesHTML()}${simInviteCards()}${TLV()>=3?goalStrip():''}${TLV()>=2?todayCard():''}${TLV()>=3?loadCard():''}${GUEST?aiCard():packCard(true)+backupNudge()}
-  <div class="month"><h1>${MONTHS[S.m]}<span>${S.y}</span></h1>
+  ${weekStrip()}<div class="month"><h1>${MONTHS[S.m]}<span>${S.y}</span></h1>
     <div class="arrows"><button data-act="prev" aria-label="Previous month">‹</button><button data-act="next" aria-label="Next month">›</button></div></div>
   <div class="grid">${cells}</div>
   <div class="legend">${CT.filter(tplShown).map(t=>`<span><i style="background:${t.color}"></i>${esc(t.name)}</span>`).join('')}</div>
@@ -1482,7 +1539,7 @@ function entrySummary(e){ const out=[]; (e.items||[]).forEach(it=>{ if(out.lengt
 function entryHTML(e){ const open=S.open===e.id;
   return `<div class="entry" style="--c:${tplColor(e)}">
     <button class="ehead" data-toggle="${e.id}" aria-expanded="${open}"><span class="etitle"><b>${esc(tplName(e))}</b>${open?'':`<span class="esum">${esc(entrySummary(e))||'Nothing filled in yet'}</span>`}</span><small>${headSmall(e,open)}</small></button>
-    ${open?`<div class="ebody"><div class="collbar"><button data-fcolall="${e.id}|1">Close all</button><button data-fcolall="${e.id}|0">Open all</button></div>${perfHowHTML(e)}${GUEST?roItems(e):e.items.filter(it=>itemLv(e,it)<=TLV()).map(it=>fieldHTML(e,it)).join('')}${GUEST?'':`
+    ${open?`<div class="ebody">${!GUEST&&!isPerfE(e)&&flowItems(e).length?`<button class="btn flgo" data-flstart="${e.id}">Step by step</button>`:''}<div class="collbar"><button data-fcolall="${e.id}|1">Close all</button><button data-fcolall="${e.id}|0">Open all</button></div>${perfHowHTML(e)}${GUEST?roItems(e):e.items.filter(it=>itemLv(e,it)<=TLV()).map(it=>fieldHTML(e,it)).join('')}${GUEST?'':`
       ${isPerfE(e)?`<details class="more"><summary>Delete this test</summary>`:`<details class="more"><summary>${TLV()<2?'Delete this log':'Add a field or delete this log'}</summary>
       <div class="addf"><label class="note" for="nf${e.id}">New field name</label>
         <div class="row"><input type="text" id="nf${e.id}" placeholder="e.g. Emocijos"><button class="btn" data-newf="${e.id}">Add</button></div>
@@ -1598,6 +1655,105 @@ function grow(t){ t.style.height='auto'; t.style.height=t.scrollHeight+2+'px'; }
 
 // ---- What's new: shows once per account after an update (OK saves it to your setup, so it doesn't come back on other phones); Customize → What's new shows it again
 
+
+
+// ================= Daily check-in: one question per screen =================
+// Built like Apple Health's State of Mind (slider from very unpleasant to very pleasant, then words, then what's having the biggest impact),
+// with a weekly streak that never shows a broken streak (Barasch & Silverman, Journal of Consumer Research: broken streaks make people quit).
+const MOODL=['','Very unpleasant','Unpleasant','Slightly unpleasant','Neutral','Slightly pleasant','Pleasant','Very pleasant'];
+const MOODC=['','#6E4FD8','#7A62E2','#5B84EE','#3E9BE6','#4FB7B8','#F2A23A','#FF8A1A'];
+// emotion words with how activated they are (0–100), from the circumplex model of affect (Russell 1980)
+const MOODW={hp:[['Excited',85],['Motivated',75],['Confident',65],['Fired up',92],['Happy',70],['Proud',60]],lp:[['Calm',20],['Relaxed',15],['Content',30],['Focused',48],['Grateful',35],['Peaceful',10]],
+  n:[['Okay',40],['Indifferent',30]],hu:[['Stressed',85],['Nervous',80],['Anxious',82],['Frustrated',70],['Angry',92],['Overwhelmed',86]],lu:[['Tired',15],['Drained',10],['Sad',25],['Bored',22],['Unmotivated',20],['Disappointed',35]]};
+const MOODAR={}; Object.values(MOODW).forEach(L=>L.forEach(([w,a])=>MOODAR[w]=a));
+const IMPACT=['Training','Competition','Sleep','Body','Health','School','Work','Family','Friends','Partner','Food','Weather','Money','Travel','Other'];
+const moodWords=v=>!v?[]:v>=5?[...MOODW.hp,...MOODW.lp,...MOODW.n]:v<=3?[...MOODW.hu,...MOODW.lu,...MOODW.n]:[...MOODW.n,...MOODW.lp.slice(0,3),...MOODW.lu.slice(0,3)];
+const buzz=()=>{ try{ if(navigator.vibrate) navigator.vibrate(8); }catch(e){} };
+const flowItems=e=>e.items.filter(it=>itemLv(e,it)<=TLV());
+function flowKind(it){ const cs=compsList(it), n=String(it.name||'');
+  if(cs.includes('Q')||(/emoc|emotion|nuotaik|mood|jausm/i.test(n)&&cs.some(c=>'ASV'.includes(c)))) return 'mood';
+  if(cs.includes('E')) return 'load';
+  if(cs.some(c=>'RMZPGXWBLFNDKYC'.includes(c))) return 'gen';
+  if(cs.some(c=>'ASV'.includes(c))) return 'scale';
+  return 'gen'; }
+const smOf=it=>Object.assign({v:null,w:[],imp:[]},(it.type==='mix'&&it.val&&it.val.SM&&typeof it.val.SM==='object')?it.val.SM:{});
+function moodSave(key,patch){ const {k,it}=itemAt(key); if(!it) return; const sm=Object.assign(smOf(it),patch); setP(it,'SM',sm); const cs=compsList(it), v=sm.v;
+  if(v){ if(cs.includes('Q')){ const ar=sm.w.map(w=>MOODAR[w]).filter(x=>x!=null); setP(it,'Q',Object.assign(objP(it,'Q'),{p:Math.round((v-1)/6*100),e:Math.round(ar.length?meanOf(ar):50),w:sm.w.join(', ')})); }
+    else if(cs.includes('A')) setP(it,'A',v); else if(cs.includes('S')) setP(it,'S',Math.round(1+(v-1)*1.5));
+    else if(cs.includes('V')){ const a=arrP(it,'V'), n=Math.round(1+(v-1)*1.5); if(a.length) a[a.length-1].n=n; else a.push({id:rid(),at:nowHM(),n,note:''}); setP(it,'V',a); } }
+  saveMonth(k); }
+const smText=it=>{ const m=smOf(it); if(!m.v&&!m.w.length&&!m.imp.length) return ''; return [m.v?`${MOODL[m.v].toLowerCase()} (${m.v}/7)`:'',m.w.length?`words: ${m.w.join(', ')}`:'',m.imp.length?`biggest impact: ${m.imp.join(', ')}`:''].filter(Boolean).join('; '); };
+// this week: which days have a calendar log, and how many weeks in a row had 3 or more (never shown as broken)
+function weekInfo(){ const D=new Set(logDays(S.months)), t=new Date(todayStr+'T12:00'), mon=dAdd(todayStr,-((t.getDay()+6)%7));
+  const days=Array.from({length:7},(_,i)=>dAdd(mon,i)), cnt=w=>Array.from({length:7},(_,i)=>dAdd(mon,i-7*w)).filter(d=>D.has(d)&&d<=todayStr).length;
+  let streak=0, w=cnt(0)>=3?0:1; while(w<60&&cnt(w)>=3){ streak++; w++; }
+  return {days,has:days.map(d=>D.has(d)),n:cnt(0),streak}; }
+const FLAME='<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M13.5 1.5s1 3.4-1.3 6.1C10.4 9.7 8 11.4 8 15a4 4 0 0 0 8 0c0-1.7-.8-2.9-1.6-3.8 2.7.9 4.6 3.3 4.6 6.1A7 7 0 0 1 5 17.3c0-4.6 3.3-7 5.4-9.4 2-2.3 3.1-4.4 3.1-6.4z"/></svg>';
+function weekStrip(){ if(GUEST) return ''; const W=weekInfo(), L=['Pr','An','Tr','Kt','Pn','Š','S'];
+  return `<div class="wkstrip"><div class="wkdays">${W.days.map((d,i)=>`<span class="wkd${W.has[i]?' on':''}${d===todayStr?' now':''}"><i>${W.has[i]?'<svg viewBox="0 0 12 12" width="10" height="10"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}</i><small>${L[i]}</small></span>`).join('')}</div>
+    <div class="wkn"><b>${W.n}<small>/7</small></b><span>this week</span>${W.streak>=1?`<em>${FLAME}${W.streak} week${W.streak>1?'s':''} in a row</em>`:''}</div></div>`; }
+function flowStart(eid){ S.flow={eid,i:0,sub:0,dir:1,shown:''}; S.open=null; buzz(); render(); scrollTo(0,0); }
+function flowNext(){ const F=S.flow; if(!F) return; const {e}=findEntry(F.eid); if(!e) return; const I=flowItems(e), it=I[F.i];
+  if(it&&flowKind(it)==='mood'&&F.sub<2&&(F.sub>0||smOf(it).v)) F.sub++; else { F.i++; F.sub=0; } F.dir=1; buzz(); render(); scrollTo(0,0); }
+function flowBack(){ const F=S.flow; if(!F) return; if(F.sub>0) F.sub--; else if(F.i>0){ F.i--; F.sub=0; } F.dir=-1; buzz(); render(); scrollTo(0,0); }
+function tilesHTML(attr,from,to,cur,cls){ const B=[]; for(let n=from;n<=to;n++) B.push(`<button class="fltile${cur===n?' on':''}" data-${attr}|${n}" aria-pressed="${cur===n}">${n}</button>`); return `<div class="fltiles ${cls||''}">${B.join('')}</div>`; }
+function flowScale(e,it,key){ const cs=compsList(it), c=cs.find(c=>c==='A')||cs.find(c=>c==='S')||'V', sl=sleepLike(it.name);
+  let cur=null; if(c==='A') cur=a7(getP(it,'A')); else if(c==='S') cur=getP(it,'S'); else { const a=arrP(it,'V'); cur=a.length?a[a.length-1].n:null; }
+  const [lo,hi]=c==='A'?slEnds(it.name):[sl?'Terrible':'Worst','Best'], word=cur!=null&&c!=='A'?(ANCH[sl?'sleepq':'well'][cur]||''):'';
+  return `<p class="flsub">${c==='A'?'4 = normal for you':'5 = normal for you'}</p>
+    ${c==='A'?tilesHTML(`flsc="${key}|A`,1,7,cur,'t7'):tilesHTML(`flsc="${key}|${c}`,1,10,cur,'t10')}
+    <div class="flends"><span>${esc(lo)}</span><span>${esc(hi)}</span></div>${word?`<p class="flword">${esc(word)}</p>`:''}
+    ${cs.includes('T')&&TLV()>=2?`<div class="flmore">${compHTML(e,it,'T',key,'f'+e.id+it.fid)}</div>`:''}`; }
+function flowLoad(e,it,key,fid){ const o=objP(it,'E'), ef=typeof o.e==='number'?Math.round(o.e):null, cs=compsList(it), m=parseFloat(o.m);
+  const B=n=>`<button class="fltile${ef===n?' on':''}${n===5?' mid':''}" data-flld="${key}|${n}" aria-pressed="${ef===n}">${n-5>0?'+'+(n-5):n-5}</button>`;
+  return `<p class="flsub">How hard was the whole session? 0 = a normal session</p>
+    <div class="fltiles tl">${[0,1,2,3,4,5].map(B).join('')}</div><div class="fltiles tl tl2">${[6,7,8,9,10].map(B).join('')}</div>
+    <div class="flends"><span>Much easier</span><span>Much harder</span></div>${ef!=null?`<p class="flword">Effort ${ef}/10${ANCH.effort[ef]?' · '+ANCH.effort[ef]:''}</p>`:''}
+    <p class="flsub" style="margin-top:22px">How long?</p>
+    <div class="flmin"><button class="flstep" data-flm="${key}|-15" aria-label="15 minutes less">−</button><label><input type="number" inputmode="numeric" min="0" max="600" data-k="${key}" data-c="E" data-p="m" value="${esc(o.m??'')}" placeholder="0" aria-label="Minutes"><span>min</span></label><button class="flstep" data-flm="${key}|15" aria-label="15 minutes more">+</button></div>
+    <div class="flchips">${[60,90,120,150].map(v=>`<button class="${m===v?'on':''}" data-flm="${key}|=${v}">${v} min</button>`).join('')}</div>
+    <p class="flload" id="ef${e.id}${it.fid}">${loadText(o)}</p>
+    ${cs.filter(c=>c!=='E'&&!(c==='T'&&TLV()<2)).map(c=>{ const h=compHTML(e,it,c,key,fid); return h?`<div class="flmore comp c${c}">${h}</div>`:''; }).join('')}`; }
+function flowMood(e,it,key,sub){ const m=smOf(it), v=m.v;
+  if(sub===0) return `<p class="flsub">How do you feel right now?</p>
+    <div class="orb${v?'':' idle'}" id="orb" style="--oc:${MOODC[v||4]};--v:${v?(v-1)/6:.5}">${Array.from({length:10},(_,i)=>`<i style="--r:${i*36}deg"></i>`).join('')}<b></b></div>
+    <p class="orbl" id="orbl">${v?MOODL[v]:'Slide to choose'}</p>
+    <input type="range" class="mrange" min="1" max="7" step="1" value="${v||4}" data-flmood="${key}" aria-label="How you feel, from very unpleasant to very pleasant">
+    <div class="flends"><span>Very unpleasant</span><span>Very pleasant</span></div>`;
+  if(sub===1) return `<p class="flsub">What describes this feeling best? <small>up to 3</small></p>${v?`<p class="mtag" style="--oc:${MOODC[v]}"><i></i>${MOODL[v]}</p>`:''}
+    <div class="flchips big">${moodWords(v).map(([w])=>`<button class="${m.w.includes(w)?'on':''}" data-flw="${key}|${w}" aria-pressed="${m.w.includes(w)}">${w}</button>`).join('')}</div>`;
+  return `<p class="flsub">What’s having the biggest impact on you?</p><div class="flchips big">${IMPACT.map(w=>`<button class="${m.imp.includes(w)?'on':''}" data-fli="${key}|${w}" aria-pressed="${m.imp.includes(w)}">${w}</button>`).join('')}</div>`; }
+function flowGen(e,it,key,fid){ return compsList(it).map(c=>{ const h=compHTML(e,it,c,key,fid); return h?`<div class="flmore comp c${c}">${h}</div>`:''; }).join(''); }
+function renderFlow(){ const F=S.flow, {e}=findEntry(F.eid); if(!e){ S.flow=null; renderCal(); return; } const I=flowItems(e), N=I.length;
+  const mark=`${F.i}.${F.sub}`, anim=F.shown!==mark; F.shown=mark;
+  if(F.i>=N){ const W=weekInfo();
+    app.innerHTML=`<div class="flow fdone" style="--fc:${tplColor(e)}"><div class="fdring"><svg viewBox="0 0 120 120" width="150" height="150" aria-hidden="true"><circle cx="60" cy="60" r="50" class="rbg"/><circle cx="60" cy="60" r="50" class="rfg"/><path d="M40 61l14 14 27-30" class="rck"/></svg></div>
+      <h2>Check-in done</h2><p class="flsub">${esc(tplName(e))} · ${I.filter(filledItem).length} of ${N} filled</p>${weekStrip()}
+      <button class="btn flbig" data-flclose="1">Back to calendar</button><button class="btn ghost" data-flall="${e.id}">See everything</button></div>`;
+    if(anim) setTimeout(()=>{ const f=app.querySelector('.fdring'); if(!f) return; const cols=['#FDB913','#006A44','#C1272D',tplColor(e),'#fff']; for(let i=0;i<26;i++){ const sp=document.createElement('span'), a=Math.random()*Math.PI*2, d=60+Math.random()*90; sp.className='spk'; sp.style.cssText=`--x:75px;--y:75px;--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d}px;--c:${cols[i%cols.length]}`; f.appendChild(sp); setTimeout(()=>sp.remove(),1000); } buzz(); },420);
+    return; }
+  const it=I[F.i], kind=flowKind(it), key=`${e.id}|${it.fid}`, fid='f'+e.id+it.fid, K=helpKeysFor(e,it), filled=kind==='mood'?(F.sub===0?!!smOf(it).v:F.sub===1?smOf(it).w.length>0:smOf(it).imp.length>0):filledItem(it);
+  const body=kind==='mood'?flowMood(e,it,key,F.sub):kind==='scale'?flowScale(e,it,key):kind==='load'?flowLoad(e,it,key,fid):flowGen(e,it,key,fid);
+  app.innerHTML=`<div class="flow" style="--fc:${tplColor(e)}">
+    <div class="fltop"><button class="flx" data-flx="1" aria-label="Close check-in">✕</button><div class="flprog" aria-hidden="true">${I.map((_,j)=>`<i class="${j<F.i?'d':j===F.i?'c':''}"></i>`).join('')}</div><span class="flct">${F.i+1}/${N}</span></div>
+    <div class="flcard${anim?(F.dir<0?' inb':' inf'):''}"><p class="flk">${esc(tplName(e))}</p><h2 class="flq">${esc(it.name)}${K.length?' '+helpBtn(K.join(',')):''}</h2>${body}</div>
+    <div class="flnav"><button class="btn ghost" data-flb="1"${F.i===0&&!F.sub?' disabled':''}>Back</button><button class="btn${filled?'':' ghost'}" data-fln="1">${filled?(F.i===N-1&&!(kind==='mood'&&F.sub<2)?'Done':'Next'):'Skip'}</button></div></div>`;
+  app.querySelectorAll('textarea').forEach(grow); }
+function moodLive(t){ const v=+t.value, o=document.getElementById('orb'), l=document.getElementById('orbl'); if(o){ o.classList.remove('idle'); o.style.setProperty('--oc',MOODC[v]); o.style.setProperty('--v',(v-1)/6); } if(l) l.textContent=MOODL[v]; if(t.dataset.lastv!==String(v)){ t.dataset.lastv=v; buzz(); } }
+function flowClick(ds,b){ if(!S.flow&&!ds.flstart) return false;
+  if(ds.flstart){ flowStart(ds.flstart); return true; }
+  if(ds.flx||ds.flclose){ S.flow=null; render(); return true; }
+  if(ds.flall){ S.flow=null; S.open=ds.flall; render(); const el=document.querySelector(`[data-toggle="${ds.flall}"]`); if(el) el.scrollIntoView({block:'start'}); return true; }
+  if(ds.fln){ flowNext(); return true; } if(ds.flb){ flowBack(); return true; }
+  if(ds.flsc){ const [key,c,n]=splitTail(ds.flsc,2), {k,it}=itemAt(key); if(!it) return true; const v=+n; let off=false;
+    if(c==='A'){ off=a7(getP(it,'A'))===v; setP(it,'A',off?null:v); } else if(c==='S'){ off=getP(it,'S')===v; setP(it,'S',off?null:v); }
+    else { const a=arrP(it,'V'); if(a.length) a[a.length-1].n=v; else a.push({id:rid(),at:nowHM(),n:v,note:''}); setP(it,'V',a); }
+    saveMonth(k); buzz(); render(); if(!off&&!(compsList(it).includes('T')&&TLV()>=2)) setTimeout(()=>{ if(S.flow&&S.flow.shown===`${S.flow.i}.${S.flow.sub}`) flowNext(); },360); return true; }
+  if(ds.flld){ const [key,n]=splitTail(ds.flld,1), {k,it}=itemAt(key); if(!it) return true; const o=objP(it,'E'); if(o.e===+n){ delete o.e; delete o.c; } else { o.e=+n; o.c=+n; } setP(it,'E',o); saveMonth(k); buzz(); render(); return true; }
+  if(ds.flm){ const [key,d]=splitTail(ds.flm,1), {k,it}=itemAt(key); if(!it) return true; const o=objP(it,'E'), cur=parseFloat(o.m)||0; o.m=String(d[0]==='='?+d.slice(1):Math.max(0,Math.min(600,cur+(+d)))); setP(it,'E',o); saveMonth(k); buzz(); render(); return true; }
+  if(ds.flw){ const [key,w]=splitTail(ds.flw,1), {it}=itemAt(key); if(!it) return true; let W=smOf(it).w.slice(); W=W.includes(w)?W.filter(x=>x!==w):W.concat(w).slice(-3); moodSave(key,{w:W}); buzz(); render(); return true; }
+  if(ds.fli){ const [key,w]=splitTail(ds.fli,1), {it}=itemAt(key); if(!it) return true; let W=smOf(it).imp.slice(); W=W.includes(w)?W.filter(x=>x!==w):W.concat(w); moodSave(key,{imp:W}); buzz(); render(); return true; }
+  return false; }
 
 // ================= Tracking levels =================
 // Level 1 = only the essentials (how hard + how long, sleep, energy, finger pain, your climbs), no stats, little text.
@@ -2585,7 +2741,7 @@ function exportClaude(range){ const D=exportDays(range); if(!D.length) return ''
     '- Performance tests: % of bodyweight = kg on the hand ÷ bodyweight (lift), or (bodyweight + added kg) ÷ bodyweight (hang).',...(NT.pid===showPid()&&NT.list.length?['- [Coach notes] are what my coach wrote about that day.']:[]),
     `- Daily log types: ${S.cfg.templates.filter(t=>!t.perf).map(t=>t.name).join(', ')}.`,...(S.cfg.templates.some(t=>t.perf)?[`- Performance tests (separate calendar): ${S.cfg.templates.filter(t=>t.perf).map(t=>t.name).join(', ')}.`]:[]),''];
   D.forEach(d=>{ XDAY=d; const [y,m,dd]=d.split('-'), mo=S.months[`${y}-${m}`], es=(mo.days[String(+dd)]||[]); const blocks=[];
-    es.forEach(e=>{ XENT=e; const lines=(e.items||[]).map(it=>{ const t=compsList(it).map(c=>partText(it,c)).filter(Boolean).join('; '), sn=GUEST?'':secGet(e.id+'|'+it.fid).trim().replace(/\s+/g,' '); return [t?`- ${it.name}: ${t}`:'', sn?`- ${it.name} (my secret note): "${sn}"`:GUEST&&it.sec?`- ${it.name}: [secret note, private]`:''].filter(Boolean).join('\n'); }).filter(Boolean);
+    es.forEach(e=>{ XENT=e; const lines=(e.items||[]).map(it=>{ const t=compsList(it).map(c=>partText(it,c)).concat(smText(it)?['check-in feeling: '+smText(it)]:[]).filter(Boolean).join('; '), sn=GUEST?'':secGet(e.id+'|'+it.fid).trim().replace(/\s+/g,' '); return [t?`- ${it.name}: ${t}`:'', sn?`- ${it.name} (my secret note): "${sn}"`:GUEST&&it.sec?`- ${it.name}: [secret note, private]`:''].filter(Boolean).join('\n'); }).filter(Boolean);
       const tp=S.cfg.templates.find(t=>t.id===e.tid); if(tp&&tp.fingerTest){ const rv=r=>{ const fd=tp.fields.find(x=>x.role===r), it=fd&&(e.items||[]).find(i=>i.fid===fd.id), x=it?parseFloat(getP(it,'N')):NaN; return isNaN(x)?null:x; }, bw=rv('bw'), ad=rv('add'); if(bw>0&&ad!=null) lines.push(`- Finger strength: ${Math.round((bw+ad)/bw*100)}% of bodyweight (bodyweight ${bw} kg + ${ad} kg on a ${rv('edge')||20} mm edge, 10 s)`); }
       const pg=tp&&tp.perf?pgOf(tp):''; if(lines.length) blocks.push(`[${tplName(e)}${pg==='daily'?' · daily test':pg==='super'?' · super (max) test':pg==='climb'?' · route cards':pg==='comp'?' · competition':isPerfE(e)?' · performance test':''}]`,...lines); }); XENT=null;
     const cn=[], q=t=>String(t||'').replace(/\s+/g,' ').trim(); notesFor(d).forEach(n=>{ cn.push(`- ${n.byName||'Coach'}: "${q(n.text)}"`); repliesOf(n).forEach(r=>cn.push(`  - reply from ${r.byName||'?'}: "${q(r.text)}"`)); }); if(cn.length) blocks.push('[Coach notes]',...cn);
@@ -3141,6 +3297,7 @@ app.addEventListener('click',async ev=>{
   const tp=ev.target.closest('[data-tip]'); if(tp){ const w=tp.closest('.cw'), t=w&&w.querySelector('.tip'); if(t) t.textContent=tp.dataset.tip; if(w) w.querySelectorAll('.hit.sel').forEach(x=>x.classList.remove('sel')); tp.classList.add('sel'); ev.stopPropagation(); return; }
   if(bodyClick(ev)) return;
   const b=ev.target.closest('button'); if(!b) return; const ds=b.dataset;
+  if(!GUEST&&flowClick(ds,b)) return;
   if(ds.qpad!==undefined){ if(!GUEST) qpadSet(b,ev); return; }
   if(ds.pgrp){ S.st.pgrp=ds.pgrp; render(); return; }
   if(!GUEST&&ds.skin&&b.classList.contains('skin')){ S.cfg.skin=ds.skin; saveCfg(); render(); toast(SKINS.find(x=>x[0]===ds.skin)[1]+' look'); return; }
@@ -3226,8 +3383,9 @@ app.addEventListener('click',async ev=>{
   if(ds.act==='packno'){ S.cfg.packNo=1; saveCfg(); render(); return; }
   if(ds.act==='aistop'){ const c=ds.which==='sci'?sciCtl:aiCtl; if(c) c.abort(); return; }
   if(ds.add){ if(Date.now()-lastAdd<600) return; lastAdd=Date.now(); const t=S.cfg.templates.find(t=>t.id===ds.add); if(!t) return; const [y,m,d]=S.sel.split('-'); const k=`${y}-${m}`; const mo=month(k);
-    const e={id:rid(),tid:t.id,name:t.name,color:t.color,items:t.fields.map(newItem)}; if(lvlUser()) e.lv=TLV(); if(t.perf) e.perf=1; if(t.comp) e.items.forEach(it=>{ if(compsList(it).includes('G')) setP(it,'G',[newComp(),newComp(),newComp(),newComp()]); });
-    (mo.days[String(+d)]=mo.days[String(+d)]||[]).push(e); S.open=e.id; saveMonth(k); render(); const el=document.querySelector(`[data-toggle="${e.id}"]`); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); toast(`${t.name} added`); return; }
+    const e={id:rid(),tid:t.id,name:t.name,color:t.color,items:t.fields.map(newItem)}; if(lvlUser()) e.lv=TLV(); if(lvlUser()&&TLV()<=2&&!t.perf) S.flowNew=e.id; if(t.perf) e.perf=1; if(t.comp) e.items.forEach(it=>{ if(compsList(it).includes('G')) setP(it,'G',[newComp(),newComp(),newComp(),newComp()]); });
+    (mo.days[String(+d)]=mo.days[String(+d)]||[]).push(e); S.open=e.id; saveMonth(k); if(S.flowNew===e.id){ S.flowNew=null; flowStart(e.id); return; } render(); const el=document.querySelector(`[data-toggle="${e.id}"]`); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); toast(`${t.name} added`); return; }
+  if(ds.toggle&&lvlUser()&&TLV()<=2&&S.open!==ds.toggle){ const {e}=findEntry(ds.toggle); if(e&&!isPerfE(e)&&flowItems(e).length){ flowStart(e.id); return; } }
   if(ds.toggle){ const was=S.open===ds.toggle; S.open=was?null:ds.toggle; S.typeOpen=null; render(); if(was){ const el=document.querySelector(`[data-toggle="${ds.toggle}"]`); if(el) el.scrollIntoView({block:'nearest'}); } return; }
   if(ds.delentry){ if(!armed(b,'Tap again to delete')) return; const {k,arr}=findEntry(ds.delentry); arr.splice(arr.findIndex(x=>x.id===ds.delentry),1); saveMonth(k); render(); toast('Log deleted'); return; }
   if(ds.newf){ const inp=document.getElementById('nf'+ds.newf), name=inp.value.trim(); if(!name){ inp.focus(); return; }
@@ -3259,7 +3417,7 @@ app.addEventListener('click',async ev=>{
 document.addEventListener('keydown',ev=>{ if(!ALIVE||GUEST) return; if(!(ev.ctrlKey||ev.metaKey)||ev.key.toLowerCase()!=='z') return; const t=ev.target; if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA')) return; ev.preventDefault(); histStep(ev.shiftKey?1:-1); });
 app.addEventListener('keydown',ev=>{ const t=ev.target; if(GUEST) return; if((ev.key==='Enter'||ev.key===' ')&&t.getAttribute&&t.getAttribute('data-bmr')){ ev.preventDefault(); bodyClick(ev); return; } if(ev.key!=='Enter'&&ev.keyCode!==13) return; if(t.dataset&&t.dataset.bmnew){ ev.preventDefault(); const i=t.dataset.bmnew.lastIndexOf('|'), v=t.value; t.value=''; addItem(t.dataset.bmnew.slice(0,i),t.dataset.bmnew.slice(i+1),v); return; } if(t.dataset.bin||t.dataset.lin){ ev.preventDefault(); addToList(t.dataset.bin||t.dataset.lin,t.id); } else if(t.id&&t.id.startsWith('nf')){ ev.preventDefault(); const b=t.parentElement.querySelector('[data-newf]'); if(b) b.click(); } });
 app.addEventListener('input',ev=>{
-  const t=ev.target; if(t.tagName==='TEXTAREA') grow(t);
+  const t=ev.target; if(t.dataset&&t.dataset.flmood!==undefined){ moodLive(t); return; } if(t.tagName==='TEXTAREA') grow(t);
   if(t.id==='imp'){ S.st.impText=t.value; clearTimeout(TM.impT); if(!GUEST&&t.value.length>40) TM.impT=setTimeout(()=>{ if(GUEST||!S.st.bkPaste||S.st.impText!==t.value) return; const r=bkParse(t.value); if(!r.err) bkOpenText(t.value); },350); return; }
   if(teamInput(t)) return;
   if(S.view==='ath'&&atInput(t)) return;
@@ -3271,6 +3429,7 @@ app.addEventListener('input',ev=>{
 });
 app.addEventListener('change',ev=>{
   if(GUEST) return;
+  { const t=ev.target; if(t.dataset&&t.dataset.flmood!==undefined){ moodSave(t.dataset.flmood,{v:+t.value}); render(); return; } }
   if(S.view==='ath'&&atChange(ev.target)) return;
   if(simChange(ev.target)) return;
   const t=ev.target, ds=t.dataset, T=S.cfg.templates;
@@ -3805,7 +3964,7 @@ function roCompHTML(e,it,c,key){ const x=getP(it,c), sl=sleepLike(it.name), cs=c
   return ''; }
 // odd old data never breaks the view: that part falls back to plain text
 function roPart(e,it,c,key){ try{ return roCompHTML(e,it,c,key); }catch(err){ try{ const t=partText(it,c); return t?roLab(esc(COMP[c]||''))+roVal(esc(t)):''; }catch(e2){ return ''; } } }
-function roFieldHTML(e,it,key){ const parts=compsList(it).map(c=>roPart(e,it,c,key)).filter(Boolean);
+function roFieldHTML(e,it,key){ const parts=compsList(it).map(c=>roPart(e,it,c,key)).concat(smText(it)?[roLab('Check-in feeling')+roVal(esc(smText(it)))]:[]).filter(Boolean);
   return `<div class="f fcard2 rof" data-fkey="${key}"><div class="lrow"><button class="fhd" data-fcol="${it.fid}" aria-expanded="true"><span class="fl">${esc(it.name)}</span><span class="chev">▾</span></button>${(()=>{ const K=helpKeysFor(e,it); return K.length?helpBtn(K.join(','),`What is ${esc(it.name)}?`):''; })()}</div>
     ${parts.length?parts.map(h=>`<div class="comp">${h}</div>`).join(''):it.sec?'':'<p class="note roempty">Not filled in</p>'}${it.sec?'<p class="seclock">Secret note. Only the athlete can read it.</p>':''}</div>`; }
 // the body map, read only: the check saved at that moment (or, if none, where they left it last time, clearly marked)
