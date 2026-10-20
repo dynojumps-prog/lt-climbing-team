@@ -1065,6 +1065,59 @@ body::before{inset:auto;top:0;left:0;right:0;height:100vh;height:100lvh}
 .flor{text-align:center;margin:6px 0 10px;color:var(--soft);font-size:.85rem}
 :root[data-lvl="1"] .flow .bmoms{display:none}
 .dgo{border:0;background:none;padding:0;font:inherit;font-weight:800;color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+
+/* ===== round 5: smooth and clean ===== */
+/* backgrounds stay still. Nothing drifts, nothing slides when you scroll or pull past the end */
+html,body{overscroll-behavior-y:none}
+:root:not([data-skin]) body::before,:root[data-skin] body::before{animation:none!important;top:0!important;left:0!important;right:0!important;height:100lvh!important;transform:none!important}
+:root[data-skin="halloween"] body::after{animation:none!important}
+/* Halloween: no cobwebs through the cards; one web hangs in the screen corner behind everything */
+:root[data-skin="halloween"] .card,:root[data-skin="halloween"] .entry{background-image:none!important}
+:root[data-skin="halloween"] body::before{background-image:radial-gradient(18% 14% at 85% 8%,rgba(255,220,140,.30),transparent 70%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cg fill='none' stroke='%23C9B8E0' stroke-width='.8' opacity='.35'%3E%3Cpath d='M0 150L150 0M0 150L60 0M0 150L150 90M0 150L110 10M0 150L140 40'/%3E%3Cpath d='M0 110q20 8 26 26M0 75q34 12 44 44 M0 40q48 16 62 62M0 8q62 22 80 80'/%3E%3C/g%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cg fill='%23B98CFF' fill-opacity='.10'%3E%3Cpath d='M40 60c6-6 10-6 14 0 2-4 6-6 8-6-2 6 0 10 4 12-6 0-10 2-12 6-2-4-6-6-12-6 4-2 4-4-2-6z'/%3E%3Cpath d='M180 140c5-5 8-5 11 0 2-3 5-5 7-5-2 5 0 8 3 10-5 0-8 2-10 5-2-3-5-5-10-5 3-2 3-3-1-5z'/%3E%3C/g%3E%3C/svg%3E")!important;background-position:0 0,left bottom,0 0!important;background-size:auto,150px 150px,260px 260px!important;background-repeat:no-repeat,no-repeat,repeat!important}
+/* check-in header: one solid strip across the whole screen with a soft edge, no half-dark band */
+.flow{overflow-x:clip}.fltop{background:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;isolation:isolate}
+.fltop::before{content:"";position:absolute;top:0;bottom:-14px;left:-50vw;right:-50vw;z-index:-1;background:linear-gradient(var(--bg) 78%,color-mix(in srgb,var(--bg) 0%,transparent))}
+.flct{border:0;background:none;color:var(--soft);font:inherit;font-weight:800;font-size:.85rem;display:flex;align-items:center;gap:5px;padding:6px 4px;min-height:40px}.flct i{font-style:normal;font-size:1rem}
+/* numbers in ONE row: 1–10, 1–7, −5…+5 */
+.fltiles{gap:5px!important}
+.fltiles.t10{grid-template-columns:repeat(10,1fr)!important}.fltiles.t7{grid-template-columns:repeat(7,1fr)!important}.fltiles.t11{grid-template-columns:repeat(11,1fr)!important}
+.fltiles .fltile{min-width:0;padding:0;height:48px;border-radius:11px;font-size:clamp(.9rem,4.1vw,1.2rem);font-weight:800;font-variant-numeric:tabular-nums;display:flex;align-items:center;justify-content:center;
+  transition:transform .28s cubic-bezier(.2,.9,.3,1.3),background-color .22s ease,color .22s ease,border-color .22s ease,box-shadow .22s ease!important}
+.fltiles.t11 .fltile{font-size:clamp(.78rem,3.5vw,1.05rem);border-radius:12px}
+.fltiles .fltile.on{transform:scale(1.08);box-shadow:0 6px 18px color-mix(in srgb,var(--fct) 45%,transparent)}
+.fltiles .fltile:active{transform:scale(.92)}
+/* question change: old one slides out, new one slides in, together */
+.flghost{animation:ghostout .24s cubic-bezier(.4,0,.2,1) forwards}@keyframes ghostout{to{opacity:0;transform:translate3d(var(--gx),0,0)}}
+.flcard.inf,.flcard.inb{animation-duration:.34s!important;animation-delay:.04s;animation-fill-mode:both!important}
+/* overview: every question at a glance */
+.fov .fltop{justify-content:space-between}.fovn{font-weight:800;color:var(--soft)}
+.fovl{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.fovl li button{width:100%;display:flex;align-items:center;gap:12px;text-align:left;padding:12px 14px;min-height:60px;border-radius:16px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);transition:transform .2s cubic-bezier(.2,.9,.3,1.2),border-color .2s}
+.fovl li button:active{transform:scale(.98)}
+.fovl.in li{animation:rise .38s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i) * 35ms)}
+.fovi{flex:0 0 auto;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;border:1.5px solid var(--line);color:var(--soft)}
+.fovi.on{background:var(--fct);border-color:var(--fct);color:var(--bg)}
+.fovt{flex:1;min-width:0;display:flex;flex-direction:column}.fovt b{font-size:1.02rem}.fovt small{color:var(--soft);font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fova{color:var(--soft);font-size:1.4rem}
+/* feelings flower: transform-only morph (spiky when unpleasant, round and full when pleasant), follows the finger with no lag */
+.orb{animation:breathe 5s ease-in-out infinite!important}
+.orb i{width:26%!important;height:48%!important;margin-left:-13%!important;border-radius:50% 50% 50% 50% / 62% 62% 38% 38%!important;
+  transform:rotate(calc(var(--r) + var(--v) * 36deg)) scaleX(calc(.28 + .72 * var(--v))) scaleY(calc(1.06 - .16 * var(--v)))!important;
+  background:radial-gradient(circle at 50% 85%,color-mix(in srgb,var(--oc) 65%,#fff),var(--oc))!important;opacity:calc(.62 + .3 * var(--v))!important;
+  transition:transform .5s cubic-bezier(.2,.9,.3,1.15),opacity .5s,background .5s!important}
+.orb b{transform:scale(calc(.86 + .22 * var(--v)));transition:transform .5s cubic-bezier(.2,.9,.3,1.15),background .5s,box-shadow .5s!important}
+.orb.live i,.orb.live b{transition:none!important}
+.orbl small{font-size:.9rem;color:var(--soft);font-weight:700;margin-left:4px}
+.mrange::-webkit-slider-thumb{transition:transform .15s}.mrange:active::-webkit-slider-thumb{transform:scale(1.15)}
+.mrange{touch-action:pan-y}
+/* feelings grid dot: big, glows, follows the finger, glides to its square */
+.qpad{touch-action:none}
+.mmdot{transition:none!important;will-change:left,top}
+.qpad.glide .mmdot{transition:left .26s cubic-bezier(.2,.9,.3,1.2),top .26s cubic-bezier(.2,.9,.3,1.2),transform .2s!important}
+.qpad.drag .mmdot{transform:scale(1.45)!important;box-shadow:0 0 0 6px color-mix(in srgb,#fff 25%,transparent),0 6px 20px rgba(0,0,0,.35)}
+@media (prefers-reduced-motion:reduce){.flghost{display:none}.fovl.in li{animation:none}}
+.fov .flnav .btn{flex:1;width:auto}
+.flmin input::-webkit-outer-spin-button,.flmin input::-webkit-inner-spin-button,.xbig input::-webkit-outer-spin-button,.xbig input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}.flmin input,.xbig input{-moz-appearance:textfield;appearance:textfield}
 </style>
 </head>
 <body>
@@ -1558,7 +1611,7 @@ function tplColor(e){ const t=S.cfg.templates.find(t=>t.id===e.tid); return safe
 const app=document.getElementById('app');
 
 // ---------- render ----------
-function render(){ if(!GUEST&&!document.querySelector('.logfab')){ const b=document.createElement('button'); b.className='logfab off'; b.type='button'; b.innerHTML='<span>+</span> <b>Log</b>'; b.addEventListener('click',()=>{ const nx=document.querySelector('#app .adds .add.nx'); if(nx){ nx.click(); return; } const a=document.querySelector('#app .adds'); if(!a) return; a.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'}); a.classList.remove('hl'); void a.offsetWidth; a.classList.add('hl'); }); document.body.appendChild(b); } if(S.view==='goals'&&!S.flow) setTimeout(goalCelebrate,500); const mk2=S.view+S.y+'-'+S.m; if(SKIN.lastMonth&&SKIN.lastMonth!==mk2){ SKIN.lastView=''; } SKIN.lastMonth=mk2; applySkin(); document.documentElement.dataset.lvl=TLV(); document.documentElement.classList.toggle('inflow',!!S.flow&&!GUEST); setTimeout(newsCheck,0); const viewNow=S.view+'|'+(S.st.pgrp||''); if(viewNow!==SKIN.lastView){ SKIN.lastView=viewNow; app.classList.remove('enter'); void app.offsetWidth; app.classList.add('enter'); clearTimeout(SKIN.t); SKIN.t=setTimeout(()=>app.classList.remove('enter'),1400); SKIN.at=Date.now(); } else if(app.classList.contains('enter')&&Date.now()-(SKIN.at||0)>350){ clearTimeout(SKIN.t); app.classList.remove('enter'); } const y=window.scrollY, fsEl=app.querySelector('.simfs'), fsY=fsEl?fsEl.scrollTop:0; app.style.minHeight=app.offsetHeight+'px'; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; (S.flow&&!GUEST?renderFlow:({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth,crew:renderCrew}[S.view]||renderSettings))(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); requestAnimationFrame(fabSync); if(S.flow){ const bed=app.querySelector('.flow [data-bed]'); if(bed&&!bed.querySelector('.bcchips button')&&!bed.querySelector('.bstat.bok')){ bed.insertAdjacentHTML('beforebegin',`<button class="btn flfresh" data-bmfresh="${esc(bed.dataset.bed)}">Nothing hurts · all fresh</button><p class="flor">or tap where it hurts</p>`); } } const fs2=app.querySelector('.simfs'); if(fs2&&fsY) fs2.scrollTop=fsY; app.style.minHeight=''; tapFx(); }
+function render(){ if(!GUEST&&!document.querySelector('.logfab')){ const b=document.createElement('button'); b.className='logfab off'; b.type='button'; b.innerHTML='<span>+</span> <b>Log</b>'; b.addEventListener('click',()=>{ const a=document.querySelector('#app .adds'); if(!a) return; a.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'}); a.classList.remove('hl'); void a.offsetWidth; a.classList.add('hl'); }); document.body.appendChild(b); } if(S.view==='goals'&&!S.flow) setTimeout(goalCelebrate,500); const mk2=S.view+S.y+'-'+S.m; if(SKIN.lastMonth&&SKIN.lastMonth!==mk2){ SKIN.lastView=''; } SKIN.lastMonth=mk2; applySkin(); document.documentElement.dataset.lvl=TLV(); document.documentElement.classList.toggle('inflow',!!S.flow&&!GUEST); setTimeout(newsCheck,0); const viewNow=S.view+'|'+(S.st.pgrp||''); if(viewNow!==SKIN.lastView){ SKIN.lastView=viewNow; app.classList.remove('enter'); void app.offsetWidth; app.classList.add('enter'); clearTimeout(SKIN.t); SKIN.t=setTimeout(()=>app.classList.remove('enter'),1400); SKIN.at=Date.now(); } else if(app.classList.contains('enter')&&Date.now()-(SKIN.at||0)>350){ clearTimeout(SKIN.t); app.classList.remove('enter'); } const y=window.scrollY, fsEl=app.querySelector('.simfs'), fsY=fsEl?fsEl.scrollTop:0; app.style.minHeight=app.offsetHeight+'px'; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; (S.flow&&!GUEST?renderFlow:({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth,crew:renderCrew}[S.view]||renderSettings))(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); requestAnimationFrame(fabSync); if(S.flow){ const bed=app.querySelector('.flow [data-bed]'); if(bed&&!bed.querySelector('.bcchips button')&&!bed.querySelector('.bstat.bok')){ bed.insertAdjacentHTML('beforebegin',`<button class="btn flfresh" data-bmfresh="${esc(bed.dataset.bed)}">Nothing hurts · all fresh</button><p class="flor">or tap where it hurts</p>`); } } const fs2=app.querySelector('.simfs'); if(fs2&&fsY) fs2.scrollTop=fsY; app.style.minHeight=''; tapFx(); }
 function toast(t){ let el=document.getElementById('toast'); if(!el){ el=document.createElement('div'); el.id='toast'; el.setAttribute('role','status'); document.body.appendChild(el); } el.textContent=t; el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),1800); }
 function say(t){ const m=document.getElementById('msg'); if(m) m.textContent=t; }
 function armed(b,label){ if(b.dataset.armed) return true; b.dataset.armed='1'; const old=b.textContent; b.textContent=label; b.classList.add('armed'); setTimeout(()=>{ if(b.isConnected){ delete b.dataset.armed; b.textContent=old; b.classList.remove('armed'); } },3000); return false; }
@@ -1572,7 +1625,7 @@ function sleepQuick(key){ const L=lastSleep(key), P=[['22:30','07:00'],['23:00',
   const opts=(L?[[L.from,L.to,'Same as last time']]:[]).concat(P.filter(([f,t])=>!L||f!==L.from||t!==L.to).map(([f,t])=>[f,t,'']));
   return `<div class="rquick">${opts.slice(0,4).map(([f,t,l])=>`<button type="button" data-rq="${esc(key)}~${f}~${t}"${l?' class="last"':''}>${l?`<small>${l}</small>`:''}${f}–${t}</button>`).join('')}</div>`; }
 // ---- a "+ Log" button that is always reachable: brings the log buttons into view when they are below the screen
-function fabSync(){ const f=document.querySelector('.logfab'), a=document.querySelector('#app .adds'); if(!f) return; const nx=a&&a.querySelector('.add.nx'), lb=f.querySelector('b'); if(lb) lb.textContent=nx?nx.textContent.replace(/^[+✓]\s*/,'').replace(/Next$/,'').trim():'Log'; if(fabSync.io){ fabSync.io.disconnect(); fabSync.io=null; }
+function fabSync(){ const f=document.querySelector('.logfab'), a=document.querySelector('#app .adds'); if(!f) return; if(fabSync.io){ fabSync.io.disconnect(); fabSync.io=null; }
   if(!a||S.flow||S.view!=='cal'||GUEST){ f.classList.add('off'); return; }
   fabSync.io=new IntersectionObserver(es=>es.forEach(x=>{ const ok=S.view==='cal'&&!S.flow&&x.target.isConnected; f.classList.toggle('off',!ok||x.intersectionRatio>=.5||x.boundingClientRect.top<0); }),{threshold:[0,.5,1]}); fabSync.io.observe(a); }
 
@@ -1609,7 +1662,7 @@ function renderCal(){
   <div class="dayhead" id="dayhead"><button class="mini" data-dnav="-1" aria-label="Previous day">‹</button><span>${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}</span><button class="mini" data-dnav="1" aria-label="Next day">›</button></div>
   ${S.sel!==todayStr?'<button class="btn ghost gotoday" data-act="gotoday">Back to today</button>':''}
   ${dayNotesHTML()}${GUEST?'':simDayHTML(S.sel)}
-  ${GUEST?'':lvlChip()}${GUEST?'':dayGuide(CT.filter(tplShown))}<div class="adds"${GUEST?' style="display:none"':''}>${(()=>{ const L=CT.filter(tplShown), D=dayDone(), nx=GUEST?null:nextTpl(L); return L.map(t=>`<button class="add${D.has(t.id)?' did':''}${nx&&nx.id===t.id?' nx':''}" style="--c:${t.color};color:${inkFor(t.color)}" data-add="${t.id}">${D.has(t.id)?'✓':'+'} ${esc(t.name)}${nx&&nx.id===t.id?'<em>Next</em>':''}</button>`).join(''); })()}</div>
+  ${GUEST?'':lvlChip()}<div class="adds"${GUEST?' style="display:none"':''}>${CT.filter(tplShown).map(t=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)}" data-add="${t.id}">+ ${esc(t.name)}</button>`).join('')}</div>
   ${sel.length?sel.map(entryHTML).join(''):`<div class="empty">${GUEST?'Nothing logged on this day.':TLV()<=2?'<b>Nothing logged yet</b><br>Tap one of the buttons above. It takes about a minute.':'Nothing logged yet. Pick a log type above to start.'}</div>`}`;
   app.querySelectorAll('textarea').forEach(grow);
 }
@@ -1859,17 +1912,18 @@ const moodWords=v=>!v?[]:v>=5?[...MOODW.hp,...MOODW.lp,...MOODW.n]:v<=3?[...MOOD
 const buzz=()=>{ try{ if(navigator.vibrate) navigator.vibrate(8); }catch(e){} };
 const flowItems=e=>e.items.filter(it=>itemLv(e,it)<=TLV()&&(TLV()>=2||compsList(it).some(c=>c!=='T')));
 function flowKind(it){ const cs=compsList(it), n=String(it.name||'');
-  if(cs.includes('Q')||(/emoc|emotion|nuotaik|mood|jausm/i.test(n)&&cs.some(c=>'ASV'.includes(c)))) return 'mood';
+  if(/emoc|emotion|nuotaik|mood|jausm/i.test(n)&&cs.some(c=>'ASV'.includes(c))) return 'mood';
+  if(cs.includes('Q')) return 'gen';
   if(cs.includes('X')) return 'x';
   if(cs.includes('E')) return 'load';
   if(cs.some(c=>'RMZPGXWBLFNDKYC'.includes(c))) return 'gen';
   if(cs.some(c=>'ASV'.includes(c))) return 'scale';
   return 'gen'; }
 const smOf=it=>Object.assign({v:null,w:[],imp:[],ow:'',oi:''},(it.type==='mix'&&it.val&&it.val.SM&&typeof it.val.SM==='object')?it.val.SM:{});
-function moodSave(key,patch){ const {k,it}=itemAt(key); if(!it) return; const sm=Object.assign(smOf(it),patch); setP(it,'SM',sm); const cs=compsList(it), v=sm.v;
-  if(v){ if(cs.includes('Q')){ const ar=sm.w.map(w=>MOODAR[w]).filter(x=>x!=null); setP(it,'Q',Object.assign(objP(it,'Q'),{p:Math.round((v-1)/6*100),e:Math.round(ar.length?meanOf(ar):50),w:sm.w.join(', ')})); }
-    else if(cs.includes('A')) setP(it,'A',v); else if(cs.includes('S')) setP(it,'S',Math.round(1+(v-1)*1.5));
-    else if(cs.includes('V')){ const a=arrP(it,'V'), n=Math.round(1+(v-1)*1.5); if(a.length) a[a.length-1].n=n; else a.push({id:rid(),at:nowHM(),n,note:''}); setP(it,'V',a); } }
+function moodSave(key,patch){ const {k,it}=itemAt(key); if(!it) return; const sm=Object.assign(smOf(it),patch); delete sm.n; setP(it,'SM',sm); const cs=compsList(it);
+  if(patch.n!=null){ const n=+patch.n; delete sm.n; setP(it,'SM',sm);
+    if(cs.includes('A')) setP(it,'A',n); else if(cs.includes('S')) setP(it,'S',n);
+    else if(cs.includes('V')){ const a=arrP(it,'V'); if(a.length) a[a.length-1].n=n; else a.push({id:rid(),at:nowHM(),n,note:''}); setP(it,'V',a); } }
   saveMonth(k); }
 const smList=(L,o)=>L.map(x=>x==='Other'&&String(o||'').trim()?`“${String(o).trim()}”`:x).join(', ');
 const smText=it=>{ const m=smOf(it); if(!m.v&&!m.w.length&&!m.imp.length) return ''; return [m.v?`${MOODL[m.v].toLowerCase()} (${m.v}/7)`:'',m.w.length?`words: ${smList(m.w,m.ow)}`:'',m.imp.length?`biggest impact: ${smList(m.imp,m.oi)}`:''].filter(Boolean).join('; '); };
@@ -1884,11 +1938,16 @@ const FLAME='<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
 function weekStrip(){ if(GUEST) return ''; const W=weekInfo(), L=['Pr','An','Tr','Kt','Pn','Š','S'];
   return `<div class="wkstrip"><div class="wkdays">${W.days.map((d,i)=>`<span class="wkd${W.has[i]?' on':''}${d===todayStr?' wtd':''}${d===todayStr&&!W.has[i]?' todo':''}" style="--i:${i}"><i>${W.has[i]?'<svg viewBox="0 0 12 12" width="10" height="10"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}</i><small>${L[i]}</small></span>`).join('')}</div>
     <div class="wkn"><b><span data-cnt="${W.n}">${W.n}</span><small>/7</small></b><span>this week</span>${W.streak>=1?`<em>${FLAME}${W.streak} wk streak</em>`:''}</div></div>`; }
-function flowStart(eid){ S.flow={eid,i:0,sub:0,dir:1,shown:''}; S.open=null; buzz(); render(); scrollTo(0,0); }
+function flowStart(eid){ S.flow={eid,i:0,sub:0,dir:1,shown:'',ov:true}; S.open=null; buzz(); render(); scrollTo(0,0); }
 function flowNext(){ const F=S.flow; if(!F) return; const {e}=findEntry(F.eid); if(!e) return; const I=flowItems(e), it=I[F.i];
+  if(F.ov){ const j=I.findIndex(x=>!filledItem(x)); flowGo(j<0?0:j); return; }
   const bed=document.querySelector('.flow [data-bed]'); if(bed){ const ek=bed.dataset.bed, dirty=()=>anyUnsaved().some(K=>K.startsWith(ek+'|')); if(dirty()){ saveBody(ek); if(dirty()) return; } }
-  if(it&&flowKind(it)==='mood'&&F.sub<2&&(F.sub>0||smOf(it).v)) F.sub++; else { F.i++; F.sub=0; } F.dir=1; buzz(); render(); scrollTo(0,0); }
-function flowBack(){ const F=S.flow; if(!F) return; if(F.sub>0) F.sub--; else if(F.i>0){ F.i--; F.sub=0; } F.dir=-1; buzz(); render(); scrollTo(0,0); }
+  flowGhost(1); if(it&&flowKind(it)==='mood'&&TLV()>=2&&F.sub<2&&(F.sub>0||smOf(it).v)) F.sub++; else { F.i++; F.sub=0; } F.dir=1; buzz(); render(); scrollTo(0,0); }
+function flowGo(j){ const F=S.flow; if(!F) return; flowGhost(1); F.ov=false; F.i=Math.max(0,j); F.sub=0; F.dir=1; buzz(); render(); scrollTo(0,0); }
+// the old question slides away while the new one slides in (both move together, nothing jumps)
+function flowGhost(dir){ const c=document.querySelector('.flow .flcard, .flow .fovl'); if(!c||matchMedia('(prefers-reduced-motion: reduce)').matches) return; const r=c.getBoundingClientRect(), g=c.cloneNode(true);
+  g.classList.remove('inf','inb'); g.classList.add('flghost'); g.style.cssText=`position:fixed;left:${r.left}px;top:${r.top}px;width:${r.width}px;margin:0;z-index:4;pointer-events:none;--gx:${dir<0?'40px':'-40px'}`; document.body.appendChild(g); setTimeout(()=>g.remove(),260); }
+function flowBack(){ const F=S.flow; if(!F) return; if(F.ov) return; if(F.i===0&&!F.sub){ F.ov=true; render(); return; } flowGhost(-1); if(F.sub>0) F.sub--; else if(F.i>0){ F.i--; F.sub=0; } F.dir=-1; buzz(); render(); scrollTo(0,0); }
 function tilesHTML(attr,from,to,cur,cls){ const B=[]; for(let n=from;n<=to;n++) B.push(`<button class="fltile${cur===n?' on':''}" data-${attr}|${n}" aria-pressed="${cur===n}">${n}</button>`); return `<div class="fltiles ${cls||''}">${B.join('')}</div>`; }
 function flowScale(e,it,key){ const cs=compsList(it), c=cs.find(c=>c==='A')||cs.find(c=>c==='S')||'V', sl=sleepLike(it.name);
   let cur=null; if(c==='A') cur=a7(getP(it,'A')); else if(c==='S') cur=getP(it,'S'); else { const a=arrP(it,'V'); cur=a.length?a[a.length-1].n:null; }
@@ -1900,18 +1959,18 @@ function flowScale(e,it,key){ const cs=compsList(it), c=cs.find(c=>c==='A')||cs.
 function flowLoad(e,it,key,fid){ const o=objP(it,'E'), ef=typeof o.e==='number'?Math.round(o.e):null, cs=compsList(it), m=parseFloat(o.m);
   const B=n=>`<button class="fltile${ef===n?' on':''}${n===5?' mid':''}" data-flld="${key}|${n}" aria-pressed="${ef===n}">${n-5>0?'+'+(n-5):n-5}</button>`;
   return `<p class="flsub">How hard was the whole session? 0 = a normal session</p>
-    <div class="fltiles tl">${[0,1,2,3,4,5].map(B).join('')}</div><div class="fltiles tl tl2">${[6,7,8,9,10].map(B).join('')}</div>
+    <div class="fltiles t11">${[0,1,2,3,4,5,6,7,8,9,10].map(B).join('')}</div>
     <div class="flends"><span>Much easier</span><span>Much harder</span></div>${ef!=null?`<p class="flword">Effort ${ef}/10${ANCH.effort[ef]?' · '+ANCH.effort[ef]:''}</p>`:''}
     <p class="flsub" style="margin-top:22px">How long?</p>
     <div class="flmin"><button class="flstep" data-flm="${key}|-15" aria-label="15 minutes less">−</button><label><input type="number" inputmode="numeric" min="0" max="600" data-k="${key}" data-c="E" data-p="m" value="${esc(o.m??'')}" placeholder="0" aria-label="Minutes"><span>min</span></label><button class="flstep" data-flm="${key}|15" aria-label="15 minutes more">+</button></div>
     <div class="flchips">${[60,90,120,150].map(v=>`<button class="${m===v?'on':''}" data-flm="${key}|=${v}">${v} min</button>`).join('')}</div>
-    <p class="flload" id="ef${e.id}${it.fid}">${loadText(o)}</p>
-    ${cs.filter(c=>c!=='E'&&TLV()>=2).map(c=>{ const h=compHTML(e,it,c,key,fid); return h?`<div class="flmore comp c${c}">${h}</div>`:''; }).join('')}`; }
-function flowMood(e,it,key,sub){ const m=smOf(it), v=m.v;
+    <p class="flload lvtxt" id="ef${e.id}${it.fid}">${loadText(o)}</p>
+    ${cs.filter(c=>false).map(c=>{ const h=compHTML(e,it,c,key,fid); return h?`<div class="flmore comp c${c}">${h}</div>`:''; }).join('')}`; }
+function flowMood(e,it,key,sub){ const m=smOf(it), v=m.v, N=moodN(it), cur=moodRaw(it), f=cur!=null?(cur-1)/(N-1):.5;
   if(sub===0) return `<p class="flsub">How do you feel right now?</p>
-    <div class="orb${v?'':' idle'}" id="orb" style="--oc:${MOODC[v||4]};--v:${v?(v-1)/6:.5}">${Array.from({length:10},(_,i)=>`<i style="--r:${i*36}deg"></i>`).join('')}<b></b></div>
-    <p class="orbl" id="orbl">${v?MOODL[v]:'Slide to choose'}</p>
-    <input type="range" class="mrange" min="1" max="7" step="1" value="${v||4}" data-flmood="${key}" aria-label="How you feel, from very unpleasant to very pleasant">
+    <div class="orb${cur!=null?'':' idle'}" id="orb" style="--oc:${moodColor(f)};--v:${f.toFixed(3)}">${Array.from({length:10},(_,i)=>`<i style="--r:${i*36}deg"></i>`).join('')}<b></b></div>
+    <p class="orbl" id="orbl">${cur!=null?`${MOODL[moodLvl(f)]} <small>${cur}/${N}</small>`:'Slide to choose'}</p>
+    <input type="range" class="mrange" min="1" max="${N}" step="0.01" value="${cur!=null?cur:(N+1)/2}" data-flmood="${key}" data-n="${N}" aria-label="How you feel, from very unpleasant to very pleasant, 1 to ${N}">
     <div class="flends"><span>Very unpleasant</span><span>Very pleasant</span></div>`;
   if(sub===1) return `<p class="flsub">What describes this feeling best? <small>up to 3</small></p>${v?`<p class="mtag" style="--oc:${MOODC[v]}"><i></i>${MOODL[v]}</p>`:''}
     <div class="flchips big">${moodWords(v).map(([w])=>w).concat('Other').map((w,i)=>`<button class="${m.w.includes(w)?'on':''}" style="--i:${i}" data-flw="${key}|${w}" aria-pressed="${m.w.includes(w)}">${w==='Other'?'Other…':w}</button>`).join('')}</div>
@@ -1960,28 +2019,49 @@ function renderFlow(){ const F=S.flow, {e}=findEntry(F.eid); if(!e){ S.flow=null
   if(F.i>=N){ const W=weekInfo();
     app.innerHTML=`<div class="flow fdone" style="--fc:${tplColor(e)}"><div class="fdring"><svg viewBox="0 0 120 120" width="150" height="150" aria-hidden="true"><circle cx="60" cy="60" r="50" class="rbg"/><circle cx="60" cy="60" r="50" class="rfg"/><path d="M40 61l14 14 27-30" class="rck"/></svg></div>
       ${(()=>{ const pb=isPerfE(e)?testPBs(e):[]; return isPerfE(e)?`<h2>${pb.length?'New personal best!':'Test saved'}</h2><p class="flsub">${esc(tplName(e).replace(/^\+*\s*/,''))}</p>${pb.length?`<div class="pbbox">${pb.map(x=>`<b>${esc(x)}</b>`).join('')}</div>`:''}${e.items.filter(it=>compsList(it).includes('X')&&xcfg(e,it).role!=='bw').map(it=>`<p class="flload">${xResText(e,it).split('Last time')[0]}</p>`).join('')}`:`<h2>Check-in done</h2><p class="flsub">${esc(tplName(e))} · ${I.filter(filledItem).length} of ${N} filled</p>${insightsHTML(e)}${weekStrip()}`; })()}
-      <button class="btn flbig" data-flclose="1">${isPerfE(e)?'Done':'Back to calendar'}</button><button class="btn ghost" data-flall="${e.id}">See everything</button></div>`;
+      <button class="btn flbig" data-flclose="1">${isPerfE(e)?'Done':'Back to calendar'}</button><button class="btn ghost" data-flov="1">See or change answers</button></div>`;
     if(anim){ countUp(app); setTimeout(()=>{ const f=app.querySelector('.fdring'); if(!f) return; const cols=['#FDB913','#006A44','#C1272D',tplColor(e),'#fff','#6EC8FF']; for(let i=0;i<28;i++){ const sp=document.createElement('span'), a=Math.random()*Math.PI*2, d=70+Math.random()*130; sp.className='spk cf'+(i%3); sp.style.cssText=`--x:75px;--y:75px;--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d+40}px;--c:${cols[i%cols.length]};--rot:${Math.round(Math.random()*720-360)}deg`; f.appendChild(sp); setTimeout(()=>sp.remove(),1300); } buzz(); chime(); },420); }
     return; }
-  const it=I[F.i], kind=flowKind(it), key=`${e.id}|${it.fid}`, fid='f'+e.id+it.fid, K=helpKeysFor(e,it); let filled=kind==='mood'?(F.sub===0?!!smOf(it).v:F.sub===1?smOf(it).w.length>0:smOf(it).imp.length>0):filledItem(it)||(compsList(it).includes('M')&&anyUnsaved().length>0);
+  if(F.ov){ const first=I.findIndex(x=>!filledItem(x)), any=I.some(filledItem);
+    app.innerHTML=`<div class="flow fov" style="--fc:${tplColor(e)}"><div class="fltop"><button class="flx" data-flx="1" aria-label="Close check-in">✕</button><span class="fovn">${I.filter(filledItem).length}/${N}</span></div>
+      <p class="flk">${esc(tplName(e))}</p><ol class="fovl${anim?' in':''}">${I.map((x,j)=>{ const f=filledItem(x), sm=f?itemSummary(x):''; return `<li style="--i:${j}"><button data-flgo="${j}"><span class="fovi${f?' on':''}">${f?'✓':j+1}</span><span class="fovt"><b>${esc(x.name)}</b>${sm?`<small>${esc(sm)}</small>`:''}</span><span class="fova">›</span></button></li>`; }).join('')}</ol>
+      <div class="flnav"><button class="btn flbig" data-fln="1">${first<0?'Check answers':any?'Continue':'Start'}</button></div></div>`; return; }
+  const it=I[F.i], kind=flowKind(it), key=`${e.id}|${it.fid}`, fid='f'+e.id+it.fid, K=helpKeysFor(e,it); let filled=kind==='mood'?(F.sub===0?moodRaw(it)!=null:F.sub===1?smOf(it).w.length>0:smOf(it).imp.length>0):filledItem(it)||(compsList(it).includes('M')&&anyUnsaved().length>0);
   if(anim) F.wasEmpty=filled?'':mark; else if(F.wasEmpty&&F.wasEmpty!==mark) F.wasEmpty='';
   const body=kind==='mood'?flowMood(e,it,key,F.sub):kind==='scale'?flowScale(e,it,key):kind==='load'?flowLoad(e,it,key,fid):kind==='x'?flowX(e,it,key,fid):flowGen(e,it,key,fid);
   app.innerHTML=`<div class="flow" style="--fc:${tplColor(e)}">
-    <div class="fltop"><button class="flx" data-flx="1" aria-label="Close check-in">✕</button><div class="flprog" aria-hidden="true">${I.map((_,j)=>`<i class="${j<F.i?'d':j===F.i?'c':''}"></i>`).join('')}</div><span class="flct">${F.i+1}/${N}</span></div>
+    <div class="fltop"><button class="flx" data-flx="1" aria-label="Close check-in">✕</button><div class="flprog" aria-hidden="true">${I.map((_,j)=>`<i class="${j<F.i?'d':j===F.i?'c':''}"></i>`).join('')}</div><button class="flct" data-flov="1" aria-label="See all questions">${F.i+1}/${N} <i>☰</i></button></div>
     <div class="flcard${anim?(F.dir<0?' inb':' inf'):''}"><p class="flk">${esc(tplName(e))}</p><h2 class="flq">${esc(it.name)}${K.length?' '+helpBtn(K.join(',')):''}</h2>${body}</div>
-    <div class="flnav"><button class="btn ghost" data-flb="1"${F.i===0&&!F.sub?' disabled':''}>Back</button><button class="btn${filled?(F.wasEmpty===mark?' ready':''):' ghost'}" data-fln="1">${filled?(F.i===N-1&&!(kind==='mood'&&F.sub<2)?'Done':'Next'):'Skip'}</button></div></div>`;
+    <div class="flnav"><button class="btn ghost" data-flb="1"${F.i===0&&!F.sub?' disabled':''}>Back</button><button class="btn${filled?(F.wasEmpty===mark?' ready':''):' ghost'}" data-fln="1">${filled?(F.i===N-1&&!(kind==='mood'&&TLV()>=2&&F.sub<2)?'Done':'Next'):'Skip'}</button></div></div>`;
   app.querySelectorAll('textarea').forEach(grow); const ot=app.querySelector('.floth'); if(ot&&anim===false&&!ot.value) try{ ot.focus({preventScroll:false}); }catch(e){}
   if(anim) app.querySelectorAll('.flcard .fltile,.flcard .flchips button').forEach((b,i)=>b.style.setProperty('--i',i)); }
-function moodLive(t){ const v=+t.value, o=document.getElementById('orb'), l=document.getElementById('orbl'); if(o){ o.classList.remove('idle'); o.style.setProperty('--oc',MOODC[v]); o.style.setProperty('--v',(v-1)/6); } if(l) l.textContent=MOODL[v]; if(t.dataset.lastv!==String(v)){ t.dataset.lastv=v; buzz(); } }
+
+// ---- feelings slider: the same scale as the field (1–7 or 1–10), so the saved number is exactly what the normal log saves
+const moodN=it=>compsList(it).includes('A')?7:10;
+function moodRaw(it){ const cs=compsList(it); if(cs.includes('A')) return a7(getP(it,'A')); if(cs.includes('S')){ const v=getP(it,'S'); return typeof v==='number'?v:null; } if(cs.includes('V')){ const a=arrP(it,'V'); return a.length?a[a.length-1].n:null; } return null; }
+const moodLvl=f=>Math.max(1,Math.min(7,Math.round(f*6)+1));
+function moodColor(f){ const L=MOODC.slice(1).map(h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16))), x=Math.max(0,Math.min(1,f))*(L.length-1), i=Math.min(L.length-2,Math.floor(x)), t=x-i;
+  return '#'+L[i].map((c,k)=>Math.round(c+(L[i+1][k]-c)*t).toString(16).padStart(2,'0')).join(''); }
+let ML=null;
+function moodLive(t){ if(ML) return; ML=requestAnimationFrame(()=>{ ML=null; const N=+t.dataset.n||7, val=+t.value, f=(val-1)/(N-1), o=document.getElementById('orb'), l=document.getElementById('orbl'), n=Math.round(val);
+  if(o){ o.classList.remove('idle'); o.classList.add('live'); o.style.setProperty('--oc',moodColor(f)); o.style.setProperty('--v',f.toFixed(3)); }
+  if(l) l.innerHTML=`${MOODL[moodLvl(f)]} <small>${n}/${N}</small>`; if(t.dataset.lastv!==String(n)){ t.dataset.lastv=n; buzz(); } }); }
+function moodCommit(t){ const N=+t.dataset.n||7, from=+t.value, n=Math.round(from), o=document.getElementById('orb'); if(o) o.classList.remove('live');
+  const t0=performance.now(), D=180; const step=now=>{ const k=Math.min(1,(now-t0)/D), e=1-Math.pow(1-k,3); t.value=from+(n-from)*e; moodLive(t); if(k<1) requestAnimationFrame(step); else { moodSave(t.dataset.flmood,{v:moodLvl((n-1)/(N-1)),n}); const nb=document.querySelector('.flow [data-fln]'); if(nb&&nb.textContent==='Skip'){ nb.textContent='Next'; nb.classList.remove('ghost'); nb.classList.add('ready'); } } };
+  requestAnimationFrame(step); }
+
 function flowClick(ds,b){ if(!S.flow&&!ds.flstart&&!ds.rgq&&!ds.fltimer) return false;
   if(ds.flstart){ flowStart(ds.flstart); return true; }
   if(ds.flx||ds.flclose){ S.flow=null; render(); scrollTo(0,0); return true; }
   if(ds.flall){ S.flow=null; S.open=ds.flall; render(); const el=document.querySelector(`[data-toggle="${ds.flall}"]`); if(el) el.scrollIntoView({block:'start'}); return true; }
   if(ds.fln){ flowNext(); return true; } if(ds.flb){ flowBack(); return true; }
+  if(ds.flgo!=null){ flowGo(+ds.flgo); return true; } if(ds.flov){ flowGhost(-1); S.flow.ov=true; render(); scrollTo(0,0); return true; }
   if(ds.flsc){ const [key,c,n]=splitTail(ds.flsc,2), {k,it}=itemAt(key); if(!it) return true; const v=+n; let off=false;
     if(c==='A'){ off=a7(getP(it,'A'))===v; setP(it,'A',off?null:v); } else if(c==='S'){ off=getP(it,'S')===v; setP(it,'S',off?null:v); }
     else { const a=arrP(it,'V'); if(a.length) a[a.length-1].n=v; else a.push({id:rid(),at:nowHM(),n:v,note:''}); setP(it,'V',a); }
-    saveMonth(k); buzz(); render(); if(!off&&!(compsList(it).includes('T')&&TLV()>=2)) setTimeout(()=>{ if(S.flow&&S.flow.shown===`${S.flow.i}.${S.flow.sub}`) flowNext(); },360); return true; }
+    saveMonth(k); buzz(); const mk0=S.flow.shown; document.querySelectorAll('.flow [data-flsc]').forEach(x=>{ const on=!off&&x.dataset.flsc===ds.flsc; x.classList.toggle('on',on); x.setAttribute('aria-pressed',on); });
+    const nb=document.querySelector('.flow [data-fln]'); if(nb){ nb.textContent=off?'Skip':'Next'; nb.classList.toggle('ghost',off); }
+    if(!off&&!(compsList(it).includes('T')&&TLV()>=2)) setTimeout(()=>{ if(S.flow&&S.flow.shown===mk0) flowNext(); },420); else setTimeout(()=>{ if(S.flow&&S.flow.shown===mk0) render(); },300); return true; }
   if(ds.fltimer){ hangTimer(+ds.fltimer||7); return true; }
   if(ds.flxs){ const [key,k,d]=splitTail(ds.flxs,2), {k:mk,e,it}=itemAt(key); if(!it) return true; const o=objP(it,'X'), cur=parseFloat(o[k]); const nv=d[0]==='='?+d.slice(1):Math.max(0,Math.round(((isNaN(cur)?(parseFloat((prevX(e,it,S.sel)||{it:{}}).it&&xVals(prevX(e,it,S.sel).it)[k])||0):cur)+(+d))*10)/10);
     o[k]=String(nv); setP(it,'X',o); saveMonth(mk); buzz(); render(); return true; }
@@ -3718,7 +3798,7 @@ app.addEventListener('input',ev=>{
 });
 app.addEventListener('change',ev=>{
   if(GUEST) return;
-  { const t=ev.target; if(t.dataset&&t.dataset.flmood!==undefined){ moodSave(t.dataset.flmood,{v:+t.value}); render(); return; } }
+  { const t=ev.target; if(t.dataset&&t.dataset.flmood!==undefined){ moodCommit(t); return; } }
   if(S.view==='ath'&&atChange(ev.target)) return;
   if(simChange(ev.target)) return;
   const t=ev.target, ds=t.dataset, T=S.cfg.templates;
@@ -4344,9 +4424,12 @@ function qWeekHTML(e,it){ const cnt={red:0,yellow:0,blue:0,green:0}; let n=0; fo
 let QD=null;
 const qFromXY=(el,x,y)=>{ const r=el.getBoundingClientRect(), f=v=>qSnap((Math.max(0,Math.min(1,(v-0.0556)/0.8889)))*100); return {p:f((x-r.left)/r.width),e:f(1-(y-r.top)/r.height)}; };
 function qPaint(el,o){ let d=el.querySelector('.mmdot'); if(!d){ d=document.createElement('i'); d.className='mmdot'; el.appendChild(d); } d.style.left=(5.555+o.p/100*88.89)+'%'; d.style.top=(100-(5.555+o.e/100*88.89))+'%'; }
-app.addEventListener('pointerdown',ev=>{ if(GUEST) return; const el=ev.target.closest&&ev.target.closest('[data-qpad]'); if(!el||el.classList.contains('ro')) return; ev.preventDefault(); try{ el.setPointerCapture(ev.pointerId); }catch(e){} QD={el,id:ev.pointerId,o:qFromXY(el,ev.clientX,ev.clientY)}; el.classList.add('drag'); qPaint(el,QD.o); });
-app.addEventListener('pointermove',ev=>{ if(!QD||ev.pointerId!==QD.id) return; ev.preventDefault(); QD.o=qFromXY(QD.el,ev.clientX,ev.clientY); qPaint(QD.el,QD.o); });
-const qEnd=ev=>{ if(!QD||ev.pointerId!==QD.id) return; const q=QD; QD=null; q.el.classList.remove('drag'); if(ev.type==='pointercancel'){ render(); return; } const {k,it}=itemAt(q.el.dataset.qpad); if(!it) return; const o=objP(it,'Q'); o.p=q.o.p; o.e=q.o.e; const z=qZone(o); if(o.w&&!QZ[z][2].includes(o.w)) o.w=''; setP(it,'Q',o); saveMonth(k); render(); };
+app.addEventListener('pointerdown',ev=>{ if(GUEST) return; const el=ev.target.closest&&ev.target.closest('[data-qpad]'); if(!el||el.classList.contains('ro')) return; ev.preventDefault(); try{ el.setPointerCapture(ev.pointerId); }catch(e){} QD={el,id:ev.pointerId,o:qFromXY(el,ev.clientX,ev.clientY),raw:qFree(el,ev.clientX,ev.clientY)}; el.classList.add('glide'); qPaint(el,QD.raw); setTimeout(()=>{ el.classList.remove('glide'); el.classList.add('drag'); },160); });
+const qFree=(el,x,y)=>{ const r=el.getBoundingClientRect(), f=v=>Math.max(0,Math.min(100,(v-0.0556)/0.8889*100)); return {p:f((x-r.left)/r.width),e:f(1-(y-r.top)/r.height)}; };
+let QR=null;
+app.addEventListener('pointermove',ev=>{ if(!QD||ev.pointerId!==QD.id) return; ev.preventDefault(); const ce=ev.getCoalescedEvents?ev.getCoalescedEvents():[], last=ce.length?ce[ce.length-1]:ev; QD.raw=qFree(QD.el,last.clientX,last.clientY); QD.o=qFromXY(QD.el,last.clientX,last.clientY);
+  if(!QR) QR=requestAnimationFrame(()=>{ QR=null; if(QD&&QD.raw) qPaint(QD.el,QD.raw); }); });
+const qEnd=ev=>{ if(!QD||ev.pointerId!==QD.id) return; const q=QD; QD=null; if(QR){ cancelAnimationFrame(QR); QR=null; } q.el.classList.remove('drag'); q.el.classList.add('glide'); if(ev.type==='pointercancel'){ render(); return; } qPaint(q.el,q.o); const {k,it}=itemAt(q.el.dataset.qpad); if(!it) return; const o=objP(it,'Q'); o.p=q.o.p; o.e=q.o.e; const z=qZone(o); if(o.w&&!QZ[z][2].includes(o.w)) o.w=''; setP(it,'Q',o); saveMonth(k); buzz(); setTimeout(()=>{ if(!QD) render(); },270); };
 app.addEventListener('pointerup',qEnd); app.addEventListener('pointercancel',qEnd);
 function qpadSet(){}
 app.addEventListener('keydown',ev=>{ if(GUEST) return; const b=ev.target.closest&&ev.target.closest('[data-qpad]'); if(!b) return; const st={ArrowLeft:[-12.5,0],ArrowRight:[12.5,0],ArrowUp:[0,12.5],ArrowDown:[0,-12.5]}[ev.key]; if(!st) return; ev.preventDefault();
