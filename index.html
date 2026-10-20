@@ -959,6 +959,20 @@ button{transition:transform .12s ease,background-color .18s ease,color .18s ease
 .atbar{animation:barfill .8s cubic-bezier(.2,.8,.2,1) both;transform-origin:left}
 @media (prefers-reduced-motion:reduce){.enter .grid .day,.enter .mbar i,.enter .lbt i,.card.today .tline i{animation:none}}
 .wkn b span{font-size:inherit;color:inherit;font-weight:inherit}
+
+/* smoother: no grey tap flash, no double-tap zoom delay, GPU-friendly motion */
+html{-webkit-tap-highlight-color:transparent}button,a,input,select,label,.day{touch-action:manipulation}
+.ripbox{position:fixed;overflow:hidden;pointer-events:none;z-index:9998}
+.orb,.orb i,.fltile,.flchips button,.wkd i{will-change:transform}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.22s;animation-timing-function:cubic-bezier(.2,.8,.2,1)}
+.flcard.inf{animation-duration:.32s}.flcard.inb{animation-duration:.32s}
+.fltile,.flchips button,.btn,.add,.flstep,.gchips button,.lvlo,.day,.tabs button{transition:transform .18s cubic-bezier(.2,.8,.2,1),background-color .2s,color .2s,border-color .2s,box-shadow .2s}
+.tabs button:active{transform:scale(.94)}.btn:active{transform:scale(.97)}
+/* feedback box */
+.insbox{width:100%;margin:14px 0 4px;padding:12px 14px;border-radius:16px;background:var(--panel);border:1px solid var(--line);text-align:left;animation:rise .4s .55s ease both}
+.ins{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}.ins:first-of-type{border-top:0}.ins>div{flex:1;min-width:0}.ins b{display:block}.ins span{font-size:.82rem;color:var(--soft)}
+.insl{fill:none;stroke:var(--fct,var(--ink));stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:400;stroke-dashoffset:400;animation:draw 1.1s .7s cubic-bezier(.3,.8,.3,1) forwards}.insd{fill:var(--fct,var(--ink));animation:pop .4s 1.6s both}
+@keyframes draw{to{stroke-dashoffset:0}}.ins em{font-style:normal;font-weight:800;width:20px;text-align:center;color:var(--soft)}.ins em.up{color:var(--pos)}.ins em.dn{color:var(--neg)}
 </style>
 </head>
 <body>
@@ -1740,10 +1754,12 @@ function moodSave(key,patch){ const {k,it}=itemAt(key); if(!it) return; const sm
 const smList=(L,o)=>L.map(x=>x==='Other'&&String(o||'').trim()?`“${String(o).trim()}”`:x).join(', ');
 const smText=it=>{ const m=smOf(it); if(!m.v&&!m.w.length&&!m.imp.length) return ''; return [m.v?`${MOODL[m.v].toLowerCase()} (${m.v}/7)`:'',m.w.length?`words: ${smList(m.w,m.ow)}`:'',m.imp.length?`biggest impact: ${smList(m.imp,m.oi)}`:''].filter(Boolean).join('; '); };
 // this week: which days have a calendar log, and how many weeks in a row had 3 or more (never shown as broken)
-function weekInfo(){ const D=new Set(logDays(S.months)), t=new Date(todayStr+'T12:00'), mon=dAdd(todayStr,-((t.getDay()+6)%7));
+// a day counts when something was really filled in on it, and only up to today (a log made on a future day doesn't tick it)
+function filledDays(){ return cached('FD',()=>{ const D=new Set(); Object.values(S.months).forEach(mo=>{ if(!mo||!mo.key) return; Object.entries(mo.days||{}).forEach(([d,es])=>{ const ds=`${mo.key}-${pad(+d)}`; if(ds<=todayStr&&(es||[]).some(e=>(e.items||[]).some(filledItem))) D.add(ds); }); }); return D; }); }
+function weekInfo(){ const D=filledDays(), t=new Date(todayStr+'T12:00'), mon=dAdd(todayStr,-((t.getDay()+6)%7));
   const days=Array.from({length:7},(_,i)=>dAdd(mon,i)), cnt=w=>Array.from({length:7},(_,i)=>dAdd(mon,i-7*w)).filter(d=>D.has(d)&&d<=todayStr).length;
   let streak=0, w=cnt(0)>=3?0:1; while(w<60&&cnt(w)>=3){ streak++; w++; }
-  return {days,has:days.map(d=>D.has(d)),n:cnt(0),streak}; }
+  return {days,has:days.map(d=>d<=todayStr&&D.has(d)),n:cnt(0),streak}; }
 const FLAME='<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M13.5 1.5s1 3.4-1.3 6.1C10.4 9.7 8 11.4 8 15a4 4 0 0 0 8 0c0-1.7-.8-2.9-1.6-3.8 2.7.9 4.6 3.3 4.6 6.1A7 7 0 0 1 5 17.3c0-4.6 3.3-7 5.4-9.4 2-2.3 3.1-4.4 3.1-6.4z"/></svg>';
 function weekStrip(){ if(GUEST) return ''; const W=weekInfo(), L=['Pr','An','Tr','Kt','Pn','Š','S'];
   return `<div class="wkstrip"><div class="wkdays">${W.days.map((d,i)=>`<span class="wkd${W.has[i]?' on':''}${d===todayStr?' wtd':''}${d===todayStr&&!W.has[i]?' todo':''}" style="--i:${i}"><i>${W.has[i]?'<svg viewBox="0 0 12 12" width="10" height="10"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}</i><small>${L[i]}</small></span>`).join('')}</div>
@@ -1807,11 +1823,21 @@ function testPBs(e){ const out=[]; const t=S.cfg.templates.find(t=>t.id===e.tid)
     (c.lr?[['l','Left'],['r','Right']]:[['v','']]).forEach(([k,l])=>{ if(V[k]==null) return; const ser=metricSeries(t.id,it.fid,k,pct?'pct':'raw'), now=ser.filter(x=>x.d===S.sel).map(x=>x.v), before=ser.filter(x=>x.d<S.sel).map(x=>x.v);
       if(now.length&&before.length&&Math.max(...now)>Math.max(...before)) out.push(`${l?l+' hand':it.name} ${Math.round(Math.max(...now)*10)/10}${pct?'%':c.u?' '+c.u:''}`); }); });
   return out; }
+
+function scaleVal(it){ const cs=compsList(it); if(cs.includes('A')){ const v=a7(getP(it,'A')); return v==null?null:{v,max:7}; } if(cs.includes('S')){ const v=getP(it,'S'); return typeof v==='number'?{v,max:10}:null; }
+  if(cs.includes('V')){ const a=arrP(it,'V'); return a.length?{v:meanOf(a.map(x=>+x.n)),max:10}:null; } return null; }
+function fieldHistory(name,before){ const out=[]; Object.values(S.months).forEach(mo=>Object.entries((mo&&mo.days)||{}).forEach(([d,es])=>{ const ds=`${mo.key}-${pad(+d)}`; if(ds>=before) return;
+  (es||[]).forEach(e=>(e.items||[]).forEach(it=>{ if(nk(it.name)!==nk(name)) return; const x=scaleVal(it); if(x) out.push({d:ds,v:x.v}); })); })); return out.sort((a,b)=>a.d<b.d?-1:1); }
+function insightsHTML(e){ const rows=[]; (e.items||[]).forEach(it=>{ if(rows.length>=3) return; const x=scaleVal(it); if(!x) return; const H=fieldHistory(it.name,S.sel).slice(-13); if(H.length<3) return;
+    const us=meanOf(H.slice(-7).map(h=>h.v)), d=x.v-us, pts=H.map(h=>h.v).concat(x.v), mn=Math.min(...pts), mx=Math.max(...pts), sp=mx-mn||1, W=120, Ht=30;
+    const P=pts.map((v,i)=>`${(i/(pts.length-1)*W).toFixed(1)},${(Ht-3-(v-mn)/sp*(Ht-6)).toFixed(1)}`), L=P[P.length-1].split(',');
+    rows.push(`<div class="ins"><div><b>${esc(it.name)}</b><span>${n1(x.v)} · your usual ${n1(us)}</span></div><svg viewBox="0 0 ${W} ${Ht}" width="${W}" height="${Ht}" aria-hidden="true"><polyline points="${P.join(' ')}" class="insl"/><circle cx="${L[0]}" cy="${L[1]}" r="3.5" class="insd"/></svg><em class="${Math.abs(d)<.5?'':d>0?'up':'dn'}">${Math.abs(d)<.5?'=':d>0?'▲':'▼'}</em></div>`); });
+  return rows.length?`<div class="insbox"><p class="newsl">You vs your usual</p>${rows.join('')}</div>`:''; }
 function renderFlow(){ const F=S.flow, {e}=findEntry(F.eid); if(!e){ S.flow=null; renderCal(); return; } const I=flowItems(e), N=I.length;
   const mark=`${F.i}.${F.sub}`, anim=F.shown!==mark; F.shown=mark;
   if(F.i>=N){ const W=weekInfo();
     app.innerHTML=`<div class="flow fdone" style="--fc:${tplColor(e)}"><div class="fdring"><svg viewBox="0 0 120 120" width="150" height="150" aria-hidden="true"><circle cx="60" cy="60" r="50" class="rbg"/><circle cx="60" cy="60" r="50" class="rfg"/><path d="M40 61l14 14 27-30" class="rck"/></svg></div>
-      ${(()=>{ const pb=isPerfE(e)?testPBs(e):[]; return isPerfE(e)?`<h2>${pb.length?'New personal best!':'Test saved'}</h2><p class="flsub">${esc(tplName(e).replace(/^\+*\s*/,''))}</p>${pb.length?`<div class="pbbox">${pb.map(x=>`<b>${esc(x)}</b>`).join('')}</div>`:''}${e.items.filter(it=>compsList(it).includes('X')&&xcfg(e,it).role!=='bw').map(it=>`<p class="flload">${xResText(e,it).split('Last time')[0]}</p>`).join('')}`:`<h2>Check-in done</h2><p class="flsub">${esc(tplName(e))} · ${I.filter(filledItem).length} of ${N} filled</p>${weekStrip()}`; })()}
+      ${(()=>{ const pb=isPerfE(e)?testPBs(e):[]; return isPerfE(e)?`<h2>${pb.length?'New personal best!':'Test saved'}</h2><p class="flsub">${esc(tplName(e).replace(/^\+*\s*/,''))}</p>${pb.length?`<div class="pbbox">${pb.map(x=>`<b>${esc(x)}</b>`).join('')}</div>`:''}${e.items.filter(it=>compsList(it).includes('X')&&xcfg(e,it).role!=='bw').map(it=>`<p class="flload">${xResText(e,it).split('Last time')[0]}</p>`).join('')}`:`<h2>Check-in done</h2><p class="flsub">${esc(tplName(e))} · ${I.filter(filledItem).length} of ${N} filled</p>${insightsHTML(e)}${weekStrip()}`; })()}
       <button class="btn flbig" data-flclose="1">${isPerfE(e)?'Done':'Back to calendar'}</button><button class="btn ghost" data-flall="${e.id}">See everything</button></div>`;
     if(anim){ countUp(app); setTimeout(()=>{ const f=app.querySelector('.fdring'); if(!f) return; const cols=['#FDB913','#006A44','#C1272D',tplColor(e),'#fff','#6EC8FF']; for(let i=0;i<40;i++){ const sp=document.createElement('span'), a=Math.random()*Math.PI*2, d=70+Math.random()*130; sp.className='spk cf'+(i%3); sp.style.cssText=`--x:75px;--y:75px;--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d+40}px;--c:${cols[i%cols.length]};--rot:${Math.round(Math.random()*720-360)}deg`; f.appendChild(sp); setTimeout(()=>sp.remove(),1300); } buzz(); chime(); },420); }
     return; }
@@ -1847,8 +1873,9 @@ function flowClick(ds,b){ if(!S.flow&&!ds.flstart&&!ds.rgq&&!ds.fltimer) return 
 
 // ---- feel: ripple where you touch, numbers that count up, a soft chime when a check-in is done
 document.addEventListener('pointerdown',ev=>{ const b=ev.target.closest&&ev.target.closest('.fltile,.flchips button,.flstep,.btn,.add,.gchips button,.lvlo,.xtimer,.day'); if(!b||b.disabled) return;
-  const r=b.getBoundingClientRect(), d=Math.max(r.width,r.height)*1.6, sp=document.createElement('span'); sp.className='rip'; sp.style.cssText=`width:${d}px;height:${d}px;left:${ev.clientX-r.left-d/2}px;top:${ev.clientY-r.top-d/2}px`;
-  if(getComputedStyle(b).position==='static') b.style.position='relative'; b.style.overflow='hidden'; b.appendChild(sp); setTimeout(()=>sp.remove(),600); },{passive:true});
+  const r=b.getBoundingClientRect(), d=Math.max(r.width,r.height)*1.6, cs=getComputedStyle(b), box=document.createElement('div'), sp=document.createElement('span');
+  box.className='ripbox'; box.style.cssText=`left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;border-radius:${cs.borderRadius};color:${cs.color}`;
+  sp.className='rip'; sp.style.cssText=`width:${d}px;height:${d}px;left:${ev.clientX-r.left-d/2}px;top:${ev.clientY-r.top-d/2}px`; box.appendChild(sp); document.body.appendChild(box); setTimeout(()=>box.remove(),650); },{passive:true});
 function countUp(root){ (root||document).querySelectorAll('[data-cnt]').forEach(el=>{ const to=parseFloat(el.dataset.cnt), dec=(String(el.dataset.cnt).split('.')[1]||'').length, suf=el.dataset.suf||''; if(isNaN(to)) return; const t0=performance.now(), D=700;
   const step=t=>{ const k=Math.min(1,(t-t0)/D), e=1-Math.pow(1-k,3); el.textContent=(to*e).toFixed(dec)+suf; if(k<1) requestAnimationFrame(step); }; requestAnimationFrame(step); }); }
 function chime(){ try{ const A=simAudio(); if(!A) return; [[784,0],[1046,.11],[1318,.22]].forEach(([f,t])=>{ const g=A.createGain(), o=A.createOscillator(); o.type='sine'; o.frequency.value=f; o.connect(g); g.connect(A.destination); g.gain.setValueAtTime(0,A.currentTime+t); g.gain.linearRampToValueAtTime(.12,A.currentTime+t+.02); g.gain.exponentialRampToValueAtTime(.001,A.currentTime+t+.5); o.start(A.currentTime+t); o.stop(A.currentTime+t+.55); }); }catch(e){} }
@@ -3435,7 +3462,7 @@ app.addEventListener('click',async ev=>{
   if(ds.range){ S.st.range=+ds.range; S.st.openF=null; render(); return; }
   if(ds.finding!==undefined){ S.st.openF=S.st.openF===+ds.finding?null:+ds.finding; render(); return; }
   if(ds.act==='ai'){ runAI(); return; }
-  if(ds.tab){ S.view=ds.tab; S.open=null; render(); scrollTo(0,0); if(ds.tab==='set') ensureAll(); return; }
+  if(ds.tab){ const go=()=>{ S.view=ds.tab; S.open=null; render(); scrollTo(0,0); }; if(document.startViewTransition&&!matchMedia('(prefers-reduced-motion: reduce)').matches) document.startViewTransition(go); else go(); if(ds.tab==='set') ensureAll(); return; }
   if(ds.htest){ const [kind,i]=ds.htest.split('|'); await loadAll(); const g=goalVar(dataset(120))||goalVar(dataset(0)); if(!g){ toast('Add a 1–10 score first'); return; }
     if(H().filter(x=>x.status==='testing').length>=3){ toast('Finish a test first'); return; }
     if(kind==='ss'){ const s=(S.st.spots||[])[+i]; if(s) startHyp(newHypFromSpot(s,g)); } else { const x=(S.coach.ideas||[])[+i]; if(x) startHyp(newHabitHyp(x,g)); } return; }
