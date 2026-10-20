@@ -1128,33 +1128,33 @@ html,body{overscroll-behavior-y:none}
 
 /* ===== check-in as one page: header + rows that open in place ===== */
 .sheet{padding-bottom:120px}
-.shtop{position:sticky;top:8px;z-index:6;display:flex;align-items:center;gap:12px;padding:14px 14px 14px 10px;margin:4px 0 14px;border-radius:22px;color:#fff;
+.cktop{position:sticky;top:8px;z-index:6;display:flex;align-items:center;gap:12px;padding:14px 14px 14px 10px;margin:4px 0 14px;border-radius:22px;color:#fff;
   background:linear-gradient(135deg,color-mix(in srgb,var(--fc) 92%,#fff) 0%,var(--fc) 45%,color-mix(in srgb,var(--fc) 62%,#000) 100%);box-shadow:0 10px 30px color-mix(in srgb,var(--fc) 35%,transparent),inset 0 1px 0 rgba(255,255,255,.25);overflow:hidden}
-.shtop::after{content:"";position:absolute;inset:-40% -10% auto auto;width:60%;height:180%;background:radial-gradient(closest-side,rgba(255,255,255,.22),transparent);pointer-events:none}
-.sheet.in .shtop{animation:shdrop .45s cubic-bezier(.16,1,.3,1) both}@keyframes shdrop{from{opacity:0;transform:translate3d(0,-14px,0) scale(.97)}}
-.shx{flex:0 0 auto;width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:1.05rem;font-weight:800}
-.shtt{flex:1;min-width:0}.shtt small{display:block;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
-.shtt h1{margin:2px 0 0;font-size:1.6rem;line-height:1.05;color:#fff;border:0;padding:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 2px rgba(0,0,0,.2)}
-.shring{position:relative;flex:0 0 auto;width:52px;height:52px;display:flex;align-items:center;justify-content:center}.shring svg{position:absolute;inset:0;transform:rotate(-90deg)}
-.shring .rbg{fill:none;stroke:rgba(255,255,255,.25);stroke-width:4}.shring .rfg{fill:none;stroke:#fff;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset .6s cubic-bezier(.2,.8,.2,1)}
-.shring b{position:relative;font-size:.95rem;font-weight:800}.shring b small{font-size:.65rem;opacity:.8}
-.shl{display:flex;flex-direction:column;gap:10px}
-.sh{border:1.5px solid var(--line);border-radius:20px;background:var(--panel);overflow:hidden;transition:border-color .25s,box-shadow .25s}
-.sheet.in .sh{animation:rise .42s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i) * 40ms + 80ms)}
-.sh.open{border-color:color-mix(in srgb,var(--fct) 55%,var(--line));box-shadow:0 8px 24px rgba(0,0,0,.12)}
-.shh{width:100%;display:flex;align-items:center;gap:12px;padding:14px 16px;min-height:62px;border:0;background:none;color:var(--ink);text-align:left}
-.shh.static{padding-bottom:4px}.shh:active{background:color-mix(in srgb,var(--ink) 5%,transparent)}
-.shi{flex:0 0 auto;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;border:1.5px solid var(--line);color:var(--soft);transition:background-color .3s,border-color .3s,color .3s,transform .35s cubic-bezier(.3,1.6,.5,1)}
-.shi.on{background:var(--fct);border-color:var(--fct);color:var(--bg);transform:scale(1.05)}
-.sht{flex:1;min-width:0;display:flex;flex-direction:column}.sht b{font-size:1.06rem}.sht small{color:var(--soft);font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.shc{flex:0 0 auto;width:10px;height:10px;border-right:2px solid var(--soft);border-bottom:2px solid var(--soft);transform:rotate(45deg) translate(-2px,-2px);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
-.sh.open .shc{transform:rotate(225deg) translate(-2px,-2px)}
-.shb{display:grid;grid-template-rows:1fr}.shbi{min-height:0;overflow:hidden;padding:0 16px 16px}
-.sh.anim .shb{animation:shopen .36s cubic-bezier(.2,.9,.3,1) both}@keyframes shopen{from{grid-template-rows:0fr;opacity:0}}
-.sh.closing .shb{animation:shclose .19s ease-in both}@keyframes shclose{to{grid-template-rows:0fr;opacity:0}}
-.sh.anim .shbi>*{animation:rise .38s cubic-bezier(.16,1,.3,1) both;animation-delay:.06s}
-.shtools{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin:-6px 0 6px;min-height:8px}
-.shbi .comp{margin-top:8px}.shwords{margin-top:18px}.shwords .flsub{margin-top:14px}
+.cktop::after{content:"";position:absolute;inset:-40% -10% auto auto;width:60%;height:180%;background:radial-gradient(closest-side,rgba(255,255,255,.22),transparent);pointer-events:none}
+.sheet.in .cktop{animation:shdrop .45s cubic-bezier(.16,1,.3,1) both}@keyframes shdrop{from{opacity:0;transform:translate3d(0,-14px,0) scale(.97)}}
+.ckx{flex:0 0 auto;width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:1.05rem;font-weight:800}
+.cktt{flex:1;min-width:0}.cktt small{display:block;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.cktt h1{margin:2px 0 0;font-size:1.6rem;line-height:1.05;color:#fff;border:0;padding:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 2px rgba(0,0,0,.2)}
+.ckring{position:relative;flex:0 0 auto;width:52px;height:52px;display:flex;align-items:center;justify-content:center}.ckring svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.ckring .rbg{fill:none;stroke:rgba(255,255,255,.25);stroke-width:4}.ckring .rfg{fill:none;stroke:#fff;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset .6s cubic-bezier(.2,.8,.2,1)}
+.ckring b{position:relative;font-size:.95rem;font-weight:800}.ckring b small{font-size:.65rem;opacity:.8}
+.ckl{display:flex;flex-direction:column;gap:10px}
+.cks{border:1.5px solid var(--line);border-radius:20px;background:var(--panel);overflow:hidden;transition:border-color .25s,box-shadow .25s}
+.sheet.in .cks{animation:rise .42s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i) * 40ms + 80ms)}
+.cks.open{border-color:color-mix(in srgb,var(--fct) 55%,var(--line));box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.ckh{width:100%;display:flex;align-items:center;gap:12px;padding:14px 16px;min-height:62px;border:0;background:none;color:var(--ink);text-align:left}
+.ckh.static{padding-bottom:4px}.ckh:active{background:color-mix(in srgb,var(--ink) 5%,transparent)}
+.cki{flex:0 0 auto;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;border:1.5px solid var(--line);color:var(--soft);transition:background-color .3s,border-color .3s,color .3s,transform .35s cubic-bezier(.3,1.6,.5,1)}
+.cki.on{background:var(--fct);border-color:var(--fct);color:var(--bg);transform:scale(1.05)}
+.ckt{flex:1;min-width:0;display:flex;flex-direction:column}.ckt b{font-size:1.06rem}.ckt small{color:var(--soft);font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ckc{flex:0 0 auto;width:10px;height:10px;border-right:2px solid var(--soft);border-bottom:2px solid var(--soft);transform:rotate(45deg) translate(-2px,-2px);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.cks.open .ckc{transform:rotate(225deg) translate(-2px,-2px)}
+.ckb{display:grid;grid-template-rows:1fr}.ckbi{min-height:0;overflow:hidden;padding:0 16px 16px}
+.cks.anim .ckb{animation:shopen .36s cubic-bezier(.2,.9,.3,1) both}@keyframes shopen{from{grid-template-rows:0fr;opacity:0}}
+.cks.closing .ckb{animation:shclose .19s ease-in both}@keyframes shclose{to{grid-template-rows:0fr;opacity:0}}
+.cks.anim .ckbi>*{animation:rise .38s cubic-bezier(.16,1,.3,1) both;animation-delay:.06s}
+.cktools{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin:-6px 0 6px;min-height:8px}
+.ckbi .comp{margin-top:8px}.ckwords{margin-top:18px}.ckwords .flsub{margin-top:14px}
 .sheet .flnav .btn{flex:1}
 .pkfl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:4px 0 10px}.pkfl span{font-size:.85rem;color:var(--soft);font-weight:700}
 .pkfl button{min-height:38px;padding:6px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--field);color:var(--ink);font-weight:800}.pkfl button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
@@ -1170,7 +1170,7 @@ html,body{overscroll-behavior-y:none}
   box-shadow:inset 0 0 12px rgba(255,255,255,.18);opacity:calc(.55 + .3 * var(--v))!important}
 .orb .o2 i{opacity:calc(.75 + .2 * var(--v))!important;background:radial-gradient(120% 90% at 50% 92%,color-mix(in srgb,var(--oc) 20%,#fff) 0%,color-mix(in srgb,var(--oc) 80%,#fff) 60%,var(--oc) 100%)!important}
 .orb b{z-index:2;box-shadow:0 0 36px color-mix(in srgb,var(--oc) 80%,transparent),inset 0 -6px 14px rgba(0,0,0,.12)!important}
-@media (prefers-reduced-motion:reduce){.orbp{animation:none}.sheet.in .sh,.sheet.in .shtop,.sh.anim .shb,.sh.anim .shbi>*{animation:none}}
+@media (prefers-reduced-motion:reduce){.orbp{animation:none}.sheet.in .cks,.sheet.in .cktop,.cks.anim .ckb,.cks.anim .ckbi>*{animation:none}}
 
 /* ===== calendar page in the same style as the check-in ===== */
 /* logs of the day */
@@ -1221,7 +1221,7 @@ html,body{overscroll-behavior-y:none}
 .scale button:active,.erel button:active,.s7 button:active{transform:scale(.9);background:color-mix(in srgb,var(--ink) 25%,var(--field))!important}
 .erel button.mid:not(.on){border-color:color-mix(in srgb,var(--ink) 50%,var(--line))!important}
 /* the ? in a test's box was cut off */
-.shtools{margin:0 0 6px!important;min-height:0}.shbi{padding-top:2px}
+.cktools{margin:0 0 6px!important;min-height:0}.ckbi{padding-top:2px}
 /* + Log and undo: small glass buttons that don't cover the calendar */
 .logfab{left:16px!important;transform:none!important;min-height:46px!important;padding:0 18px!important;font-size:.9rem!important;background:color-mix(in srgb,var(--panel) 70%,transparent)!important;color:var(--ink)!important;border:1.5px solid var(--line)!important;-webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);box-shadow:0 8px 24px rgba(0,0,0,.2)!important}
 .logfab.off{transform:translate3d(0,20px,0) scale(.9)!important}.logfab:active{transform:scale(.94)!important}
@@ -1234,8 +1234,46 @@ html,body{overscroll-behavior-y:none}
 .ering.full .rbg{fill:var(--c);stroke:var(--c)}.ering.full b{color:#fff}
 .add span{white-space:normal!important;line-height:1.3;padding:3px 0;letter-spacing:.02em;font-size:.95rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .bbar{display:flex!important;gap:8px;flex-wrap:wrap}.bbar .btn{flex:1 1 auto;min-width:0;white-space:normal}
-.sheet .comp{padding-left:10px!important;padding-right:10px!important}.sheet .shbi{padding-left:12px;padding-right:12px}
+.sheet .comp{padding-left:10px!important;padding-right:10px!important}.sheet .ckbi{padding-left:12px;padding-right:12px}
 .scale,.erel{margin-left:-2px;margin-right:-2px}
+
+/* ===== body map in the new style ===== */
+.bed{display:flex;flex-direction:column;gap:10px}
+/* before / after / rest: one segmented pill with a sliding look */
+.bmoms{padding:4px;gap:4px!important;border-radius:16px;background:var(--field);border:1.5px solid var(--line)}
+.bmoms button{border:0!important;border-radius:12px!important;background:transparent!important;min-height:48px!important;color:var(--soft);transition:background-color .25s,color .25s,transform .2s cubic-bezier(.3,1.6,.5,1),box-shadow .25s}
+.bmoms button.on{background:var(--panel)!important;color:var(--ink)!important;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.bmoms button:active{transform:scale(.95)}
+/* status line */
+.bstat{border-radius:14px!important;border:1.5px solid var(--line);padding:10px 14px!important;background:var(--panel);font-size:.95rem}
+.bstat.bok{border-color:color-mix(in srgb,var(--pos,#2E8B5E) 60%,var(--line));background:color-mix(in srgb,var(--pos,#2E8B5E) 10%,var(--panel))}
+.bstat.bwarn{border-color:color-mix(in srgb,#F2A23A 70%,var(--line));background:color-mix(in srgb,#F2A23A 10%,var(--panel));animation:rise .3s ease both}
+/* rated parts as pills */
+.bcchips{display:flex;flex-wrap:wrap;gap:6px}
+.bcchips button,.bfresh{border-radius:999px!important;border:1.5px solid color-mix(in srgb,var(--qc) 55%,var(--line))!important;background:color-mix(in srgb,var(--qc) 12%,var(--panel))!important;padding:6px 12px!important;min-height:36px;display:inline-flex;align-items:center;gap:6px;font-weight:700;transition:transform .2s cubic-bezier(.3,1.6,.5,1)}
+.bcchips button:active{transform:scale(.94)}.bcchips button b{color:var(--qc)}
+.blegline{text-align:center;margin:0!important;font-size:.85rem}
+/* front / back / hands */
+.bviews{padding:4px;gap:4px!important;border-radius:16px;background:var(--field);border:1.5px solid var(--line);margin:0!important}
+.bviews button{border:0!important;border-radius:12px!important;background:transparent!important;min-height:44px!important;color:var(--soft);transition:background-color .25s,color .25s,box-shadow .25s}
+.bviews button.on{background:var(--panel)!important;color:var(--ink)!important;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+/* the figure: sits on a soft stage, parts light up and pop when touched */
+.bodymap.fig,.bodymap.hands,.bodymap.hand1{border-radius:22px;background:radial-gradient(70% 60% at 50% 40%,color-mix(in srgb,var(--ink) 6%,transparent),transparent 75%);padding:8px 0;animation:figfade .45s cubic-bezier(.16,1,.3,1) both}
+@keyframes figfade{from{opacity:0;transform:scale(.97)}}
+.bodymap .breg{transition:fill .35s ease,opacity .2s,filter .25s!important;transform-box:fill-box;transform-origin:center}
+.bodymap .breg:hover{filter:brightness(1.12)}
+.bodymap .breg:active{filter:brightness(1.25)}
+/* rating panel */
+.bpanel{border:1.5px solid color-mix(in srgb,var(--ink) 30%,var(--line))!important;border-radius:20px!important;padding:14px!important;margin:0!important;background:var(--panel);box-shadow:0 10px 28px rgba(0,0,0,.16);animation:rise .35s cubic-bezier(.16,1,.3,1) both}
+.bquick{gap:6px!important}
+.bquick button{border-radius:14px!important;border:1.5px solid var(--line)!important;min-height:52px!important;transition:transform .25s cubic-bezier(.2,.9,.3,1.3),border-color .2s,box-shadow .2s!important}
+.bquick button.on{border-color:var(--qc)!important;box-shadow:0 0 0 2px var(--qc),0 6px 16px color-mix(in srgb,var(--qc) 35%,transparent)!important;transform:scale(1.05)}
+.bquick button:active{transform:scale(.92)}
+.bsl-track{height:12px!important;top:17px!important;border-radius:6px!important}
+.bsl-thumb{border-width:4px!important;box-shadow:0 4px 14px rgba(0,0,0,.3)!important;transition:transform .2s cubic-bezier(.3,1.6,.5,1)!important}
+/* save and fresh buttons */
+.bsave .btn,.bbar .btn{border-radius:16px!important;min-height:50px}
+.bsavebtn.on{animation:ready .5s cubic-bezier(.3,1.7,.5,1)}
 </style>
 </head>
 <body>
@@ -2198,21 +2236,21 @@ function enCommit(t){ const from=+t.value, n=Math.round(from), o=document.getEle
 
 function shRing(d,n){ const r=17, c=2*Math.PI*r, f=n?d/n:0; return `<svg viewBox="0 0 44 44" width="52" height="52" aria-hidden="true"><circle cx="22" cy="22" r="${r}" class="rbg"/><circle cx="22" cy="22" r="${r}" class="rfg" style="stroke-dasharray:${c.toFixed(1)};stroke-dashoffset:${(c*(1-f)).toFixed(1)}"/></svg><b>${d}<small>/${n}</small></b>`; }
 function sheetBody(e,it,key){ const fid='f'+e.id+it.fid, cs=compsList(it), op=S.typeOpen===key, K=helpKeysFor(e,it), perf=isPerfE(e);
-  const tools=`<div class="shtools">${K.length?helpBtn(K.join(','),`What is ${esc(it.name)}?`):''}${perf?'':`<button class="fmt" data-ft="${key}" aria-expanded="${op}">${op?'Close':'Format'}</button>`}</div>${op&&!perf?pickerHTML(e,it,key):''}`;
+  const tools=`<div class="cktools">${K.length?helpBtn(K.join(','),`What is ${esc(it.name)}?`):''}${perf?'':`<button class="fmt" data-ft="${key}" aria-expanded="${op}">${op?'Close':'Format'}</button>`}</div>${op&&!perf?pickerHTML(e,it,key):''}`;
   let body='';
-  if(flowKind(it)==='mood'){ body=flowMood(e,it,key,0)+(moodRaw(it)!=null?`<div class="shwords">${flowMood(e,it,key,1)}${flowMood(e,it,key,2)}</div>`:'')+cs.filter(c=>c==='T').map(c=>`<div class="comp c${c}">${compHTML(e,it,c,key,fid)}</div>`).join(''); }
+  if(flowKind(it)==='mood'){ body=flowMood(e,it,key,0)+(moodRaw(it)!=null?`<div class="ckwords">${flowMood(e,it,key,1)}${flowMood(e,it,key,2)}</div>`:'')+cs.filter(c=>c==='T').map(c=>`<div class="comp c${c}">${compHTML(e,it,c,key,fid)}</div>`).join(''); }
   else { let xDone=false; body=cs.filter(c=>!(TLV()<2&&cs.includes('E')&&c!=='E')).map(c=>{ if(c==='X'){ if(xDone) return ''; xDone=true; return `<div class="comp cX">${flowX(e,it,key,fid)}</div>`; } const h=compHTML(e,it,c,key,fid); return h?`<div class="comp c${c}">${h}</div>`:''; }).join(''); }
   return tools+body+plausHTML(it)+secHTML(e,it,key); }
 function renderSheet(){ const F=S.flow, {e}=findEntry(F.eid); if(!e){ S.flow=null; renderCal(); return; }
   const I=flowItems(e), N=I.length, done=I.filter(filledItem).length, perf=isPerfE(e), first=F.shown!=='sheet'; F.shown='sheet';
   const rows=I.map((it,j)=>{ const key=`${e.id}|${it.fid}`, open=perf||F.open===it.fid, f=filledItem(it), sm=f?itemSummary(it):'';
-    return `<section class="sh${open?' open':''}${F.anim===it.fid?' anim':''}" data-shs="${it.fid}" style="--i:${j}">
-      ${perf?`<div class="shh static"><span class="sht"><b>${esc(it.name)}</b></span></div>`:`<button class="shh" data-shtog="${it.fid}" aria-expanded="${open}"><span class="shi${f?' on':''}">${f?'<svg viewBox="0 0 12 12" width="12" height="12"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>':j+1}</span><span class="sht"><b>${esc(it.name)}</b>${sm&&!open?`<small>${esc(sm)}</small>`:''}${it.sec&&!open?'<small>secret note</small>':''}</span><span class="shc" aria-hidden="true"></span></button>`}
-      ${open?`<div class="shb"><div class="shbi">${sheetBody(e,it,key)}</div></div>`:''}</section>`; }).join('');
+    return `<section class="cks${open?' open':''}${F.anim===it.fid?' anim':''}" data-shs="${it.fid}" style="--i:${j}">
+      ${perf?`<div class="ckh static"><span class="ckt"><b>${esc(it.name)}</b></span></div>`:`<button class="ckh" data-shtog="${it.fid}" aria-expanded="${open}"><span class="cki${f?' on':''}">${f?'<svg viewBox="0 0 12 12" width="12" height="12"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>':j+1}</span><span class="ckt"><b>${esc(it.name)}</b>${sm&&!open?`<small>${esc(sm)}</small>`:''}${it.sec&&!open?'<small>secret note</small>':''}</span><span class="ckc" aria-hidden="true"></span></button>`}
+      ${open?`<div class="ckb"><div class="ckbi">${sheetBody(e,it,key)}</div></div>`:''}</section>`; }).join('');
   F.anim=null;
   app.innerHTML=`<div class="flow sheet${first?' in':''}" style="--fc:${tplColor(e)}">
-    <header class="shtop"><button class="shx" data-flx="1" aria-label="Close">✕</button><div class="shtt"><small>${esc(dayName(S.sel))} · ${esc(S.sel.slice(5).replace('-','.'))}</small><h1>${esc(tplName(e).replace(/^\+*\s*/,''))}</h1></div><div class="shring">${shRing(done,N)}</div></header>
-    <div class="shl">${rows}</div>
+    <header class="cktop"><button class="ckx" data-flx="1" aria-label="Close">✕</button><div class="cktt"><small>${esc(dayName(S.sel))} · ${esc(S.sel.slice(5).replace('-','.'))}</small><h1>${esc(tplName(e).replace(/^\+*\s*/,''))}</h1></div><div class="ckring">${shRing(done,N)}</div></header>
+    <div class="ckl">${rows}</div>
     <div class="flnav"><button class="btn flbig" data-flclose="1">Done</button></div></div>`;
   app.querySelectorAll('textarea').forEach(grow); }
 function shToggle(fid){ const F=S.flow; if(!F) return; const cur=F.open;
