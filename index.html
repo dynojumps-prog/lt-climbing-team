@@ -1439,6 +1439,28 @@ html,body{overscroll-behavior-y:none}
 .grid .day:not(.out){background:linear-gradient(160deg,color-mix(in srgb,var(--panel) 70%,#fff) 0%,var(--panel) 55%,color-mix(in srgb,var(--panel) 94%,#000) 100%)!important;box-shadow:0 4px 12px rgba(10,30,60,.08),inset 0 1px 0 rgba(255,255,255,.55)!important;border:1px solid color-mix(in srgb,var(--line) 70%,rgba(255,255,255,.5))!important}
 .grid .day.sel{box-shadow:0 8px 20px rgba(10,30,60,.18),inset 0 1px 0 rgba(255,255,255,.55)!important}
 .month .mini,.month button,.dayhead .mini,.mnav .mini{background:linear-gradient(160deg,color-mix(in srgb,var(--panel) 70%,#fff),var(--panel))!important;box-shadow:0 4px 12px rgba(10,30,60,.1),inset 0 1px 0 rgba(255,255,255,.6)!important}
+
+/* ===== glossy everywhere: tab bar, segmented, rows ===== */
+.tabs{background:linear-gradient(160deg,color-mix(in srgb,var(--panel) 75%,#fff),var(--panel))!important;box-shadow:0 8px 24px rgba(10,30,60,.1),inset 0 1px 0 rgba(255,255,255,.6)!important;padding:5px!important;gap:4px;border-radius:22px!important}
+.tabs button{border-radius:16px!important;border-right:0!important;margin:0!important;transition:transform .25s cubic-bezier(.3,1.6,.5,1),background .3s,color .3s,box-shadow .3s!important}
+.tabs button.on{position:relative;overflow:hidden;color:#fff!important;background:linear-gradient(135deg,color-mix(in srgb,var(--tc) 82%,#fff) 0%,var(--tc) 45%,color-mix(in srgb,var(--tc) 72%,#000) 100%)!important;box-shadow:0 8px 20px color-mix(in srgb,var(--tc) 35%,transparent),inset 0 1px 0 rgba(255,255,255,.3)!important}
+.tabs button.on svg{color:#fff!important}.tabs button.on::after{display:none!important}
+.tabs button.on::before{content:"";position:absolute;inset:-60% 40% auto -20%;height:160%;background:radial-gradient(closest-side,rgba(255,255,255,.25),transparent);pointer-events:none}
+.tabs button:active{transform:scale(.94)}
+.pseg2{background:linear-gradient(160deg,color-mix(in srgb,var(--panel) 75%,#fff),var(--field))!important;box-shadow:inset 0 1px 2px rgba(0,0,0,.06)}
+.pseg2 button.on{position:relative;overflow:hidden;color:#fff!important;background:linear-gradient(135deg,color-mix(in srgb,var(--pc) 82%,#fff) 0%,var(--pc) 45%,color-mix(in srgb,var(--pc) 72%,#000) 100%)!important;box-shadow:0 8px 20px color-mix(in srgb,var(--pc) 35%,transparent),inset 0 1px 0 rgba(255,255,255,.3)!important}
+.pseg2 button.on .pl{background:#fff!important}
+.prows .cks{background:linear-gradient(160deg,color-mix(in srgb,var(--panel) 70%,#fff) 0%,var(--panel) 60%,color-mix(in srgb,var(--panel) 95%,#000) 100%)!important;box-shadow:0 4px 14px rgba(10,30,60,.08),inset 0 1px 0 rgba(255,255,255,.6)!important;border:1px solid color-mix(in srgb,var(--line) 70%,rgba(255,255,255,.5))!important}
+.prows .cks.open{border-color:color-mix(in srgb,#2F6FD1 45%,var(--line))!important}
+.prows .cki.on{background:linear-gradient(135deg,#5B8FE6,#2F6FD1)!important;border-color:transparent!important;box-shadow:0 3px 8px rgba(47,111,209,.4)}
+/* athlete: coach's plan card */
+.pcard{margin:0 0 12px;border-radius:20px;padding:12px 14px;background:linear-gradient(160deg,color-mix(in srgb,var(--pc) 10%,var(--panel)),var(--panel));border:1.5px solid color-mix(in srgb,var(--pc) 30%,var(--line));box-shadow:0 8px 22px color-mix(in srgb,var(--pc) 14%,transparent);animation:rise .35s cubic-bezier(.16,1,.3,1) both}
+.pchead{display:flex;align-items:center;justify-content:space-between;gap:10px}.pchead small{color:var(--soft);font-weight:700;font-size:.78rem}
+.pcpill{position:relative;overflow:hidden;color:#fff;font-weight:800;padding:6px 14px;border-radius:12px;background:linear-gradient(135deg,color-mix(in srgb,var(--pc) 82%,#fff) 0%,var(--pc) 45%,color-mix(in srgb,var(--pc) 72%,#000) 100%);box-shadow:0 6px 16px color-mix(in srgb,var(--pc) 35%,transparent),inset 0 1px 0 rgba(255,255,255,.3)}
+.pcrows{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.pcrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:linear-gradient(160deg,color-mix(in srgb,var(--panel) 70%,#fff),var(--panel));border:1px solid var(--line)}
+.pcrow span{color:var(--soft);font-weight:700;font-size:.85rem}.pcrow b{font-weight:800}
+.pctext{margin:10px 2px 0;white-space:pre-wrap;font-size:.95rem}
 </style>
 </head>
 <body>
@@ -1988,8 +2010,10 @@ async function planSet(ds,v){ if(!TEAM.db) return; TEAM.info.plan=Object.assign(
 const PLW={train:'Training',rest:'Rest day'};
 function planBadge(ds){ const p=planOf(ds); return p?`<i class="dplan ${p.t}" aria-hidden="true"></i>`:''; }
 function planFacts(p){ return [p.dur?`${p.dur} min`:'',p.form,p.goal?`Goal: ${p.goal}`:'',p.int?`Intensity ${p.int}/10`:''].filter(Boolean); }
-function planLine(ds){ const p=planOf(ds); if(!p) return ''; const F=p.t==='train'?planFacts(p):[];
-  return `<div class="planline ${p.t}"><i></i><span><b>${PLW[p.t]}</b>${F.length?`<em>${F.map(esc).join(' · ')}</em>`:''}${p.n?`<small class="pln">${esc(p.n)}</small>`:''}</span><small>coach</small></div>`; }
+function planLine(ds){ const p=planOf(ds); if(!p) return ''; const c=p.t==='train'?'#2F6FD1':'#35A071';
+  const R=(p.t==='train'?[['Duration',p.dur?p.dur+' min':''],['Format',p.form],['Goal',p.goal]]:[]).filter(([,v])=>v);
+  return `<div class="pcard" style="--pc:${c}"><div class="pchead"><span class="pcpill">${PLW[p.t]}</span><small>Coach’s plan</small></div>
+    ${R.length?`<div class="pcrows">${R.map(([l,v])=>`<div class="pcrow"><span>${l}</span><b>${esc(v)}</b></div>`).join('')}</div>`:''}${p.n?`<p class="pctext">${esc(p.n)}</p>`:''}</div>`; }
 // coach quick picks for format and goal: your own list, starts empty
 const cpk=k=>{ const P=(S.cfg.picks||{})['@'+k]; return Array.isArray(P)?P:[]; };
 function cpkRow(k,ds,cur,label){ const ed=PLAN.ed===k, P=cpk(k);
@@ -2010,7 +2034,7 @@ function renderPlan(){ planRefresh(); const k=mkey(S.y,S.m), first=new Date(S.y,
     <div class="grid pgrid">${cells}</div>
     
     <div class="card pedit"><div class="pehead"><b>${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}</b>${sel===todayStr?'<span class="todaytag">šiandien</span>':''}</div>
-      <div class="pseg2"><button class="${sp&&sp.t==='train'?'on':''}" data-pset="${sel}|train"><i class="pl train"></i>Training</button><button class="${sp&&sp.t==='rest'?'on':''}" data-pset="${sel}|rest"><i class="pl rest"></i>Rest day</button><button class="${sp?'':'on'}" data-pset="${sel}|">Nothing</button></div>
+      <div class="pseg2"><button style="--pc:#2F6FD1" class="${sp&&sp.t==='train'?'on':''}" data-pset="${sel}|train"><i class="pl train"></i>Training</button><button style="--pc:#35A071" class="${sp&&sp.t==='rest'?'on':''}" data-pset="${sel}|rest"><i class="pl rest"></i>Rest day</button><button style="--pc:#6B7A86" class="${sp?'':'on'}" data-pset="${sel}|">Nothing</button></div>
       ${sp&&sp.t==='train'?`<div class="ckl prows">${prow('dur','Duration',sp.dur?sp.dur+' min':'',`<div class="flmin pdur"><button class="flstep" data-pdur="${sel}|-5" aria-label="5 minutes less">−</button><label><input type="number" inputmode="numeric" min="0" max="600" data-pdurin="${sel}" value="${sp.dur||''}" placeholder="0" aria-label="Duration in minutes"><span>min</span></label><button class="flstep" data-pdur="${sel}|5" aria-label="5 minutes more">+</button></div>`)}
         ${prow('form','Format',sp.form,cpkRow('form',sel,sp.form,''))}${prow('goal','Goal',sp.goal,cpkRow('goal',sel,sp.goal,''))}
         ${prow('n','Plan',sp.n,`<textarea class="pnote" data-pnote="${sel}" rows="3" maxlength="400" placeholder="Warm-up, main part, finish">${esc(sp.n)}</textarea>`)}</div>`
