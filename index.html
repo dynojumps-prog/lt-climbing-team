@@ -1402,6 +1402,19 @@ html,body{overscroll-behavior-y:none}
 .ilab:first-child{margin-top:4px}
 .atcard .athead h3 small{font-size:.8rem}
 .fold .foldh{font-size:1rem!important}
+
+/* liquid-glass lists with colour */
+.ilab .gdot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--gc);margin-right:7px;vertical-align:middle;box-shadow:0 0 0 3px color-mix(in srgb,var(--gc) 25%,transparent)}
+.ilab[style*="--gc"]{color:var(--gc)}
+.ilist.glass,.tsmake .ilist{position:relative;background:linear-gradient(135deg,color-mix(in srgb,var(--gc,#1FA2A8) 16%,rgba(255,255,255,.55)),color-mix(in srgb,var(--gc,#1FA2A8) 6%,rgba(255,255,255,.25)))!important;
+  -webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6);border:1px solid color-mix(in srgb,var(--gc,#1FA2A8) 30%,rgba(255,255,255,.6))!important;box-shadow:0 10px 30px color-mix(in srgb,var(--gc,#1FA2A8) 18%,transparent),inset 0 1px 0 rgba(255,255,255,.6)}
+@media (prefers-color-scheme:dark){.ilist.glass,.tsmake .ilist{background:linear-gradient(135deg,color-mix(in srgb,var(--gc,#1FA2A8) 22%,rgba(20,26,32,.6)),color-mix(in srgb,var(--gc,#1FA2A8) 8%,rgba(20,26,32,.35)))!important;box-shadow:0 10px 30px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08)}}
+.tsmake .irow{border-bottom-color:color-mix(in srgb,var(--gc,#1FA2A8) 18%,transparent)!important;transition:background-color .25s,transform .25s cubic-bezier(.3,1.6,.5,1)!important;animation:rise .4s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0) * 40ms)}
+.tsmake .irow:active{transform:scale(.98)}
+.tsmake .irow.on{background:color-mix(in srgb,var(--gc,#1FA2A8) 22%,transparent)!important}.tsmake .irow.on b{color:var(--gc,#1FA2A8)!important}
+.tsmake .irow i{color:var(--gc,#1FA2A8)!important}.tsmake .irow.on i svg{animation:pop .4s cubic-bezier(.3,1.7,.5,1)}
+.tsmake .ibtns .btn:not(.ghost){background:linear-gradient(135deg,#1FA2A8,#2F6FD1)!important;border:0!important;color:#fff!important;box-shadow:0 8px 22px rgba(31,162,168,.35)}
+.tsmake .ibtns .btn:disabled{opacity:.45;box-shadow:none}
 </style>
 </head>
 <body>
@@ -1979,7 +1992,7 @@ function renderPlan(){ planRefresh(); const k=mkey(S.y,S.m), first=new Date(S.y,
         ${prow('int','Intensity',sp.int?sp.int+'/10':'',`<div class="fltiles t10 pint">${Array.from({length:10},(_,i)=>`<button class="fltile${sp.int===i+1?' on':''}" data-pint="${sel}|${i+1}">${i+1}</button>`).join('')}</div>`)}
         ${prow('n','Plan',sp.n,`<textarea class="pnote" data-pnote="${sel}" rows="3" maxlength="400" placeholder="Warm-up, main part, finish">${esc(sp.n)}</textarea>`)}</div>`
       :sp?`<textarea class="pnote" data-pnote="${sel}" rows="2" maxlength="400" placeholder="Note">${esc(sp.n)}</textarea>`:''}
-      <button class="btn ghost pcopy" data-pcopy="1">Copy last week</button></div>`;
+      </div>`;
   }
 
 // ---- quick picks: your own list per field (food, supplements). Starts empty; add them, delete them, tap one to log it now.
@@ -2026,7 +2039,7 @@ function renderTests(){ if(ACC.role!=='coach'){ S.view='cal'; renderCal(); retur
   const tick='<svg viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const grp=t=>pgOf(t)==='daily'?'Daily':'Max', TT=tests.filter(t=>!M||!M.name||true);
   const make=M?`<div class="tsmake">
-      <p class="ilab">Test</p><div class="ilist">${TT.map(t=>{ const on=M.name===tName(t); return `<button class="irow${on?' on':''}" data-tsn="${esc(tName(t))}"><span><b>${esc(tName(t))}</b><small>${grp(t)} test</small></span><i>${on?tick:''}</i></button>`; }).join('')}</div>
+      ${[['daily','Daily tests','Every session','#1FA2A8'],['super','Max tests','Rested, 48 h no hard training','#E86A2C']].map(([g,l,sub,c])=>{ const G=TT.filter(t=>pgOf(t)===g); return G.length?`<p class="ilab" style="--gc:${c}"><i class="gdot"></i>${l}<small>${sub}</small></p><div class="ilist glass" style="--gc:${c}">${G.map((t,i)=>{ const on=M.name===tName(t); return `<button class="irow${on?' on':''}" style="--i:${i}" data-tsn="${esc(tName(t))}"><span><b>${esc(tName(t).replace(/^Daily\s+/i,'').replace(/^\w/,m=>m.toUpperCase()))}</b></span><i>${on?tick:''}</i></button>`; }).join('')}</div>`:''; }).join('')}
       ${M.name?(()=>{ const t=tsTpl(tests,M.name); return t&&t.how?`<details class="ihow"><summary>How it’s done</summary><p>${esc(t.how)}</p></details>`:''; })():''}
       <p class="ilab">Day</p><div class="ilist"><label class="irow"><span><b>Date</b></span><input type="date" class="tsdate" data-tsd="1" value="${M.date}"></label></div>
       <p class="ilab">Who <small>${M.who.length} of ${P.length}</small></p><div class="ilist">${P.length>1?`<button class="irow" data-tsall="1"><span><b>Everyone</b></span><i>${M.who.length===P.length?tick:''}</i></button>`:''}${P.map(a=>{ const on=M.who.includes(a.id); return `<button class="irow${on?' on':''}" data-tsw="${a.id}"><span><b>${esc(a.name)}</b></span><i>${on?tick:''}</i></button>`; }).join('')}</div>
