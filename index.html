@@ -1563,7 +1563,7 @@ async function secLoadAll(){ const c=secCol(); if(!c) return; try{ const s=await
 function secAll(){ const o={}; Object.keys(S.months).forEach(k=>secMonth(k)); Object.entries(SEC).forEach(([k,v])=>{ if(Object.keys(v.notes).length) o[k]={notes:Object.assign({},v.notes)}; }); return o; }
 function secHTML(e,it,key){ if(!ACC.own) return `<p class="note seclock">Secret notes: first change your code to one only you know (Customize → Change my code). Then nobody else can open them.</p>`; const t=secGet(key), op=t||S.st.secOpen===key;
   if(!op) return `<button class="secadd" data-secopen="${key}">Add secret note</button>`;
-  return `<div class="secbox"><label for="sec${e.id}${it.fid}">Secret note <small>Only you can read this. Your coach only sees that there is one.</small></label><textarea id="sec${e.id}${it.fid}" data-sec="${key}" rows="2" placeholder="Write what you want to keep to yourself">${esc(t)}</textarea></div>`; }
+  return `<div class="secbox"><label for="sec${e.id}${it.fid}">Secret note <small>Only you can read this. Your coach doesn’t see it at all.</small></label><textarea id="sec${e.id}${it.fid}" data-sec="${key}" rows="2" placeholder="Write what you want to keep to yourself">${esc(t)}</textarea></div>`; }
 // ================= Stats (coaches): one stat across the team, even when everyone named their field differently =================
 // A stat = a name ("Miegas") + for each athlete the field and the number to read from it. Shared by all coaches in team/info.stats.
 const num=x=>{ const v=parseFloat(x); return isFinite(v)?v:null; };
@@ -1752,7 +1752,7 @@ function atChange(t){ const ds=t.dataset;
   return false; }
 // ---------- a coach looking at an athlete's day: one line per field (tap to open), empty fields grouped ----------
 const GOPEN=new Set();
-function roItems(e){ const full=e.items.filter(it=>filledItem(it)||it.sec), empty=e.items.filter(it=>!(filledItem(it)||it.sec));
+function roItems(e){ const full=e.items.filter(it=>filledItem(it)), empty=e.items.filter(it=>!filledItem(it));
   return full.map(it=>fieldHTML(e,it)).join('')+(empty.length?`<p class="note roempty">Not filled in: ${empty.map(it=>esc(it.name)).join(', ')}</p>`:''); }
 // removing someone: delete everything of theirs by name (nobody gets to read it first)
 async function wipePerson(id,a){ const P='people/'+id+'/', del=p=>TEAM.db.doc(p).delete().catch(()=>{}), jobs=[], y1=new Date().getFullYear()+1;
@@ -1820,7 +1820,7 @@ function renderCal(){
     const ds=`${S.y}-${pad(S.m+1)}-${pad(d)}`, es=(month(k).days[String(d)]||[]).filter(e=>!isPerfE(e));
     const warn=dayPain(es);
     cells+=`<button class="day${ds===todayStr?' today':''}${ds===S.sel?' sel':''}" style="--d:${d}" data-day="${ds}" aria-label="${d} ${MONTHS[S.m]}, ${es.length} logs${warn?', pain marked':''}${nd.has(ds)?', coach note':''}${es.some(e=>(e.items||[]).some(it=>it.sec))?', secret note':''}">
-      <span class="n">${d}</span>${warn?'<i class="dwarn" aria-hidden="true"></i>':''}${nd.has(ds)?'<i class="dnote" aria-hidden="true"></i>':''}${!GUEST&&simCardsForDay(ds).length?'<i class="dsim" aria-hidden="true"></i>':''}${es.some(e=>(e.items||[]).some(it=>it.sec))?'<i class="dlock" aria-hidden="true"></i>':''}<span class="tapes">${es.slice(0,4).map(e=>`<span class="tape" style="background:${tplColor(e)}"></span>`).join('')}</span></button>`;
+      <span class="n">${d}</span>${warn?'<i class="dwarn" aria-hidden="true"></i>':''}${nd.has(ds)?'<i class="dnote" aria-hidden="true"></i>':''}${!GUEST&&simCardsForDay(ds).length?'<i class="dsim" aria-hidden="true"></i>':''}${!GUEST&&es.some(e=>(e.items||[]).some(it=>it.sec))?'<i class="dlock" aria-hidden="true"></i>':''}<span class="tapes">${es.slice(0,4).map(e=>`<span class="tape" style="background:${tplColor(e)}"></span>`).join('')}</span></button>`;
   }
   const sd=new Date(S.sel+'T12:00'), sel=entriesOn(S.sel).filter(e=>!isPerfE(e)), CT=S.cfg.templates.filter(t=>!t.perf);
   app.innerHTML=`
@@ -1840,7 +1840,7 @@ function renderCal(){
 function isPerfE(e){ if(!e) return false; if(e.perf) return true; const t=S.cfg.templates.find(t=>t.id===e.tid); return !!(t&&t.perf); }
 
 
-function headSmall(e,open){ const I=e.items.filter(it=>itemLv(e,it)<=TLV()), filled=I.filter(filledItem).length; return `${GUEST&&e.lv?`<span class="lvtag">Level ${e.lv}</span>`:''}${e.items.some(it=>it.sec)?'<span class="elock" title="Has a secret note"></span>':''}<span class="ecnt">${filled}/${I.length}</span><i class="echev${open?' up':''}" aria-hidden="true"></i>`; }
+function headSmall(e,open){ const I=e.items.filter(it=>itemLv(e,it)<=TLV()), filled=I.filter(filledItem).length; return `${GUEST&&e.lv?`<span class="lvtag">Level ${e.lv}</span>`:''}${!GUEST&&e.items.some(it=>it.sec)?'<span class="elock" title="Has a secret note"></span>':''}<span class="ecnt">${filled}/${I.length}</span><i class="echev${open?' up':''}" aria-hidden="true"></i>`; }
 function eRing(e){ const I=e.items.filter(it=>itemLv(e,it)<=TLV()), n=I.length, d=I.filter(filledItem).length, r=15, c=2*Math.PI*r;
   return `<span class="ering${d===n&&n?' full':''}" aria-hidden="true"><svg viewBox="0 0 36 36" width="40" height="40"><circle cx="18" cy="18" r="${r}" class="rbg"/><circle cx="18" cy="18" r="${r}" class="rfg" style="stroke-dasharray:${c.toFixed(1)};stroke-dashoffset:${(c*(1-(n?d/n:0))).toFixed(1)}"/></svg><b>${d===n&&n?'<svg viewBox="0 0 12 12" width="14" height="14"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>':d}</b></span>`; }
 function tplName(e){ const t=S.cfg.templates.find(t=>t.id===e.tid); return t?t.name:e.name; }
@@ -1919,7 +1919,7 @@ const COLL=new Set((()=>{ try{ return JSON.parse(localStorage.getItem(PFX+'colla
 const saveColl=()=>{ try{ localStorage.setItem(PFX+'collapsed',JSON.stringify([...COLL])); }catch(e){} };
 function fieldHTML(e,it){ const key=`${e.id}|${it.fid}`, fid='f'+e.id+it.fid, cs=compsList(it), op=S.typeOpen===key, shut=GUEST?!GOPEN.has(key):COLL.has(it.fid)&&!op;
   if(shut){ const sm=itemSummary(it,true), q=itemQuality(it,prevNote(it.name,S.sel));
-    return `<div class="f fcard2 shut" data-fkey="${key}"><button class="fhd" data-fcol="${it.fid}" aria-expanded="false"><span class="fl">${esc(it.name)}</span><span class="fsm">${sm?esc(sm):it.sec?'':'<i>empty</i>'}${it.sec?(sm?' · ':'')+'secret note':''}</span><span class="chev">▸</span></button></div>`; }
+    return `<div class="f fcard2 shut" data-fkey="${key}"><button class="fhd" data-fcol="${it.fid}" aria-expanded="false"><span class="fl">${esc(it.name)}</span><span class="fsm">${sm?esc(sm):!GUEST&&it.sec?'':'<i>empty</i>'}${!GUEST&&it.sec?(sm?' · ':'')+'secret note':''}</span><span class="chev">▸</span></button></div>`; }
   if(GUEST) return roFieldHTML(e,it,key);
   return `<div class="f fcard2" data-fkey="${key}"><div class="lrow"><button class="fhd" data-fcol="${it.fid}" aria-expanded="true"><span class="fl">${esc(it.name)}</span><span class="chev">▾</span></button>${(()=>{ const K=helpKeysFor(e,it); return K.length?helpBtn(K.join(','),`What is ${esc(it.name)}?`):''; })()}${isPerfE(e)?'':`<button class="fmt lv2" data-ft="${key}" aria-expanded="${op}">${op?'Close':'Format'}</button>`}</div>${op&&!isPerfE(e)?pickerHTML(e,it,key):''}
     ${cs.map(c=>{ const h=compHTML(e,it,c,key,fid); return h?`<div class="comp c${c}">${h}</div>`:''; }).join('')}
@@ -4568,7 +4568,7 @@ function roCompHTML(e,it,c,key){ const x=getP(it,c), sl=sleepLike(it.name), cs=c
 function roPart(e,it,c,key){ try{ return roCompHTML(e,it,c,key); }catch(err){ try{ const t=partText(it,c); return t?roLab(esc(COMP[c]||''))+roVal(esc(t)):''; }catch(e2){ return ''; } } }
 function roFieldHTML(e,it,key){ const parts=compsList(it).map(c=>roPart(e,it,c,key)).concat(smText(it)?[roLab('Check-in feeling')+roVal(esc(smText(it)))]:[]).filter(Boolean);
   return `<div class="f fcard2 rof" data-fkey="${key}"><div class="lrow"><button class="fhd" data-fcol="${it.fid}" aria-expanded="true"><span class="fl">${esc(it.name)}</span><span class="chev">▾</span></button>${(()=>{ const K=helpKeysFor(e,it); return K.length?helpBtn(K.join(','),`What is ${esc(it.name)}?`):''; })()}</div>
-    ${parts.length?parts.map(h=>`<div class="comp">${h}</div>`).join(''):it.sec?'':'<p class="note roempty">Not filled in</p>'}${it.sec?'<p class="seclock">Secret note. Only the athlete can read it.</p>':''}</div>`; }
+    ${parts.length?parts.map(h=>`<div class="comp">${h}</div>`).join(''):'<p class="note roempty">Not filled in</p>'}</div>`; }
 // the body map, read only: the check saved at that moment (or, if none, where they left it last time, clearly marked)
 function bodyRO(ek){ let c=edCtx(ek); if(!c) return ''; const has=m=>{ const x=savedOf(c,m); return !!x&&hasRatings(x); };
   if(!(S.st.bmMom||{})[ek]&&!has(c.mom)){ const m=MOM.map(x=>x[0]).find(has); if(m) c=Object.assign({},c,{mom:m}); }
