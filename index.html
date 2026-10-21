@@ -1415,6 +1415,30 @@ html,body{overscroll-behavior-y:none}
 .tsmake .irow i{color:var(--gc,#1FA2A8)!important}.tsmake .irow.on i svg{animation:pop .4s cubic-bezier(.3,1.7,.5,1)}
 .tsmake .ibtns .btn:not(.ghost){background:linear-gradient(135deg,#1FA2A8,#2F6FD1)!important;border:0!important;color:#fff!important;box-shadow:0 8px 22px rgba(31,162,168,.35)}
 .tsmake .ibtns .btn:disabled{opacity:.45;box-shadow:none}
+
+/* ===== glossy, like the + log buttons ===== */
+/* test picker: separate glossy pills; chosen one is full colour */
+.tsmake .ilist,.tsmake .ilist.glass{background:none!important;border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;overflow:visible!important;display:flex;flex-direction:column;gap:8px}
+.tsmake .irow{border:1.5px solid color-mix(in srgb,var(--gc,#1FA2A8) 28%,transparent)!important;border-radius:18px!important;min-height:56px;background:linear-gradient(160deg,color-mix(in srgb,var(--gc,#1FA2A8) 8%,var(--panel)),color-mix(in srgb,var(--gc,#1FA2A8) 14%,var(--panel)))!important;box-shadow:0 4px 14px color-mix(in srgb,var(--gc,#1FA2A8) 12%,transparent),inset 0 1px 0 rgba(255,255,255,.35)}
+.tsmake .irow b{color:var(--ink)!important}
+.tsmake .irow.on{position:relative;overflow:hidden;border-color:transparent!important;background:linear-gradient(135deg,color-mix(in srgb,var(--gc,#1FA2A8) 82%,#fff) 0%,var(--gc,#1FA2A8) 45%,color-mix(in srgb,var(--gc,#1FA2A8) 72%,#000) 100%)!important;box-shadow:0 8px 22px color-mix(in srgb,var(--gc,#1FA2A8) 35%,transparent),inset 0 1px 0 rgba(255,255,255,.3)!important}
+.tsmake .irow.on::after{content:"";position:absolute;inset:-60% 40% auto -20%;height:160%;background:radial-gradient(closest-side,rgba(255,255,255,.25),transparent);pointer-events:none}
+.tsmake .irow.on b,.tsmake .irow.on i{color:#fff!important}
+.tsmake .irow i{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.25)}
+.tsmake label.irow{background:var(--panel)!important;border-color:var(--line)!important}
+/* stats: folded cards are glossy colour buttons, open ones get a colour header */
+.fold{--sc:#2F6FD1;transition:box-shadow .3s}
+.fold.folded{position:relative;overflow:hidden;border:0!important;background:linear-gradient(135deg,color-mix(in srgb,var(--sc) 82%,#fff) 0%,var(--sc) 45%,color-mix(in srgb,var(--sc) 72%,#000) 100%)!important;box-shadow:0 8px 22px color-mix(in srgb,var(--sc) 30%,transparent),inset 0 1px 0 rgba(255,255,255,.3)!important;padding-top:14px!important;padding-bottom:14px!important}
+.fold.folded::after{content:"";position:absolute;inset:-60% 40% auto -20%;height:160%;background:radial-gradient(closest-side,rgba(255,255,255,.22),transparent);pointer-events:none}
+.fold.folded .foldh,.fold.folded .foldh *{color:#fff!important}.fold.folded .foldh::after{border-color:#fff!important}.fold.folded [data-help]{border-color:rgba(255,255,255,.7)!important}
+.fold:not(.folded){border:1.5px solid color-mix(in srgb,var(--sc) 35%,var(--line))!important;box-shadow:0 10px 28px color-mix(in srgb,var(--sc) 16%,transparent)!important}
+.fold:not(.folded) .foldh{color:var(--sc)!important}.fold:not(.folded) .foldh::after{border-color:var(--sc)}
+.fold:active{transform:scale(.99)}
+.fold .bar i,.fold .atbar,.fold .brdb i{background:var(--sc)!important}
+/* calendar: day cells with the same glossy feel */
+.grid .day:not(.out){background:linear-gradient(160deg,color-mix(in srgb,var(--panel) 70%,#fff) 0%,var(--panel) 55%,color-mix(in srgb,var(--panel) 94%,#000) 100%)!important;box-shadow:0 4px 12px rgba(10,30,60,.08),inset 0 1px 0 rgba(255,255,255,.55)!important;border:1px solid color-mix(in srgb,var(--line) 70%,rgba(255,255,255,.5))!important}
+.grid .day.sel{box-shadow:0 8px 20px rgba(10,30,60,.18),inset 0 1px 0 rgba(255,255,255,.55)!important}
+.month .mini,.month button,.dayhead .mini,.mnav .mini{background:linear-gradient(160deg,color-mix(in srgb,var(--panel) 70%,#fff),var(--panel))!important;box-shadow:0 4px 12px rgba(10,30,60,.1),inset 0 1px 0 rgba(255,255,255,.6)!important}
 </style>
 </head>
 <body>
@@ -1814,7 +1838,7 @@ function atPerfHTML(P){ const R=AT.prange||90, from=dAdd(todayStr,-R+1), load=P.
     ${sk.length?`<p class="ilab">Super tests</p>${sk.map(testCard).join('')||`<p class="note">No super tests in the last ${R} days.</p>`}`:''}
     ${D.length?`<p class="ilab">Climbing and comps</p>${climbHTML}${compHTML}`:''}`; }
 // stats cards fold: tap a title to open it. Remembers what you opened.
-function statFold(){ if(S.view!=='ath') return; AT.unf=AT.unf||new Set(); app.querySelectorAll('.card').forEach(c=>{ const h=c.querySelector(':scope>h3, :scope>.athead>h3, :scope>.athead'); if(!h||c.dataset.fk) return; const k=(h.textContent||'').trim().slice(0,60); if(!k) return; c.dataset.fk=k; c.classList.add('fold'); if(!AT.unf.has(k)) c.classList.add('folded'); h.classList.add('foldh'); h.setAttribute('role','button'); h.setAttribute('tabindex','0'); }); }
+function statFold(){ if(S.view!=='ath') return; AT.unf=AT.unf||new Set(); app.querySelectorAll('.card').forEach(c=>{ const h=c.querySelector(':scope>h3, :scope>.athead>h3, :scope>.athead'); if(!h||c.dataset.fk) return; const k=(h.textContent||'').trim().slice(0,60); if(!k) return; c.dataset.fk=k; c.classList.add('fold'); const lk=k.toLowerCase(); c.style.setProperty('--sc',/readiness/.test(lk)?'#35A071':/climb/.test(lk)?'#8E52CC':/comp/.test(lk)?'#C1272D':/super|max/.test(lk)?'#E86A2C':/finger|pull|lock|test/.test(lk)?'#1FA2A8':'#2F6FD1'); if(!AT.unf.has(k)) c.classList.add('folded'); h.classList.add('foldh'); h.setAttribute('role','button'); h.setAttribute('tabindex','0'); }); }
 document.addEventListener('click',ev=>{ const h=ev.target.closest&&ev.target.closest('.foldh'); if(!h||ev.target.closest('[data-help]')) return; const c=h.closest('.fold'); if(!c) return; const k=c.dataset.fk; AT.unf=AT.unf||new Set(); const open=c.classList.toggle('folded')===false; if(open) AT.unf.add(k); else AT.unf.delete(k); });
 function renderAth(){ setTimeout(statFold,0); if(ACC.role!=='coach'){ S.view='cal'; renderCal(); return; } teamSub(); const P=atPeople(), St=atStats(), days=atDays(AT.range);
   P.forEach(a=>atLoad(a)); if(!AT.infoAt||Date.now()-AT.infoAt>60e3){ AT.infoAt=Date.now(); atReloadInfo(); }
@@ -1989,7 +2013,6 @@ function renderPlan(){ planRefresh(); const k=mkey(S.y,S.m), first=new Date(S.y,
       <div class="pseg2"><button class="${sp&&sp.t==='train'?'on':''}" data-pset="${sel}|train"><i class="pl train"></i>Training</button><button class="${sp&&sp.t==='rest'?'on':''}" data-pset="${sel}|rest"><i class="pl rest"></i>Rest day</button><button class="${sp?'':'on'}" data-pset="${sel}|">Nothing</button></div>
       ${sp&&sp.t==='train'?`<div class="ckl prows">${prow('dur','Duration',sp.dur?sp.dur+' min':'',`<div class="flmin pdur"><button class="flstep" data-pdur="${sel}|-5" aria-label="5 minutes less">−</button><label><input type="number" inputmode="numeric" min="0" max="600" data-pdurin="${sel}" value="${sp.dur||''}" placeholder="0" aria-label="Duration in minutes"><span>min</span></label><button class="flstep" data-pdur="${sel}|5" aria-label="5 minutes more">+</button></div>`)}
         ${prow('form','Format',sp.form,cpkRow('form',sel,sp.form,''))}${prow('goal','Goal',sp.goal,cpkRow('goal',sel,sp.goal,''))}
-        ${prow('int','Intensity',sp.int?sp.int+'/10':'',`<div class="fltiles t10 pint">${Array.from({length:10},(_,i)=>`<button class="fltile${sp.int===i+1?' on':''}" data-pint="${sel}|${i+1}">${i+1}</button>`).join('')}</div>`)}
         ${prow('n','Plan',sp.n,`<textarea class="pnote" data-pnote="${sel}" rows="3" maxlength="400" placeholder="Warm-up, main part, finish">${esc(sp.n)}</textarea>`)}</div>`
       :sp?`<textarea class="pnote" data-pnote="${sel}" rows="2" maxlength="400" placeholder="Note">${esc(sp.n)}</textarea>`:''}
       </div>`;
@@ -2042,7 +2065,7 @@ function renderTests(){ if(ACC.role!=='coach'){ S.view='cal'; renderCal(); retur
       ${[['daily','Daily tests','Every session','#1FA2A8'],['super','Max tests','Rested, 48 h no hard training','#E86A2C']].map(([g,l,sub,c])=>{ const G=TT.filter(t=>pgOf(t)===g); return G.length?`<p class="ilab" style="--gc:${c}"><i class="gdot"></i>${l}<small>${sub}</small></p><div class="ilist glass" style="--gc:${c}">${G.map((t,i)=>{ const on=M.name===tName(t); return `<button class="irow${on?' on':''}" style="--i:${i}" data-tsn="${esc(tName(t))}"><span><b>${esc(tName(t).replace(/^Daily\s+/i,'').replace(/^\w/,m=>m.toUpperCase()))}</b></span><i>${on?tick:''}</i></button>`; }).join('')}</div>`:''; }).join('')}
       ${M.name?(()=>{ const t=tsTpl(tests,M.name); return t&&t.how?`<details class="ihow"><summary>How it’s done</summary><p>${esc(t.how)}</p></details>`:''; })():''}
       <p class="ilab">Day</p><div class="ilist"><label class="irow"><span><b>Date</b></span><input type="date" class="tsdate" data-tsd="1" value="${M.date}"></label></div>
-      <p class="ilab">Who <small>${M.who.length} of ${P.length}</small></p><div class="ilist">${P.length>1?`<button class="irow" data-tsall="1"><span><b>Everyone</b></span><i>${M.who.length===P.length?tick:''}</i></button>`:''}${P.map(a=>{ const on=M.who.includes(a.id); return `<button class="irow${on?' on':''}" data-tsw="${a.id}"><span><b>${esc(a.name)}</b></span><i>${on?tick:''}</i></button>`; }).join('')}</div>
+      <p class="ilab">Who <small>${M.who.length} of ${P.length}</small></p><div class="ilist" style="--gc:#2F6FD1">${P.length>1?`<button class="irow${M.who.length===P.length?' on':''}" data-tsall="1"><span><b>Everyone</b></span><i>${M.who.length===P.length?tick:''}</i></button>`:''}${P.map(a=>{ const on=M.who.includes(a.id); return `<button class="irow${on?' on':''}" data-tsw="${a.id}"><span><b>${esc(a.name)}</b></span><i>${on?tick:''}</i></button>`; }).join('')}</div>
       <div class="ibtns"><button class="btn ghost" data-tsx="1">Cancel</button><button class="btn" data-tsgo="1"${M.name&&M.who.length?'':' disabled'}>Invite${M.who.length?' '+M.who.length:''}</button></div></div>`
     :'';
   const card=x=>{ const open=TSN.open===x.id, rows=x.who.map(id=>{ const a=P.find(a=>a.id===id)||{id,name:'?'}, d=AT.data[id], T=d&&d.cfg&&d.cfg.templates, t=tsTpl(T,x.name), e=d&&tsEntry(d.months,t,x.date), sc=tsScore(t,e); return {a,sc,loading:!d}; });
