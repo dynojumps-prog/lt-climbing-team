@@ -2400,12 +2400,24 @@ function helpKeysFor(e,it){ const cs=compsList(it), K=[]; const t=e&&S.cfg.templ
   if(cs.includes('G')) K.push(t&&t.comp?'comp':'routes'); if(cs.includes('X')){ const c=xcfg(e,it); if(c.role!=='bw'){ if(g==='daily'||g==='super') K.push(g); if(c.u==='kg'&&c.bw) K.push('finger'); } }
   return [...new Set(K)]; }
 
-const NEWS_V='2026-10b';
-const NEWS_ALL=[['Performance tab','Tests, route cards and comps on their own calendar.'],['Daily tests','A short finger, pull-up and lock-off test every training. Shows if you are fresh or tired today.'],['Super tests','Big max tests, only when you are rested.'],['Route cards','Tries, the try you got the zone, the try you topped, and why you fell.'],['After training','How you feel, stress, how hard it was (0 = normal, − easier, + harder), and if it went well.'],['Practice comps','The coach starts one, everyone’s phone shows the same timer, and you see your place at the end.'],['Goals','Set goals with dates and see how close you are.'],['New looks','12 colour themes in Customize, plus Christmas and Halloween.'],['Safer login','Wrong codes lock you out for a while, and you get an alert when you log in on a new phone.'],['Your data','All your old logs are still there.']];
-const NEWS_COACH=[['Stats tab','Everyone’s tests in one place. Green = fresh, yellow = a bit tired, red = very tired.'],['Comps tab','Make a practice comp, pick athletes, set the order, see results live, then lock them.']];
+const NEWS_V='2026-10c';
+const NEWS_ALL=[['New check-in','Tap a log and you see all its questions, closed. Open the one you want, fill it in, press Done. You go back to the same spot on the calendar.'],
+ ['Feelings flower','Slide to show how you feel, then pick words and what affects you most. Turn it on for a field in Format → Feelings shown as Flower.'],
+ ['Team tab','Rankings for the team: longest streak, most check-ins, best sleep, most training, most climbs. Only these numbers are shared. Hide yourself in Customize.'],
+ ['Same logs for everyone','The whole team now uses the same log types, so numbers compare. Feelings are shown as the flower. Your old logs stay as they were.'],
+ ['Week strip','The days you logged this week, and how many weeks in a row you logged 3 or more days.'],
+ ['Finger test on one screen','Bodyweight and both hands together. A new personal best shows when you close it.'],
+ ['New look','Calendar, logs, body map and number scales redone. Smoother animations, backgrounds stay still, undo only shows after a change.']];
+const NEWS_COACH=[['Athletes on the same logs','Every athlete now logs the same fields, so Stats compare fairly between them.'],['Team tab','Athletes see rankings of streak, check-ins, sleep, training time and climbs. Coaches are not ranked. Pain, feelings, notes and tests are never shared.']];
 
 // the detailed log: what each change is based on and how much it matters. r = research or official rules, c = common practice, o = our own choice
-const NEWS_DETAIL=[['Training and health',[
+const NEWS_DETAIL=[['This update',[
+  ['Feelings flower: slider, then words, then biggest impact','The same steps as Apple Health’s State of Mind, built on the circumplex model of emotion (Russell 1980). It saves into your field’s own scale','r','Medium'],
+  ['Same log types for the whole team','Needed so numbers compare over time and between athletes','c','High'],
+  ['Weekly streak: weeks with 3+ days logged','Streaks are common in habit apps. 3 days is our choice, and a missed week is never shown as broken','o','Medium'],
+  ['Team rankings with only a few numbers','Seeing teammates keep going is a common motivator. Which numbers are shared is our choice: nothing about pain, feelings or tests','o','Medium'],
+  ['One question open at a time','Our design, so new athletes don’t get lost','o','Low']]],
+ ['Training and health',[
   ['Training load = effort × minutes','Session-RPE (Foster et al. 2001), the most used load method in sport','r','High'],
   ['Load scale: 0 = normal, − easier, + harder','The Borg 0–10 effort scale, shown around a normal session (0 = effort 5)','r','High'],
   ['Warning when load jumps over 30% in a week','The acute:chronic workload idea (Gabbett 2016), still debated by researchers','c','Medium'],
