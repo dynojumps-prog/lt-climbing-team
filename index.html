@@ -1281,13 +1281,13 @@ html,body{overscroll-behavior-y:none}
 .ptag{position:absolute;left:4px;right:4px;bottom:4px;font-size:.58rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;border-radius:6px;padding:1px 0;text-align:center;color:#fff}
 .pday.train .ptag{background:#2F6FD1}.pday.rest .ptag{background:#35A071}
 .pl{display:inline-block;width:10px;height:10px;border-radius:3px;margin:0 6px 0 10px;vertical-align:middle}.pl.train{background:#2F6FD1}.pl.rest{background:#35A071}.plegend .pl:first-child{margin-left:0}
-.pedit{border-radius:20px;animation:rise .35s cubic-bezier(.16,1,.3,1) both}.pehead{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:1.1rem}
+.pedit{border-radius:20px;animation:none}.pehead{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:1.1rem}
 .pseg2{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;border-radius:16px;background:var(--field);border:1.5px solid var(--line)}
 .pseg2 button{border:0;border-radius:12px;background:transparent;min-height:50px;font-weight:800;color:var(--soft);display:flex;align-items:center;justify-content:center;gap:2px;transition:background-color .25s,color .25s,box-shadow .25s,transform .2s}
 .pseg2 button .pl{margin:0 6px 0 0}.pseg2 button.on{background:var(--panel);color:var(--ink);box-shadow:0 4px 14px rgba(0,0,0,.18)}.pseg2 button:active{transform:scale(.95)}
 .pnote{width:100%;margin-top:10px;min-height:48px;border-radius:14px}.pcopy{width:100%;margin-top:10px;border-radius:14px}
 .dplan{position:absolute;left:5px;top:5px;width:7px;height:7px;border-radius:2px}.dplan.train{background:#2F6FD1}.dplan.rest{background:#35A071}
-.planline{display:flex;align-items:center;gap:10px;margin:0 0 10px;padding:10px 14px;border-radius:16px;border:1.5px solid var(--line);background:var(--panel);animation:rise .3s ease both}
+.planline{display:flex;align-items:center;gap:10px;margin:0 0 10px;padding:10px 14px;border-radius:16px;border:1.5px solid var(--line);background:var(--panel);animation:none}
 .planline i{flex:0 0 auto;width:12px;height:12px;border-radius:4px}.planline.train i{background:#2F6FD1}.planline.rest i{background:#35A071}
 .planline span{flex:1;min-width:0}.planline small{color:var(--soft);font-size:.75rem;white-space:nowrap}
 /* quick picks */
@@ -1297,13 +1297,13 @@ html,body{overscroll-behavior-y:none}
 /* sleep chips */
 .slw{margin-top:4px}.slw button{font-size:.9rem}.slo{width:100%;margin-top:8px;min-height:44px;border-radius:14px}
 /* coach tests */
-.tsnew{margin:0 0 14px}.tsmake{border-radius:20px;animation:rise .35s cubic-bezier(.16,1,.3,1) both}.tsmake .flchips{margin-bottom:6px}.tsdate{min-height:46px;border-radius:14px}
+.tsnew{margin:0 0 14px}.tsmake{border-radius:20px;animation:none}.tsmake .flchips{margin-bottom:6px}.tsdate{min-height:46px;border-radius:14px}
 .ghostchip{border-style:dashed!important}.tshow{margin:4px 0 6px}
 .tscard{border-radius:20px;padding:0!important;overflow:hidden}.tshead{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;border:0;background:none;color:var(--ink);text-align:left;min-height:64px}
 .tshead span{display:flex;flex-direction:column}.tshead b{font-size:1.05rem}.tshead small{color:var(--soft);font-weight:600}
 .tscard .brdl,.tscard .tswait,.tscard .row{margin:0 14px 12px}.tsdet{grid-column:2/4;color:var(--soft);font-size:.78rem}
 /* athlete invite */
-.tsinv{border-radius:20px;border:1.5px solid color-mix(in srgb,var(--gold) 55%,var(--line))!important;animation:rise .4s cubic-bezier(.16,1,.3,1) both}.tsinv.done{border-color:color-mix(in srgb,var(--pos,#2E8B5E) 60%,var(--line))!important}
+.tsinv{border-radius:20px;border:1.5px solid color-mix(in srgb,var(--gold) 55%,var(--line))!important;animation:none}.tsinv.done{border-color:color-mix(in srgb,var(--pos,#2E8B5E) 60%,var(--line))!important}
 .tsih{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.tsih h3{margin:2px 0 6px;border:0;padding:0}.tsres{font-size:1.4rem;font-weight:800;color:var(--pos,#2E8B5E)}
 .tsrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}.tsbox{display:flex;flex-direction:column;gap:4px}.tsbox small{color:var(--soft);font-weight:700;font-size:.75rem}
 .tsbox span{display:flex;align-items:center;gap:6px}.tsbox input{flex:1;min-width:0;min-height:52px;font-size:1.3rem;font-weight:800;text-align:center;border-radius:14px}.tsbox em{font-style:normal;color:var(--soft);font-weight:700}
@@ -1339,10 +1339,10 @@ html,body{overscroll-behavior-y:none}
 .tsmake .flchips button.on,.qpk button.on{background:var(--ink)!important;color:var(--bg)!important;border-color:var(--ink)!important;box-shadow:0 4px 14px rgba(0,0,0,.18)}
 .tsmake .flchips button:active,.qpk button:active{transform:scale(.94)}
 .tscard{transition:box-shadow .25s,transform .2s}.tscard:active{transform:scale(.99)}
-.tscard.open{box-shadow:0 10px 28px rgba(0,0,0,.14)}.tscard.open .brdl{animation:rise .35s cubic-bezier(.16,1,.3,1) both}
+.tscard.open{box-shadow:0 10px 28px rgba(0,0,0,.14)}.tscard.open .brdl{animation:none}
 .tshead small{font-size:.82rem}.tsmake .clab{margin-top:14px}
 /* plan session */
-.psess{display:flex;flex-direction:column;gap:6px;margin-top:12px;animation:rise .35s cubic-bezier(.16,1,.3,1) both}
+.psess{display:flex;flex-direction:column;gap:6px;margin-top:12px;animation:none}
 .pfield .clab{margin:8px 0 6px}.pfield .clab small{font-weight:600;text-transform:none;letter-spacing:0;color:var(--soft)}
 .pdur{max-width:280px}.pdur label{display:flex;align-items:baseline;justify-content:center;gap:6px}.pdur b{font-size:1.5rem}
 .qpk{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.qpk .qedit{border:0;background:none;color:var(--soft);font-weight:800;padding:6px 4px}
@@ -1365,6 +1365,34 @@ html,body{overscroll-behavior-y:none}
 .simfs .zi button:active,.simfs .simb:active{transform:scale(.94)}
 .simgrid>*{min-width:0}.simgrid{grid-template-columns:minmax(0,1fr)}@media (orientation:landscape) and (min-width:560px){.simgrid{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}}.simboard{overflow-x:auto}
 @media (max-width:440px){.sbr{min-width:0!important;padding:8px 8px!important;gap:3px!important}.sbr .sc b{font-size:1.1rem}.sbr .sc small{font-size:.62rem}.sbr>i{font-size:.7rem}.sbr.sbhead{font-size:.6rem;letter-spacing:.02em}}
+
+/* tab bar: each tab has its colour, the open one is tinted (no heavy block) */
+.tabs button.on{background:color-mix(in srgb,var(--tc) 14%,var(--panel))!important;color:var(--tc)!important}
+.tabs button.on svg{color:var(--tc)}.tabs button.on::after{background:var(--tc)!important;height:3px;left:22%;right:22%;bottom:4px;border-radius:2px}
+.tabs button:not(.on):active{background:color-mix(in srgb,var(--tc) 8%,transparent)!important}
+/* duration input */
+.pdur input{width:72px;border:0;background:none;text-align:center;font-size:1.5rem;font-weight:800;color:var(--ink);padding:0;min-height:0}
+.tin{display:flex;align-items:center;gap:6px}.tin input{width:84px;min-height:44px;text-align:center;font-size:1.15rem;font-weight:800;border-radius:12px;font-variant-numeric:tabular-nums}.tin small{color:var(--soft);font-size:.72rem;font-weight:700}
+/* iOS-style grouped lists */
+.ilab{margin:16px 4px 6px;font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--soft)}.ilab small{text-transform:none;letter-spacing:0;font-weight:600;margin-left:6px}
+.ilist{border-radius:16px;background:var(--panel);border:1.5px solid var(--line);overflow:hidden}
+.irow{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:54px;padding:8px 16px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--ink);text-align:left;transition:background-color .2s}
+.irow:last-child{border-bottom:0}.irow:active{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+.irow span{display:flex;flex-direction:column}.irow b{font-weight:700;font-size:1rem}.irow small{color:var(--soft);font-size:.78rem}
+.irow i{flex:0 0 auto;width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:var(--tsc,#1FA2A8)}
+.irow.on b{color:var(--tsc,#1FA2A8)}.irow input[type=date]{border:0;background:none;min-height:0;padding:0;text-align:right;color:var(--ink);font-weight:700}
+.ihow{margin:8px 4px 0}.ihow summary{cursor:pointer;color:var(--tsc,#1FA2A8);font-weight:700;font-size:.88rem}.ihow p{color:var(--soft);font-size:.88rem;margin:6px 0 0}
+.ibtns{display:grid;grid-template-columns:1fr 2fr;gap:10px;margin:18px 0 6px}.ibtns .btn{min-height:52px;border-radius:16px!important}
+.tsmake{margin-bottom:14px}.ptag.tst{background:#1FA2A8}
+/* stats fold */
+.fold .foldh{cursor:pointer;display:flex;align-items:center;gap:8px}
+.fold .foldh::after{content:"";margin-left:auto;width:9px;height:9px;border-right:2px solid var(--soft);border-bottom:2px solid var(--soft);transform:rotate(45deg);transition:transform .3s cubic-bezier(.2,.8,.2,1);flex:0 0 auto}
+.fold.folded .foldh::after{transform:rotate(-45deg)}
+.fold.folded>*:not(.athead):not(h3){display:none!important}.fold.folded{padding-bottom:12px!important}.fold.folded h3,.fold.folded .athead{margin-bottom:0!important}
+.fold:not(.folded)>*:not(.athead):not(h3){animation:rise .3s cubic-bezier(.16,1,.3,1) both}
+.tstep{display:flex!important;align-items:center;justify-content:space-between;gap:10px}.tstep .clab2{flex:1;min-width:0}
+.tsel.tin{flex:0 0 auto!important;width:auto!important;display:flex!important;flex-direction:column;align-items:center;gap:2px}.tsel.tin input{width:92px!important;flex:none!important}
+.simed .chips{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));width:100%}.simed .chips button{padding:6px 4px!important;font-size:.82rem!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 </style>
 </head>
 <body>
@@ -1763,10 +1791,13 @@ function atPerfHTML(P){ const R=AT.prange||90, from=dAdd(todayStr,-R+1), load=P.
     ${dk.length?`<div class="h2">Daily tests</div>${dk.map(testCard).join('')||`<p class="note">No daily tests in the last ${R} days.</p>`}`:''}
     ${sk.length?`<div class="h2">Super tests</div>${sk.map(testCard).join('')||`<p class="note">No super tests in the last ${R} days.</p>`}`:''}
     ${D.length?`<div class="h2">Climbing and comps</div>${climbHTML}${compHTML}`:''}`; }
-function renderAth(){ if(ACC.role!=='coach'){ S.view='cal'; renderCal(); return; } teamSub(); const P=atPeople(), St=atStats(), days=atDays(AT.range);
+// stats cards fold: tap a title to open it. Remembers what you opened.
+function statFold(){ if(S.view!=='ath') return; AT.unf=AT.unf||new Set(); app.querySelectorAll('.card').forEach(c=>{ const h=c.querySelector(':scope>h3, :scope>.athead>h3, :scope>.athead'); if(!h||c.dataset.fk) return; const k=(h.textContent||'').trim().slice(0,60); if(!k) return; c.dataset.fk=k; c.classList.add('fold'); if(!AT.unf.has(k)) c.classList.add('folded'); h.classList.add('foldh'); h.setAttribute('role','button'); h.setAttribute('tabindex','0'); }); }
+document.addEventListener('click',ev=>{ const h=ev.target.closest&&ev.target.closest('.foldh'); if(!h||ev.target.closest('[data-help]')) return; const c=h.closest('.fold'); if(!c) return; const k=c.dataset.fk; AT.unf=AT.unf||new Set(); const open=c.classList.toggle('folded')===false; if(open) AT.unf.add(k); else AT.unf.delete(k); });
+function renderAth(){ setTimeout(statFold,0); if(ACC.role!=='coach'){ S.view='cal'; renderCal(); return; } teamSub(); const P=atPeople(), St=atStats(), days=atDays(AT.range);
   P.forEach(a=>atLoad(a)); if(!AT.infoAt||Date.now()-AT.infoAt>60e3){ AT.infoAt=Date.now(); atReloadInfo(); }
   const mode=AT.mode||'perf', modeBar=`<div class="seg2 atmode"><button data-atmode="perf" class="${mode==='perf'?'on':''}" aria-pressed="${mode==='perf'}">Performance</button><button data-atmode="cal" class="${mode==='cal'?'on':''}" aria-pressed="${mode==='cal'}">Calendar stats</button></div>`;
-  if(mode==='perf'){ app.innerHTML=`${topBar()}<div class="h2">Stats</div>${modeBar}<p class="note" style="margin:0 0 10px">Everyone’s tests, climbing and comps side by side. The tests are the same for the whole team, so this fills in by itself.</p>${!TM.loaded?'<p class="note">Loading the team…</p>':!P.length?'<p class="note">No athletes yet. Add them in Team.</p>':atPerfHTML(P)}`; return; }
+  if(mode==='perf'){ setTimeout(statFold,0); app.innerHTML=`${topBar()}<div class="h2">Stats</div>${modeBar}<p class="note" style="margin:0 0 10px">Everyone’s tests, climbing and comps side by side. The tests are the same for the whole team, so this fills in by itself.</p>${!TM.loaded?'<p class="note">Loading the team…</p>':!P.length?'<p class="note">No athletes yet. Add them in Team.</p>':atPerfHTML(P)}`; return; }
   app.innerHTML=`${topBar()}<div class="h2">Stats</div>${modeBar}
     <p class="note" style="margin:0 0 10px">Compare one number across your athletes. Everyone can name their fields differently, so for each stat you pick which field means the same thing for each athlete.</p>
     <div class="pills">${[[7,'7 days'],[30,'30 days'],[90,'90 days']].map(([v,l])=>`<button data-atr="${v}" class="${AT.range===v?'on':''}" aria-pressed="${AT.range===v}">${l}</button>`).join('')}</div>
@@ -1934,7 +1965,7 @@ function renderPlan(){ planRefresh(); const k=mkey(S.y,S.m), first=new Date(S.y,
     <div class="card pedit"><div class="pehead"><b>${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}</b>${sel===todayStr?'<span class="todaytag">šiandien</span>':''}</div>
       <div class="pseg2"><button class="${sp&&sp.t==='train'?'on':''}" data-pset="${sel}|train"><i class="pl train"></i>Training</button><button class="${sp&&sp.t==='rest'?'on':''}" data-pset="${sel}|rest"><i class="pl rest"></i>Rest day</button><button class="${sp?'':'on'}" data-pset="${sel}|">Nothing</button></div>
       ${sp&&sp.t==='train'?`<div class="psess">
-        <div class="pfield"><p class="clab">Duration</p><div class="flmin pdur"><button class="flstep" data-pdur="${sel}|-15" aria-label="15 minutes less">−</button><label><b>${sp.dur||'–'}</b><span>min</span></label><button class="flstep" data-pdur="${sel}|15" aria-label="15 minutes more">+</button></div></div>
+        <div class="pfield"><p class="clab">Duration</p><div class="flmin pdur"><button class="flstep" data-pdur="${sel}|-5" aria-label="5 minutes less">−</button><label><input type="number" inputmode="numeric" min="0" max="600" data-pdurin="${sel}" value="${sp.dur||''}" placeholder="0" aria-label="Duration in minutes"><span>min</span></label><button class="flstep" data-pdur="${sel}|5" aria-label="5 minutes more">+</button></div></div>
         ${cpkRow('form',sel,sp.form,'Format')}${cpkRow('goal',sel,sp.goal,'Goal')}
         <div class="pfield"><p class="clab">Intensity <small>planned effort, 1 easy · 10 max</small></p><div class="fltiles t10 pint">${Array.from({length:10},(_,i)=>`<button class="fltile${sp.int===i+1?' on':''}" data-pint="${sel}|${i+1}">${i+1}</button>`).join('')}</div></div>
         <div class="pfield"><p class="clab">What we’ll do</p><textarea class="pnote" data-pnote="${sel}" rows="2" maxlength="400" placeholder="Warm-up, main part, finish">${esc(sp.n)}</textarea></div></div>`
@@ -1983,23 +2014,30 @@ function tsScore(tpl,e){ if(!tpl||!e) return null; let bw=null; const parts=[], 
   return {score,unit,text:out.join(' · '),bw}; }
 function renderTests(){ if(ACC.role!=='coach'){ S.view='cal'; renderCal(); return; } teamSub(); ensurePerf(); planRefresh(); const P=atPeople(); P.forEach(a=>atLoad(a));
   const L=tsAll(), M=TSN.make, tests=tsTests(P);
-  const make=M?`<div class="card tsmake"><h3>New test</h3>
-      <p class="clab">Which test</p><div class="flchips">${tests.map(t=>`<button class="${M.name===tName(t)?'on':''}" data-tsn="${esc(tName(t))}">${esc(tName(t))}</button>`).join('')}</div>
-      ${M.name?(()=>{ const t=tsTpl(tests,M.name); return t&&t.how?`<p class="note tshow">${esc(t.how)}</p>`:''; })():''}
-      <p class="clab">Day</p><input type="date" class="tsdate" data-tsd="1" value="${M.date}">
-      <p class="clab">Who</p><div class="flchips">${P.map(a=>`<button class="${M.who.includes(a.id)?'on':''}" data-tsw="${a.id}">${esc(a.name)}</button>`).join('')}${P.length>1?`<button class="ghostchip" data-tsall="1">${M.who.length===P.length?'Nobody':'Everyone'}</button>`:''}</div>
-      <div class="row" style="margin-top:12px"><button class="btn" data-tsgo="1"${M.name&&M.who.length?'':' disabled'}>Invite</button><button class="btn ghost" data-tsx="1">Cancel</button></div></div>`
-    :`<button class="btn flbig tsnew" data-tsnew="1">+ New test</button>`;
+  const tick='<svg viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const grp=t=>pgOf(t)==='daily'?'Daily':'Max', TT=tests.filter(t=>!M||!M.name||true);
+  const make=M?`<div class="tsmake">
+      <p class="ilab">Test</p><div class="ilist">${TT.map(t=>{ const on=M.name===tName(t); return `<button class="irow${on?' on':''}" data-tsn="${esc(tName(t))}"><span><b>${esc(tName(t))}</b><small>${grp(t)} test</small></span><i>${on?tick:''}</i></button>`; }).join('')}</div>
+      ${M.name?(()=>{ const t=tsTpl(tests,M.name); return t&&t.how?`<details class="ihow"><summary>How it’s done</summary><p>${esc(t.how)}</p></details>`:''; })():''}
+      <p class="ilab">Day</p><div class="ilist"><label class="irow"><span><b>Date</b></span><input type="date" class="tsdate" data-tsd="1" value="${M.date}"></label></div>
+      <p class="ilab">Who <small>${M.who.length} of ${P.length}</small></p><div class="ilist">${P.length>1?`<button class="irow" data-tsall="1"><span><b>Everyone</b></span><i>${M.who.length===P.length?tick:''}</i></button>`:''}${P.map(a=>{ const on=M.who.includes(a.id); return `<button class="irow${on?' on':''}" data-tsw="${a.id}"><span><b>${esc(a.name)}</b></span><i>${on?tick:''}</i></button>`; }).join('')}</div>
+      <div class="ibtns"><button class="btn ghost" data-tsx="1">Cancel</button><button class="btn" data-tsgo="1"${M.name&&M.who.length?'':' disabled'}>Invite${M.who.length?' '+M.who.length:''}</button></div></div>`
+    :'';
   const card=x=>{ const open=TSN.open===x.id, rows=x.who.map(id=>{ const a=P.find(a=>a.id===id)||{id,name:'?'}, d=AT.data[id], T=d&&d.cfg&&d.cfg.templates, t=tsTpl(T,x.name), e=d&&tsEntry(d.months,t,x.date), sc=tsScore(t,e); return {a,sc,loading:!d}; });
       const done=rows.filter(r=>r.sc&&r.sc.score!=null).sort((p,q)=>q.sc.score-p.sc.score), wait=rows.filter(r=>!(r.sc&&r.sc.score!=null)), max=done.length?done[0].sc.score:1;
       return `<div class="card tscard${open?' open':''}"><button class="tshead" data-tsopen="${x.id}"><span><b>${esc(x.name)}</b><small>${esc(dayName(x.date))} ${esc(x.date.slice(5).replace('-','.'))} · ${done.length}/${x.who.length} done</small></span><i class="echev${open?' up':''}"></i></button>
         ${open?`<ol class="brdl">${done.map((r,i)=>`<li style="--i:${i}"><span class="brdr r${i+1}">${i+1}</span><b>${esc(r.a.name)}</b><span class="brdv">${r.sc.score}${r.sc.unit}</span><i class="brdb"><i style="width:${Math.max(6,Math.round(r.sc.score/max*100))}%"></i></i><small class="tsdet">${esc(r.sc.text)}</small></li>`).join('')}</ol>
           ${wait.length?`<p class="note tswait">Waiting for: ${wait.map(r=>esc(r.a.name)+(r.loading?'…':'')).join(', ')}</p>`:''}
           <div class="row"><button class="btn ghost" data-tsref="${x.id}">Refresh</button>${x.by===ACC.id?`<button class="btn ghost" data-tsdel="${x.id}">Delete</button>`:''}</div>`:''}</div>`; };
-  app.innerHTML=`${topBar()}<div class="phead"><div><h1>Tests</h1><p class="lvtxt">Set up a test, invite athletes, see everyone’s numbers and the ranking.</p></div></div>
-    ${make}${L.length?`<p class="newsl">Your tests</p>${L.map(card).join('')}`:''}
-    <p class="newsl" style="margin-top:20px">Everyone’s results</p><p class="note" style="margin:0 0 10px">All tests the athletes did, also the ones they did on their own.</p>
-    ${!TM.loaded?'<p class="note">Loading the team…</p>':!P.length?'<p class="note">No athletes yet. Add them in Team.</p>':atPerfHTML(P)}`; }
+  const sel=TSN.sel||todayStr, first=new Date(S.y,S.m,1), lead=(first.getDay()+6)%7, days=new Date(S.y,S.m+1,0).getDate(); let cells=WD.map(w=>`<div class="wd">${w}</div>`).join(''); for(let i=0;i<lead;i++) cells+=`<div class="day out"></div>`;
+  for(let d=1;d<=days;d++){ const ds=`${S.y}-${pad(S.m+1)}-${pad(d)}`, n=L.filter(x=>x.date===ds).length; cells+=`<button class="day pday${ds===todayStr?' today':''}${ds===sel?' sel':''}${n?' hast':''}" data-tsday="${ds}" aria-label="${d} ${MONTHS[S.m]}${n?', '+n+' tests':''}"><span class="n">${d}</span>${n?`<span class="ptag tst">${n>1?n+' tests':'Test'}</span>`:''}</button>`; }
+  const onDay=L.filter(x=>x.date===sel), sd=new Date(sel+'T12:00');
+  app.innerHTML=`${topBar()}<div class="phead"><div><h1>Tests</h1><p class="lvtxt">Set up a test and invite athletes. Their numbers and the ranking show here.</p></div></div>
+    ${M?make:`<button class="btn flbig tsnew" data-tsnew="1">+ New test</button>`}
+    ${M?'':`<div class="month"><h1>${MONTHS[S.m]} <small>${S.y}</small></h1><div class="mnav"><button class="mini" data-pm="-1" aria-label="Previous month">‹</button><button class="mini" data-pm="1" aria-label="Next month">›</button></div></div>
+    <div class="grid pgrid">${cells}</div>
+    <p class="newsl" style="margin-top:14px">${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}</p>
+    ${onDay.length?onDay.map(card).join(''):'<p class="note">No test on this day.</p>'}`}`; }
 async function tsSave(x){ const o={}; o[x.id]={name:x.name,date:x.date,by:ACC.id,byName:String(ACC.name||'Coach').slice(0,40),who:x.who,at:Date.now()};
   TEAM.info.tsess=Object.assign({},TEAM.info.tsess||{},o); render(); try{ await TEAM.db.doc('team/info').update({tsess:o}); toast('Invited'); }catch(e){ toast('Could not save. Check the connection.'); } }
 // athlete: invites on the Performance tab, numbers typed right there
@@ -2993,8 +3031,9 @@ function dataLines(ds,n){ const V=ds.vars; return ds.days.slice(-n).map(d=>{ con
   const t=(ds.texts[d]||[]).map(s=>s.slice(0,200)); return `${d} (${WD[(new Date(d+'T12:00').getDay()+6)%7]}): ${parts.join('; ')}${t.length?' | notes: '+t.join(' / '):''}`; }); }
 const SAFE='Never suggest eating less, losing weight, supplement doses or medication. Slow-acting supplements (omega-3, creatine, vitamin D, iron) build up over weeks, so never propose day-by-day A/B tests of them. If something sounds like injury (a pop, sharp pain, swelling) say to stop and see a physio.';
 const GLOSS='Krūvis = training load (effort × minutes), Pirštų skausmas = finger pain, Pirštų testas = finger strength test. Notes are mostly Lithuanian: Prieš trieša = before training, Po triešos = after training, Restday = rest day, Miegas = sleep, Maistas = food, Maisto papildai = supplements, Oda = skin, Energija = energy, Kūnas = body, Fokusas = focus, Pirštai = fingers, Emocijos = emotions. Weekdays: Pr An Tr Kt Pn Š S = Mon–Sun.';
+const TCOL={cal:'#C1272D',perf:'#1FA2A8',goals:'#E0A400',sims:'#E86A2C',crew:'#8E52CC',plan:'#2F6FD1',tests:'#1FA2A8',ath:'#8E52CC',team:'#35A071'};
 function tabsHTML(){ const B=[['cal','Calendar'],['perf','Performance'],['goals','Milestones']], T=GUEST?B:ACC.role==='coach'?[['plan','Plan'],['tests','Tests'],['sims','Comps'],['ath','Stats'],['team','Team']]:B.concat([['sims','Comps']]).concat(isCoach()?[['team','Team']]:[]).concat(lvlUser()?[['crew',isCoach()?'Ranks':'Team']]:[]).concat(ACC.role==='coach'?[['ath','Stats']]:[]);
-  return `<nav class="tabs${T.length>3?' many':''}${T.length>5?' six':''}" aria-label="Sections">${T.map(([k,l])=>`<button data-tab="${k}" class="${S.view===k||(k==='sims'&&S.view==='sim')?'on':''}"${S.view===k?' aria-current="page"':''}><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">${TICON[k]||''}</svg><span>${T.length>4?({perf:'Perform',goals:'Goals'}[k]||l):l}</span></button>`).join('')}</nav>`; }
+  return `<nav class="tabs${T.length>3?' many':''}${T.length>5?' six':''}" aria-label="Sections">${T.map(([k,l])=>`<button data-tab="${k}" style="--tc:${TCOL[k]||'var(--ink)'}" class="${S.view===k||(k==='sims'&&S.view==='sim')?'on':''}"${S.view===k?' aria-current="page"':''}><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">${TICON[k]||''}</svg><span>${T.length>4?({perf:'Perform',goals:'Goals'}[k]||l):l}</span></button>`).join('')}</nav>`; }
 const TICON={tests:'<g fill="none" stroke="currentColor" stroke-width="2"><path d="M3 20h18M6 16v-5M11 16V6M16 16v-8M21 16V9"/></g>',plan:'<g fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18v16H3zM3 10h18M8 2v5M16 2v5"/><path d="M8 15l2.5 2.5L16 13"/></g>',crew:'<g fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/></g>',cal:'<path fill="none" stroke="currentColor" stroke-width="2" d="M3 5h18v16H3zM3 10h18M8 2v5M16 2v5"/>',perf:'<path fill="none" stroke="currentColor" stroke-width="2" d="M3 20h18M6 16v-5M11 16V6M16 16v-8M21 16V9"/>',goals:'<path fill="none" stroke="currentColor" stroke-width="2" d="M5 22V3M5 4h12l-2 4 2 4H5"/>',sims:'<g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.5M9.5 2h5M12 2v4.5M18.5 6.5l1.5-1.5"/></g>',team:'<g fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 21c.6-4 3.2-6 6.5-6s5.9 2 6.5 6M16 4.8a3.5 3.5 0 0 1 0 6.4M18 15.4c2 .7 3.2 2.6 3.5 5.6"/></g>',ath:'<path fill="none" stroke="currentColor" stroke-width="2" d="M3 3v18h18M7 15l4-5 3 3 6-7"/>'};
 const isWeakCode=()=>{ try{ return localStorage.getItem('ct:weak')==='1'; }catch(e){ return false; } };
 
@@ -4150,12 +4189,13 @@ app.addEventListener('click',async ev=>{
   if(ds.finding!==undefined){ S.st.openF=S.st.openF===+ds.finding?null:+ds.finding; render(); return; }
   if(ds.act==='ai'){ runAI(); return; }
   if(ds.simnote!=null&&S.st.simDraft){ S.st.simNote=Object.assign({},S.st.simNote,{[ds.simnote]:1}); render(); const i=document.querySelector(`[data-simr="${ds.simnote}|note"]`); if(i) i.focus(); return; }
-  if(ds.tsnew){ TSN.make={name:'',date:todayStr,who:[]}; render(); return; }
+  if(ds.tsday){ TSN.sel=ds.tsday; render(); return; }
+  if(ds.tsnew){ TSN.make={name:'',date:TSN.sel&&TSN.sel>=todayStr?TSN.sel:todayStr,who:[]}; render(); scrollTo(0,0); return; }
   if(ds.tsx){ TSN.make=null; render(); return; }
   if(ds.tsn&&TSN.make){ TSN.make.name=ds.tsn; render(); return; }
   if(ds.tsw&&TSN.make){ const w=TSN.make.who, i=w.indexOf(ds.tsw); if(i>=0) w.splice(i,1); else w.push(ds.tsw); render(); return; }
   if(ds.tsall&&TSN.make){ const P=atPeople(); TSN.make.who=TSN.make.who.length===P.length?[]:P.map(a=>a.id); render(); return; }
-  if(ds.tsgo&&TSN.make&&TSN.make.name&&TSN.make.who.length){ const M=TSN.make; TSN.make=null; TSN.open=null; const id=rid(); TSN.open=id; tsSave({id,name:M.name,date:M.date,who:M.who.slice()}); return; }
+  if(ds.tsgo&&TSN.make&&TSN.make.name&&TSN.make.who.length){ const M=TSN.make; TSN.make=null; TSN.open=null; const id=rid(); TSN.open=id; TSN.sel=M.date; S.y=+M.date.slice(0,4); S.m=+M.date.slice(5,7)-1; tsSave({id,name:M.name,date:M.date,who:M.who.slice()}); return; }
   if(ds.tsopen){ TSN.open=TSN.open===ds.tsopen?null:ds.tsopen; render(); return; }
   if(ds.tsref){ const x=tsAll().find(x=>x.id===ds.tsref); if(x) x.who.forEach(id=>{ const a=atPeople().find(a=>a.id===id); if(a) atLoad(a,true).then(()=>softRender()); }); toast('Refreshing'); return; }
   if(ds.tsdel){ if(!armed(b,'Tap again')) return; delete TEAM.info.tsess[ds.tsdel]; TSN.open=null; render(); try{ await TEAM.db.doc('team/info').update({tsess:{[ds.tsdel]:null}}); }catch(e){} return; }
@@ -4267,7 +4307,7 @@ app.addEventListener('input',ev=>{
 });
 app.addEventListener('change',ev=>{
   if(GUEST) return;
-  { const t=ev.target; if(t.dataset&&t.dataset.tsd&&TSN.make){ if(/^\d{4}-\d{2}-\d{2}$/.test(t.value)) TSN.make.date=t.value; return; } if(t.dataset&&t.dataset.tsin){ return; } if(t.dataset&&t.dataset.pnote&&ACC.role!=='athlete'){ const cur=planOf(t.dataset.pnote); if(cur) planPatch(t.dataset.pnote,{n:t.value.trim().slice(0,400)}); return; } if(t.dataset&&t.dataset.flmood!==undefined){ moodCommit(t); return; } if(t.dataset&&t.dataset.flen!==undefined){ enCommit(t); return; } }
+  { const t=ev.target; if(t.dataset&&t.dataset.pdurin&&ACC.role!=='athlete'){ planPatch(t.dataset.pdurin,{dur:Math.max(0,Math.min(600,Math.round(+t.value||0)))}); return; } if(t.dataset&&t.dataset.tsd&&TSN.make){ if(/^\d{4}-\d{2}-\d{2}$/.test(t.value)) TSN.make.date=t.value; return; } if(t.dataset&&t.dataset.tsin){ return; } if(t.dataset&&t.dataset.pnote&&ACC.role!=='athlete'){ const cur=planOf(t.dataset.pnote); if(cur) planPatch(t.dataset.pnote,{n:t.value.trim().slice(0,400)}); return; } if(t.dataset&&t.dataset.flmood!==undefined){ moodCommit(t); return; } if(t.dataset&&t.dataset.flen!==undefined){ enCommit(t); return; } }
   if(S.view==='ath'&&atChange(ev.target)) return;
   if(simChange(ev.target)) return;
   const t=ev.target, ds=t.dataset, T=S.cfg.templates;
@@ -5311,6 +5351,7 @@ function renderSims(){ if(GUEST){ S.view='cal'; renderCal(); return; } simSub();
     ${simInviteCards()}
     ${mine.length?mine.map(x=>`<button class="card simrow" data-simopen="${x.id}"><span class="simd"><b>${x.date.slice(8)}</b><small>${MONTHS[+x.date.slice(5,7)-1].slice(0,3)}</small></span><span class="simm"><b>${esc(x.name)}</b><small>${SIMP[x.round]?SIMP[x.round][0]+' · ':''}${x.n} boulders · ${x.mode==='own'?'own boulders':'same boulders'} · ${x.inv.length} invited</small></span><span class="simst s-${x.status}">${{draft:'Draft',open:'Invited',live:'Live',done:'Done'}[x.status]}${x.locked?' · locked':''}</span></button>`).join(''):`<div class="empty">${coach?'No simulations yet.':'No simulations yet. Your coach invites you from his phone.'}</div>`}`; }
 function tStep(k,v,lab,sub){ const m=Math.floor(v/60), sc=v%60, opt=(n,cur,suf)=>`<option value="${n}"${n===cur?' selected':''}>${n}${suf}</option>`;
+  return `<div class="tstep"><span class="clab2">${lab}<small>${sub}</small></span><span class="tsel tin"><input type="text" inputmode="decimal" data-simtt="${k}" value="${m}:${pad(sc)}" aria-label="${lab}, minutes:seconds"><small>min:s</small></span></div>`;
   return `<div class="tstep"><span class="clab2">${lab}<small>${sub}</small></span><span class="tsel"><select data-simtm="${k}|m" aria-label="${lab} minutes">${Array.from({length:31},(_,n)=>opt(n,m,' min')).join('')}</select><select data-simtm="${k}|s" aria-label="${lab} seconds">${Array.from({length:60},(_,n)=>opt(n,sc,' s')).join('')}</select></span></div>`; }
 function simEditHTML(x){ const ath=(TM.list||[]).filter(a=>seenRole(a)==='athlete'&&a.id!==ACC.id).sort((a,b)=>String(a.name).localeCompare(String(b.name)));
   const inv=new Map(x.inv.map(a=>[a.id,a])), sel=(v,cur,lbl)=>`<option value="${v}"${cur===v?' selected':''}>${lbl}</option>`;
@@ -5430,6 +5471,7 @@ function simClick(ds,b){
 function simChange(t){ const ds=t.dataset, D=S.st.simDraft; { const lx=simById(S.st.simId); if(lx&&lx.locked&&(ds.simg!==undefined||ds.simfw!==undefined||ds.simgood!==undefined)){ toast('The coach locked the results'); render(); return true; } }
   if(ds.simg!==undefined||ds.simfw!==undefined||ds.simgood!==undefined){ const [id,i]=(ds.simg||ds.simfw||ds.simgood).split('|'), m=SIM.mine[id]; if(!m) return true; while(m.res.length<=+i) m.res.push({}); m.res[+i]=Object.assign({},m.res[+i],ds.simg!==undefined?{g:t.value.trim().toUpperCase().slice(0,4)}:ds.simfw!==undefined?{fw:t.value.slice(0,500)}:{good:t.value.slice(0,500)}); simSaveMine(id); return true; }
   if(!D) return false;
+  if(ds.simtt){ const raw=String(t.value).trim().replace(',','.'); let v=null; const m1=raw.match(/^(\d{1,2})[:.](\d{1,2})$/), m2=raw.match(/^(\d{1,3})$/); if(m1) v=(+m1[1])*60+Math.min(59,+m1[2]); else if(m2) v=+m2[1]>=60&&ds.simtt!=='climb'?+m2[1]:(+m2[1])*60; if(v==null){ t.value=`${Math.floor((+D[ds.simtt]||0)/60)}:${pad((+D[ds.simtt]||0)%60)}`; toast('Write it like 4:00'); return true; } v=Math.min(30*60+59,v); if(ds.simtt==='climb'&&v<5) v=5; D[ds.simtt]=v; t.value=`${Math.floor(v/60)}:${pad(v%60)}`; D.round='c'; document.querySelectorAll('[data-simround]').forEach(b=>b.classList.toggle('on',b.dataset.simround==='c')); const n=document.getElementById('simnote'); if(n) n.textContent=simNoteText(D); return true; }
   if(ds.simtm){ const [k,u]=ds.simtm.split('|'), v=+t.value, cur=+D[k]||0; D[k]=u==='m'?v*60+cur%60:Math.floor(cur/60)*60+v; if(k==='climb'&&D[k]<5) D[k]=5; D.round='c'; document.querySelectorAll('[data-simround]').forEach(b=>b.classList.toggle('on',b.dataset.simround==='c')); const n=document.getElementById('simnote'); if(n) n.textContent=simNoteText(D); return true; }
   if(ds.sime){ const k=ds.sime; if(k==='name') D.name=t.value.trim().slice(0,60)||'Comp simulation'; else if(k==='date'){ if(/^\d{4}-\d{2}-\d{2}$/.test(t.value)) D.date=t.value; } return true; }
   if(ds.simr){ const [i,k]=ds.simr.split('|'); D.routes[+i][k]=k==='g'?t.value.trim().toUpperCase().slice(0,4):t.value.slice(0,200); return true; }
