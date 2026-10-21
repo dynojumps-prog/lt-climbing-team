@@ -1393,6 +1393,15 @@ html,body{overscroll-behavior-y:none}
 .tstep{display:flex!important;align-items:center;justify-content:space-between;gap:10px}.tstep .clab2{flex:1;min-width:0}
 .tsel.tin{flex:0 0 auto!important;width:auto!important;display:flex!important;flex-direction:column;align-items:center;gap:2px}.tsel.tin input{width:92px!important;flex:none!important}
 .simed .chips{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));width:100%}.simed .chips button{padding:6px 4px!important;font-size:.82rem!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* coach: calmer, like the athlete check-in */
+.prows{margin-top:12px;gap:8px}.prows .cks{border-radius:16px}.prows .ckh{min-height:54px;padding:10px 14px}.prows .cki{width:26px;height:26px}
+.prows .ckbi{padding:0 14px 14px}.prows .pdur{margin:0 auto}
+.pedit .pseg2{margin-top:2px}.pcopy{margin-top:14px!important}
+.prows .cki.on{background:#2F6FD1;border-color:#2F6FD1;color:#fff}
+.ilab:first-child{margin-top:4px}
+.atcard .athead h3 small{font-size:.8rem}
+.fold .foldh{font-size:1rem!important}
 </style>
 </head>
 <body>
@@ -1767,20 +1776,20 @@ function atPerfHTML(P){ const R=AT.prange||90, from=dAdd(todayStr,-R+1), load=P.
   const ready=D.map(({a,pf})=>{ const cells=K.filter(k=>keys[k].grp==='daily').map(k=>{ const ser=(pf[k]||{}).ser||[]; if(!ser.length) return null; const last=ser[ser.length-1], prev=ser.slice(0,-1).slice(-7);
       if(prev.length<3||dayIdx(last.d,todayStr)>3) return {k,last,cls:'',txt:dayIdx(last.d,todayStr)>3?dmy(last.d):'building normal'}; const m=meanOf(prev.map(x=>x.v)), dv=(last.v/m-1)*100; return {k,last,cls:dv<=-10?'neg':dv<=-5?'amb':'pos',txt:`${dv>=0?'+':'−'}${n1(Math.abs(dv))}% vs normal`}; }).filter(Boolean);
     return {a,cells}; });
-  const readyHTML=`<div class="card"><h3>Readiness ${helpBtn('coach')}</h3><p class="note" style="margin:0 0 8px">Each athlete’s latest daily test against their own last 7. 5% below = tired, 10% below = very tired.</p>
+  const readyHTML=`<div class="card"><h3>Readiness ${helpBtn('coach')}</h3>
     ${ready.map(({a,cells})=>`<div class="atrd"><b>${esc(a.name)}</b>${cells.length?`<div class="atrdc">${cells.map(c=>`<span class="rdc ${c.cls}"><small>${esc(keys[c.k].label.replace(/^Daily /i,''))}</small><b>${n1(c.last.v)}${keys[c.k].unit}</b><i>${esc(c.txt)}</i></span>`).join('')}</div>`:'<span class="note">No daily tests yet</span>'}</div>`).join('')}</div>`;
   const testCard=k=>{ const o=keys[k], daily=o.grp==='daily'; const rows=[], none=[];
     D.forEach(({a,pf})=>{ const all=(pf[k]||{}).ser||[], ser=all.filter(x=>x.d>=from); if(!ser.length){ none.push(a.name); return; }
       const nowV=daily?Math.max(...all.filter(x=>x.d>=dAdd(ser[ser.length-1].d,-13)&&x.d<=ser[ser.length-1].d).map(x=>x.v)):ser[ser.length-1].v, best=Math.max(...ser.map(x=>x.v)), ch=ser.length>1?nowV-ser[0].v:null;
       rows.push({a,ser,nowV,best,ch,last:ser[ser.length-1].d}); });
     if(!rows.length) return ''; rows.sort((p,q)=>q.nowV-p.nowV); const max=Math.max(...rows.map(r=>r.nowV))||1;
-    return `<div class="card atcard"><div class="athead"><h3>${esc(o.label)}${o.unit==='%'?' <small class="note">% bodyweight</small>':''}</h3></div>
+    return `<div class="card atcard"><div class="athead"><h3>${esc(o.label.replace(/^\+*\s*Daily\s+/i,'').replace(/ · (left|right) hand$/,(m,h)=>' · '+(h==='left'?'L':'R')))}${o.unit==='%'?' <small class="note">%</small>':''}</h3></div>
       <div class="atrows">${rows.map(r=>`<div class="atrow"><div class="atname"><b>${esc(r.a.name)}</b><span class="note">${daily?'best of 14 days':'last test'} · ${dmy(r.last)}</span></div>
         <div class="atbarw"><i class="atbar" style="width:${Math.max(4,Math.round(r.nowV/max*100))}%"></i></div><div class="atavg"><b>${n1(r.nowV)}${o.unit}</b><small>now</small></div>
         <div class="atmeta"><span>best ${n1(r.best)}${o.unit}</span>${r.ch!=null?`<span class="${r.ch>0?'pos':r.ch<0?'neg':''}">${r.ch>0?'▲':r.ch<0?'▼':'='} ${n1(Math.abs(r.ch))}${o.unit} since ${dmy(r.ser[0].d)}</span>`:''}<span>${r.ser.length} test${r.ser.length>1?'s':''}</span>${atSpark(r.ser,from)}</div></div>`).join('')}
       ${none.length?`<p class="note" style="margin:8px 0 0">No test in this time: ${esc(none.join(', '))}</p>`:''}</div></div>`; };
   const cl=D.map(({a,d})=>({a,c:atClimb(d,from)}));
-  const climbHTML=`<div class="card"><h3>Climbing</h3><p class="note" style="margin:0 0 8px">From the route cards in the last ${R} days.</p><div class="attbl"><div class="atth"><span>Athlete</span><span>Routes</span><span>Tops</span><span>Flash</span><span>Hardest top</span></div>
+  const climbHTML=`<div class="card"><h3>Climbing</h3><div class="attbl"><div class="atth"><span>Athlete</span><span>Routes</span><span>Tops</span><span>Flash</span><span>Hardest top</span></div>
     ${cl.map(({a,c})=>`<div class="attr"><b>${esc(a.name)}</b><span>${c.n||'–'}</span><span>${c.n?c.tops:'–'}</span><span>${c.n?Math.round(c.fl/c.n*100)+'%':'–'}</span><span>${c.hard?esc(c.hard.g):'–'}${c.hardF?` <small>flash ${esc(c.hardF.g)}</small>`:''}</span></div>`).join('')}</div></div>`;
   const comps=cl.filter(x=>x.c.comps.length);
   const compHTML=`<div class="card"><h3>Comps</h3>${comps.length?comps.map(({a,c})=>{ const x=c.comps[0], rn=(ROUNDS.find(z=>z[0]===x.round)||[0,''])[1]; return `<div class="atrd"><b>${esc(a.name)}</b><span>${dmy(x.d)}${rn?' · '+esc(rn):''} · <b>${n1(x.sum.pts)}</b> pts · ${plural(x.sum.T,'top')}, ${plural(x.sum.Z,'zone')}${c.comps.length>1?` <small class="note">· ${c.comps.length} comps in ${R} days</small>`:''}</span></div>`; }).join(''):`<p class="note">No comps logged in the last ${R} days.</p>`}</div>`;
@@ -1788,18 +1797,17 @@ function atPerfHTML(P){ const R=AT.prange||90, from=dAdd(todayStr,-R+1), load=P.
   return `<div class="pills">${[[30,'30 days'],[90,'90 days'],[365,'1 year']].map(([v,l])=>`<button data-atpr="${v}" class="${R===v?'on':''}" aria-pressed="${R===v}">${l}</button>`).join('')}</div>
     ${load.length?`<p class="note">Loading ${esc(load.map(a=>a.name).join(', '))}…</p>`:''}
     ${D.length?readyHTML:''}
-    ${dk.length?`<div class="h2">Daily tests</div>${dk.map(testCard).join('')||`<p class="note">No daily tests in the last ${R} days.</p>`}`:''}
-    ${sk.length?`<div class="h2">Super tests</div>${sk.map(testCard).join('')||`<p class="note">No super tests in the last ${R} days.</p>`}`:''}
-    ${D.length?`<div class="h2">Climbing and comps</div>${climbHTML}${compHTML}`:''}`; }
+    ${dk.length?`<p class="ilab">Daily tests</p>${dk.map(testCard).join('')||`<p class="note">No daily tests in the last ${R} days.</p>`}`:''}
+    ${sk.length?`<p class="ilab">Super tests</p>${sk.map(testCard).join('')||`<p class="note">No super tests in the last ${R} days.</p>`}`:''}
+    ${D.length?`<p class="ilab">Climbing and comps</p>${climbHTML}${compHTML}`:''}`; }
 // stats cards fold: tap a title to open it. Remembers what you opened.
 function statFold(){ if(S.view!=='ath') return; AT.unf=AT.unf||new Set(); app.querySelectorAll('.card').forEach(c=>{ const h=c.querySelector(':scope>h3, :scope>.athead>h3, :scope>.athead'); if(!h||c.dataset.fk) return; const k=(h.textContent||'').trim().slice(0,60); if(!k) return; c.dataset.fk=k; c.classList.add('fold'); if(!AT.unf.has(k)) c.classList.add('folded'); h.classList.add('foldh'); h.setAttribute('role','button'); h.setAttribute('tabindex','0'); }); }
 document.addEventListener('click',ev=>{ const h=ev.target.closest&&ev.target.closest('.foldh'); if(!h||ev.target.closest('[data-help]')) return; const c=h.closest('.fold'); if(!c) return; const k=c.dataset.fk; AT.unf=AT.unf||new Set(); const open=c.classList.toggle('folded')===false; if(open) AT.unf.add(k); else AT.unf.delete(k); });
 function renderAth(){ setTimeout(statFold,0); if(ACC.role!=='coach'){ S.view='cal'; renderCal(); return; } teamSub(); const P=atPeople(), St=atStats(), days=atDays(AT.range);
   P.forEach(a=>atLoad(a)); if(!AT.infoAt||Date.now()-AT.infoAt>60e3){ AT.infoAt=Date.now(); atReloadInfo(); }
   const mode=AT.mode||'perf', modeBar=`<div class="seg2 atmode"><button data-atmode="perf" class="${mode==='perf'?'on':''}" aria-pressed="${mode==='perf'}">Performance</button><button data-atmode="cal" class="${mode==='cal'?'on':''}" aria-pressed="${mode==='cal'}">Calendar stats</button></div>`;
-  if(mode==='perf'){ setTimeout(statFold,0); app.innerHTML=`${topBar()}<div class="h2">Stats</div>${modeBar}<p class="note" style="margin:0 0 10px">Everyone’s tests, climbing and comps side by side. The tests are the same for the whole team, so this fills in by itself.</p>${!TM.loaded?'<p class="note">Loading the team…</p>':!P.length?'<p class="note">No athletes yet. Add them in Team.</p>':atPerfHTML(P)}`; return; }
+  if(mode==='perf'){ setTimeout(statFold,0); app.innerHTML=`${topBar()}<div class="h2">Stats</div>${modeBar}${!TM.loaded?'<p class="note">Loading the team…</p>':!P.length?'<p class="note">No athletes yet. Add them in Team.</p>':atPerfHTML(P)}`; return; }
   app.innerHTML=`${topBar()}<div class="h2">Stats</div>${modeBar}
-    <p class="note" style="margin:0 0 10px">Compare one number across your athletes. Everyone can name their fields differently, so for each stat you pick which field means the same thing for each athlete.</p>
     <div class="pills">${[[7,'7 days'],[30,'30 days'],[90,'90 days']].map(([v,l])=>`<button data-atr="${v}" class="${AT.range===v?'on':''}" aria-pressed="${AT.range===v}">${l}</button>`).join('')}</div>
     ${AT.msg?`<div class="alert amber">${esc(AT.msg)}</div>`:''}
     ${!TM.loaded?'<p class="note">Loading the team…</p>':!P.length?'<p class="note">No athletes yet. Add them in Team.</p>':St.map(st=>AT.edit===st.id?atEditHTML(st,P):atCardHTML(st,P,days)).join('')}
@@ -1948,29 +1956,30 @@ function planLine(ds){ const p=planOf(ds); if(!p) return ''; const F=p.t==='trai
 // coach quick picks for format and goal: your own list, starts empty
 const cpk=k=>{ const P=(S.cfg.picks||{})['@'+k]; return Array.isArray(P)?P:[]; };
 function cpkRow(k,ds,cur,label){ const ed=PLAN.ed===k, P=cpk(k);
-  return `<div class="pfield"><p class="clab">${label}</p><div class="qpk">${P.map(n=>ed?`<button class="qdel" data-cpkdel="${k}|${esc(n)}">${esc(n)} ✕</button>`:`<button class="${nk(n)===nk(cur)?'on':''}" data-cpk="${ds}|${k}|${esc(n)}">${esc(n)}</button>`).join('')}
+  return `<div class="pfield">${label?`<p class="clab">${label}</p>`:''}<div class="qpk">${P.map(n=>ed?`<button class="qdel" data-cpkdel="${k}|${esc(n)}">${esc(n)} ✕</button>`:`<button class="${nk(n)===nk(cur)?'on':''}" data-cpk="${ds}|${k}|${esc(n)}">${esc(n)}</button>`).join('')}
     ${ed?`<span class="qpkadd"><input type="text" data-cpkin="${k}" maxlength="40" placeholder="New ${label.toLowerCase()}" enterkeyhint="done"><button class="btn" data-cpkadd="${k}">Save</button></span>`:''}
     <button class="qedit" data-cpked="${k}">${ed?'Done':P.length?'Edit':'+ Add'}</button></div></div>`; }
 function cpkAdd(k){ const i=document.querySelector(`[data-cpkin="${k}"]`), t=cleanPick(i&&i.value); if(!t){ if(i) i.focus(); return; } const P=cpk(k).slice(); if(!P.some(x=>nk(x)===nk(t))) P.push(t); S.cfg.picks=Object.assign({},S.cfg.picks||{},{['@'+k]:P.slice(0,30)}); saveCfg(); render(); const j=document.querySelector(`[data-cpkin="${k}"]`); if(j) try{ j.focus({preventScroll:true}); }catch(e){} }
 function planPatch(ds,patch){ const cur=planOf(ds); if(!cur) return; planSet(ds,Object.assign({},cur,patch)); }
+function prow(k,label,val,body){ const open=PLAN.fo===k, f=!!String(val||'').trim();
+  return `<section class="cks${open?' open':''}"><button class="ckh" data-pfo="${k}" aria-expanded="${open}"><span class="cki${f?' on':''}">${f?'<svg viewBox="0 0 12 12" width="12" height="12"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}</span><span class="ckt"><b>${label}</b>${f&&!open?`<small>${esc(String(val).slice(0,60))}</small>`:''}</span><span class="ckc" aria-hidden="true"></span></button>${open?`<div class="ckb"><div class="ckbi">${body}</div></div>`:''}</section>`; }
 function renderPlan(){ planRefresh(); const k=mkey(S.y,S.m), first=new Date(S.y,S.m,1), lead=(first.getDay()+6)%7, days=new Date(S.y,S.m+1,0).getDate(), sel=PLAN.sel||todayStr;
   let cells=WD.map(w=>`<div class="wd">${w}</div>`).join(''); for(let i=0;i<lead;i++) cells+=`<div class="day out"></div>`;
   for(let d=1;d<=days;d++){ const ds=`${S.y}-${pad(S.m+1)}-${pad(d)}`, p=planOf(ds);
     cells+=`<button class="day pday${ds===todayStr?' today':''}${ds===sel?' sel':''}${p?' '+p.t:''}" style="--d:${d}" data-pday="${ds}" aria-label="${d} ${MONTHS[S.m]}${p?', '+PLW[p.t]:''}"><span class="n">${d}</span>${p?`<span class="ptag">${p.t==='train'?'Train':'Rest'}</span>`:''}</button>`; }
   const sp=planOf(sel), sd=new Date(sel+'T12:00'), cnt=Object.entries((TEAM.info||{}).plan||{}).filter(([d])=>d.startsWith(k));
-  app.innerHTML=`${topBar()}<div class="phead"><div><h1>Plan</h1><p class="lvtxt">Mark training days and rest days. Every athlete sees them on their calendar.</p></div></div>
+  app.innerHTML=`${topBar()}<div class="phead"><div><h1>Plan</h1></div></div>
     <div class="month"><h1>${MONTHS[S.m]} <small>${S.y}</small></h1><div class="mnav"><button class="mini" data-pm="-1" aria-label="Previous month">‹</button><button class="mini" data-pm="1" aria-label="Next month">›</button></div></div>
     <div class="grid pgrid">${cells}</div>
-    <p class="note plegend"><span class="pl train"></span>${cnt.filter(([,v])=>v&&v.t==='train').length} training <span class="pl rest"></span>${cnt.filter(([,v])=>v&&v.t==='rest').length} rest this month</p>
+    
     <div class="card pedit"><div class="pehead"><b>${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}</b>${sel===todayStr?'<span class="todaytag">šiandien</span>':''}</div>
       <div class="pseg2"><button class="${sp&&sp.t==='train'?'on':''}" data-pset="${sel}|train"><i class="pl train"></i>Training</button><button class="${sp&&sp.t==='rest'?'on':''}" data-pset="${sel}|rest"><i class="pl rest"></i>Rest day</button><button class="${sp?'':'on'}" data-pset="${sel}|">Nothing</button></div>
-      ${sp&&sp.t==='train'?`<div class="psess">
-        <div class="pfield"><p class="clab">Duration</p><div class="flmin pdur"><button class="flstep" data-pdur="${sel}|-5" aria-label="5 minutes less">−</button><label><input type="number" inputmode="numeric" min="0" max="600" data-pdurin="${sel}" value="${sp.dur||''}" placeholder="0" aria-label="Duration in minutes"><span>min</span></label><button class="flstep" data-pdur="${sel}|5" aria-label="5 minutes more">+</button></div></div>
-        ${cpkRow('form',sel,sp.form,'Format')}${cpkRow('goal',sel,sp.goal,'Goal')}
-        <div class="pfield"><p class="clab">Intensity <small>planned effort, 1 easy · 10 max</small></p><div class="fltiles t10 pint">${Array.from({length:10},(_,i)=>`<button class="fltile${sp.int===i+1?' on':''}" data-pint="${sel}|${i+1}">${i+1}</button>`).join('')}</div></div>
-        <div class="pfield"><p class="clab">What we’ll do</p><textarea class="pnote" data-pnote="${sel}" rows="2" maxlength="400" placeholder="Warm-up, main part, finish">${esc(sp.n)}</textarea></div></div>`
-      :sp?`<textarea class="pnote" data-pnote="${sel}" rows="2" maxlength="400" placeholder="Note, e.g. full rest, stretching only">${esc(sp.n)}</textarea>`:''}
-      <button class="btn ghost pcopy" data-pcopy="1">Copy last week to this week</button></div>`;
+      ${sp&&sp.t==='train'?`<div class="ckl prows">${prow('dur','Duration',sp.dur?sp.dur+' min':'',`<div class="flmin pdur"><button class="flstep" data-pdur="${sel}|-5" aria-label="5 minutes less">−</button><label><input type="number" inputmode="numeric" min="0" max="600" data-pdurin="${sel}" value="${sp.dur||''}" placeholder="0" aria-label="Duration in minutes"><span>min</span></label><button class="flstep" data-pdur="${sel}|5" aria-label="5 minutes more">+</button></div>`)}
+        ${prow('form','Format',sp.form,cpkRow('form',sel,sp.form,''))}${prow('goal','Goal',sp.goal,cpkRow('goal',sel,sp.goal,''))}
+        ${prow('int','Intensity',sp.int?sp.int+'/10':'',`<div class="fltiles t10 pint">${Array.from({length:10},(_,i)=>`<button class="fltile${sp.int===i+1?' on':''}" data-pint="${sel}|${i+1}">${i+1}</button>`).join('')}</div>`)}
+        ${prow('n','Plan',sp.n,`<textarea class="pnote" data-pnote="${sel}" rows="3" maxlength="400" placeholder="Warm-up, main part, finish">${esc(sp.n)}</textarea>`)}</div>`
+      :sp?`<textarea class="pnote" data-pnote="${sel}" rows="2" maxlength="400" placeholder="Note">${esc(sp.n)}</textarea>`:''}
+      <button class="btn ghost pcopy" data-pcopy="1">Copy last week</button></div>`;
   }
 
 // ---- quick picks: your own list per field (food, supplements). Starts empty; add them, delete them, tap one to log it now.
@@ -2032,7 +2041,7 @@ function renderTests(){ if(ACC.role!=='coach'){ S.view='cal'; renderCal(); retur
   const sel=TSN.sel||todayStr, first=new Date(S.y,S.m,1), lead=(first.getDay()+6)%7, days=new Date(S.y,S.m+1,0).getDate(); let cells=WD.map(w=>`<div class="wd">${w}</div>`).join(''); for(let i=0;i<lead;i++) cells+=`<div class="day out"></div>`;
   for(let d=1;d<=days;d++){ const ds=`${S.y}-${pad(S.m+1)}-${pad(d)}`, n=L.filter(x=>x.date===ds).length; cells+=`<button class="day pday${ds===todayStr?' today':''}${ds===sel?' sel':''}${n?' hast':''}" data-tsday="${ds}" aria-label="${d} ${MONTHS[S.m]}${n?', '+n+' tests':''}"><span class="n">${d}</span>${n?`<span class="ptag tst">${n>1?n+' tests':'Test'}</span>`:''}</button>`; }
   const onDay=L.filter(x=>x.date===sel), sd=new Date(sel+'T12:00');
-  app.innerHTML=`${topBar()}<div class="phead"><div><h1>Tests</h1><p class="lvtxt">Set up a test and invite athletes. Their numbers and the ranking show here.</p></div></div>
+  app.innerHTML=`${topBar()}<div class="phead"><div><h1>Tests</h1></div></div>
     ${M?make:`<button class="btn flbig tsnew" data-tsnew="1">+ New test</button>`}
     ${M?'':`<div class="month"><h1>${MONTHS[S.m]} <small>${S.y}</small></h1><div class="mnav"><button class="mini" data-pm="-1" aria-label="Previous month">‹</button><button class="mini" data-pm="1" aria-label="Next month">›</button></div></div>
     <div class="grid pgrid">${cells}</div>
@@ -4199,6 +4208,7 @@ app.addEventListener('click',async ev=>{
   if(ds.tsopen){ TSN.open=TSN.open===ds.tsopen?null:ds.tsopen; render(); return; }
   if(ds.tsref){ const x=tsAll().find(x=>x.id===ds.tsref); if(x) x.who.forEach(id=>{ const a=atPeople().find(a=>a.id===id); if(a) atLoad(a,true).then(()=>softRender()); }); toast('Refreshing'); return; }
   if(ds.tsdel){ if(!armed(b,'Tap again')) return; delete TEAM.info.tsess[ds.tsdel]; TSN.open=null; render(); try{ await TEAM.db.doc('team/info').update({tsess:{[ds.tsdel]:null}}); }catch(e){} return; }
+  if(ds.pfo){ PLAN.fo=PLAN.fo===ds.pfo?null:ds.pfo; render(); return; }
   if(ds.pday){ PLAN.sel=ds.pday; render(); return; }
   if(ds.pm){ let m=S.m+(+ds.pm), y=S.y; if(m<0){ m=11; y--; } if(m>11){ m=0; y++; } S.m=m; S.y=y; render(); return; }
   if(ds.pset!==undefined&&ACC.role!=='athlete'){ const [d,t]=ds.pset.split('|'), cur=planOf(d); planSet(d,t?Object.assign({},cur&&cur.t===t?cur:{n:''},{t}):null); buzz(); return; }
