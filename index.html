@@ -1409,10 +1409,10 @@ html,body{overscroll-behavior-y:none}
 .ilist.glass,.tsmake .ilist{position:relative;background:linear-gradient(135deg,color-mix(in srgb,var(--gc,#1FA2A8) 16%,rgba(255,255,255,.55)),color-mix(in srgb,var(--gc,#1FA2A8) 6%,rgba(255,255,255,.25)))!important;
   -webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6);border:1px solid color-mix(in srgb,var(--gc,#1FA2A8) 30%,rgba(255,255,255,.6))!important;box-shadow:0 10px 30px color-mix(in srgb,var(--gc,#1FA2A8) 18%,transparent),inset 0 1px 0 rgba(255,255,255,.6)}
 @media (prefers-color-scheme:dark){.ilist.glass,.tsmake .ilist{background:linear-gradient(135deg,color-mix(in srgb,var(--gc,#1FA2A8) 22%,rgba(20,26,32,.6)),color-mix(in srgb,var(--gc,#1FA2A8) 8%,rgba(20,26,32,.35)))!important;box-shadow:0 10px 30px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08)}}
-.tsmake .irow{border-bottom-color:color-mix(in srgb,var(--gc,#1FA2A8) 18%,transparent)!important;transition:background-color .25s,transform .25s cubic-bezier(.3,1.6,.5,1)!important;animation:rise .4s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0) * 40ms)}
+.tsmake .irow{border-bottom-color:color-mix(in srgb,var(--gc,#1FA2A8) 18%,transparent)!important;transition:background .3s,color .3s,box-shadow .3s,transform .25s cubic-bezier(.3,1.6,.5,1)!important}.tsmake.in .irow{animation:rise .4s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0) * 40ms)}
 .tsmake .irow:active{transform:scale(.98)}
 .tsmake .irow.on{background:color-mix(in srgb,var(--gc,#1FA2A8) 22%,transparent)!important}.tsmake .irow.on b{color:var(--gc,#1FA2A8)!important}
-.tsmake .irow i{color:var(--gc,#1FA2A8)!important}.tsmake .irow.on i svg{animation:pop .4s cubic-bezier(.3,1.7,.5,1)}
+.tsmake .irow i{color:var(--gc,#1FA2A8)!important}
 .tsmake .ibtns .btn:not(.ghost){background:linear-gradient(135deg,#1FA2A8,#2F6FD1)!important;border:0!important;color:#fff!important;box-shadow:0 8px 22px rgba(31,162,168,.35)}
 .tsmake .ibtns .btn:disabled{opacity:.45;box-shadow:none}
 
@@ -1461,6 +1461,24 @@ html,body{overscroll-behavior-y:none}
 .pcrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:linear-gradient(160deg,color-mix(in srgb,var(--panel) 70%,#fff),var(--panel));border:1px solid var(--line)}
 .pcrow span{color:var(--soft);font-weight:700;font-size:.85rem}.pcrow b{font-weight:800}
 .pctext{margin:10px 2px 0;white-space:pre-wrap;font-size:.95rem}
+
+/* glossy: + New test, log rows, plan card */
+.tsnew{position:relative;overflow:hidden;border:0!important;color:#fff!important;border-radius:20px!important;min-height:60px;background:linear-gradient(135deg,#5CC6CA 0%,#1FA2A8 45%,#147A80 100%)!important;box-shadow:0 10px 24px rgba(31,162,168,.35),inset 0 1px 0 rgba(255,255,255,.3)!important;transition:transform .2s cubic-bezier(.3,1.6,.5,1)!important}
+.tsnew::after,.entry::after,.pcard::after{content:"";position:absolute;inset:-60% 40% auto -20%;height:160%;background:radial-gradient(closest-side,rgba(255,255,255,.22),transparent);pointer-events:none}
+.tsnew:active{transform:scale(.97)}
+.entry{position:relative;border:0!important;background:linear-gradient(135deg,color-mix(in srgb,var(--c) 82%,#fff) 0%,var(--c) 45%,color-mix(in srgb,var(--c) 72%,#000) 100%)!important;box-shadow:0 10px 24px color-mix(in srgb,var(--c) 30%,transparent),inset 0 1px 0 rgba(255,255,255,.28)!important}
+.entry>.ehead,.entry>.ehead *{color:#fff!important}.entry .esum{opacity:.85}.entry .echev{border-color:#fff!important}
+.entry .ering .rbg{fill:rgba(255,255,255,.18)!important;stroke:rgba(255,255,255,.35)!important}.entry .ering .rfg{stroke:#fff!important}.entry .ering.full .rbg{fill:#fff!important;stroke:#fff!important}.entry .ering.full b{color:var(--c)!important}.entry .ering b{color:#fff!important}
+.entry>.ebody{background:var(--panel);color:var(--ink);border-radius:0 0 20px 20px}
+.pcard{position:relative;overflow:hidden;margin:14px 0 12px;border:0;color:#fff;background:linear-gradient(135deg,color-mix(in srgb,var(--pc) 82%,#fff) 0%,var(--pc) 45%,color-mix(in srgb,var(--pc) 72%,#000) 100%);box-shadow:0 10px 24px color-mix(in srgb,var(--pc) 32%,transparent),inset 0 1px 0 rgba(255,255,255,.28)}
+.pcard .pchead small{color:rgba(255,255,255,.85)}.pcard .pcpill{background:rgba(255,255,255,.22);box-shadow:none}
+.pcard .pcrow{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25)}.pcard .pcrow span{color:rgba(255,255,255,.8)}.pcard .pcrow b{color:#fff}.pcard .pctext{color:#fff}
+/* test day tag and the notice */
+.dtest{position:absolute;right:5px;top:5px;width:9px;height:9px;border-radius:50%;background:#1FA2A8;box-shadow:0 0 0 2px var(--panel)}
+.tsnote{display:flex;align-items:center;gap:10px;margin:0 0 12px;padding:12px 12px 12px 14px;border-radius:20px;color:#fff;background:linear-gradient(135deg,#5CC6CA 0%,#1FA2A8 45%,#147A80 100%);box-shadow:0 10px 24px rgba(31,162,168,.35);animation:rise .4s cubic-bezier(.16,1,.3,1) both}
+.tsni{flex:0 0 auto;width:10px;height:10px;border-radius:50%;background:#fff;animation:dotpulse 1.6s ease-in-out infinite}
+.tsnt{flex:1;min-width:0;display:flex;flex-direction:column}.tsnt small{opacity:.85}
+.tsgo{border:0;border-radius:12px;background:#fff;color:#147A80;font-weight:800;padding:8px 14px}.tsnx{border:0;background:none;color:#fff;font-size:1rem;padding:6px}
 </style>
 </head>
 <body>
@@ -1627,6 +1645,7 @@ function normCfg(c){ cleanIds(c); if(!c||!Array.isArray(c.templates)) return def
   if(!c.templates.length) return defaultCfg(); if(!c.templates.some(t=>!t.perf)) c.templates=defaultCfg().templates.concat(c.templates);
   c.tplV=typeof c.tplV==='string'?c.tplV.slice(0,20):''; if(typeof c.tplBak!=='string') delete c.tplBak;
   { const P={}; if(c.picks&&typeof c.picks==='object') Object.entries(c.picks).slice(0,40).forEach(([k,v])=>{ if(Array.isArray(v)&&typeof k==='string'&&k.length<=60&&!/[.~*/\[\]]/.test(k)) P[k]=v.map(x=>String(x||'').replace(/[|<>"`&\\]/g,'').trim().slice(0,40)).filter(Boolean).slice(0,30); }); c.picks=P; }
+  if(!Array.isArray(c.tsSeen)) delete c.tsSeen; else c.tsSeen=c.tsSeen.filter(x=>typeof x==='string'&&/^[A-Za-z0-9_-]{1,64}$/.test(x)).slice(-60);
   c.goals=normGoals(c.goals); c.perfMig=c.perfMig?1:0; c.setupV2=c.setupV2?1:0; c.setupV3=c.setupV3?1:0; c.perfV2=c.perfV2?1:0; c.perfV3=c.perfV3?1:0; c.perfV4=c.perfV4?1:0; c.perfV5=c.perfV5?1:0; c.perfV6=c.perfV6?1:0; c.perfV7=c.perfV7?1:0; c.news=typeof c.news==='string'?c.news.slice(0,20):''; c.lvl=[1,2,3].includes(+c.lvl)?+c.lvl:null; if(c.board===false) c.board=false; else delete c.board; c.tfont=['orbitron','archivo','marker'].includes(c.tfont)?c.tfont:''; c.skin=['vilnius','granite','chalk','comp','forest','obsidian','royal','glacier','sandstone','mono','xmas','halloween'].includes(c.skin)?c.skin:'vilnius'; c.styles=Array.isArray(c.styles)?c.styles.map(t=>String(t||'').replace(/[|<>"`&\\]/g,'').trim().slice(0,24)).filter(Boolean).slice(0,24):[]; c.setupV4=c.setupV4?1:0; c.pack=c.pack?1:0; c.packNo=c.packNo?1:0; c.bodyMig=c.bodyMig?1:0; c.routesMig=c.routesMig?1:0; const hs={}; if(c.hideSug&&typeof c.hideSug==='object') Object.entries(c.hideSug).forEach(([k,a])=>{ if(Array.isArray(a)) hs[String(k)]=a.map(String).slice(0,200); }); c.hideSug=hs; const nm={}; if(c.names&&typeof c.names==='object') Object.entries(c.names).forEach(([k,a])=>{ if(Array.isArray(a)){ const L=a.filter(x=>typeof x==='string'&&x.trim()).map(x=>x.trim().slice(0,60)).slice(-80); if(L.length) nm[String(k)]=L; } }); c.names=nm; c.lastBackup=Math.max(0,+c.lastBackup||0); c.owner=String(c.owner||'').trim().slice(0,40); return c; }
 function migM(i){ if(i&&i.type==='mix'&&i.val&&i.val.M&&i.val.M.now){ const M=Object.assign({},i.val.M); if(!M.rest) M.rest=M.now; delete M.now; return Object.assign({},i,{val:Object.assign({},i.val,{M})}); } return i; }
 function normMonth(k,m){ cleanIds(m); const days={}; const src=m&&m.days&&typeof m.days==='object'?m.days:{};
@@ -2002,17 +2021,17 @@ async function tplFollow(){ if(GUEST||!TEAM.db||pathMine()||ACC.role!=='athlete'
 // ================= Plan: the coach marks team training days and rest days (with a short note). Lives in team/info.plan,
 // so every athlete sees it on their calendar. Only coaches and the head of the team can change it.
 const PLAN={sel:null,at:0};
-const planOf=ds=>{ const p=((TEAM.info||{}).plan||{})[ds]; if(!(p&&(p.t==='train'||p.t==='rest'))) return null; const str=(x,n)=>String(x||'').slice(0,n); return {t:p.t,n:str(p.n,400),dur:Math.max(0,Math.min(600,+p.dur||0)),form:str(p.form,40),goal:str(p.goal,40),int:Math.max(0,Math.min(10,+p.int||0))}; };
+const planOf=ds=>{ const p=((TEAM.info||{}).plan||{})[ds]; if(!(p&&(p.t==='train'||p.t==='rest'))) return null; const str=(x,n)=>String(x||'').slice(0,n); return {by:str(p.by,40),t:p.t,n:str(p.n,400),dur:Math.max(0,Math.min(600,+p.dur||0)),form:str(p.form,40),goal:str(p.goal,40),int:Math.max(0,Math.min(10,+p.int||0))}; };
 async function planRefresh(force){ if(!TEAM.db||(!force&&Date.now()-PLAN.at<120e3)) return; PLAN.at=Date.now();
   try{ const sn=await TEAM.db.doc('team/info').get(); if(sn.exists&&TEAM.info){ const d=cleanText(sn.data()||{}); const before=JSON.stringify(TEAM.info.plan||{}); const b2=JSON.stringify(TEAM.info.tsess||{}); TEAM.info.plan=d.plan||{}; TEAM.info.tsess=d.tsess||{}; if((before!==JSON.stringify(TEAM.info.plan)||b2!==JSON.stringify(TEAM.info.tsess))&&ALIVE&&['cal','plan','perf','tests'].includes(S.view)) softRender(); } }catch(e){} }
-async function planSet(ds,v){ if(!TEAM.db) return; TEAM.info.plan=Object.assign({},TEAM.info.plan||{}); if(v) TEAM.info.plan[ds]=v; else delete TEAM.info.plan[ds]; render();
+async function planSet(ds,v){ if(!TEAM.db) return; if(v) v=Object.assign({},v,{by:String(ACC.name||'Coach').slice(0,40)}); TEAM.info.plan=Object.assign({},TEAM.info.plan||{}); if(v) TEAM.info.plan[ds]=v; else delete TEAM.info.plan[ds]; render();
   try{ await TEAM.db.doc('team/info').update({plan:{[ds]:v||null}}); }catch(e){ try{ await TEAM.setInfo({plan:TEAM.info.plan}); }catch(e2){ toast('Could not save. Check the connection.'); } } }
 const PLW={train:'Training',rest:'Rest day'};
 function planBadge(ds){ const p=planOf(ds); return p?`<i class="dplan ${p.t}" aria-hidden="true"></i>`:''; }
 function planFacts(p){ return [p.dur?`${p.dur} min`:'',p.form,p.goal?`Goal: ${p.goal}`:'',p.int?`Intensity ${p.int}/10`:''].filter(Boolean); }
 function planLine(ds){ const p=planOf(ds); if(!p) return ''; const c=p.t==='train'?'#2F6FD1':'#35A071';
   const R=(p.t==='train'?[['Duration',p.dur?p.dur+' min':''],['Format',p.form],['Goal',p.goal]]:[]).filter(([,v])=>v);
-  return `<div class="pcard" style="--pc:${c}"><div class="pchead"><span class="pcpill">${PLW[p.t]}</span><small>Coach’s plan</small></div>
+  return `<div class="pcard" style="--pc:${c}"><div class="pchead"><span class="pcpill">${PLW[p.t]}</span><small>${p.by?esc(p.by)+' · ':''}coach</small></div>
     ${R.length?`<div class="pcrows">${R.map(([l,v])=>`<div class="pcrow"><span>${l}</span><b>${esc(v)}</b></div>`).join('')}</div>`:''}${p.n?`<p class="pctext">${esc(p.n)}</p>`:''}</div>`; }
 // coach quick picks for format and goal: your own list, starts empty
 const cpk=k=>{ const P=(S.cfg.picks||{})['@'+k]; return Array.isArray(P)?P:[]; };
@@ -2085,7 +2104,7 @@ function renderTests(){ if(ACC.role!=='coach'){ S.view='cal'; renderCal(); retur
   const L=tsAll(), M=TSN.make, tests=tsTests(P);
   const tick='<svg viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const grp=t=>pgOf(t)==='daily'?'Daily':'Max', TT=tests.filter(t=>!M||!M.name||true);
-  const make=M?`<div class="tsmake">
+  const make=M?`<div class="tsmake${Date.now()-(TSN.fresh||0)<700?' in':''}">
       ${[['daily','Daily tests','Every session','#1FA2A8'],['super','Max tests','Rested, 48 h no hard training','#E86A2C']].map(([g,l,sub,c])=>{ const G=TT.filter(t=>pgOf(t)===g); return G.length?`<p class="ilab" style="--gc:${c}"><i class="gdot"></i>${l}<small>${sub}</small></p><div class="ilist glass" style="--gc:${c}">${G.map((t,i)=>{ const on=M.name===tName(t); return `<button class="irow${on?' on':''}" style="--i:${i}" data-tsn="${esc(tName(t))}"><span><b>${esc(tName(t).replace(/^Daily\s+/i,'').replace(/^\w/,m=>m.toUpperCase()))}</b></span><i>${on?tick:''}</i></button>`; }).join('')}</div>`:''; }).join('')}
       ${M.name?(()=>{ const t=tsTpl(tests,M.name); return t&&t.how?`<details class="ihow"><summary>How it’s done</summary><p>${esc(t.how)}</p></details>`:''; })():''}
       <p class="ilab">Day</p><div class="ilist"><label class="irow"><span><b>Date</b></span><input type="date" class="tsdate" data-tsd="1" value="${M.date}"></label></div>
@@ -2111,7 +2130,7 @@ async function tsSave(x){ const o={}; o[x.id]={name:x.name,date:x.date,by:ACC.id
   TEAM.info.tsess=Object.assign({},TEAM.info.tsess||{},o); render(); try{ await TEAM.db.doc('team/info').update({tsess:o}); toast('Invited'); }catch(e){ toast('Could not save. Check the connection.'); } }
 // athlete: invites on the Performance tab, numbers typed right there
 function tsMine(){ return tsAll().filter(x=>x.who.includes(ACC.id)&&x.date>=dAdd(todayStr,-3)); }
-function tsInviteCards(){ if(GUEST||ACC.role==='coach') return ''; planRefresh(); const L=tsMine(); if(!L.length) return '';
+function tsInviteCards(ds){ if(GUEST||ACC.role==='coach') return ''; planRefresh(); const L=tsAll().filter(x=>x.who.includes(ACC.id)&&x.date===ds); if(!L.length) return '';
   return L.map(x=>{ const t=tsTpl(S.cfg.templates,x.name); if(!t) return `<div class="card tsinv"><p class="flk">Test from ${esc(x.byName)}</p><h3>${esc(x.name)}</h3><p class="note">This test isn’t in your Performance tab.</p></div>`;
     const e=tsEntry(S.months,t,x.date), sc=tsScore(t,e), Xf=t.fields.filter(f=>compsOf(f).includes('X'));
     const box=(f,sd,l)=>{ const it=e&&(e.items||[]).find(i=>i.fid===f.id), o=(it&&getP(it,'X'))||{}, c=normX(f.x); return `<label class="tsbox"><small>${esc(l)}</small><span><input type="number" inputmode="decimal" step="any" data-tsin="${x.id}|${f.id}|${sd}" value="${esc(o[sd]??'')}" placeholder="0"><em>${esc(c.u||'')}</em></span></label>`; };
@@ -2124,6 +2143,11 @@ function tsInput(t){ const [sid,fid,sd]=t.dataset.tsin.split('|'), x=tsAll().fin
   let it=e.items.find(i=>i.fid===fid); if(!it){ it=newItem(f); e.items.push(it); } const o=objP(it,'X'); o[sd]=String(t.value).slice(0,10); setP(it,'X',o); saveMonth(k);
   // show the result in place (no redraw, so the next box keeps the finger)
   const card=t.closest('.tsinv'), sc=tsScore(tpl,e); if(card){ let r=card.querySelector('.tsres'); if(sc&&sc.score!=null){ if(!r){ r=document.createElement('b'); r.className='tsres'; card.querySelector('.tsih').appendChild(r); } r.textContent=sc.score+sc.unit; card.classList.add('done'); } else if(r){ r.remove(); card.classList.remove('done'); } } }
+
+// one notice per new test invite (until opened or closed)
+function tsNotice(){ if(GUEST||ACC.role==='coach') return ''; const seen=new Set(Array.isArray(S.cfg.tsSeen)?S.cfg.tsSeen:[]), x=tsAll().find(x=>x.who.includes(ACC.id)&&!seen.has(x.id)&&x.date>=dAdd(todayStr,-1)); if(!x) return '';
+  return `<div class="tsnote"><span class="tsni"></span><span class="tsnt"><b>${esc(x.byName)} invited you to a test</b><small>${esc(x.name)} · ${esc(dayName(x.date))} ${esc(x.date.slice(5).replace('-','.'))}</small></span><button class="tsgo" data-tsopen2="${x.id}">Open</button><button class="tsnx" data-tsseen="${x.id}" aria-label="Close">✕</button></div>`; }
+function tsMark(id){ const L=Array.isArray(S.cfg.tsSeen)?S.cfg.tsSeen.slice():[]; if(!L.includes(id)) L.push(id); S.cfg.tsSeen=L.slice(-60); saveCfg(); }
 let lastAdd=0;
 
 function renderCal(){ planRefresh();
@@ -2145,10 +2169,11 @@ function renderCal(){ planRefresh();
     <div class="arrows"><button data-act="prev" aria-label="Previous month">‹</button><button data-act="next" aria-label="Next month">›</button></div></div>
   <div class="grid">${cells}</div>
   <div class="legend">${CT.filter(tplShown).map(t=>`<span><i style="background:${t.color}"></i>${esc(t.name)}</span>`).join('')}</div>
-  <div class="dayhead" id="dayhead"><button class="mini" data-dnav="-1" aria-label="Previous day">‹</button><span>${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}${S.sel!==todayStr?'<button class="todaypill" data-act="gotoday">Today</button>':''}</span><button class="mini" data-dnav="1" aria-label="Next day">›</button></div>${planLine(S.sel)}
+  <div class="dayhead" id="dayhead"><button class="mini" data-dnav="-1" aria-label="Previous day">‹</button><span>${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}${S.sel!==todayStr?'<button class="todaypill" data-act="gotoday">Today</button>':''}</span><button class="mini" data-dnav="1" aria-label="Next day">›</button></div>
   ${dayNotesHTML()}${GUEST?'':simDayHTML(S.sel)}
   ${GUEST?'':lvlChip()}<div class="adds"${GUEST?' style="display:none"':''}>${CT.filter(tplShown).map((t,i)=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)};--i:${i}" data-add="${t.id}"><i aria-hidden="true">+</i><span>${esc(t.name)}</span></button>`).join('')}</div>
   ${sel.length?sel.map(entryHTML).join(''):`<div class="empty">${GUEST?'Nothing logged on this day.':TLV()<=2?'<b>Nothing logged yet</b><br>Tap one of the buttons above. It takes about a minute.':'Nothing logged yet. Pick a log type above to start.'}</div>`}`;
+  { const pl=planLine(S.sel); if(pl&&!GUEST) app.insertAdjacentHTML('beforeend',pl); }
   app.querySelectorAll('textarea').forEach(grow);
 }
 // entries that belong to the Performance tab (their own calendar), not to the daily calendar
@@ -3158,7 +3183,7 @@ function loginNew(){ const me=TEAM.dev?TEAM.dev():'', seen=+ls.get('loginSeen')|
 function loginAlertHTML(){ if(GUEST) return ''; const L=loginNew(); if(!L.length) return ''; const x=L[L.length-1], d=new Date(+x.t);
   return `<div class="alert red loginal"><b>New login on another device</b><span>${esc(x.name||'Unknown device')} · ${d.getDate()}.${pad(d.getMonth()+1)} ${pad(d.getHours())}:${pad(d.getMinutes())}${L.length>1?` · and ${L.length-1} more`:''}</span><span>If it wasn’t you, change your code now. Someone else has it.</span><div class="row"><button class="btn" data-act="lgme">It was me</button><button class="btn danger" data-act="weakfix">Change my code</button></div></div>`; }
 const teamName=()=>{ try{ return (TEAM.info&&TEAM.info.name)||'LT climbing team'; }catch(e){ return 'LT climbing team'; } };
-const topBar=()=>`${loginAlertHTML()}${!GUEST&&isWeakCode()&&!(S.view==='set'&&S.st.myCode!=null)?'<div class="alert amber weakc"><span>Your code is easy to guess. Change it to 8–10 digits that only you know.</span><button class="btn" data-act="weakfix">Change it</button></div>':''}<div class="top"><span class="tflag" aria-hidden="true"><i></i><i></i><i></i></span><span class="brand"><b class="tname">${esc(teamName())}</b><span class="bwho">${esc(ACC.name)} · ${ROLEW[ACC.role]||'Athlete'} · <span class="sync" id="sync">${GUEST?'Read only':syncState}</span></span></span>${GUEST||S.view==='ath'||S.view==='crew'?'':histBar()}${GUEST?'':`<button class="gear${S.view==='set'?' on':''}" data-tab="set" aria-label="Customize"${S.view==='set'?' aria-current="page"':''}><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.6 7.6 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7.6 7.6 0 0 0 1.7 1l.4 2.5h4l.4-2.5a7.6 7.6 0 0 0 1.7-1l2.4 1 2-3.4zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg></button>`}</div>${GUEST?`<div class="gbar" role="status"><span><b>${GUEST.name?esc(GUEST.name)+'’s':'Shared'} log</b><br><span>Read only. Only ${GUEST.name?esc(GUEST.name):'they'} can change it.</span></span><button class="btn" data-act="gclose">Back to mine</button></div>`:''}`;
+const topBar=()=>`${loginAlertHTML()}${tsNotice()}${!GUEST&&isWeakCode()&&!(S.view==='set'&&S.st.myCode!=null)?'<div class="alert amber weakc"><span>Your code is easy to guess. Change it to 8–10 digits that only you know.</span><button class="btn" data-act="weakfix">Change it</button></div>':''}<div class="top"><span class="tflag" aria-hidden="true"><i></i><i></i><i></i></span><span class="brand"><b class="tname">${esc(teamName())}</b><span class="bwho">${esc(ACC.name)} · ${ROLEW[ACC.role]||'Athlete'} · <span class="sync" id="sync">${GUEST?'Read only':syncState}</span></span></span>${GUEST||S.view==='ath'||S.view==='crew'?'':histBar()}${GUEST?'':`<button class="gear${S.view==='set'?' on':''}" data-tab="set" aria-label="Customize"${S.view==='set'?' aria-current="page"':''}><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.6 7.6 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7.6 7.6 0 0 0 1.7 1l.4 2.5h4l.4-2.5a7.6 7.6 0 0 0 1.7-1l2.4 1 2-3.4zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg></button>`}</div>${GUEST?`<div class="gbar" role="status"><span><b>${GUEST.name?esc(GUEST.name)+'’s':'Shared'} log</b><br><span>Read only. Only ${GUEST.name?esc(GUEST.name):'they'} can change it.</span></span><button class="btn" data-act="gclose">Back to mine</button></div>`:''}`;
 
 // ---------- patterns (weekday + timing) ----------
 function weekdayChart(t){ const s=Array(7).fill(0),c=Array(7).fill(0); for(const d in t.vals){ const w=(new Date(d+'T12:00').getDay()+6)%7; s[w]+=t.vals[d]; c[w]++; }
@@ -4258,8 +4283,10 @@ app.addEventListener('click',async ev=>{
   if(ds.finding!==undefined){ S.st.openF=S.st.openF===+ds.finding?null:+ds.finding; render(); return; }
   if(ds.act==='ai'){ runAI(); return; }
   if(ds.simnote!=null&&S.st.simDraft){ S.st.simNote=Object.assign({},S.st.simNote,{[ds.simnote]:1}); render(); const i=document.querySelector(`[data-simr="${ds.simnote}|note"]`); if(i) i.focus(); return; }
+  if(ds.tsseen){ tsMark(ds.tsseen); render(); return; }
+  if(ds.tsopen2){ const x=tsAll().find(x=>x.id===ds.tsopen2); tsMark(ds.tsopen2); if(x){ S.view='perf'; S.st.pgrp=(()=>{ const t=tsTpl(S.cfg.templates,x.name); return t?pgOf(t):'daily'; })(); S.sel=x.date; S.y=+x.date.slice(0,4); S.m=+x.date.slice(5,7)-1; } render(); setTimeout(()=>{ const el=document.querySelector('.tsinv'); if(el) el.scrollIntoView({behavior:'smooth',block:'center'}); },80); return; }
   if(ds.tsday){ TSN.sel=ds.tsday; render(); return; }
-  if(ds.tsnew){ TSN.make={name:'',date:TSN.sel&&TSN.sel>=todayStr?TSN.sel:todayStr,who:[]}; render(); scrollTo(0,0); return; }
+  if(ds.tsnew){ TSN.fresh=Date.now(); TSN.make={name:'',date:TSN.sel&&TSN.sel>=todayStr?TSN.sel:todayStr,who:[]}; render(); scrollTo(0,0); return; }
   if(ds.tsx){ TSN.make=null; render(); return; }
   if(ds.tsn&&TSN.make){ TSN.make.name=ds.tsn; render(); return; }
   if(ds.tsw&&TSN.make){ const w=TSN.make.who, i=w.indexOf(ds.tsw); if(i>=0) w.splice(i,1); else w.push(ds.tsw); render(); return; }
@@ -5161,17 +5188,17 @@ function readyCard(){ const DT=S.cfg.templates.filter(t=>t.perf&&pgOf(t)==='dail
 function renderPerf(){ ensurePerf(); const k=mkey(S.y,S.m); month(k); if(S.st.pgrp&&PG_LV[S.st.pgrp]>TLV()) S.st.pgrp=null; const g=S.st.pgrp||'daily', ALL=S.cfg.templates.filter(t=>t.perf), PT=ALL.filter(t=>pgOf(t)===g), inG=e=>{ const t=S.cfg.templates.find(t=>t.id===e.tid); return t?pgOf(t)===g:g==='super'; };
   const first=new Date(S.y,S.m,1), lead=(first.getDay()+6)%7, days=new Date(S.y,S.m+1,0).getDate(); let cells=WD.map(w=>`<div class="wd">${w}</div>`).join(''); for(let i=0;i<lead;i++) cells+=`<div class="day out"></div>`;
   for(let d=1;d<=days;d++){ const ds=`${S.y}-${pad(S.m+1)}-${pad(d)}`, es=(month(k).days[String(d)]||[]).filter(isPerfE).filter(inG);
-    cells+=`<button class="day${ds===todayStr?' today':''}${ds===S.sel?' sel':''}" style="--d:${d}" data-day="${ds}" aria-label="${d} ${MONTHS[S.m]}, ${es.length} logs"><span class="n">${d}</span><span class="tapes">${es.slice(0,4).map(e=>`<span class="tape" style="background:${tplColor(e)}"></span>`).join('')}</span></button>`; }
+    cells+=`<button class="day${ds===todayStr?' today':''}${ds===S.sel?' sel':''}" style="--d:${d}" data-day="${ds}" aria-label="${d} ${MONTHS[S.m]}, ${es.length} logs"><span class="n">${d}</span>${!GUEST&&tsAll().some(x=>x.date===ds&&x.who.includes(ACC.id))?'<i class="dtest" aria-hidden="true"></i>':''}<span class="tapes">${es.slice(0,4).map(e=>`<span class="tape" style="background:${tplColor(e)}"></span>`).join('')}</span></button>`; }
   const sd=new Date(S.sel+'T12:00'), sel=entriesOn(S.sel).filter(isPerfE).filter(inG), cnt=k2=>entriesOn(S.sel).filter(isPerfE).filter(e=>{ const t=S.cfg.templates.find(t=>t.id===e.tid); return t&&pgOf(t)===k2; }).length;
   const sub={daily:'Short tests every session. They show how fresh you are today.',super:'Max tests. No hard training in the 48 h before, so they are rare and comparable.',climb:'One card per boulder: grade, attempts, result, why you fell.',comp:'One log per round: your boulders with attempts to zone and top, points like the IFSC.'}[g];
   app.innerHTML=`${topBar()}<div class="phead"><div><h1>Performance</h1><p class="lvtxt">Tests, climbing and competitions, on their own calendar.</p></div>${fig('perf')}</div>
   <div class="pseg" role="tablist">${PGRP.filter(([k2])=>(PG_LV[k2]||1)<=TLV()).map(([k2,l])=>`<button data-pgrp="${k2}" class="${g===k2?'on':''}" role="tab" aria-selected="${g===k2}">${k2==='daily'?'+ ':k2==='super'?'+++ ':''}${l}${cnt(k2)?` <i>${cnt(k2)}</i>`:''}</button>`).join('')}</div>
   <p class="note psub"><span class="lvtxt">${sub} </span>${helpBtn({daily:'daily',super:'super',climb:'routes',comp:'comp'}[g]||'daily')}</p>
-  ${tsInviteCards()}${TLV()>=3&&g==='daily'?readyCard():''}${TLV()>=3&&g==='super'?goalStrip()+perfNowCard('super'):''}
+  ${TLV()>=3&&g==='daily'?readyCard():''}${TLV()>=3&&g==='super'?goalStrip()+perfNowCard('super'):''}
   <div class="month"><h1>${MONTHS[S.m]}<span>${S.y}</span></h1><div class="arrows"><button data-act="prev" aria-label="Previous month">‹</button><button data-act="next" aria-label="Next month">›</button></div></div>
   <div class="grid">${cells}</div>
   <div class="dayhead" id="dayhead"><button class="mini" data-dnav="-1" aria-label="Previous day">‹</button><span>${LTWD[sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}${S.sel!==todayStr?'<button class="todaypill" data-act="gotoday">Today</button>':''}</span><button class="mini" data-dnav="1" aria-label="Next day">›</button></div>
-  ${GUEST||g!=='comp'?'':simDayHTML(S.sel)}
+  ${GUEST||g!=='comp'?'':simDayHTML(S.sel)}${tsInviteCards(S.sel)}
   ${GUEST?'':PT.length?`<div class="adds">${PT.filter(t=>TLV()>=2||pgOf(t)!=='daily'||isFingerTpl(t)).map(t=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)}" data-add="${t.id}">${/^\+/.test(t.name)?'':'+ '}${esc(t.name)}</button>`).join('')}</div>`:`<div class="empty">${col&&!PULLED?'Connecting… your tests show up once you are online.':'No tests in this group.'}</div>`}
   ${sel.length?sel.map(entryHTML).join(''):`<div class="empty">${GUEST?'Nothing on this day.':'Nothing on this day yet. Tap above to log.'}</div>`}
   ${g==='climb'||g==='comp'?fallCard():''}`;
@@ -5363,7 +5390,7 @@ function simShow(x,st,me){ if(st.k==='wait') return '–:––'; if(st.k==='end
 // ---- server clock + live data
 async function simClock(){ if(!TEAM.clock||GUEST) return; try{ SIM.off=await TEAM.clock(ACC.id); SIM.offOk=true; }catch(e){ SIM.offOk=false; } }
 function simSub(){ if(SIM.sub||!TEAM.db||GUEST||!ALIVE) return;
-  SIM.sub=TEAM.db.doc('team/info').onSnapshot(s=>{ if(!ALIVE) return; const d=s.exists?s.data():{}, before=JSON.stringify((TEAM.info&&TEAM.info.sims)||{}), now=JSON.stringify((d&&d.sims)||{}); if(TEAM.info) TEAM.info.sims=(d&&d.sims)||{}; simLoadMine(); if(before===now) return;
+  SIM.sub=TEAM.db.doc('team/info').onSnapshot(s=>{ if(!ALIVE) return; const d=s.exists?s.data():{}, before=JSON.stringify((TEAM.info&&TEAM.info.sims)||{}), now=JSON.stringify((d&&d.sims)||{}); if(TEAM.info) TEAM.info.sims=(d&&d.sims)||{}; simLoadMine(); if(TEAM.info){ const ts=cleanText((d&&d.tsess)||{}), pl=cleanText((d&&d.plan)||{}), ch=JSON.stringify(ts)!==JSON.stringify(TEAM.info.tsess||{})||JSON.stringify(pl)!==JSON.stringify(TEAM.info.plan||{}); TEAM.info.tsess=ts; TEAM.info.plan=pl; if(ch&&before===now&&['cal','perf','plan','tests'].includes(S.view)) softRender(); } if(before===now) return;
     if(S.view==='sim'){ const x=simById(S.st.simId); if(JSON.stringify(x)!==SIM.cur){ SIM.lastSec=null; simSoft(); } } else if(['sims','cal','perf'].includes(S.view)) softRender(); },()=>{ SIM.sub=null; }); }
 function simLoadMine(){ if(!col) return; sims().filter(x=>iAmIn(x)&&!SIM.mine[x.id]).forEach(x=>{ SIM.mine[x.id]={loading:true,res:[]};
   col.doc('sim-'+x.id).get().then(s=>{ const v=s.exists?cleanText(s.data()||{}):{}; SIM.mine[x.id]=simMineNorm(v); if(ALIVE&&['sims','sim','cal','perf'].includes(S.view)) softRender(); }).catch(()=>{ SIM.mine[x.id]={res:[]}; }); }); }
