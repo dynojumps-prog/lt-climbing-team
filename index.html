@@ -1275,6 +1275,24 @@ html,body{overscroll-behavior-y:none}
 .bsave .btn,.bbar .btn{border-radius:16px!important;min-height:50px}
 .bsavebtn.on{animation:ready .5s cubic-bezier(.3,1.7,.5,1)}
 @media (max-width:440px){.tabs.six button{font-size:.56rem!important;letter-spacing:0!important}}
+
+/* plan */
+.pgrid .day.train{background:color-mix(in srgb,#2F6FD1 16%,var(--panel))}.pgrid .day.rest{background:color-mix(in srgb,#35A071 16%,var(--panel))}
+.ptag{position:absolute;left:4px;right:4px;bottom:4px;font-size:.58rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;border-radius:6px;padding:1px 0;text-align:center;color:#fff}
+.pday.train .ptag{background:#2F6FD1}.pday.rest .ptag{background:#35A071}
+.pl{display:inline-block;width:10px;height:10px;border-radius:3px;margin:0 6px 0 10px;vertical-align:middle}.pl.train{background:#2F6FD1}.pl.rest{background:#35A071}.plegend .pl:first-child{margin-left:0}
+.pedit{border-radius:20px;animation:rise .35s cubic-bezier(.16,1,.3,1) both}.pehead{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:1.1rem}
+.pseg2{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;border-radius:16px;background:var(--field);border:1.5px solid var(--line)}
+.pseg2 button{border:0;border-radius:12px;background:transparent;min-height:50px;font-weight:800;color:var(--soft);display:flex;align-items:center;justify-content:center;gap:2px;transition:background-color .25s,color .25s,box-shadow .25s,transform .2s}
+.pseg2 button .pl{margin:0 6px 0 0}.pseg2 button.on{background:var(--panel);color:var(--ink);box-shadow:0 4px 14px rgba(0,0,0,.18)}.pseg2 button:active{transform:scale(.95)}
+.pnote{width:100%;margin-top:10px;min-height:48px;border-radius:14px}.pcopy{width:100%;margin-top:10px;border-radius:14px}
+.dplan{position:absolute;left:5px;top:5px;width:7px;height:7px;border-radius:2px}.dplan.train{background:#2F6FD1}.dplan.rest{background:#35A071}
+.planline{display:flex;align-items:center;gap:10px;margin:0 0 10px;padding:10px 14px;border-radius:16px;border:1.5px solid var(--line);background:var(--panel);animation:rise .3s ease both}
+.planline i{flex:0 0 auto;width:12px;height:12px;border-radius:4px}.planline.train i{background:#2F6FD1}.planline.rest i{background:#35A071}
+.planline span{flex:1;min-width:0}.planline small{color:var(--soft);font-size:.75rem;white-space:nowrap}
+/* quick picks */
+.picks .quick{margin-top:6px}.picks .quick button.had{opacity:.55}
+.pkadd{margin:8px 0 4px}.pkadd input{flex:1;min-width:0}
 </style>
 </head>
 <body>
@@ -1440,6 +1458,7 @@ function normCfg(c){ cleanIds(c); if(!c||!Array.isArray(c.templates)) return def
     fields:(Array.isArray(t.fields)?t.fields:[]).filter(f=>f&&typeof f==='object').map(f=>Object.assign({id:String(f.id||rid()),name:String(f.name||'Laukas'),type:VTYPES.includes(f.type)?f.type:'text'},Array.isArray(f.opts)?{opts:f.opts.map(String)}:{},f.type==='mix'?{comps:sortC((Array.isArray(f.comps)?f.comps:['T']).filter(c=>COMP[c]))}:{},typeof f.role==='string'?{role:f.role}:{},f.x&&typeof f.x==='object'?{x:normX(f.x)}:{},[1,2,3].includes(+f.lv)?{lv:+f.lv}:{},f.flower===true?{flower:true}:{}))}));
   if(!c.templates.length) return defaultCfg(); if(!c.templates.some(t=>!t.perf)) c.templates=defaultCfg().templates.concat(c.templates);
   c.tplV=typeof c.tplV==='string'?c.tplV.slice(0,20):''; if(typeof c.tplBak!=='string') delete c.tplBak;
+  { const P={}; if(c.picks&&typeof c.picks==='object') Object.entries(c.picks).slice(0,40).forEach(([k,v])=>{ if(Array.isArray(v)&&typeof k==='string'&&k.length<=60&&!/[.~*/\[\]]/.test(k)) P[k]=v.map(x=>String(x||'').replace(/[|<>"`&\\]/g,'').trim().slice(0,40)).filter(Boolean).slice(0,30); }); c.picks=P; }
   c.goals=normGoals(c.goals); c.perfMig=c.perfMig?1:0; c.setupV2=c.setupV2?1:0; c.setupV3=c.setupV3?1:0; c.perfV2=c.perfV2?1:0; c.perfV3=c.perfV3?1:0; c.perfV4=c.perfV4?1:0; c.perfV5=c.perfV5?1:0; c.perfV6=c.perfV6?1:0; c.perfV7=c.perfV7?1:0; c.news=typeof c.news==='string'?c.news.slice(0,20):''; c.lvl=[1,2,3].includes(+c.lvl)?+c.lvl:null; if(c.board===false) c.board=false; else delete c.board; c.tfont=['orbitron','archivo','marker'].includes(c.tfont)?c.tfont:''; c.skin=['vilnius','granite','chalk','comp','forest','obsidian','royal','glacier','sandstone','mono','xmas','halloween'].includes(c.skin)?c.skin:'vilnius'; c.styles=Array.isArray(c.styles)?c.styles.map(t=>String(t||'').replace(/[|<>"`&\\]/g,'').trim().slice(0,24)).filter(Boolean).slice(0,24):[]; c.setupV4=c.setupV4?1:0; c.pack=c.pack?1:0; c.packNo=c.packNo?1:0; c.bodyMig=c.bodyMig?1:0; c.routesMig=c.routesMig?1:0; const hs={}; if(c.hideSug&&typeof c.hideSug==='object') Object.entries(c.hideSug).forEach(([k,a])=>{ if(Array.isArray(a)) hs[String(k)]=a.map(String).slice(0,200); }); c.hideSug=hs; const nm={}; if(c.names&&typeof c.names==='object') Object.entries(c.names).forEach(([k,a])=>{ if(Array.isArray(a)){ const L=a.filter(x=>typeof x==='string'&&x.trim()).map(x=>x.trim().slice(0,60)).slice(-80); if(L.length) nm[String(k)]=L; } }); c.names=nm; c.lastBackup=Math.max(0,+c.lastBackup||0); c.owner=String(c.owner||'').trim().slice(0,40); return c; }
 function migM(i){ if(i&&i.type==='mix'&&i.val&&i.val.M&&i.val.M.now){ const M=Object.assign({},i.val.M); if(!M.rest) M.rest=M.now; delete M.now; return Object.assign({},i,{val:Object.assign({},i.val,{M})}); } return i; }
 function normMonth(k,m){ cleanIds(m); const days={}; const src=m&&m.days&&typeof m.days==='object'?m.days:{};
@@ -1769,7 +1788,7 @@ function tplColor(e){ const t=S.cfg.templates.find(t=>t.id===e.tid); return safe
 const app=document.getElementById('app');
 
 // ---------- render ----------
-function render(){ if(!GUEST&&!document.querySelector('.logfab')){ const b=document.createElement('button'); b.className='logfab off'; b.type='button'; b.innerHTML='<span>+</span> <b>Log</b>'; b.addEventListener('click',()=>{ const a=document.querySelector('#app .adds'); if(!a) return; a.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'}); a.classList.remove('hl'); void a.offsetWidth; a.classList.add('hl'); }); document.body.appendChild(b); } if(S.view==='goals'&&!S.flow) setTimeout(goalCelebrate,500); const mk2=S.view+S.y+'-'+S.m; if(SKIN.lastSel&&SKIN.lastSel!==S.sel&&!S.flow){ app.classList.remove('dayswap','dayl','dayr'); void app.offsetWidth; app.classList.add('dayswap',S.sel<SKIN.lastSel?'dayl':'dayr'); clearTimeout(SKIN.dt); SKIN.dt=setTimeout(()=>app.classList.remove('dayswap','dayl','dayr'),700); } SKIN.lastSel=S.sel; if(SKIN.lastMonth&&SKIN.lastMonth!==mk2){ SKIN.lastView=''; } SKIN.lastMonth=mk2; applySkin(); document.documentElement.dataset.lvl=TLV(); document.documentElement.classList.toggle('inflow',!!S.flow&&!GUEST); setTimeout(newsCheck,0); const viewNow=S.view+'|'+(S.st.pgrp||''); if(viewNow!==SKIN.lastView){ SKIN.lastView=viewNow; app.classList.remove('enter'); void app.offsetWidth; app.classList.add('enter'); clearTimeout(SKIN.t); SKIN.t=setTimeout(()=>app.classList.remove('enter'),1400); SKIN.at=Date.now(); } else if(app.classList.contains('enter')&&Date.now()-(SKIN.at||0)>350){ clearTimeout(SKIN.t); app.classList.remove('enter'); } const y=window.scrollY, fsEl=app.querySelector('.simfs'), fsY=fsEl?fsEl.scrollTop:0; app.style.minHeight=app.offsetHeight+'px'; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; (S.flow&&!GUEST?renderFlow:({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth,crew:renderCrew}[S.view]||renderSettings))(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); requestAnimationFrame(fabSync); if(S.flow){ const bed=app.querySelector('.flow [data-bed]'); if(bed&&!bed.querySelector('.bcchips button')&&!bed.querySelector('.bstat.bok')){ bed.insertAdjacentHTML('beforebegin',`<button class="btn flfresh" data-bmfresh="${esc(bed.dataset.bed)}">Nothing hurts · all fresh</button><p class="flor">or tap where it hurts</p>`); } } const fs2=app.querySelector('.simfs'); if(fs2&&fsY) fs2.scrollTop=fsY; app.style.minHeight=''; tapFx(); }
+function render(){ if(ACC.role==='coach'&&!GUEST&&['cal','perf','goals'].includes(S.view)) S.view='plan'; if(ACC.role!=='coach'&&S.view==='plan') S.view='cal'; if(!GUEST&&!document.querySelector('.logfab')){ const b=document.createElement('button'); b.className='logfab off'; b.type='button'; b.innerHTML='<span>+</span> <b>Log</b>'; b.addEventListener('click',()=>{ const a=document.querySelector('#app .adds'); if(!a) return; a.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'}); a.classList.remove('hl'); void a.offsetWidth; a.classList.add('hl'); }); document.body.appendChild(b); } if(S.view==='goals'&&!S.flow) setTimeout(goalCelebrate,500); const mk2=S.view+S.y+'-'+S.m; if(SKIN.lastSel&&SKIN.lastSel!==S.sel&&!S.flow){ app.classList.remove('dayswap','dayl','dayr'); void app.offsetWidth; app.classList.add('dayswap',S.sel<SKIN.lastSel?'dayl':'dayr'); clearTimeout(SKIN.dt); SKIN.dt=setTimeout(()=>app.classList.remove('dayswap','dayl','dayr'),700); } SKIN.lastSel=S.sel; if(SKIN.lastMonth&&SKIN.lastMonth!==mk2){ SKIN.lastView=''; } SKIN.lastMonth=mk2; applySkin(); document.documentElement.dataset.lvl=TLV(); document.documentElement.classList.toggle('inflow',!!S.flow&&!GUEST); setTimeout(newsCheck,0); const viewNow=S.view+'|'+(S.st.pgrp||''); if(viewNow!==SKIN.lastView){ SKIN.lastView=viewNow; app.classList.remove('enter'); void app.offsetWidth; app.classList.add('enter'); clearTimeout(SKIN.t); SKIN.t=setTimeout(()=>app.classList.remove('enter'),1400); SKIN.at=Date.now(); } else if(app.classList.contains('enter')&&Date.now()-(SKIN.at||0)>350){ clearTimeout(SKIN.t); app.classList.remove('enter'); } const y=window.scrollY, fsEl=app.querySelector('.simfs'), fsY=fsEl?fsEl.scrollTop:0; app.style.minHeight=app.offsetHeight+'px'; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; (S.flow&&!GUEST?renderFlow:({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth,crew:renderCrew,plan:renderPlan}[S.view]||renderSettings))(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); requestAnimationFrame(fabSync); if(S.flow){ const bed=app.querySelector('.flow [data-bed]'); if(bed&&!bed.querySelector('.bcchips button')&&!bed.querySelector('.bstat.bok')){ bed.insertAdjacentHTML('beforebegin',`<button class="btn flfresh" data-bmfresh="${esc(bed.dataset.bed)}">Nothing hurts · all fresh</button><p class="flor">or tap where it hurts</p>`); } } const fs2=app.querySelector('.simfs'); if(fs2&&fsY) fs2.scrollTop=fsY; app.style.minHeight=''; tapFx(); }
 function toast(t){ let el=document.getElementById('toast'); if(!el){ el=document.createElement('div'); el.id='toast'; el.setAttribute('role','status'); document.body.appendChild(el); } el.textContent=t; el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),1800); }
 function say(t){ const m=document.getElementById('msg'); if(m) m.textContent=t; }
 function armed(b,label){ if(b.dataset.armed) return true; b.dataset.armed='1'; const old=b.textContent; b.textContent=label; b.classList.add('armed'); setTimeout(()=>{ if(b.isConnected){ delete b.dataset.armed; b.textContent=old; b.classList.remove('armed'); } },3000); return false; }
@@ -1809,9 +1828,47 @@ async function tplFollow(){ if(GUEST||!TEAM.db||pathMine()||ACC.role!=='athlete'
   const T=normCfg({templates:JSON.parse(JSON.stringify(d.templates))}).templates.filter(t=>!t.perf);
   T.forEach(t=>t.fields.forEach(f=>{ if(FEEL_RX.test(f.name)&&canFlower(f)) f.flower=true; }));
   S.cfg.templates=T.concat(keep); S.cfg.tplV=d.v; saveCfg(); render(); }
+
+// ================= Plan: the coach marks team training days and rest days (with a short note). Lives in team/info.plan,
+// so every athlete sees it on their calendar. Only coaches and the head of the team can change it.
+const PLAN={sel:null,at:0};
+const planOf=ds=>{ const p=((TEAM.info||{}).plan||{})[ds]; return p&&(p.t==='train'||p.t==='rest')?{t:p.t,n:String(p.n||'').slice(0,80)}:null; };
+async function planRefresh(force){ if(!TEAM.db||(!force&&Date.now()-PLAN.at<120e3)) return; PLAN.at=Date.now();
+  try{ const sn=await TEAM.db.doc('team/info').get(); if(sn.exists&&TEAM.info){ const d=cleanText(sn.data()||{}); const before=JSON.stringify(TEAM.info.plan||{}); TEAM.info.plan=d.plan||{}; if(before!==JSON.stringify(TEAM.info.plan)&&ALIVE&&['cal','plan'].includes(S.view)) softRender(); } }catch(e){} }
+async function planSet(ds,v){ if(!TEAM.db) return; TEAM.info.plan=Object.assign({},TEAM.info.plan||{}); if(v) TEAM.info.plan[ds]=v; else delete TEAM.info.plan[ds]; render();
+  try{ await TEAM.db.doc('team/info').update({plan:{[ds]:v||null}}); }catch(e){ try{ await TEAM.setInfo({plan:TEAM.info.plan}); }catch(e2){ toast('Could not save. Check the connection.'); } } }
+const PLW={train:'Training',rest:'Rest day'};
+function planBadge(ds){ const p=planOf(ds); return p?`<i class="dplan ${p.t}" aria-hidden="true"></i>`:''; }
+function planLine(ds){ const p=planOf(ds); if(!p) return ''; return `<div class="planline ${p.t}"><i></i><span><b>${PLW[p.t]}</b>${p.n?` · ${esc(p.n)}`:''}</span><small>from your coach</small></div>`; }
+function renderPlan(){ planRefresh(); const k=mkey(S.y,S.m), first=new Date(S.y,S.m,1), lead=(first.getDay()+6)%7, days=new Date(S.y,S.m+1,0).getDate(), sel=PLAN.sel||todayStr;
+  let cells=WD.map(w=>`<div class="wd">${w}</div>`).join(''); for(let i=0;i<lead;i++) cells+=`<div class="day out"></div>`;
+  for(let d=1;d<=days;d++){ const ds=`${S.y}-${pad(S.m+1)}-${pad(d)}`, p=planOf(ds);
+    cells+=`<button class="day pday${ds===todayStr?' today':''}${ds===sel?' sel':''}${p?' '+p.t:''}" style="--d:${d}" data-pday="${ds}" aria-label="${d} ${MONTHS[S.m]}${p?', '+PLW[p.t]:''}"><span class="n">${d}</span>${p?`<span class="ptag">${p.t==='train'?'Train':'Rest'}</span>`:''}</button>`; }
+  const sp=planOf(sel), sd=new Date(sel+'T12:00'), cnt=Object.entries((TEAM.info||{}).plan||{}).filter(([d])=>d.startsWith(k));
+  app.innerHTML=`${topBar()}<div class="phead"><div><h1>Plan</h1><p class="lvtxt">Mark training days and rest days. Every athlete sees them on their calendar.</p></div></div>
+    <div class="month"><h1>${MONTHS[S.m]} <small>${S.y}</small></h1><div class="mnav"><button class="mini" data-pm="-1" aria-label="Previous month">‹</button><button class="mini" data-pm="1" aria-label="Next month">›</button></div></div>
+    <div class="grid pgrid">${cells}</div>
+    <p class="note plegend"><span class="pl train"></span>${cnt.filter(([,v])=>v&&v.t==='train').length} training <span class="pl rest"></span>${cnt.filter(([,v])=>v&&v.t==='rest').length} rest this month</p>
+    <div class="card pedit"><div class="pehead"><b>${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}</b>${sel===todayStr?'<span class="todaytag">šiandien</span>':''}</div>
+      <div class="pseg2"><button class="${sp&&sp.t==='train'?'on':''}" data-pset="${sel}|train"><i class="pl train"></i>Training</button><button class="${sp&&sp.t==='rest'?'on':''}" data-pset="${sel}|rest"><i class="pl rest"></i>Rest day</button><button class="${sp?'':'on'}" data-pset="${sel}|">Nothing</button></div>
+      ${sp?`<input type="text" class="pnote" data-pnote="${sel}" maxlength="80" value="${esc(sp.n)}" placeholder="${sp.t==='train'?'e.g. Boulder 18:00, gym':'e.g. Full rest, stretching only'}" aria-label="Note for this day">`:''}
+      <button class="btn ghost pcopy" data-pcopy="1">Copy last week to this week</button></div>`;
+  }
+
+// ---- quick picks: your own list per field (food, supplements). Starts empty; add them, delete them, tap one to log it now.
+const pickKey=it=>nk(it.name);
+const myPicks=it=>{ const P=(S.cfg.picks||{})[pickKey(it)]; return Array.isArray(P)?P:[]; };
+const cleanPick=t=>String(t||'').replace(/[|<>"`&\\]/g,'').replace(/\s+/g,' ').trim().slice(0,40);
+function pickHTML(it,key,L){ const P=myPicks(it), ed=(S.st.qedit||{})[key], have=new Set(L.map(y=>nk(y.name)));
+  return `<div class="picks">${P.length?`<div class="quick">${P.map(n=>ed?`<button class="qdel" data-pdel="${key}|${esc(n)}" aria-label="Delete ${esc(n)} from quick picks">${esc(n)} ✕</button>`:`<button data-bq="${key}|${esc(n)}"${have.has(nk(n))?' class="had"':''}>+ ${esc(n)}</button>`).join('')}</div>`:''}
+    ${ed?`<div class="row pkadd"><input type="text" id="pk${esc(key).replace(/[^A-Za-z0-9]/g,'')}" data-pkin="${key}" maxlength="40" placeholder="${isFood(it.name)?'New quick pick, e.g. Avižos':'New quick pick, e.g. Magnis'}" enterkeyhint="done" aria-label="New quick pick"><button class="btn" data-pkadd="${key}">Save</button></div>`:''}
+    <button class="qedit" data-qedit="${key}">${ed?'Done':P.length?'Edit quick picks':'+ Make quick picks'}</button></div>`; }
+function pickAdd(key){ const {it}=itemAt(key); if(!it) return; const inp=[...document.querySelectorAll('[data-pkin]')].find(x=>x.dataset.pkin===key), t=cleanPick(inp&&inp.value); if(!t){ if(inp) inp.focus(); return; }
+  const P=myPicks(it).slice(); if(!P.some(x=>nk(x)===nk(t))) P.push(t); S.cfg.picks=Object.assign({},S.cfg.picks||{},{[pickKey(it)]:P.slice(0,30)}); saveCfg(); render();
+  const again=[...document.querySelectorAll('[data-pkin]')].find(x=>x.dataset.pkin===key); if(again) try{ again.focus({preventScroll:true}); }catch(e){} }
 let lastAdd=0;
 
-function renderCal(){
+function renderCal(){ planRefresh();
   const k=mkey(S.y,S.m); month(k);
   const first=new Date(S.y,S.m,1), lead=(first.getDay()+6)%7, days=new Date(S.y,S.m+1,0).getDate();
   let cells=WD.map(w=>`<div class="wd">${w}</div>`).join(''); const nd=noteDays();
@@ -1819,8 +1876,8 @@ function renderCal(){
   for(let d=1;d<=days;d++){
     const ds=`${S.y}-${pad(S.m+1)}-${pad(d)}`, es=(month(k).days[String(d)]||[]).filter(e=>!isPerfE(e));
     const warn=dayPain(es);
-    cells+=`<button class="day${ds===todayStr?' today':''}${ds===S.sel?' sel':''}" style="--d:${d}" data-day="${ds}" aria-label="${d} ${MONTHS[S.m]}, ${es.length} logs${warn?', pain marked':''}${nd.has(ds)?', coach note':''}${es.some(e=>(e.items||[]).some(it=>it.sec))?', secret note':''}">
-      <span class="n">${d}</span>${warn?'<i class="dwarn" aria-hidden="true"></i>':''}${nd.has(ds)?'<i class="dnote" aria-hidden="true"></i>':''}${!GUEST&&simCardsForDay(ds).length?'<i class="dsim" aria-hidden="true"></i>':''}${!GUEST&&es.some(e=>(e.items||[]).some(it=>it.sec))?'<i class="dlock" aria-hidden="true"></i>':''}<span class="tapes">${es.slice(0,4).map(e=>`<span class="tape" style="background:${tplColor(e)}"></span>`).join('')}</span></button>`;
+    cells+=`<button class="day${ds===todayStr?' today':''}${ds===S.sel?' sel':''}" style="--d:${d}" data-day="${ds}" aria-label="${d} ${MONTHS[S.m]}, ${es.length} logs${warn?', pain marked':''}${nd.has(ds)?', coach note':''}${!GUEST&&es.some(e=>(e.items||[]).some(it=>it.sec))?', secret note':''}">
+      <span class="n">${d}</span>${planBadge(ds)}${warn?'<i class="dwarn" aria-hidden="true"></i>':''}${nd.has(ds)?'<i class="dnote" aria-hidden="true"></i>':''}${!GUEST&&simCardsForDay(ds).length?'<i class="dsim" aria-hidden="true"></i>':''}${!GUEST&&es.some(e=>(e.items||[]).some(it=>it.sec))?'<i class="dlock" aria-hidden="true"></i>':''}<span class="tapes">${es.slice(0,4).map(e=>`<span class="tape" style="background:${tplColor(e)}"></span>`).join('')}</span></button>`;
   }
   const sd=new Date(S.sel+'T12:00'), sel=entriesOn(S.sel).filter(e=>!isPerfE(e)), CT=S.cfg.templates.filter(t=>!t.perf);
   app.innerHTML=`
@@ -1830,7 +1887,7 @@ function renderCal(){
     <div class="arrows"><button data-act="prev" aria-label="Previous month">‹</button><button data-act="next" aria-label="Next month">›</button></div></div>
   <div class="grid">${cells}</div>
   <div class="legend">${CT.filter(tplShown).map(t=>`<span><i style="background:${t.color}"></i>${esc(t.name)}</span>`).join('')}</div>
-  <div class="dayhead" id="dayhead"><button class="mini" data-dnav="-1" aria-label="Previous day">‹</button><span>${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}${S.sel!==todayStr?'<button class="todaypill" data-act="gotoday">Today</button>':''}</span><button class="mini" data-dnav="1" aria-label="Next day">›</button></div>
+  <div class="dayhead" id="dayhead"><button class="mini" data-dnav="-1" aria-label="Previous day">‹</button><span>${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}${S.sel!==todayStr?'<button class="todaypill" data-act="gotoday">Today</button>':''}</span><button class="mini" data-dnav="1" aria-label="Next day">›</button></div>${planLine(S.sel)}
   ${dayNotesHTML()}${GUEST?'':simDayHTML(S.sel)}
   ${GUEST?'':lvlChip()}<div class="adds"${GUEST?' style="display:none"':''}>${CT.filter(tplShown).map((t,i)=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)};--i:${i}" data-add="${t.id}"><i aria-hidden="true">+</i><span>${esc(t.name)}</span></button>`).join('')}</div>
   ${sel.length?sel.map(entryHTML).join(''):`<div class="empty">${GUEST?'Nothing logged on this day.':TLV()<=2?'<b>Nothing logged yet</b><br>Tap one of the buttons above. It takes about a minute.':'Nothing logged yet. Pick a log type above to start.'}</div>`}`;
@@ -1904,8 +1961,8 @@ function compHTML(e,it,c,key,fid){ const x=getP(it,c), sl=sleepLike(it.name), cs
   if(c==='B'){ const L=Array.isArray(x)?x:[];
     return `${cs.length>1?lab('Timed blocks'):''}${L.length?`<div class="blocks">${L.map(y=>`<div class="blk"><b>${esc(y.name)}</b><input type="time" value="${esc(y.at)}" data-k="${key}" data-c="B" data-li="${y.id}" aria-label="Time for ${esc(y.name)}"><button class="x" data-lx="${key}|${y.id}|B" aria-label="Remove ${esc(y.name)}">✕</button></div>`).join('')}</div>`:''}
       ${L.length?'':`<button class="nonebtn${it.none?' on':''}" data-bnone="${key}" aria-pressed="${!!it.none}">${it.none?'✓ Nothing today':'Nothing today'}</button>`}
-      ${it.none?'':(()=>{ const Q=recentItems(it.name,L.map(y=>y.name)), ed=(S.st.qedit||{})[key]; return Q.length?`<div class="quick">${Q.map(n=>ed?`<button class="qdel" data-qdel="${key}|${esc(n)}" aria-label="Remove ${esc(n)} from saved">${esc(n)} ✕</button>`:`<button data-bq="${key}|${esc(n)}">+ ${esc(n)}</button>`).join('')}<button class="qedit" data-qedit="${key}">${ed?'Done':'Edit saved'}</button></div>`:(ed?(delete S.st.qedit[key],''):''); })()}
-      <div class="row"><input type="text" id="bi${fid}" data-bin="${key}" placeholder="${isFood(it.name)?'e.g. Avižos su bananu, then +':'e.g. Omega 3, then +'}" enterkeyhint="done" aria-label="${esc(it.name)} new item"><button class="mini" data-ba="${key}" data-in="bi${fid}" aria-label="Add block">+</button></div>`; }
+      ${it.none?'':pickHTML(it,key,L)}
+      <div class="row"><input type="text" id="bi${fid}" data-bin="${key}" placeholder="Something else? Type it, then +" enterkeyhint="done" aria-label="${esc(it.name)} new item"><button class="mini" data-ba="${key}" data-in="bi${fid}" aria-label="Add block">+</button></div>`; }
   if(c==='L'){ const L=Array.isArray(x)?x:[];
     return `${cs.length>1?lab('Checklist'):''}<div class="list">${L.map(y=>`<div class="li${y.at?' done':''}"><button class="lbtn" data-lt="${key}|${y.id}">${y.at?'✓':'○'} ${esc(y.name)}</button>${y.at?`<input type="time" value="${esc(y.at)}" data-k="${key}" data-c="L" data-li="${y.id}" aria-label="Time for ${esc(y.name)}">`:''}<button class="x" data-lx="${key}|${y.id}|L" aria-label="Remove ${esc(y.name)}">✕</button></div>`).join('')}
       <div class="row"><input type="text" id="li${fid}" data-lin="${key}" placeholder="Add item" enterkeyhint="done" aria-label="${esc(it.name)} new item"><button class="mini" data-la="${key}" data-in="li${fid}" aria-label="Add item">+</button></div>
@@ -2042,6 +2099,8 @@ function fieldClick(ds,b){
   if(ds.fcolall&&GUEST){ const [eid,v]=ds.fcolall.split('|'), {e}=findEntry(eid); if(e) e.items.forEach(it=>{ const k=e.id+'|'+it.fid; v==='1'?GOPEN.delete(k):GOPEN.add(k); }); render(); return true; }
   if(ds.fcol){ COLL.has(ds.fcol)?COLL.delete(ds.fcol):COLL.add(ds.fcol); saveColl(); render(); return true; }
   if(ds.fcolall){ const [eid,v]=ds.fcolall.split('|'), {e}=findEntry(eid); if(e) e.items.forEach(it=>v==='1'?COLL.add(it.fid):COLL.delete(it.fid)); saveColl(); render(); return true; }
+  if(ds.pkadd){ pickAdd(ds.pkadd); return true; }
+  if(ds.pdel){ const i=ds.pdel.indexOf('|',ds.pdel.indexOf('|')+1), key=ds.pdel.slice(0,i), name=ds.pdel.slice(i+1), {it}=itemAt(key); if(!it) return true; S.cfg.picks=Object.assign({},S.cfg.picks||{},{[pickKey(it)]:myPicks(it).filter(x=>x!==name)}); saveCfg(); render(); return true; }
   if(ds.qedit){ S.st.qedit=Object.assign({},S.st.qedit,{[ds.qedit]:!(S.st.qedit||{})[ds.qedit]}); render(); return true; }
   if(ds.qdel){ const i=ds.qdel.indexOf('|',ds.qdel.indexOf('|')+1), key=ds.qdel.slice(0,i), name=ds.qdel.slice(i+1), {it}=itemAt(key); if(!it) return true; setHidden('B',it.name,name,true); toast(`${name} removed from saved`); render(); return true; }
   if(ds.bmhide){ const p=ds.bmhide.split('|'), name=decN(p.pop()), r=p.pop(); setHidden('M',r,name,true); toast(`${name} removed from saved`); render(); return true; }
@@ -2052,7 +2111,7 @@ function fieldClick(ds,b){
   if(ds.lx){ const [eid,fid,xid,c]=ds.lx.split('|'), {k,it}=itemAt(eid+'|'+fid); if(!it) return true; const cc=c||listComp(it); setP(it,cc,arrP(it,cc).filter(z=>z.id!==xid)); saveMonth(k); render(); return true; }
   return false; }
 function addToList(key,inId){ if(GUEST) return; const inp=document.getElementById(inId), name=inp?inp.value.trim():''; if(!name){ if(inp) inp.focus(); return; } inp.value=''; const {k,e,it}=itemAt(key); if(!it) return; if(isHidden('B',it.name,name)) setHidden('B',it.name,name,false);
-  const c=listComp(it)||'B', a=arrP(it,c); if(c==='B') rememberName('B',it.name,name); a.push({id:rid(),name,at:c==='B'?nowHM():''}); it.none=false; setP(it,c,a);
+  const c=listComp(it)||'B', a=arrP(it,c); a.push({id:rid(),name,at:c==='B'?nowHM():''}); it.none=false; setP(it,c,a);
   if(c==='L'){ const tp=S.cfg.templates.find(t=>t.id===e.tid), f=tp&&tp.fields.find(x=>x.id===it.fid); if(f){ f.opts=f.opts||[]; if(!f.opts.some(o=>o.toLowerCase()===name.toLowerCase())){ f.opts.push(name); saveCfg(); } } }
   saveMonth(k); render(); const n=document.getElementById(inId); if(n) n.focus(); }
 function fieldInput(t){ if(GUEST) return true; if(!t.dataset.k) return false; const {k,e,it}=itemAt(t.dataset.k); if(!it) return true; const c=t.dataset.c;
@@ -2781,9 +2840,9 @@ function dataLines(ds,n){ const V=ds.vars; return ds.days.slice(-n).map(d=>{ con
   const t=(ds.texts[d]||[]).map(s=>s.slice(0,200)); return `${d} (${WD[(new Date(d+'T12:00').getDay()+6)%7]}): ${parts.join('; ')}${t.length?' | notes: '+t.join(' / '):''}`; }); }
 const SAFE='Never suggest eating less, losing weight, supplement doses or medication. Slow-acting supplements (omega-3, creatine, vitamin D, iron) build up over weeks, so never propose day-by-day A/B tests of them. If something sounds like injury (a pop, sharp pain, swelling) say to stop and see a physio.';
 const GLOSS='Krūvis = training load (effort × minutes), Pirštų skausmas = finger pain, Pirštų testas = finger strength test. Notes are mostly Lithuanian: Prieš trieša = before training, Po triešos = after training, Restday = rest day, Miegas = sleep, Maistas = food, Maisto papildai = supplements, Oda = skin, Energija = energy, Kūnas = body, Fokusas = focus, Pirštai = fingers, Emocijos = emotions. Weekdays: Pr An Tr Kt Pn Š S = Mon–Sun.';
-function tabsHTML(){ const B=[['cal','Calendar'],['perf','Performance'],['goals','Milestones']], T=GUEST?B:B.concat([['sims','Comps']]).concat(isCoach()?[['team','Team']]:[]).concat(lvlUser()?[['crew',isCoach()?'Ranks':'Team']]:[]).concat(ACC.role==='coach'?[['ath','Stats']]:[]);
+function tabsHTML(){ const B=[['cal','Calendar'],['perf','Performance'],['goals','Milestones']], T=GUEST?B:ACC.role==='coach'?[['plan','Plan'],['sims','Comps'],['team','Team'],['ath','Stats']]:B.concat([['sims','Comps']]).concat(isCoach()?[['team','Team']]:[]).concat(lvlUser()?[['crew',isCoach()?'Ranks':'Team']]:[]).concat(ACC.role==='coach'?[['ath','Stats']]:[]);
   return `<nav class="tabs${T.length>3?' many':''}${T.length>5?' six':''}" aria-label="Sections">${T.map(([k,l])=>`<button data-tab="${k}" class="${S.view===k||(k==='sims'&&S.view==='sim')?'on':''}"${S.view===k?' aria-current="page"':''}><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">${TICON[k]||''}</svg><span>${T.length>4?({perf:'Perform',goals:'Goals'}[k]||l):l}</span></button>`).join('')}</nav>`; }
-const TICON={crew:'<g fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/></g>',cal:'<path fill="none" stroke="currentColor" stroke-width="2" d="M3 5h18v16H3zM3 10h18M8 2v5M16 2v5"/>',perf:'<path fill="none" stroke="currentColor" stroke-width="2" d="M3 20h18M6 16v-5M11 16V6M16 16v-8M21 16V9"/>',goals:'<path fill="none" stroke="currentColor" stroke-width="2" d="M5 22V3M5 4h12l-2 4 2 4H5"/>',sims:'<g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.5M9.5 2h5M12 2v4.5M18.5 6.5l1.5-1.5"/></g>',team:'<g fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 21c.6-4 3.2-6 6.5-6s5.9 2 6.5 6M16 4.8a3.5 3.5 0 0 1 0 6.4M18 15.4c2 .7 3.2 2.6 3.5 5.6"/></g>',ath:'<path fill="none" stroke="currentColor" stroke-width="2" d="M3 3v18h18M7 15l4-5 3 3 6-7"/>'};
+const TICON={plan:'<g fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18v16H3zM3 10h18M8 2v5M16 2v5"/><path d="M8 15l2.5 2.5L16 13"/></g>',crew:'<g fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/></g>',cal:'<path fill="none" stroke="currentColor" stroke-width="2" d="M3 5h18v16H3zM3 10h18M8 2v5M16 2v5"/>',perf:'<path fill="none" stroke="currentColor" stroke-width="2" d="M3 20h18M6 16v-5M11 16V6M16 16v-8M21 16V9"/>',goals:'<path fill="none" stroke="currentColor" stroke-width="2" d="M5 22V3M5 4h12l-2 4 2 4H5"/>',sims:'<g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.5M9.5 2h5M12 2v4.5M18.5 6.5l1.5-1.5"/></g>',team:'<g fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 21c.6-4 3.2-6 6.5-6s5.9 2 6.5 6M16 4.8a3.5 3.5 0 0 1 0 6.4M18 15.4c2 .7 3.2 2.6 3.5 5.6"/></g>',ath:'<path fill="none" stroke="currentColor" stroke-width="2" d="M3 3v18h18M7 15l4-5 3 3 6-7"/>'};
 const isWeakCode=()=>{ try{ return localStorage.getItem('ct:weak')==='1'; }catch(e){ return false; } };
 
 // ---- illustrations: original figures in the team style (one climber shape, the flag colours as the only accents)
@@ -3937,6 +3996,12 @@ app.addEventListener('click',async ev=>{
   if(ds.range){ S.st.range=+ds.range; S.st.openF=null; render(); return; }
   if(ds.finding!==undefined){ S.st.openF=S.st.openF===+ds.finding?null:+ds.finding; render(); return; }
   if(ds.act==='ai'){ runAI(); return; }
+  if(ds.pday){ PLAN.sel=ds.pday; render(); return; }
+  if(ds.pm){ let m=S.m+(+ds.pm), y=S.y; if(m<0){ m=11; y--; } if(m>11){ m=0; y++; } S.m=m; S.y=y; render(); return; }
+  if(ds.pset!==undefined&&ACC.role!=='athlete'){ const [d,t]=ds.pset.split('|'), cur=planOf(d); planSet(d,t?{t,n:cur&&cur.t===t?cur.n:''}:null); buzz(); return; }
+  if(ds.pcopy&&ACC.role!=='athlete'){ const sel=PLAN.sel||todayStr, t=new Date(sel+'T12:00'), mon=dAdd(sel,-((t.getDay()+6)%7)); let n=0; const P=Object.assign({},TEAM.info.plan||{});
+    for(let i=0;i<7;i++){ const from=dAdd(mon,i-7), to=dAdd(mon,i), v=P[from]; if(v&&(v.t==='train'||v.t==='rest')){ P[to]={t:v.t,n:v.n||''}; n++; } }
+    if(!n){ toast('Nothing planned last week'); return; } TEAM.info.plan=P; render(); try{ const o={}; for(let i=0;i<7;i++){ const to=dAdd(mon,i); if(P[to]) o[to]=P[to]; } await TEAM.db.doc('team/info').update({plan:o}); toast(`Copied ${n} day${n>1?'s':''}`); }catch(e){ toast('Could not save. Check the connection.'); } return; }
   if(ds.tab){ S.view=ds.tab; S.open=null; render(); scrollTo(0,0); if(ds.tab==='set') ensureAll(); return; }
   if(ds.htest){ const [kind,i]=ds.htest.split('|'); await loadAll(); const g=goalVar(dataset(120))||goalVar(dataset(0)); if(!g){ toast('Add a 1–10 score first'); return; }
     if(H().filter(x=>x.status==='testing').length>=3){ toast('Finish a test first'); return; }
@@ -4016,7 +4081,7 @@ app.addEventListener('click',async ev=>{
 });
 
 document.addEventListener('keydown',ev=>{ if(!ALIVE||GUEST) return; if(!(ev.ctrlKey||ev.metaKey)||ev.key.toLowerCase()!=='z') return; const t=ev.target; if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA')) return; ev.preventDefault(); histStep(ev.shiftKey?1:-1); });
-app.addEventListener('keydown',ev=>{ const t=ev.target; if(GUEST) return; if((ev.key==='Enter'||ev.key===' ')&&t.getAttribute&&t.getAttribute('data-bmr')){ ev.preventDefault(); bodyClick(ev); return; } if(ev.key!=='Enter'&&ev.keyCode!==13) return; if(t.dataset&&t.dataset.bmnew){ ev.preventDefault(); const i=t.dataset.bmnew.lastIndexOf('|'), v=t.value; t.value=''; addItem(t.dataset.bmnew.slice(0,i),t.dataset.bmnew.slice(i+1),v); return; } if(t.dataset.bin||t.dataset.lin){ ev.preventDefault(); addToList(t.dataset.bin||t.dataset.lin,t.id); } else if(t.id&&t.id.startsWith('nf')){ ev.preventDefault(); const b=t.parentElement.querySelector('[data-newf]'); if(b) b.click(); } });
+app.addEventListener('keydown',ev=>{ const t=ev.target; if(GUEST) return; if((ev.key==='Enter'||ev.key===' ')&&t.getAttribute&&t.getAttribute('data-bmr')){ ev.preventDefault(); bodyClick(ev); return; } if(ev.key!=='Enter'&&ev.keyCode!==13) return; if(t.dataset&&t.dataset.bmnew){ ev.preventDefault(); const i=t.dataset.bmnew.lastIndexOf('|'), v=t.value; t.value=''; addItem(t.dataset.bmnew.slice(0,i),t.dataset.bmnew.slice(i+1),v); return; } if(t.dataset.pkin){ ev.preventDefault(); pickAdd(t.dataset.pkin); return; } if(t.dataset.pnote){ ev.preventDefault(); t.blur(); return; } if(t.dataset.bin||t.dataset.lin){ ev.preventDefault(); addToList(t.dataset.bin||t.dataset.lin,t.id); } else if(t.id&&t.id.startsWith('nf')){ ev.preventDefault(); const b=t.parentElement.querySelector('[data-newf]'); if(b) b.click(); } });
 app.addEventListener('input',ev=>{
   const t=ev.target; if(t.dataset&&t.dataset.flmood!==undefined){ moodLive(t); return; } if(t.dataset&&t.dataset.flen!==undefined){ enLive(t); return; }
   if(t.dataset&&t.dataset.floth){ const [key,f]=splitTail(t.dataset.floth,1); moodSave(key,{[f]:t.value.slice(0,60)}); const nb=document.querySelector('[data-fln]'); if(nb&&t.value.trim()&&nb.textContent==='Skip'){ nb.textContent='Next'; nb.classList.remove('ghost'); nb.classList.add('ready'); } return; } if(t.tagName==='TEXTAREA') grow(t);
@@ -4031,7 +4096,7 @@ app.addEventListener('input',ev=>{
 });
 app.addEventListener('change',ev=>{
   if(GUEST) return;
-  { const t=ev.target; if(t.dataset&&t.dataset.flmood!==undefined){ moodCommit(t); return; } if(t.dataset&&t.dataset.flen!==undefined){ enCommit(t); return; } }
+  { const t=ev.target; if(t.dataset&&t.dataset.pnote&&ACC.role!=='athlete'){ const cur=planOf(t.dataset.pnote); if(cur) planSet(t.dataset.pnote,{t:cur.t,n:t.value.trim().slice(0,80)}); return; } if(t.dataset&&t.dataset.flmood!==undefined){ moodCommit(t); return; } if(t.dataset&&t.dataset.flen!==undefined){ enCommit(t); return; } }
   if(S.view==='ath'&&atChange(ev.target)) return;
   if(simChange(ev.target)) return;
   const t=ev.target, ds=t.dataset, T=S.cfg.templates;
