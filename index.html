@@ -1479,6 +1479,19 @@ html,body{overscroll-behavior-y:none}
 .tsni{flex:0 0 auto;width:10px;height:10px;border-radius:50%;background:#fff;animation:dotpulse 1.6s ease-in-out infinite}
 .tsnt{flex:1;min-width:0;display:flex;flex-direction:column}.tsnt small{opacity:.85}
 .tsgo{border:0;border-radius:12px;background:#fff;color:#147A80;font-weight:800;padding:8px 14px}.tsnx{border:0;background:none;color:#fff;font-size:1rem;padding:6px}
+
+/* check-in: header always on top, no Done bar, edge hint */
+.sheet{position:relative;padding-top:96px!important;padding-bottom:40px!important}
+.cktop{position:fixed!important;top:max(8px,env(safe-area-inset-top))!important;left:max(14px,calc(50% - 266px));right:max(14px,calc(50% - 266px));margin:0!important;z-index:30!important}
+.ckedge{position:fixed;left:0;top:0;bottom:0;width:16px;z-index:29;pointer-events:none;display:flex;align-items:center}
+.ckedge i{display:block;width:5px;height:64px;border-radius:0 4px 4px 0;background:linear-gradient(var(--fc),color-mix(in srgb,var(--fc) 40%,transparent));opacity:.55;animation:edgehint 2.6s ease-in-out infinite}
+@keyframes edgehint{0%,100%{transform:translateX(0);opacity:.35}50%{transform:translateX(3px);opacity:.75}}
+/* spacing: calendar never touches what's under it */
+.pgrid{margin-bottom:16px}.pedit{margin-top:16px}
+/* glossy New simulation */
+.btn.gloss{position:relative;overflow:hidden;border:0!important;color:#fff!important;border-radius:20px!important;min-height:60px;background:linear-gradient(135deg,color-mix(in srgb,var(--gc) 82%,#fff) 0%,var(--gc) 45%,color-mix(in srgb,var(--gc) 72%,#000) 100%)!important;box-shadow:0 10px 24px color-mix(in srgb,var(--gc) 35%,transparent),inset 0 1px 0 rgba(255,255,255,.3)!important;transition:transform .2s cubic-bezier(.3,1.6,.5,1)!important}
+.btn.gloss::after{content:"";position:absolute;inset:-60% 40% auto -20%;height:160%;background:radial-gradient(closest-side,rgba(255,255,255,.22),transparent);pointer-events:none}.btn.gloss:active{transform:scale(.97)}
+@media (prefers-reduced-motion:reduce){.ckedge i{animation:none}}
 </style>
 </head>
 <body>
@@ -2148,6 +2161,20 @@ function tsInput(t){ const [sid,fid,sd]=t.dataset.tsin.split('|'), x=tsAll().fin
 function tsNotice(){ if(GUEST||ACC.role==='coach') return ''; const seen=new Set(Array.isArray(S.cfg.tsSeen)?S.cfg.tsSeen:[]), x=tsAll().find(x=>x.who.includes(ACC.id)&&!seen.has(x.id)&&x.date>=dAdd(todayStr,-1)); if(!x) return '';
   return `<div class="tsnote"><span class="tsni"></span><span class="tsnt"><b>${esc(x.byName)} invited you to a test</b><small>${esc(x.name)} · ${esc(dayName(x.date))} ${esc(x.date.slice(5).replace('-','.'))}</small></span><button class="tsgo" data-tsopen2="${x.id}">Open</button><button class="tsnx" data-tsseen="${x.id}" aria-label="Close">✕</button></div>`; }
 function tsMark(id){ const L=Array.isArray(S.cfg.tsSeen)?S.cfg.tsSeen.slice():[]; if(!L.includes(id)) L.push(id); S.cfg.tsSeen=L.slice(-60); saveCfg(); }
+
+// swipe right from the left edge: the page follows the finger, then slides out to the calendar
+const SWP={on:false};
+document.addEventListener('touchstart',ev=>{ if(!S.flow||ev.touches.length!==1) return; const t=ev.touches[0]; if(t.clientX>28) return; const el=document.querySelector('.sheet'); if(!el) return;
+  SWP.on=true; SWP.x0=t.clientX; SWP.y0=t.clientY; SWP.dx=0; SWP.lock=null; SWP.el=el; el.style.transition='none'; SWP.pin=false; },{passive:true});
+function swpPin(el){ const h=el.querySelector('.cktop'); if(!h) return; const r=h.getBoundingClientRect(), R=el.getBoundingClientRect(); h.style.cssText=`position:absolute!important;top:${r.top-R.top}px!important;left:${r.left-R.left}px!important;right:auto!important;width:${r.width}px`; SWP.pin=true; }
+function swpUnpin(el){ const h=el.querySelector('.cktop'); if(h) h.style.cssText=''; SWP.pin=false; }
+document.addEventListener('touchmove',ev=>{ if(!SWP.on) return; const t=ev.touches[0], dx=t.clientX-SWP.x0, dy=t.clientY-SWP.y0;
+  if(SWP.lock==null&&(Math.abs(dx)>8||Math.abs(dy)>8)) SWP.lock=Math.abs(dx)>Math.abs(dy)*1.2?'x':'y'; if(SWP.lock!=='x') return;
+  if(ev.cancelable) ev.preventDefault(); if(!SWP.pin) swpPin(SWP.el); SWP.dx=Math.max(0,dx); const f=Math.min(1,SWP.dx/innerWidth);
+  SWP.el.style.transform=`translate3d(${SWP.dx}px,0,0) scale(${1-f*.06})`; SWP.el.style.opacity=String(1-f*.5); SWP.el.style.borderRadius=`${Math.round(f*40)}px`; },{passive:false});
+document.addEventListener('touchend',()=>{ if(!SWP.on) return; SWP.on=false; const el=SWP.el; if(!el) return; el.style.transition='transform .32s cubic-bezier(.2,.8,.2,1),opacity .32s';
+  if(SWP.lock==='x'&&SWP.dx>Math.min(110,innerWidth*.28)){ el.style.transform=`translate3d(${innerWidth}px,0,0) scale(.92)`; el.style.opacity='0'; buzz(); setTimeout(()=>{ const b=document.querySelector('.sheet [data-flx]'); if(b) b.click(); },260); }
+  else { el.style.transform=''; el.style.opacity=''; el.style.borderRadius=''; setTimeout(()=>{ if(!SWP.on) swpUnpin(el); },330); } });
 let lastAdd=0;
 
 function renderCal(){ planRefresh();
@@ -2596,7 +2623,7 @@ function renderSheet(){ const F=S.flow, {e}=findEntry(F.eid); if(!e){ S.flow=nul
   app.innerHTML=`<div class="flow sheet${first?' in':''}" style="--fc:${tplColor(e)}">
     <header class="cktop"><button class="ckx" data-flx="1" aria-label="Close">✕</button><div class="cktt"><small>${esc(dayName(S.sel))} · ${esc(S.sel.slice(5).replace('-','.'))}</small><h1>${esc(tplName(e).replace(/^\+*\s*/,''))}</h1></div><div class="ckring">${shRing(done,N)}</div></header>
     <div class="ckl">${rows}</div>
-    <div class="flnav"><button class="btn flbig" data-flclose="1">Done</button></div></div>`;
+    <div class="ckedge" aria-hidden="true"><i></i></div></div>`;
   app.querySelectorAll('textarea').forEach(grow); }
 function shToggle(fid){ const F=S.flow; if(!F) return; const cur=F.open;
   const go=()=>{ F.open=cur===fid?null:fid; F.anim=F.open; S.typeOpen=null; buzz(); render();
@@ -4354,10 +4381,10 @@ app.addEventListener('click',async ev=>{
   if(ds.act==='packno'){ S.cfg.packNo=1; saveCfg(); render(); return; }
   if(ds.act==='aistop'){ const c=ds.which==='sci'?sciCtl:aiCtl; if(c) c.abort(); return; }
   if(ds.add){ if(Date.now()-lastAdd<600) return; lastAdd=Date.now(); const t=S.cfg.templates.find(t=>t.id===ds.add); if(!t) return; const [y,m,d]=S.sel.split('-'); const k=`${y}-${m}`; const mo=month(k);
-    const e={id:rid(),tid:t.id,name:t.name,color:t.color,items:t.fields.map(newItem)}; if(lvlUser()) e.lv=TLV(); if(lvlUser()&&TLV()<=2&&(!t.perf||t.fields.some(f=>compsOf(f).includes('X')))) S.flowNew=e.id; if(t.perf) e.perf=1; if(t.comp) e.items.forEach(it=>{ if(compsList(it).includes('G')) setP(it,'G',[newComp(),newComp(),newComp(),newComp()]); });
+    const e={id:rid(),tid:t.id,name:t.name,color:t.color,items:t.fields.map(newItem)}; if(lvlUser()) e.lv=TLV(); if(lvlUser()&&(!t.perf||t.fields.some(f=>compsOf(f).includes('X')))) S.flowNew=e.id; if(t.perf) e.perf=1; if(t.comp) e.items.forEach(it=>{ if(compsList(it).includes('G')) setP(it,'G',[newComp(),newComp(),newComp(),newComp()]); });
     (mo.days[String(+d)]=mo.days[String(+d)]||[]).push(e); S.open=e.id; saveMonth(k); if(S.flowNew===e.id){ S.flowNew=null; flowStart(e.id); return; } render(); const el=document.querySelector(`[data-toggle="${e.id}"]`); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); toast(`${t.name} added`); return; }
   if(ds.toggle&&lvlUser()&&TLV()<=2&&S.open!==ds.toggle){ const {e}=findEntry(ds.toggle); if(e&&(!isPerfE(e)||e.items.some(it=>compsList(it).includes('X')))&&flowItems(e).length){ flowStart(e.id); return; } }
-  if(ds.toggle&&!GUEST&&lvlUser()&&TLV()<=2&&S.open!==ds.toggle){ const {e}=findEntry(ds.toggle); if(e&&flowItems(e).length&&(!isPerfE(e)||e.items.some(it=>compsList(it).includes('X')))){ flowStart(e.id); return; } }
+  if(ds.toggle&&!GUEST&&lvlUser()&&S.open!==ds.toggle){ const {e}=findEntry(ds.toggle); if(e&&flowItems(e).length&&(!isPerfE(e)||e.items.some(it=>compsList(it).includes('X')))){ flowStart(e.id); return; } }
   if(ds.toggle){ const was=S.open===ds.toggle; S.open=was?null:ds.toggle; S.typeOpen=null; render(); if(was){ const el=document.querySelector(`[data-toggle="${ds.toggle}"]`); if(el) el.scrollIntoView({block:'nearest'}); } return; }
   if(ds.delentry){ if(!armed(b,'Tap again to delete')) return; const {k,arr}=findEntry(ds.delentry); arr.splice(arr.findIndex(x=>x.id===ds.delentry),1); saveMonth(k); render(); toast('Log deleted'); return; }
   if(ds.newf){ const inp=document.getElementById('nf'+ds.newf), name=inp.value.trim(); if(!name){ inp.focus(); return; }
@@ -5444,7 +5471,7 @@ function simDayHTML(day){ const L=simCardsForDay(day); if(!L.length) return ''; 
 function renderSims(){ if(GUEST){ S.view='cal'; renderCal(); return; } simSub(); const L=sims(), coach=ACC.role==='coach'||ACC.role==='supervisor';
   const mine=L.filter(x=>coach?true:iAmIn(x)&&x.status!=='draft');
   app.innerHTML=`${topBar()}<div class="phead"><div><h1>Comp <span class="nw">simulation ${helpBtn('sim')}</span></h1><p class="lvtxt">${coach?'Build a round, invite athletes, start one timer on every phone.':'Rounds your coach invited you to.'}</p></div>${fig('sims')}</div>
-    ${coach?`<button class="btn bigbtn" data-act="simnew">+ New simulation</button>`:''}
+    ${coach?`<button class="btn bigbtn gloss" style="--gc:#E86A2C" data-act="simnew">+ New simulation</button>`:''}
     ${simInviteCards()}
     ${mine.length?mine.map(x=>`<button class="card simrow" data-simopen="${x.id}"><span class="simd"><b>${x.date.slice(8)}</b><small>${MONTHS[+x.date.slice(5,7)-1].slice(0,3)}</small></span><span class="simm"><b>${esc(x.name)}</b><small>${SIMP[x.round]?SIMP[x.round][0]+' · ':''}${x.n} boulders · ${x.mode==='own'?'own boulders':'same boulders'} · ${x.inv.length} invited</small></span><span class="simst s-${x.status}">${{draft:'Draft',open:'Invited',live:'Live',done:'Done'}[x.status]}${x.locked?' · locked':''}</span></button>`).join(''):`<div class="empty">${coach?'No simulations yet.':'No simulations yet. Your coach invites you from his phone.'}</div>`}`; }
 function tStep(k,v,lab,sub){ const m=Math.floor(v/60), sc=v%60, opt=(n,cur,suf)=>`<option value="${n}"${n===cur?' selected':''}>${n}${suf}</option>`;
