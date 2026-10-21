@@ -1492,6 +1492,7 @@ html,body{overscroll-behavior-y:none}
 .btn.gloss{position:relative;overflow:hidden;border:0!important;color:#fff!important;border-radius:20px!important;min-height:60px;background:linear-gradient(135deg,color-mix(in srgb,var(--gc) 82%,#fff) 0%,var(--gc) 45%,color-mix(in srgb,var(--gc) 72%,#000) 100%)!important;box-shadow:0 10px 24px color-mix(in srgb,var(--gc) 35%,transparent),inset 0 1px 0 rgba(255,255,255,.3)!important;transition:transform .2s cubic-bezier(.3,1.6,.5,1)!important}
 .btn.gloss::after{content:"";position:absolute;inset:-60% 40% auto -20%;height:160%;background:radial-gradient(closest-side,rgba(255,255,255,.22),transparent);pointer-events:none}.btn.gloss:active{transform:scale(.97)}
 @media (prefers-reduced-motion:reduce){.ckedge i{animation:none}}
+.ckmore{margin:16px 4px 0}.ckmore summary{color:var(--soft);font-weight:700;font-size:.88rem;cursor:pointer}.ckmore .del{margin-top:10px}
 </style>
 </head>
 <body>
@@ -2613,7 +2614,7 @@ function sheetBody(e,it,key){ const fid='f'+e.id+it.fid, cs=compsList(it), op=S.
   if(flowKind(it)==='mood'){ body=flowMood(e,it,key,0)+(moodRaw(it)!=null?`<div class="ckwords">${flowMood(e,it,key,1)}${flowMood(e,it,key,2)}</div>`:'')+cs.filter(c=>c==='T').map(c=>`<div class="comp c${c}">${compHTML(e,it,c,key,fid)}</div>`).join(''); }
   else { let xDone=false; body=cs.filter(c=>!(TLV()<2&&cs.includes('E')&&c!=='E')).map(c=>{ if(c==='X'){ if(xDone) return ''; xDone=true; return `<div class="comp cX">${flowX(e,it,key,fid)}</div>`; } const h=compHTML(e,it,c,key,fid); return h?`<div class="comp c${c}">${h}</div>`:''; }).join(''); }
   return tools+body+plausHTML(it)+secHTML(e,it,key); }
-function renderSheet(){ const F=S.flow, {e}=findEntry(F.eid); if(!e){ S.flow=null; renderCal(); return; }
+function renderSheet(){ const F=S.flow, {e}=findEntry(F.eid); if(!e){ S.flow=null; document.documentElement.classList.remove('inflow'); (S.view==='perf'?renderPerf:renderCal)(); return; }
   const I=flowItems(e), N=I.length, done=I.filter(filledItem).length, perf=isPerfE(e), first=F.shown!=='sheet'; F.shown='sheet';
   const rows=I.map((it,j)=>{ const key=`${e.id}|${it.fid}`, open=perf||F.open===it.fid, f=filledItem(it), sm=f?itemSummary(it):'';
     return `<section class="cks${open?' open':''}${F.anim===it.fid?' anim':''}" data-shs="${it.fid}" style="--i:${j}">
@@ -2622,7 +2623,10 @@ function renderSheet(){ const F=S.flow, {e}=findEntry(F.eid); if(!e){ S.flow=nul
   F.anim=null;
   app.innerHTML=`<div class="flow sheet${first?' in':''}" style="--fc:${tplColor(e)}">
     <header class="cktop"><button class="ckx" data-flx="1" aria-label="Close">✕</button><div class="cktt"><small>${esc(dayName(S.sel))} · ${esc(S.sel.slice(5).replace('-','.'))}</small><h1>${esc(tplName(e).replace(/^\+*\s*/,''))}</h1></div><div class="ckring">${shRing(done,N)}</div></header>
-    <div class="ckl">${rows}</div>
+    ${perf?perfHowHTML(e):''}<div class="ckl">${rows}</div>
+    <details class="more ckmore"><summary>${perf?'Delete this test':'Add a field or delete this log'}</summary>
+      ${perf?'':`<div class="addf"><label class="note" for="nf${e.id}">New field name</label><div class="row"><input type="text" id="nf${e.id}" placeholder="e.g. Emocijos"><button class="btn" data-newf="${e.id}">Add</button></div></div>`}
+      <button class="del" data-delentry="${e.id}">${perf?'Delete this test':'Delete this log'}</button></details>
     <div class="ckedge" aria-hidden="true"><i></i></div></div>`;
   app.querySelectorAll('textarea').forEach(grow); }
 function shToggle(fid){ const F=S.flow; if(!F) return; const cur=F.open;
@@ -4392,7 +4396,7 @@ app.addEventListener('click',async ev=>{
     if(e.items.some(i=>i.name.trim().toLowerCase()===name.toLowerCase())){ toast(`${name} is already in this log`); return; }
     if(isPerfE(e)) return; const t=S.cfg.templates.find(t=>t.id===e.tid), ex=t&&t.fields.find(f=>f.name.toLowerCase()===name.toLowerCase());
     const R=compRatings(name), f=ex||{id:rid(),name,type:'mix',comps:R.best.slice()}; e.items.push(newItem(f));
-    if(t&&!ex){ t.fields.push(f); saveCfg(); } S.typeOpen=`${e.id}|${f.id}`; saveMonth(k); render(); toast('Field added. Choose its parts below'); return; }
+    if(t&&!ex){ t.fields.push(f); saveCfg(); } S.typeOpen=`${e.id}|${f.id}`; if(S.flow) S.flow.open=f.id; saveMonth(k); render(); toast('Field added. Choose its parts below'); return; }
   // settings
   const T=S.cfg.templates, tiOf=v=>v===undefined?null:+String(v).split('|')[0];
   for(const k of ['color','tmove','fmove','cp','fdel','fadd','tdel','tgrp','xcu','xlr','xbw','xrole']) if(ds[k]!==undefined){ const tp=T[tiOf(ds[k])]; if(tp&&tp.perf) return; }
