@@ -2112,7 +2112,7 @@ const FLAME='<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
 function weekStrip(){ if(GUEST) return ''; const W=weekInfo(), L=['Pr','An','Tr','Kt','Pn','Š','S'];
   return `<div class="wkstrip"><div class="wkdays">${W.days.map((d,i)=>`<span class="wkd${W.has[i]?' on':''}${d===todayStr?' wtd':''}${d===todayStr&&!W.has[i]?' todo':''}" style="--i:${i}"><i>${W.has[i]?'<svg viewBox="0 0 12 12" width="10" height="10"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}</i><small>${L[i]}</small></span>`).join('')}</div>
     <div class="wkn"><b><span data-cnt="${W.n}">${W.n}</span><small>/7</small></b><span>this week</span>${W.streak>=1?`<em>${FLAME}${W.streak} wk streak</em>`:''}</div></div>`; }
-function flowStart(eid){ S.flow={eid,open:null,anim:null,shown:''}; S.open=null; buzz(); render(); scrollTo(0,0); }
+function flowStart(eid){ S.flowY=window.scrollY; S.flow={eid,open:null,anim:null,shown:''}; S.open=null; buzz(); render(); scrollTo(0,0); }
 function flowNext(){ const F=S.flow; if(!F) return; const {e}=findEntry(F.eid); if(!e) return; const I=flowItems(e), it=I[F.i];
   if(F.ov){ const j=I.findIndex(x=>!filledItem(x)); flowGo(j<0?0:j); return; }
   const bed=document.querySelector('.flow [data-bed]'); if(bed){ const ek=bed.dataset.bed, dirty=()=>anyUnsaved().some(K=>K.startsWith(ek+'|')); if(dirty()){ saveBody(ek); if(dirty()) return; } }
@@ -2269,7 +2269,7 @@ function moodCommit(t){ const N=+t.dataset.n||7, from=+t.value, n=Math.round(fro
 
 function flowClick(ds,b){ if(!S.flow&&!ds.flstart&&!ds.rgq&&!ds.fltimer) return false;
   if(ds.flstart){ flowStart(ds.flstart); return true; }
-  if(ds.flx||ds.flclose){ const {e}=findEntry(S.flow.eid); const pb=e&&isPerfE(e)?testPBs(e):[]; S.flow=null; render(); scrollTo(0,0); if(pb.length){ toast('New personal best: '+pb.join(', ')); chime(); } return true; }
+  if(ds.flx||ds.flclose){ const {e}=findEntry(S.flow.eid); const pb=e&&isPerfE(e)?testPBs(e):[]; S.flow=null; render(); { const y=S.flowY||0; S.flowY=null; requestAnimationFrame(()=>window.scrollTo({top:Math.min(y,document.documentElement.scrollHeight-innerHeight),behavior:'instant'})); } if(pb.length){ toast('New personal best: '+pb.join(', ')); chime(); } return true; }
   if(ds.flall){ S.flow=null; S.open=ds.flall; render(); const el=document.querySelector(`[data-toggle="${ds.flall}"]`); if(el) el.scrollIntoView({block:'start'}); return true; }
   if(ds.shtog){ shToggle(ds.shtog); return true; }
   if(ds.fln){ flowNext(); return true; } if(ds.flb){ flowBack(); return true; }
