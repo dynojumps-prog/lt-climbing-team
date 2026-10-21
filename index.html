@@ -4169,7 +4169,7 @@ app.addEventListener('click',async ev=>{
   if(ds.cpkadd){ cpkAdd(ds.cpkadd); return; }
   if(ds.cpkdel){ const [k,...r]=ds.cpkdel.split('|'), v=r.join('|'); S.cfg.picks=Object.assign({},S.cfg.picks||{},{['@'+k]:cpk(k).filter(x=>x!==v)}); saveCfg(); render(); return; }
   if(ds.pcopy&&ACC.role!=='athlete'){ const sel=PLAN.sel||todayStr, t=new Date(sel+'T12:00'), mon=dAdd(sel,-((t.getDay()+6)%7)); let n=0; const P=Object.assign({},TEAM.info.plan||{});
-    for(let i=0;i<7;i++){ const from=dAdd(mon,i-7), to=dAdd(mon,i), v=P[from]; if(v&&(v.t==='train'||v.t==='rest')){ P[to]={t:v.t,n:v.n||''}; n++; } }
+    for(let i=0;i<7;i++){ const from=dAdd(mon,i-7), to=dAdd(mon,i), v=P[from]; if(v&&(v.t==='train'||v.t==='rest')){ P[to]=JSON.parse(JSON.stringify(v)); n++; } }
     if(!n){ toast('Nothing planned last week'); return; } TEAM.info.plan=P; render(); try{ const o={}; for(let i=0;i<7;i++){ const to=dAdd(mon,i); if(P[to]) o[to]=P[to]; } await TEAM.db.doc('team/info').update({plan:o}); toast(`Copied ${n} day${n>1?'s':''}`); }catch(e){ toast('Could not save. Check the connection.'); } return; }
   if(ds.tab){ S.view=ds.tab; S.open=null; render(); scrollTo(0,0); if(ds.tab==='set') ensureAll(); return; }
   if(ds.htest){ const [kind,i]=ds.htest.split('|'); await loadAll(); const g=goalVar(dataset(120))||goalVar(dataset(0)); if(!g){ toast('Add a 1–10 score first'); return; }
