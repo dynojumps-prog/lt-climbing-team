@@ -1274,6 +1274,7 @@ html,body{overscroll-behavior-y:none}
 /* save and fresh buttons */
 .bsave .btn,.bbar .btn{border-radius:16px!important;min-height:50px}
 .bsavebtn.on{animation:ready .5s cubic-bezier(.3,1.7,.5,1)}
+@media (max-width:440px){.tabs.six button{font-size:.56rem!important;letter-spacing:0!important}}
 </style>
 </head>
 <body>
@@ -1801,7 +1802,7 @@ function dayGuide(L){ if(L.length<2) return ''; const D=dayDone(), nx=nextTpl(L)
 const FEEL_RX=/emoc|emotion|nuotaik|mood|jausm/i;
 const tplPack=()=>S.cfg.templates.filter(t=>!t.perf).map(t=>JSON.parse(JSON.stringify(t)));
 const tplHash=a=>{ const s=JSON.stringify(a); let h=0; for(let i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))|0; return String(h>>>0); };
-async function tplPublish(){ if(GUEST||!TEAM.db||!pathMine()||ACC.role!=='athlete') return; const T=tplPack(), v=tplHash(T); if(tplPublish.v===v) return; try{ await TEAM.db.doc('team/tpl').set({v,templates:T,at:Date.now()}); tplPublish.v=v; }catch(e){} }
+async function tplPublish(){ if(GUEST||!TEAM.db||!pathMine()||!lvlUser()) return; const T=tplPack(), v=tplHash(T); if(tplPublish.v===v) return; try{ await TEAM.db.doc('team/tpl').set({v,templates:T,at:Date.now()}); tplPublish.v=v; }catch(e){} }
 async function tplFollow(){ if(GUEST||!TEAM.db||pathMine()||ACC.role!=='athlete') return; let d=null; try{ const sn=await TEAM.db.doc('team/tpl').get(); if(sn.exists) d=cleanText(sn.data()||{}); }catch(e){ return; }
   if(!d||typeof d.v!=='string'||!Array.isArray(d.templates)||!d.templates.length||d.v===S.cfg.tplV||!ALIVE||GUEST) return;
   const keep=S.cfg.templates.filter(t=>t.perf); if(!S.cfg.tplBak) S.cfg.tplBak=JSON.stringify(S.cfg.templates.filter(t=>!t.perf)).slice(0,300000);
@@ -2312,7 +2313,7 @@ function boardStats(){ const W=weekInfo(), D=filledDays(), mk=todayStr.slice(0,7
       if(ds>=mon&&cs.includes('G')){ const a=getP(it,'G'); if(Array.isArray(a)) climbs+=a.filter(y=>y&&(+y.a>0||y.g)).length; }
       if(ds>dAdd(todayStr,-7)&&cs.includes('R')&&sleepLike(it.name)){ const h=hoursOf(getP(it,'R')); if(h&&h>=3&&h<=14) sl.push(h); } })); }));
   return {name:String(ACC.name||'').slice(0,40),streak:W.streak,wk:W.n,mo:[...D].filter(d=>d.startsWith(mk)).length,sleep:sl.length>=3?Math.round(meanOf(sl)*10)/10:null,mins:Math.round(mins),climbs,at:Date.now(),wkey:mon}; }
-async function boardPush(){ if(GUEST||!ALIVE||!TEAM.db||!lvlUser()||ACC.role!=='athlete') return;
+async function boardPush(){ if(GUEST||!ALIVE||!TEAM.db||!lvlUser()) return;
   try{ if(!boardOn()){ if(BRD.last!=='off'){ await TEAM.db.doc('board/'+ACC.id).delete().catch(()=>{}); BRD.last='off'; } return; }
     const st=boardStats(), j=JSON.stringify(Object.assign({},st,{at:0})); if(j===BRD.last) return; await TEAM.db.doc('board/'+ACC.id).set(st); BRD.last=j; }catch(e){} }
 async function boardLoad(force){ if(!TEAM.db||(!force&&Date.now()-BRD.at<60e3)) return; BRD.at=Date.now();
@@ -2325,7 +2326,7 @@ function renderCrew(){ if(GUEST){ S.view='cal'; renderCal(); return; } boardPush
       ${R.length?`<ol class="brdl">${R.map((x,i)=>`<li class="${x.id===ACC.id?'me':''}" style="--i:${i}"><span class="brdr r${rk(x)+1}">${rk(x)+1}</span><b>${esc(x.name||'?')}${x.id===ACC.id?' <em>you</em>':''}</b><span class="brdv">${fmt(x[key])}${unit}</span><i class="brdb"><i style="width:${Math.max(6,Math.round((x[key]||0)/max*100))}%"></i></i></li>`).join('')}</ol>`:'<p class="note">Nobody yet. Be the first.</p>'}
       ${mi>4?`<p class="brdme">You are <b>#${me+1}</b> of ${A.length}</p>`:''}</div>`; };
   const I={fire:FLAME.replace('width="18" height="18"','width="22" height="22"'),cal:'<svg viewBox="0 0 24 24" width="22" height="22"><path fill="none" stroke="currentColor" stroke-width="2" d="M3 5h18v16H3zM3 10h18M8 2v5M16 2v5"/></svg>',moon:'<svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M20 15.5A8.5 8.5 0 0 1 8.5 4a8.5 8.5 0 1 0 11.5 11.5z"/></svg>',clock:'<svg viewBox="0 0 24 24" width="22" height="22"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g></svg>',wall:'<svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M5 21l4-17h6l4 17z" opacity=".35"/><circle cx="10" cy="9" r="1.6" fill="currentColor"/><circle cx="14" cy="13" r="1.6" fill="currentColor"/><circle cx="11" cy="17" r="1.6" fill="currentColor"/></svg>'};
-  app.innerHTML=`${topBar()}<div class="phead"><div><h1>Team ${helpBtn('board')}</h1><p class="lvtxt">Who’s putting in the work. Only these numbers are shared, nothing private.</p></div></div>
+  app.innerHTML=`${topBar()}<div class="phead"><div><h1>${isCoach()?'Ranks':'Team'} ${helpBtn('board')}</h1><p class="lvtxt">Who’s putting in the work. Only these numbers are shared, nothing private.</p></div></div>
     ${BRD.err?`<div class="alert amber">Rankings need the new database rules. Ask the person who runs the team’s Firebase to publish them.</div>`:''}
     ${!boardOn()?`<div class="alert">You’re hidden from the rankings. Turn it back on in Customize.</div>`:''}
     ${card('streak','Longest streak',' wk',I.fire,v=>v||0,x=>x.streak>0,'weeks in a row with 3+ days')}
@@ -2335,7 +2336,7 @@ function renderCrew(){ if(GUEST){ S.view='cal'; renderCal(); return; } boardPush
     ${card('climbs','Most climbs','',I.wall,v=>v||0,x=>x.climbs>0,'routes logged this week')}
     <p class="note brdpriv">Shared: name, streak, check-in days, average sleep, training time, number of climbs. Never pain, feelings, notes, body or test results.</p>`;
  }
-function boardCard(){ if(GUEST||ACC.role!=='athlete') return ''; return `<div class="card"><h3>Team rankings</h3><p class="note">Show my streak, check-ins, sleep average, training time and number of climbs on the Team board.</p><div class="row" style="margin-top:8px"><button class="btn${boardOn()?'':' ghost'}" data-brd="1">${boardOn()?'Shown on the board':'Hidden'}</button></div></div>`; }
+function boardCard(){ if(GUEST||!lvlUser()) return ''; return `<div class="card"><h3>Team rankings</h3><p class="note">Show my streak, check-ins, sleep average, training time and number of climbs on the Team board.</p><div class="row" style="margin-top:8px"><button class="btn${boardOn()?'':' ghost'}" data-brd="1">${boardOn()?'Shown on the board':'Hidden'}</button></div></div>`; }
 
 // ================= Tracking levels =================
 // Level 1 = only the essentials (how hard + how long, sleep, energy, finger pain, your climbs), no stats, little text.
@@ -2780,8 +2781,8 @@ function dataLines(ds,n){ const V=ds.vars; return ds.days.slice(-n).map(d=>{ con
   const t=(ds.texts[d]||[]).map(s=>s.slice(0,200)); return `${d} (${WD[(new Date(d+'T12:00').getDay()+6)%7]}): ${parts.join('; ')}${t.length?' | notes: '+t.join(' / '):''}`; }); }
 const SAFE='Never suggest eating less, losing weight, supplement doses or medication. Slow-acting supplements (omega-3, creatine, vitamin D, iron) build up over weeks, so never propose day-by-day A/B tests of them. If something sounds like injury (a pop, sharp pain, swelling) say to stop and see a physio.';
 const GLOSS='Krūvis = training load (effort × minutes), Pirštų skausmas = finger pain, Pirštų testas = finger strength test. Notes are mostly Lithuanian: Prieš trieša = before training, Po triešos = after training, Restday = rest day, Miegas = sleep, Maistas = food, Maisto papildai = supplements, Oda = skin, Energija = energy, Kūnas = body, Fokusas = focus, Pirštai = fingers, Emocijos = emotions. Weekdays: Pr An Tr Kt Pn Š S = Mon–Sun.';
-function tabsHTML(){ const B=[['cal','Calendar'],['perf','Performance'],['goals','Milestones']], T=GUEST?B:B.concat([['sims','Comps']]).concat(isCoach()?[['team','Team']]:ACC.role==='athlete'?[['crew','Team']]:[]).concat(ACC.role==='coach'?[['ath','Stats']]:[]);
-  return `<nav class="tabs${T.length>3?' many':''}" aria-label="Sections">${T.map(([k,l])=>`<button data-tab="${k}" class="${S.view===k||(k==='sims'&&S.view==='sim')?'on':''}"${S.view===k?' aria-current="page"':''}><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">${TICON[k]||''}</svg><span>${T.length>4?({perf:'Perform',goals:'Goals'}[k]||l):l}</span></button>`).join('')}</nav>`; }
+function tabsHTML(){ const B=[['cal','Calendar'],['perf','Performance'],['goals','Milestones']], T=GUEST?B:B.concat([['sims','Comps']]).concat(isCoach()?[['team','Team']]:[]).concat(lvlUser()?[['crew',isCoach()?'Ranks':'Team']]:[]).concat(ACC.role==='coach'?[['ath','Stats']]:[]);
+  return `<nav class="tabs${T.length>3?' many':''}${T.length>5?' six':''}" aria-label="Sections">${T.map(([k,l])=>`<button data-tab="${k}" class="${S.view===k||(k==='sims'&&S.view==='sim')?'on':''}"${S.view===k?' aria-current="page"':''}><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">${TICON[k]||''}</svg><span>${T.length>4?({perf:'Perform',goals:'Goals'}[k]||l):l}</span></button>`).join('')}</nav>`; }
 const TICON={crew:'<g fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/></g>',cal:'<path fill="none" stroke="currentColor" stroke-width="2" d="M3 5h18v16H3zM3 10h18M8 2v5M16 2v5"/>',perf:'<path fill="none" stroke="currentColor" stroke-width="2" d="M3 20h18M6 16v-5M11 16V6M16 16v-8M21 16V9"/>',goals:'<path fill="none" stroke="currentColor" stroke-width="2" d="M5 22V3M5 4h12l-2 4 2 4H5"/>',sims:'<g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="14" r="7.5"/><path d="M12 14V9.5M9.5 2h5M12 2v4.5M18.5 6.5l1.5-1.5"/></g>',team:'<g fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 21c.6-4 3.2-6 6.5-6s5.9 2 6.5 6M16 4.8a3.5 3.5 0 0 1 0 6.4M18 15.4c2 .7 3.2 2.6 3.5 5.6"/></g>',ath:'<path fill="none" stroke="currentColor" stroke-width="2" d="M3 3v18h18M7 15l4-5 3 3 6-7"/>'};
 const isWeakCode=()=>{ try{ return localStorage.getItem('ct:weak')==='1'; }catch(e){ return false; } };
 
