@@ -1497,6 +1497,156 @@ html,body{overscroll-behavior-y:none}
 .month{gap:10px}.month>h1{font-size:calc(2.6rem*var(--mk,1));white-space:nowrap}.month>h1 span,.month>h1 small{font-size:calc(1.5rem*var(--mk,1))}.month>h1 small{color:var(--soft);font-weight:500}.mnav{display:flex;gap:6px;flex-shrink:0}
 #dayhead>span{font-size:calc(1.5rem*var(--dk,1))}
 @media (max-width:600px){#app.dayswap{overflow-x:clip}} /* the next day slides in from the right without letting the page wobble sideways */
+/* swipe a log or test card left to delete it */
+.eswrap{position:relative;margin-bottom:10px;border-radius:20px}
+.eswrap>.entry{margin-bottom:0!important;touch-action:pan-y}
+.eswdel{position:absolute;inset:0;border:0;border-radius:20px;background:linear-gradient(135deg,#F2666B,#E5484D 50%,#C7353A);color:#fff;display:flex;align-items:center;justify-content:flex-end;padding:0;opacity:0;pointer-events:none;transition:opacity .12s,background-color .2s}
+.eswl{width:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.eswl b{font-size:.78rem;font-weight:800;letter-spacing:.02em}
+.eswrap.swiping>.eswdel,.eswrap.swopen>.eswdel,.eswrap.swgone>.eswdel{opacity:1;pointer-events:auto}
+.eswrap.swfull>.eswdel{background:linear-gradient(135deg,#E5484D,#C7353A)}.eswrap.swfull .eswl{transform:scale(1.12)}
+.eswrap.swgone{overflow:hidden}
+.enter .entry,.dayswap .entry{animation-delay:calc(min(var(--i,0),3) * 50ms)!important}
+#toast.act{pointer-events:auto;display:flex;align-items:center;gap:14px;padding:6px 6px 6px 16px;white-space:nowrap}
+#toast .tact{border:0;border-radius:8px;background:color-mix(in srgb,var(--bg) 18%,transparent);color:var(--bg);font:inherit;font-weight:800;min-height:38px;padding:6px 14px}
+#toast .tact:active{transform:scale(.95)}
+.phowd{margin:0 0 12px}.phowd summary{cursor:pointer;color:var(--soft);font-weight:700;font-size:.85rem;min-height:36px;display:flex;align-items:center}.phowd .phow{margin-top:4px}
+/* quick chips: your own one-tap items (food, supplements, the coach's plan picks) */
+.picks .quick,.qpk{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 8px}
+button.qchip{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:6px 14px 6px 8px;border-radius:var(--pill,999px)!important;border:1.5px solid var(--line)!important;background:var(--panel)!important;color:var(--ink)!important;font-weight:700;font-size:.9rem;line-height:1.15;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:transform .2s cubic-bezier(.3,1.6,.5,1),background-color .2s,border-color .2s,color .2s,opacity .2s}
+button.qchip i{font-style:normal;font-weight:800;display:inline-grid;place-items:center;flex:0 0 22px;width:22px;height:22px;border-radius:50%;background:var(--fc,var(--ink));color:#fff;font-size:.95rem;line-height:1}
+button.qchip:active{transform:scale(.94)}
+button.qchip.had{opacity:.6}
+.qpk button.qchip{padding:6px 14px}
+button.qchip.on{background:var(--ink)!important;color:var(--bg)!important;border-color:var(--ink)!important;box-shadow:0 4px 14px rgba(0,0,0,.16)}
+button.qchip.qadd{border-style:dashed!important;background:transparent!important;color:var(--soft)!important;box-shadow:none;padding:6px 14px}
+button.qchip.qdel{padding:6px 8px 6px 14px;border-color:color-mix(in srgb,var(--neg) 50%,var(--line))!important;color:var(--neg)!important;background:color-mix(in srgb,var(--neg) 7%,var(--panel))!important}
+button.qchip.qdel i{background:var(--neg);flex-basis:20px;width:20px;height:20px;font-size:.68rem}
+button.qchip.qdone{background:var(--ink)!important;color:var(--bg)!important;border-color:var(--ink)!important;padding:6px 18px}
+.pkadd{display:flex;gap:8px;margin:2px 0 6px}.pkadd input{flex:1;min-width:0}
+/* "Nothing today" is an on/off choice, not an add button */
+button.nonebtn{border:1.5px solid var(--line)!important;border-radius:var(--pill,999px)!important;background:transparent!important;color:var(--soft)!important;font-weight:700;min-height:40px;padding:6px 16px;margin:0 0 8px}
+button.nonebtn.on{background:var(--pos)!important;border-color:var(--pos)!important;color:#fff!important}
+/* ===== buttons by job: navigate = round arrows, add = round +, delete = red, choose = segments/chips, on/off = switch ===== */
+:root[data-skin="mono"]{--circ:0px}
+.arrows button,.mini.mnav,.mnav .mini{width:44px!important;min-width:44px!important;height:44px!important;padding:0!important;border-radius:var(--circ,50%)!important;border:1.5px solid var(--line)!important;background:linear-gradient(160deg,color-mix(in srgb,var(--panel) 70%,#fff),var(--panel))!important;color:var(--ink)!important;font-size:1.25rem!important;line-height:1!important;box-shadow:0 4px 12px rgba(10,30,60,.1),inset 0 1px 0 rgba(255,255,255,.6)!important;display:inline-grid;place-items:center;transition:transform .2s cubic-bezier(.3,1.6,.5,1)}
+.arrows button:active,.mini.mnav:active,.mnav .mini:active{transform:scale(.88)}
+.mini.mnav:disabled{opacity:.35}
+.arrows{gap:8px}
+.mini.madd{border-radius:var(--circ,50%)!important;border:0!important;background:var(--fc,var(--ink))!important;color:#fff!important;width:44px;min-width:44px!important;height:44px!important;font-size:1.35rem!important;font-weight:700;box-shadow:0 4px 12px color-mix(in srgb,var(--fc,var(--ink)) 35%,transparent)!important;transition:transform .2s cubic-bezier(.3,1.6,.5,1)}
+.mini.madd:active{transform:scale(.88)}
+.mini.mdel{color:var(--neg)!important;border-color:color-mix(in srgb,var(--neg) 45%,var(--line))!important;background:color-mix(in srgb,var(--neg) 8%,var(--panel))!important}
+.mini.mdel.armed{background:var(--neg)!important;color:#fff!important;border-color:var(--neg)!important}
+/* text actions: tinted words, no underline (Format, Change, Edit) */
+button.fmt{text-decoration:none!important;border-radius:var(--pill,999px)!important;background:var(--field)!important;color:var(--soft)!important;font-weight:700!important;font-size:.8rem!important;padding:4px 12px!important;min-height:32px!important}
+button.fmt[aria-expanded=true]{background:var(--ink)!important;color:var(--bg)!important}
+/* the level / group tabs on Performance: the same segmented control as everywhere else */
+.pseg{background:var(--field)!important;border:1.5px solid var(--line)!important;border-radius:16px!important}
+.pseg button{border-radius:12px!important;transition:background-color .25s,color .25s,box-shadow .25s,transform .2s}
+.pseg button.on{background:var(--panel)!important;color:var(--ink)!important;box-shadow:0 4px 14px rgba(0,0,0,.16)}
+.pseg button:active{transform:scale(.95)}
+/* disclosure rows: one look */
+details.more>summary,.tshowd>summary,.phowd>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;color:var(--soft);font-weight:700}
+details.more>summary::-webkit-details-marker,.tshowd>summary::-webkit-details-marker,.phowd>summary::-webkit-details-marker{display:none}
+details.more>summary::before,.tshowd>summary::before,.phowd>summary::before{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .2s;flex:0 0 auto;margin:0 2px}
+details.more[open]>summary::before,.tshowd[open]>summary::before,.phowd[open]>summary::before{transform:rotate(45deg)}
+/* ===== comp results: attempts, then tap the attempt of the zone and the top ===== */
+.cpa{border-top:0!important}
+.cpick{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.cpl{flex:0 0 76px;display:flex;flex-direction:column;font-weight:800;line-height:1.15}.cpl small{font-weight:600;font-size:.72rem;color:var(--soft)}
+.cpn{flex:1;display:flex;flex-wrap:wrap;gap:6px}
+.cpn button{min-width:42px;min-height:42px;padding:0 10px;border-radius:12px;border:1.5px solid var(--line);background:var(--field);color:var(--ink);font-weight:800;font-size:1rem;font-variant-numeric:tabular-nums;transition:transform .18s cubic-bezier(.3,1.6,.5,1),background-color .2s,color .2s,border-color .2s}
+.cpn button:active{transform:scale(.9)}
+.cpn button.no{font-size:.8rem;color:var(--soft)}
+.cpn button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.cpick+.cpick .cpn button.on,.lv2+.cpick .cpn button.on{background:#FDB913;color:#1A1200;border-color:#FDB913}
+.cpn button.no.on{background:var(--soft)!important;border-color:var(--soft)!important;color:var(--bg)!important}
+.cpn button:disabled{opacity:.28}
+.cphint{margin:4px 0 2px}
+.simres .cpick{border-color:#1D252C}.simres .cpn button{background:#141A20;border-color:#2A333B;color:#ECEFF1}.simres .cpn button.on{background:#ECEFF1;color:#06080A;border-color:#ECEFF1}
+.simres .cpick+.cpick .cpn button.on{background:#FDB913;color:#1A1200;border-color:#FDB913}.simres .cpl small{color:#8A959E}
+/* ===== comp simulation screen ===== */
+.simbar{display:flex!important;align-items:center;gap:8px;flex-wrap:nowrap!important;margin:0 auto 12px!important}
+.simback{display:inline-flex;align-items:center;gap:0;border:0;background:none;color:#ECEFF1;font-weight:700;font-size:1.05rem;min-height:44px;padding:0 12px 0 0;border-radius:12px}
+.simback:active{opacity:.55}
+.sbsp{flex:1}
+.simfsb{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border-radius:14px;border:1px solid #2A333B;background:#11171C;color:#ECEFF1;font-weight:700;font-size:.88rem;white-space:nowrap;transition:transform .2s cubic-bezier(.3,1.6,.5,1)}
+.simfsb:active{transform:scale(.95)}.simfsb[aria-pressed=true]{background:#ECEFF1;color:#06080A;border-color:#ECEFF1}
+.simctl{display:flex!important;flex-direction:column;gap:8px!important;margin-top:12px}
+.simctl .btn{display:flex;align-items:center;justify-content:center;gap:10px;border-radius:18px!important;text-transform:none!important;letter-spacing:.01em!important;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.simctl .btn span{display:flex;flex-direction:column;align-items:flex-start;line-height:1.1}
+.simctl .sgo,.simctl .spause{min-height:66px;border:0!important;font-size:1.2rem!important;position:relative}
+.simctl .sgo{background:linear-gradient(135deg,#46DA98,#21B573 45%,#168452)!important;color:#03140B!important;box-shadow:0 10px 28px rgba(33,181,115,.32),inset 0 1px 0 rgba(255,255,255,.35)}
+.simctl .spause{background:linear-gradient(135deg,#FFD866,#FDB913 45%,#D49405)!important;color:#1A1200!important;box-shadow:0 10px 28px rgba(253,185,19,.28),inset 0 1px 0 rgba(255,255,255,.4)}
+.simctl .sgo small{font-size:.72rem;font-weight:700;opacity:.72;letter-spacing:0}
+.simctl2{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:8px}
+.simctl .s2{min-height:50px;background:#141A20!important;color:#ECEFF1!important;border:1px solid #2A333B!important;font-size:.95rem!important}
+.simctl .s2.send{color:#FF6B6F!important;border-color:rgba(229,72,77,.45)!important;background:rgba(229,72,77,.1)!important}
+.simctl .btn.armed{background:#E5484D!important;color:#fff!important;border-color:#E5484D!important}
+.simctl .btn:active{transform:scale(.96)}
+.simlockb{display:flex;align-items:center;gap:12px;width:100%;margin-top:8px;padding:12px 14px;border-radius:18px;border:1px solid #2A333B;background:#0D1115;color:#ECEFF1;text-align:left;font:inherit}
+.simlockb .slk{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:#141A20;color:#8A959E;flex:0 0 38px;transition:background-color .25s,color .25s}
+.simlockb .slt{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.simlockb .slt b{font-size:1rem}.simlockb .slt small{color:#8A959E;font-size:.78rem;font-weight:500;line-height:1.25}
+.simlockb .tgl{position:relative;flex:0 0 51px;height:31px;border-radius:16px;background:#2A333B;transition:background-color .25s}
+.simlockb .tgl::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.4);transition:transform .28s cubic-bezier(.3,1.4,.5,1)}
+.simlockb.on .tgl{background:#21B573}.simlockb.on .tgl::after{transform:translateX(20px)}
+.simlockb.on .slk{background:rgba(33,181,115,.16);color:#3BD18F}
+.simlockb.armed{border-color:#E5484D;color:#FF6B6F;justify-content:center;font-weight:800;min-height:62px}
+.sbh{align-items:center}.sbh small{margin-left:auto;color:#8A959E!important;letter-spacing:.06em}
+.sbadge{margin-left:10px;display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:.68rem;letter-spacing:.12em}
+.sbadge.live{background:rgba(229,72,77,.16);color:#FF6B6F}.sbadge.live i{width:7px;height:7px;border-radius:50%;background:#FF4D52;animation:livep 1.4s ease-in-out infinite}
+.sbadge.lk{background:rgba(33,181,115,.15);color:#3BD18F}
+@keyframes livep{50%{opacity:.2}}
+.simdelx{display:block;margin:22px auto 6px!important;color:#FF6B6F!important;font-weight:700}
+@media (prefers-reduced-motion:reduce){.sbadge.live i{animation:none}}
+/* on/off rows: an iPhone switch */
+button.swrow{display:flex;align-items:center;gap:12px;width:100%;min-height:54px;padding:10px 14px;margin:10px 0 6px;border-radius:16px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-weight:700;text-align:left;transition:transform .2s cubic-bezier(.3,1.6,.5,1)}
+button.swrow:active{transform:scale(.98)}button.swrow>span{flex:1}
+.tgl{position:relative;flex:0 0 51px;height:31px;border-radius:16px;background:color-mix(in srgb,var(--soft) 38%,var(--field));transition:background-color .25s}
+.tgl::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.3);transition:transform .28s cubic-bezier(.3,1.4,.5,1)}
+.on>.tgl{background:var(--pos)}.on>.tgl::after{transform:translateX(20px)}
+/* simulation editor */
+.simtot{margin:2px 0 10px;font-weight:700}
+.simed input[type=date]{border:1.5px solid var(--line)!important;background:var(--field)!important;border-radius:12px!important;min-height:44px;padding:6px 10px!important;font:inherit;color:var(--ink);width:100%;box-sizing:border-box}
+.simroute.c .simst .rsty{justify-content:flex-start!important}.tagedit{white-space:nowrap}
+.simppl{display:flex;flex-direction:column;gap:6px;margin:6px 0 12px}
+.sprow{display:flex;align-items:center;gap:6px;padding:4px 6px 4px 4px;border-radius:14px;border:1.5px solid var(--line);background:var(--panel);transition:background-color .25s,border-color .25s}
+.sprow.on{border-color:color-mix(in srgb,var(--pos) 45%,var(--line));background:color-mix(in srgb,var(--pos) 7%,var(--panel))}
+.spck{flex:1;min-width:0;display:flex;align-items:center;gap:12px;min-height:48px;border:0;background:none;color:var(--ink);font:inherit;font-weight:700;text-align:left;padding:0 6px}
+.spck .gchk{display:inline-grid;place-items:center;flex:0 0 30px;color:#fff;font-size:.95rem}
+.spnum{font-family:var(--fh);font-size:1.15rem;color:var(--gold);min-width:16px;text-align:center}
+.spn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sprow .mini{width:44px!important;min-width:44px;height:44px!important;border-radius:12px!important}
+.simsave{display:flex;gap:10px;align-items:center;margin:16px 0 0}.simsave .btn{margin:0!important}.simsave .gloss{flex:1}.simsave .btn.ghost{flex:0 0 auto;min-height:60px;border-radius:20px!important;padding:0 20px}
+.simdelx2{display:block;margin:14px auto 0}
+/* small two-option pickers: the same segmented look */
+.segs{display:inline-flex;gap:2px;padding:3px;border-radius:12px;background:var(--field);border:1.5px solid var(--line)}
+.segs button{border:0;background:transparent;color:var(--soft);font-weight:800;font-size:.85rem;min-height:36px;padding:4px 12px;border-radius:9px;transition:background-color .2s,color .2s,box-shadow .2s,transform .2s}
+.segs button.on{background:var(--panel);color:var(--ink);box-shadow:0 3px 10px rgba(0,0,0,.14)}
+.segs button:active{transform:scale(.95)}
+/* dismiss: a plain round ✕ */
+.mini.mx{border:0!important;background:transparent!important;color:var(--soft)!important;border-radius:50%!important;width:40px!important;min-width:40px!important;height:40px!important;font-size:1.1rem!important;box-shadow:none!important}
+.mini.mx:active{background:var(--field)!important}
+/* adding a row to a list: a dashed "+" row */
+.btn.addrow{border:1.5px dashed color-mix(in srgb,var(--ink) 30%,var(--line))!important;background:transparent!important;color:var(--ink)!important;border-radius:16px!important;min-height:50px;text-transform:none!important;letter-spacing:.01em!important;font-weight:800;box-shadow:none!important}
+.btn.addrow:active{background:var(--field)!important}
+/* check-in page: content scrolls away under the floating header instead of peeking above it */
+.sheet::before{content:"";position:fixed;left:0;right:0;top:0;height:calc(max(8px,env(safe-area-inset-top)) + 36px);background:linear-gradient(to bottom,var(--bg) 0%,var(--bg) 60%,transparent 100%);z-index:29;pointer-events:none}
+/* body map: saving is the main action (green), the rest are secondary */
+.bsave .bsavebtn:not(:disabled){background:var(--pos)!important;border-color:var(--pos)!important;color:#fff!important}
+.bbar .btn{flex:1 1 0!important}
+/* small text actions (Close all, Change my code, Reply, Edit saved): tinted words in a soft pill, never underlined */
+.collbar button,button.linkb,button.qedit{text-decoration:none!important;font-weight:700!important;border-radius:var(--pill,999px)!important;padding:4px 12px!important;min-height:32px;background:var(--field)!important;border:0!important;color:var(--soft)!important;transition:transform .18s cubic-bezier(.3,1.6,.5,1),background-color .2s}
+button.linkb{color:var(--ink)!important}
+.collbar button:active,button.linkb:active,button.qedit:active{transform:scale(.94)}
+/* test picker: an empty ring you can see until it is ticked */
+.tsmake .irow:not(.on) i{background:transparent!important;border:2px solid color-mix(in srgb,var(--gc,#1FA2A8) 50%,var(--line));box-sizing:border-box}
+/* while you edit your chips, the one-off "Something else?" box steps aside */
+.picks.ed+.row{display:none}
+/* a finished log: the white disc shows a check in the log's colour */
+.entry .ering.full b,.entry .ering.full b svg,.entry .ering.full b svg *{color:var(--c)!important}
+.ering b svg{position:static!important;transform:none!important;inset:auto!important}
 </style>
 </head>
 <body>
@@ -1548,7 +1698,7 @@ function filledPart(it,c){ const x=getP(it,c);
     case 'N': case 'D': return x!==''&&x!=null&&!isNaN(parseFloat(x)); case 'Y': return x===true||x===false;
     case 'B': return (Array.isArray(x)&&x.length>0)||!!it.none; case 'L': return (Array.isArray(x)&&x.some(y=>y.at))||!!it.none;
     case 'E': return !!(x&&(typeof x.e==='number'||(x.m!==''&&x.m!=null))); case 'P': return !!(x&&typeof x.p==='number'); case 'F': return !!(x&&+x.t>0);
-    case 'M': return !!(x&&MOM.some(([m])=>Object.keys(snapVals(x[m])).length)); case 'V': return Array.isArray(x)&&x.length>0; case 'G': return Array.isArray(x)&&x.length>0;
+    case 'M': return !!(x&&MOM.some(([m])=>Object.keys(snapVals(x[m])).length)); case 'V': return Array.isArray(x)&&x.length>0; case 'G': return Array.isArray(x)&&x.some(y=>y&&(String(y.g||'').trim()||+y.a>0||+y.ta>0||+y.za>0));
     case 'A': return typeof x==='number'; case 'Q': return !!(x&&typeof x.e==='number'&&typeof x.p==='number');
     case 'Z': return !!(x&&(+x.bi>0||+x.mi>0)); case 'W': return !!(x&&(+x.ph>0||+x.te>0||+x.me>0));
     case 'X': return !!(x&&['v','l','r'].some(k=>x[k]!==''&&x[k]!=null&&!isNaN(parseFloat(x[k])))); }
@@ -1996,7 +2146,9 @@ const app=document.getElementById('app');
 
 // ---------- render ----------
 function render(){ if(ACC.role==='coach'&&!GUEST&&['cal','perf','goals'].includes(S.view)) S.view='plan'; if(ACC.role!=='coach'&&(S.view==='plan'||S.view==='tests')) S.view='cal'; if(!GUEST&&!document.querySelector('.logfab')){ const b=document.createElement('button'); b.className='logfab off'; b.type='button'; b.innerHTML='<span>+</span> <b>Log</b>'; b.addEventListener('click',()=>{ const a=document.querySelector('#app .adds'); if(!a) return; a.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'}); a.classList.remove('hl'); void a.offsetWidth; a.classList.add('hl'); }); document.body.appendChild(b); } if(S.view==='goals'&&!S.flow) setTimeout(goalCelebrate,500); const mk2=S.view+S.y+'-'+S.m; if(SKIN.lastSel&&SKIN.lastSel!==S.sel&&!S.flow){ app.classList.remove('dayswap','dayl','dayr'); void app.offsetWidth; app.classList.add('dayswap',S.sel<SKIN.lastSel?'dayl':'dayr'); clearTimeout(SKIN.dt); SKIN.dt=setTimeout(()=>app.classList.remove('dayswap','dayl','dayr'),700); } SKIN.lastSel=S.sel; if(SKIN.lastMonth&&SKIN.lastMonth!==mk2){ SKIN.lastView=''; } SKIN.lastMonth=mk2; applySkin(); document.documentElement.dataset.lvl=TLV(); document.documentElement.classList.toggle('inflow',!!S.flow&&!GUEST); setTimeout(newsCheck,0); const viewNow=S.view+'|'+(S.st.pgrp||''); if(viewNow!==SKIN.lastView){ SKIN.lastView=viewNow; app.classList.remove('enter'); void app.offsetWidth; app.classList.add('enter'); clearTimeout(SKIN.t); SKIN.t=setTimeout(()=>app.classList.remove('enter'),1400); SKIN.at=Date.now(); } else if(app.classList.contains('enter')&&Date.now()-(SKIN.at||0)>350){ clearTimeout(SKIN.t); app.classList.remove('enter'); } const y=window.scrollY, fsEl=app.querySelector('.simfs'), fsY=fsEl?fsEl.scrollTop:0; app.style.minHeight=app.offsetHeight+'px'; if(GUEST&&!['cal','perf','goals'].includes(S.view)) S.view='cal'; (S.flow&&!GUEST?renderFlow:({cal:renderCal,perf:renderPerf,goals:renderGoals,sims:renderSims,sim:renderSim,team:renderTeam,ath:renderAth,crew:renderCrew,plan:renderPlan,tests:renderTests}[S.view]||renderSettings))(); if(S.view!=='sim'||S.st.simDraft){ const tp=app.querySelector('.top'); if(tp) tp.insertAdjacentHTML('afterend',tabsHTML()); else app.insertAdjacentHTML('afterbegin',tabsHTML()); } window.scrollTo(0,y); requestAnimationFrame(fabSync); if(S.flow){ const bed=app.querySelector('.flow [data-bed]'); if(bed&&!bed.querySelector('.bcchips button')&&!bed.querySelector('.bstat.bok')){ bed.insertAdjacentHTML('beforebegin',`<button class="btn flfresh" data-bmfresh="${esc(bed.dataset.bed)}">Nothing hurts · all fresh</button><p class="flor">or tap where it hurts</p>`); } } const fs2=app.querySelector('.simfs'); if(fs2&&fsY) fs2.scrollTop=fsY; app.style.minHeight=''; fitHeads(); backSync(); tapFx(); }
-function toast(t){ let el=document.getElementById('toast'); if(!el){ el=document.createElement('div'); el.id='toast'; el.setAttribute('role','status'); document.body.appendChild(el); } el.textContent=t; el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),1800); }
+function toast(t,act){ let el=document.getElementById('toast'); if(!el){ el=document.createElement('div'); el.id='toast'; el.setAttribute('role','status'); document.body.appendChild(el); } el.textContent=t;
+  if(act){ const b=document.createElement('button'); b.type='button'; b.className='tact'; b.textContent=act.label; b.addEventListener('click',()=>{ el.classList.remove('show'); clearTimeout(toast.t); act.fn(); }); el.appendChild(b); }
+  el.classList.toggle('act',!!act); el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),act?4500:1800); }
 function say(t){ const m=document.getElementById('msg'); if(m) m.textContent=t; }
 function armed(b,label){ if(b.dataset.armed) return true; b.dataset.armed='1'; const old=b.textContent; b.textContent=label; b.classList.add('armed'); setTimeout(()=>{ if(b.isConnected){ delete b.dataset.armed; b.textContent=old; b.classList.remove('armed'); } },3000); return false; }
 
@@ -2054,9 +2206,9 @@ function planLine(ds){ const p=planOf(ds); if(!p) return ''; const c=p.t==='trai
 // coach quick picks for format and goal: your own list, starts empty
 const cpk=k=>{ const P=(S.cfg.picks||{})['@'+k]; return Array.isArray(P)?P:[]; };
 function cpkRow(k,ds,cur,label){ const ed=PLAN.ed===k, P=cpk(k);
-  return `<div class="pfield">${label?`<p class="clab">${label}</p>`:''}<div class="qpk">${P.map(n=>ed?`<button class="qdel" data-cpkdel="${k}|${esc(n)}">${esc(n)} ✕</button>`:`<button class="${nk(n)===nk(cur)?'on':''}" data-cpk="${ds}|${k}|${esc(n)}">${esc(n)}</button>`).join('')}
+  return `<div class="pfield">${label?`<p class="clab">${label}</p>`:''}<div class="qpk${ed?' ed':''}">${P.map(n=>ed?`<button class="qchip qdel" data-cpkdel="${k}|${esc(n)}" aria-label="Delete ${esc(n)}">${esc(n)}<i aria-hidden="true">✕</i></button>`:`<button class="qchip${nk(n)===nk(cur)?' on':''}" data-cpk="${ds}|${k}|${esc(n)}" aria-pressed="${nk(n)===nk(cur)}">${esc(n)}</button>`).join('')}
     ${ed?`<span class="qpkadd"><input type="text" data-cpkin="${k}" maxlength="40" placeholder="New ${label.toLowerCase()}" enterkeyhint="done"><button class="btn" data-cpkadd="${k}">Save</button></span>`:''}
-    <button class="qedit" data-cpked="${k}">${ed?'Done':P.length?'Edit':'+ Add'}</button></div></div>`; }
+    <button class="qchip ${ed?'qdone':'qadd'}" data-cpked="${k}">${ed?'Done':P.length?'Edit':'+ Add'}</button></div></div>`; }
 function cpkAdd(k){ const i=document.querySelector(`[data-cpkin="${k}"]`), t=cleanPick(i&&i.value); if(!t){ if(i) i.focus(); return; } const P=cpk(k).slice(); if(!P.some(x=>nk(x)===nk(t))) P.push(t); S.cfg.picks=Object.assign({},S.cfg.picks||{},{['@'+k]:P.slice(0,30)}); saveCfg(); render(); const j=document.querySelector(`[data-cpkin="${k}"]`); if(j) try{ j.focus({preventScroll:true}); }catch(e){} }
 function planPatch(ds,patch){ const cur=planOf(ds); if(!cur) return; planSet(ds,Object.assign({},cur,patch)); }
 function prow(k,label,val,body){ const open=PLAN.fo===k, f=!!String(val||'').trim();
@@ -2067,7 +2219,7 @@ function renderPlan(){ planRefresh(); const k=mkey(S.y,S.m), first=new Date(S.y,
     cells+=`<button class="day pday${ds===todayStr?' today':''}${ds===sel?' sel':''}${p?' '+p.t:''}" style="--d:${d}" data-pday="${ds}" aria-label="${d} ${MONTHS[S.m]}${p?', '+PLW[p.t]:''}"><span class="n">${d}</span>${p?`<span class="ptag">${p.t==='train'?'Train':'Rest'}</span>`:''}</button>`; }
   const sp=planOf(sel), sd=new Date(sel+'T12:00'), cnt=Object.entries((TEAM.info||{}).plan||{}).filter(([d])=>d.startsWith(k));
   app.innerHTML=`${topBar()}<div class="phead"><div><h1>Plan</h1></div></div>
-    <div class="month"><h1>${MONTHS[S.m]} <small>${S.y}</small></h1><div class="mnav"><button class="mini" data-pm="-1" aria-label="Previous month">‹</button><button class="mini" data-pm="1" aria-label="Next month">›</button></div></div>
+    <div class="month"><h1>${MONTHS[S.m]} <small>${S.y}</small></h1><div class="mnav"><button class="mini mnav" data-pm="-1" aria-label="Previous month">‹</button><button class="mini mnav" data-pm="1" aria-label="Next month">›</button></div></div>
     <div class="grid pgrid">${cells}</div>
     
     <div class="card pedit"><div class="pehead"><b>${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}</b>${sel===todayStr?'<span class="todaytag">šiandien</span>':''}</div>
@@ -2084,9 +2236,8 @@ const pickKey=it=>nk(it.name);
 const myPicks=it=>{ const P=(S.cfg.picks||{})[pickKey(it)]; return Array.isArray(P)?P:[]; };
 const cleanPick=t=>String(t||'').replace(/[|<>"`&\\]/g,'').replace(/\s+/g,' ').trim().slice(0,40);
 function pickHTML(it,key,L){ const P=myPicks(it), ed=(S.st.qedit||{})[key], have=new Set(L.map(y=>nk(y.name)));
-  return `<div class="picks">${P.length?`<div class="quick">${P.map(n=>ed?`<button class="qdel" data-pdel="${key}|${esc(n)}" aria-label="Delete ${esc(n)} from quick picks">${esc(n)} ✕</button>`:`<button data-bq="${key}|${esc(n)}"${have.has(nk(n))?' class="had"':''}>+ ${esc(n)}</button>`).join('')}</div>`:''}
-    ${ed?`<div class="row pkadd"><input type="text" id="pk${esc(key).replace(/[^A-Za-z0-9]/g,'')}" data-pkin="${key}" maxlength="40" placeholder="${isFood(it.name)?'New quick pick, e.g. Avižos':'New quick pick, e.g. Magnis'}" enterkeyhint="done" aria-label="New quick pick"><button class="btn" data-pkadd="${key}">Save</button></div>`:''}
-    <button class="qedit" data-qedit="${key}">${ed?'Done':P.length?'Edit quick picks':'+ Make quick picks'}</button></div>`; }
+  return `<div class="picks${ed?' ed':''}"><div class="quick">${P.map(n=>ed?`<button class="qchip qdel" data-pdel="${key}|${esc(n)}" aria-label="Delete ${esc(n)} from quick chips">${esc(n)}<i aria-hidden="true">✕</i></button>`:`<button class="qchip${have.has(nk(n))?' had':''}" data-bq="${key}|${esc(n)}" aria-label="Log ${esc(n)} now"><i aria-hidden="true">+</i>${esc(n)}</button>`).join('')}${ed?`<button class="qchip qdone" data-qedit="${key}">Done</button>`:`<button class="qchip qadd" data-qedit="${key}">${P.length?'Edit chips':'+ Add quick chip'}</button>`}</div>
+    ${ed?`<div class="row pkadd"><input type="text" id="pk${esc(key).replace(/[^A-Za-z0-9]/g,'')}" data-pkin="${key}" maxlength="40" placeholder="${isFood(it.name)?'New chip, e.g. Avižos':'New chip, e.g. Magnis'}" enterkeyhint="done" aria-label="New quick chip"><button class="btn" data-pkadd="${key}">Save</button></div>`:''}</div>`; }
 function pickAdd(key){ const {it}=itemAt(key); if(!it) return; const inp=[...document.querySelectorAll('[data-pkin]')].find(x=>x.dataset.pkin===key), t=cleanPick(inp&&inp.value); if(!t){ if(inp) inp.focus(); return; }
   const P=myPicks(it).slice(); if(!P.some(x=>nk(x)===nk(t))) P.push(t); S.cfg.picks=Object.assign({},S.cfg.picks||{},{[pickKey(it)]:P.slice(0,30)}); saveCfg(); render();
   const again=[...document.querySelectorAll('[data-pkin]')].find(x=>x.dataset.pkin===key); if(again) try{ again.focus({preventScroll:true}); }catch(e){} }
@@ -2140,7 +2291,7 @@ function renderTests(){ if(ACC.role!=='coach'){ S.view='cal'; renderCal(); retur
   const onDay=L.filter(x=>x.date===sel), sd=new Date(sel+'T12:00');
   app.innerHTML=`${topBar()}<div class="phead"><div><h1>Tests</h1></div></div>
     ${M?make:`<button class="btn flbig tsnew" data-tsnew="1">+ New test</button>`}
-    ${M?'':`<div class="month"><h1>${MONTHS[S.m]} <small>${S.y}</small></h1><div class="mnav"><button class="mini" data-pm="-1" aria-label="Previous month">‹</button><button class="mini" data-pm="1" aria-label="Next month">›</button></div></div>
+    ${M?'':`<div class="month"><h1>${MONTHS[S.m]} <small>${S.y}</small></h1><div class="mnav"><button class="mini mnav" data-pm="-1" aria-label="Previous month">‹</button><button class="mini mnav" data-pm="1" aria-label="Next month">›</button></div></div>
     <div class="grid pgrid">${cells}</div>
     <p class="newsl" style="margin-top:14px">${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}</p>
     ${onDay.length?onDay.map(card).join(''):'<p class="note">No test on this day.</p>'}`}`; }
@@ -2182,10 +2333,38 @@ document.addEventListener('touchend',()=>{ if(!SWP.on) return; SWP.on=false; con
   else { el.style.transform=''; el.style.opacity=''; el.style.borderRadius=''; setTimeout(()=>{ if(!SWP.on) swpUnpin(el); },330); } });
 document.addEventListener('touchcancel',()=>{ if(!SWP.on) return; SWP.on=false; const el=SWP.el; if(!el) return; el.style.transition='transform .32s cubic-bezier(.2,.8,.2,1),opacity .32s'; el.style.transform=''; el.style.opacity=''; el.style.borderRadius=''; setTimeout(()=>{ if(!SWP.on) swpUnpin(el); },330); });
 // the phone's own back button or back gesture closes the check-in page too, instead of leaving the app
-const BKH={pushed:false,ign:0};
-try{ history.scrollRestoration='manual'; if(history.state&&history.state.lt==='sheet') history.replaceState(null,''); }catch(e){}
-function backSync(){ try{ if(BKH.ign) return; if(S.flow&&!GUEST&&!BKH.pushed){ history.pushState({lt:'sheet'},''); BKH.pushed=true; } else if(!S.flow&&BKH.pushed){ BKH.pushed=false; if(history.state&&history.state.lt==='sheet'){ BKH.ign=1; clearTimeout(BKH.t); BKH.t=setTimeout(()=>{ if(BKH.ign){ BKH.ign=0; backSync(); } },1500); history.back(); } } }catch(e){} }
-addEventListener('popstate',()=>{ if(BKH.ign){ BKH.ign=0; clearTimeout(BKH.t); backSync(); return; } if(!BKH.pushed) return; BKH.pushed=false; const b=S.flow&&document.querySelector('.sheet [data-flx]'); if(b) b.click(); });
+const BKH={pushed:null,ign:0};
+// pages that sit on top of the tabs: the check-in page and the comp clock. The phone's back takes you out of them, not out of the app.
+const subPage=()=>GUEST?null:S.flow?'sheet':S.view==='sim'&&!S.st.simDraft?'sim':null;
+try{ history.scrollRestoration='manual'; if(history.state&&history.state.lt) history.replaceState(null,''); }catch(e){}
+function backSync(){ try{ if(BKH.ign) return; const sp=subPage();
+    if(sp&&!BKH.pushed){ history.pushState({lt:sp},''); BKH.pushed=sp; }
+    else if(sp&&BKH.pushed!==sp){ history.replaceState({lt:sp},''); BKH.pushed=sp; }
+    else if(!sp&&BKH.pushed){ BKH.pushed=null; if(history.state&&history.state.lt){ BKH.ign=1; clearTimeout(BKH.t); BKH.t=setTimeout(()=>{ if(BKH.ign){ BKH.ign=0; backSync(); } },1500); history.back(); } } }catch(e){} }
+addEventListener('popstate',()=>{ if(BKH.ign){ BKH.ign=0; clearTimeout(BKH.t); backSync(); return; } if(!BKH.pushed) return; const kind=BKH.pushed; BKH.pushed=null;
+  const b=kind==='sheet'?S.flow&&document.querySelector('.sheet [data-flx]'):S.view==='sim'&&document.querySelector('[data-act=simback]'); if(b) b.click(); });
+// swipe a log or test card to the left to delete it, like iPhone Mail: a short swipe shows the red Delete button, a long one deletes at once. Undo brings it back.
+const SWD={on:false,t:0}, SWDW=96;
+function swdClose(except){ document.querySelectorAll('.eswrap.swopen').forEach(w=>{ if(w===except) return; w.classList.remove('swopen'); const c=w.querySelector(':scope>.entry'); if(c){ c.style.transition='transform .32s cubic-bezier(.2,.8,.2,1)'; c.style.transform=''; } }); }
+document.addEventListener('touchstart',ev=>{ if(S.flow||GUEST||ev.touches.length!==1) return; const w=ev.target.closest&&ev.target.closest('.eswrap'); if(!w||ev.target.closest('.eswdel')){ if(!w) swdClose(); return; }
+  const c=w.querySelector(':scope>.entry'); if(!c) return; const t=ev.touches[0]; swdClose(w);
+  Object.assign(SWD,{on:true,w,c,x0:t.clientX,y0:t.clientY,lock:null,base:w.classList.contains('swopen')?-SWDW:0,full:false}); SWD.dx=SWD.base; c.style.transition='none'; },{passive:true});
+document.addEventListener('touchmove',ev=>{ if(!SWD.on) return; const t=ev.touches[0], dx=t.clientX-SWD.x0, dy=t.clientY-SWD.y0;
+  if(SWD.lock==null&&(Math.abs(dx)>8||Math.abs(dy)>8)) SWD.lock=Math.abs(dx)>Math.abs(dy)*1.2?'x':'y'; if(SWD.lock!=='x') return;
+  if(ev.cancelable) ev.preventDefault(); const W=SWD.w.offsetWidth; let x=SWD.base+dx; if(x>0) x*=.2; if(x<-W) x=-W+(x+W)*.2;
+  SWD.dx=x; SWD.c.style.transform=`translate3d(${x}px,0,0)`; SWD.w.classList.add('swiping'); const full=-x>W*.6; if(full!==SWD.full){ SWD.full=full; SWD.w.classList.toggle('swfull',full); buzz(); } },{passive:false});
+function swdEnd(cancel){ if(!SWD.on) return; SWD.on=false; const w=SWD.w, c=SWD.c, W=w.offsetWidth, x=SWD.dx; c.style.transition='transform .32s cubic-bezier(.2,.8,.2,1)'; w.classList.remove('swiping','swfull');
+  if(SWD.lock!=='x'){ c.style.transform=w.classList.contains('swopen')?`translate3d(${-SWDW}px,0,0)`:''; return; } SWD.t=Date.now();
+  if(!cancel&&-x>W*.6){ swdDelete(w); return; }
+  if(!cancel&&-x>44){ c.style.transform=`translate3d(${-SWDW}px,0,0)`; w.classList.add('swopen'); } else { c.style.transform=''; w.classList.remove('swopen'); } }
+document.addEventListener('touchend',()=>swdEnd(false)); document.addEventListener('touchcancel',()=>swdEnd(true));
+function swdDelete(w){ const id=w.dataset.eid, c=w.querySelector(':scope>.entry'), r=id&&findEntry(id); if(!c||!r||!r.e) return; const perf=isTestE(r.e), red=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  buzz(); w.classList.add('swgone'); c.style.transition='transform .24s cubic-bezier(.4,0,1,1)'; c.style.transform=`translate3d(${-w.offsetWidth-40}px,0,0)`;
+  w.style.height=w.offsetHeight+'px'; void w.offsetHeight; w.style.transition='height .26s cubic-bezier(.2,.8,.2,1) .18s,margin .26s cubic-bezier(.2,.8,.2,1) .18s,opacity .2s .22s'; w.style.height='0px'; w.style.marginBottom='0px'; w.style.opacity='0';
+  setTimeout(()=>{ const q=findEntry(id); if(q&&q.arr){ const i=q.arr.findIndex(x=>x.id===id); if(i>=0){ HIST.user=true; q.arr.splice(i,1); saveMonth(q.k); } } if(S.open===id) S.open=null; render(); toast(perf?'Test deleted':'Log deleted',{label:'Undo',fn:()=>{ histStep(-1); toast(perf?'Test is back':'Log is back'); }}); },red?0:460); }
+function swdClick(b,ds){ if(ds.swdel){ const w=b.closest('.eswrap'); if(w) swdDelete(w); return true; }
+  const w=b.closest('.eswrap'); if(!w) { if(document.querySelector('.eswrap.swopen')) swdClose(); return false; }
+  if(Date.now()-SWD.t<400) return true; if(w.classList.contains('swopen')){ swdClose(); return true; } swdClose(); return false; }
 let lastAdd=0;
 
 function renderCal(){ planRefresh();
@@ -2207,7 +2386,7 @@ function renderCal(){ planRefresh();
     <div class="arrows"><button data-act="prev" aria-label="Previous month">‹</button><button data-act="next" aria-label="Next month">›</button></div></div>
   <div class="grid">${cells}</div>
   <div class="legend">${CT.filter(tplShown).map(t=>`<span><i style="background:${t.color}"></i>${esc(t.name)}</span>`).join('')}</div>
-  <div class="dayhead" id="dayhead"><button class="mini" data-dnav="-1" aria-label="Previous day">‹</button><span>${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}${S.sel!==todayStr?'<button class="todaypill" data-act="gotoday">Today</button>':''}</span><button class="mini" data-dnav="1" aria-label="Next day">›</button></div>
+  <div class="dayhead" id="dayhead"><button class="mini mnav" data-dnav="-1" aria-label="Previous day">‹</button><span>${['Sekmadienis','Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis'][sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}${S.sel!==todayStr?'<button class="todaypill" data-act="gotoday">Today</button>':''}</span><button class="mini mnav" data-dnav="1" aria-label="Next day">›</button></div>
   ${dayNotesHTML()}${GUEST?'':simDayHTML(S.sel)}
   ${GUEST?'':lvlChip()}<div class="adds"${GUEST?' style="display:none"':''}>${CT.filter(tplShown).map((t,i)=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)};--i:${i}" data-add="${t.id}"><i aria-hidden="true">+</i><span>${esc(t.name)}</span></button>`).join('')}</div>
   ${sel.length?sel.map(entryHTML).join(''):`<div class="empty">${GUEST?'Nothing logged on this day.':TLV()<=2?'<b>Nothing logged yet</b><br>Tap one of the buttons above. It takes about a minute.':'Nothing logged yet. Pick a log type above to start.'}</div>`}`;
@@ -2215,12 +2394,13 @@ function renderCal(){ planRefresh();
   app.querySelectorAll('textarea').forEach(grow);
 }
 // entries that belong to the Performance tab (their own calendar), not to the daily calendar
+const isTestE=e=>isPerfE(e)&&(e.items||[]).some(it=>compsList(it).includes('X'));
 function isPerfE(e){ if(!e) return false; if(e.perf) return true; const t=S.cfg.templates.find(t=>t.id===e.tid); return !!(t&&t.perf); }
 
 
 function headSmall(e,open){ const I=e.items.filter(it=>itemLv(e,it)<=TLV()), filled=I.filter(filledItem).length; return `${GUEST&&e.lv?`<span class="lvtag">Level ${e.lv}</span>`:''}${!GUEST&&e.items.some(it=>it.sec)?'<span class="elock" title="Has a secret note"></span>':''}<span class="ecnt">${filled}/${I.length}</span><i class="echev${open?' up':''}" aria-hidden="true"></i>`; }
 function eRing(e){ const I=e.items.filter(it=>itemLv(e,it)<=TLV()), n=I.length, d=I.filter(filledItem).length, r=15, c=2*Math.PI*r;
-  return `<span class="ering${d===n&&n?' full':''}" aria-hidden="true"><svg viewBox="0 0 36 36" width="40" height="40"><circle cx="18" cy="18" r="${r}" class="rbg"/><circle cx="18" cy="18" r="${r}" class="rfg" style="stroke-dasharray:${c.toFixed(1)};stroke-dashoffset:${(c*(1-(n?d/n:0))).toFixed(1)}"/></svg><b>${d===n&&n?'<svg viewBox="0 0 12 12" width="14" height="14"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>':d}</b></span>`; }
+  return `<span class="ering${d===n&&n?' full':''}" aria-hidden="true"><svg viewBox="0 0 36 36" width="40" height="40"><circle cx="18" cy="18" r="${r}" class="rbg"/><circle cx="18" cy="18" r="${r}" class="rfg" style="stroke-dasharray:${c.toFixed(1)};stroke-dashoffset:${(c*(1-(n?d/n:0))).toFixed(1)}"/></svg><b>${d===n&&n?'<svg viewBox="0 0 12 12" width="14" height="14"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}</b></span>`; }
 function tplName(e){ const t=S.cfg.templates.find(t=>t.id===e.tid); return t?t.name:e.name; }
 function refreshItem(el,e,it){ const f=el.closest('.f'), qm=f&&f.querySelector('.qm'); if(qm) qm.innerHTML=qHTML(itemQuality(it,prevNote(it.name,S.sel))); const pw=f&&f.querySelector('.plaus'); if(pw) pw.outerHTML=plausHTML(it); else if(f){ const ph=plausHTML(it); if(ph) f.insertAdjacentHTML('beforeend',ph); } const hs=el.closest('.entry'), sm=hs&&hs.querySelector('.ehead small'); if(sm) sm.innerHTML=headSmall(e,true); }
 function compHTML(e,it,c,key,fid){ const x=getP(it,c), sl=sleepLike(it.name), cs=compsList(it), lab=t=>`<p class="clab">${t}</p>`;
@@ -2247,7 +2427,7 @@ function compHTML(e,it,c,key,fid){ const x=getP(it,c), sl=sleepLike(it.name), cs
   if(c==='G'&&isCompE(e)) return compGHTML(e,it,key,Array.isArray(x)?x:[]);
   if(c==='G'){ const a=Array.isArray(x)?x:[];
     return `${cs.length>1?lab('Routes'):''}${a.map((y,i)=>routeCard(key,y,i)).join('')}
-      <button class="btn ghost radd" data-radd="${key}">+ Add route</button>
+      <button class="btn ghost radd addrow" data-radd="${key}">+ Add route</button>
       ${a.length?`<p class="note rsum">${routeSum(a)}</p>`:''}`; }
   if(c==='A'){ const v=a7(x), [lo,hi]=slEnds(it.name);
     return `${cs.length>1?lab('Scale 1–7'):''}<div class="s7" role="group" aria-label="${esc(it.name)}: 1 is ${esc(lo)}, 7 is ${esc(hi)}">${[1,2,3,4,5,6,7].map(q=>`<button data-aq="${key}|${q}" class="${v===q?'on':''}" style="--q:${(q-1)/6}" aria-pressed="${v===q}" aria-label="${esc(it.name)} ${q} of 7">${q}</button>`).join('')}</div>
@@ -2265,7 +2445,7 @@ function compHTML(e,it,c,key,fid){ const x=getP(it,c), sl=sleepLike(it.name), cs
   if(c==='W'){ const o=x&&typeof x==='object'?x:{}, row=(f,t)=>{ const v=+o[f]||0; return `<div class="wrow"><span class="wl">${t}</span><div class="w10">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<button data-ww="${key}|${f}|${n}" class="${v===n?'on':''}" aria-pressed="${v===n}" aria-label="${t} ${n}">${n}</button>`).join('')}</div></div>`; };
     return `${cs.length>1?lab('Session quality'):''}<p class="note" style="margin:0 0 6px">Did you hit what this session was for? 1 = not at all, 10 = fully. Rate it within 30 minutes after.</p>${row('ph','Physical')}${row('te','Technical')}${row('me','Mental')}`; }
   if(c==='X'){ const cfg=xcfg(e,it), o=x&&typeof x==='object'?x:{}, u=cfg.u||'', inp=(p,l)=>`<label class="ftin">${l}<span class="xin"><input type="number" inputmode="decimal" step="any" data-k="${key}" data-c="X" data-p="${p}" value="${esc(o[p]??'')}" placeholder="${cfg.role==='bw'?'kg':'0'}" aria-label="${esc(it.name)}: ${l}">${u?`<span>${esc(u)}</span>`:''}</span></label>`;
-    return `${cs.length>1?lab('Measure'):''}<div class="xgrid${cfg.lr?'':' one'}">${cfg.lr?inp('l','Left')+inp('r','Right'):inp('v',cfg.role==='bw'?'Bodyweight':'Result')}</div><p class="xres note" id="xr${fid}">${xResText(e,it)}</p>`; }
+    return `${cs.length>1?lab('Measure'):''}<div class="xgrid${cfg.lr?'':' one'}">${cfg.lr?inp('l','Left')+inp('r','Right'):inp('v',cfg.role==='bw'?'Bodyweight':'Result')}</div>${cfg.role==='bw'?'<p class="note" style="margin:4px 0 0">Morning, after the toilet, before food. Same way every time.</p>':''}<p class="xres note" id="xr${fid}">${xResText(e,it)}</p>`; }
   if(c==='P'){ const o=x||{}, fl=o.flags||{}, red=painRed(o), any=(typeof o.p==='number'&&o.p>0)||Object.values(fl).some(Boolean)||(o.fingers||[]).length;
     const chips=(attr,list,sel)=>list.map(([k,l])=>`<button data-${attr}="${key}|${k}" class="${(sel||[]).includes(k)?'on':''}" aria-pressed="${(sel||[]).includes(k)}">${l}</button>`).join(''), fingers=['Thumb','Index','Middle','Ring','Little'];
     return `${lab('Worst finger pain today (0 = none)')}${scaleRow(key,it,'P','p',o.p,0)}
@@ -2284,10 +2464,10 @@ function compHTML(e,it,c,key,fid){ const x=getP(it,c), sl=sleepLike(it.name), cs
     return `${cs.length>1?lab('Timed blocks'):''}${L.length?`<div class="blocks">${L.map(y=>`<div class="blk"><b>${esc(y.name)}</b><input type="time" value="${esc(y.at)}" data-k="${key}" data-c="B" data-li="${y.id}" aria-label="Time for ${esc(y.name)}"><button class="x" data-lx="${key}|${y.id}|B" aria-label="Remove ${esc(y.name)}">✕</button></div>`).join('')}</div>`:''}
       ${L.length?'':`<button class="nonebtn${it.none?' on':''}" data-bnone="${key}" aria-pressed="${!!it.none}">${it.none?'✓ Nothing today':'Nothing today'}</button>`}
       ${it.none?'':pickHTML(it,key,L)}
-      <div class="row"><input type="text" id="bi${fid}" data-bin="${key}" placeholder="Something else? Type it, then +" enterkeyhint="done" aria-label="${esc(it.name)} new item"><button class="mini" data-ba="${key}" data-in="bi${fid}" aria-label="Add block">+</button></div>`; }
+      <div class="row"><input type="text" id="bi${fid}" data-bin="${key}" placeholder="Something else? Type it, then +" enterkeyhint="done" aria-label="${esc(it.name)} new item"><button class="mini madd" data-ba="${key}" data-in="bi${fid}" aria-label="Add block">+</button></div>`; }
   if(c==='L'){ const L=Array.isArray(x)?x:[];
     return `${cs.length>1?lab('Checklist'):''}<div class="list">${L.map(y=>`<div class="li${y.at?' done':''}"><button class="lbtn" data-lt="${key}|${y.id}">${y.at?'✓':'○'} ${esc(y.name)}</button>${y.at?`<input type="time" value="${esc(y.at)}" data-k="${key}" data-c="L" data-li="${y.id}" aria-label="Time for ${esc(y.name)}">`:''}<button class="x" data-lx="${key}|${y.id}|L" aria-label="Remove ${esc(y.name)}">✕</button></div>`).join('')}
-      <div class="row"><input type="text" id="li${fid}" data-lin="${key}" placeholder="Add item" enterkeyhint="done" aria-label="${esc(it.name)} new item"><button class="mini" data-la="${key}" data-in="li${fid}" aria-label="Add item">+</button></div>
+      <div class="row"><input type="text" id="li${fid}" data-lin="${key}" placeholder="Add item" enterkeyhint="done" aria-label="${esc(it.name)} new item"><button class="mini madd" data-la="${key}" data-in="li${fid}" aria-label="Add item">+</button></div>
       ${L.some(y=>y.at)?'':`<button class="nonebtn${it.none?' on':''}" data-bnone="${key}" aria-pressed="${!!it.none}">${it.none?'✓ None today':'None today'}</button>`}</div>`; }
   return ''; }
 // compared with your last session that has a load (computed from the numbers, so nothing extra to rate)
@@ -2328,8 +2508,8 @@ function itemSummary(it,long){ if(!filledItem(it)) return ''; const cs=compsList
   if(long&&T&&String(T).trim()){ const t=String(T).trim().replace(/\s+/g,' '); out.push(`“${t.length>40?t.slice(0,38)+'…':t}”`); } else if(!out.length&&T) out.push('note');
   return out.filter(Boolean).join(' · '); }
 function entrySummary(e){ const out=[]; (e.items||[]).forEach(it=>{ if(out.length>=4) return; const s=itemSummary(it); if(s) out.push(`${it.name} ${s.replace(/ · /g,', ')}`); }); return out.join(' · '); }
-function entryHTML(e){ const open=S.open===e.id;
-  return `<div class="entry" style="--c:${tplColor(e)}">
+function entryHTML(e,i){ const open=S.open===e.id, sw=!GUEST&&lvlUser();
+  return `${sw?`<div class="eswrap" data-eid="${e.id}" style="--i:${i||0}"><button class="eswdel" data-swdel="${e.id}" tabindex="-1" aria-label="Delete ${esc(tplName(e))}"><span class="eswl"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 7h16M9 7V4.8c0-.4.4-.8.8-.8h4.4c.4 0 .8.4.8.8V7m2.5 0-.8 12.2c0 .5-.5.8-1 .8H8.5c-.5 0-1-.3-1-.8L6.7 7M10 11v6M14 11v6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Delete</b></span></button>`:''}<div class="entry" style="--c:${tplColor(e)};--i:${i||0}">
     <button class="ehead" data-toggle="${e.id}" aria-expanded="${open}">${eRing(e)}<span class="etitle"><b>${esc(tplName(e))}</b>${open?'':`<span class="esum">${esc(entrySummary(e))||'Nothing filled in yet'}</span>`}</span><small>${headSmall(e,open)}</small></button>
     ${open?`<div class="ebody">${!GUEST&&(!isPerfE(e)||e.items.some(it=>compsList(it).includes('X')))&&flowItems(e).length?`<button class="btn flgo" data-flstart="${e.id}">Step by step</button>`:''}<div class="collbar"><button data-fcolall="${e.id}|1">Close all</button><button data-fcolall="${e.id}|0">Open all</button></div>${perfHowHTML(e)}${GUEST?roItems(e):e.items.filter(it=>itemLv(e,it)<=TLV()).map(it=>fieldHTML(e,it)).join('')}${GUEST?'':`
       ${isPerfE(e)?`<details class="more"><summary>Delete this test</summary>`:`<details class="more"><summary>${TLV()<2?'Delete this log':'Add a field or delete this log'}</summary>
@@ -2338,7 +2518,7 @@ function entryHTML(e){ const open=S.open===e.id;
         <p class="note">It starts as 1–10 + text; tap Format to change its parts.</p></div>`}
       <button class="del" data-delentry="${e.id}">Delete this log</button></details>`}
       <button class="btn edone" data-toggle="${e.id}">Done</button></div>`:''}
-  </div>`; }
+  </div>${sw?'</div>':''}`; }
 
 const painRed=o=>!!(o&&((o.flags&&(o.flags.pop||o.flags.sharp||o.flags.swell||o.flags.bruise||o.flags.bow||o.flags.rom))||(typeof o.p==='number'&&o.p>=7)));
 const FNAME=k=>`${k[0]==='L'?'Left':'Right'} ${['thumb','index','middle','ring','little'][+k[1]-1]}`;
@@ -2371,7 +2551,7 @@ function fieldClick(ds,b){
   if(ds.zz){ const [key,f,n]=splitTail(ds.zz,2), {k,it}=itemAt(key); if(!it) return true; const o=objP(it,'Z'), v=+n; o[f]=o[f]===v||(String(o[f])===n)?null:v; if((f==='bi'||f==='mi')&&!(+o[f]>1)) o[f==='bi'?'bd':'md']=null; setP(it,'Z',o); saveMonth(k); render(); return true; }
   if(ds.ww){ const [key,f,n]=splitTail(ds.ww,2), {k,it}=itemAt(key); if(!it) return true; const o=objP(it,'W'); o[f]=+o[f]===+n?null:+n; setP(it,'W',o); saveMonth(k); render(); return true; }
   if(ds.qw){ const [key,w]=splitTail(ds.qw,1), {k,it}=itemAt(key); if(!it) return true; const o=objP(it,'Q'); o.w=o.w===w?'':w; setP(it,'Q',o); saveMonth(k); render(); return true; }
-  if(ds.rz){ const [key,id,f,dd]=splitTail(ds.rz,3), {k,it}=itemAt(key); if(!it) return true; const a=arrP(it,'G'), y=a.find(z=>z.id===id); if(!y) return true; routeUp(y); compStep(y,f,+dd); setP(it,'G',a); saveMonth(k); render(); return true; }
+  if(ds.rz){ const [key,id,f,dd]=splitTail(ds.rz,3), {k,it}=itemAt(key); if(!it) return true; const a=arrP(it,'G'), y=a.find(z=>z.id===id); if(!y) return true; routeUp(y); if(String(dd)[0]==='=') compSet(y,f,+String(dd).slice(1)); else compStep(y,f,+dd); setP(it,'G',a); saveMonth(k); render(); return true; }
   if(ds.rcount){ const [key,d]=splitTail(ds.rcount,1), {k,it}=itemAt(key); if(!it) return true; const a=arrP(it,'G'); if(+d>0){ if(a.length<12) a.push(newComp()); } else if(a.length){ const last=a[a.length-1]; if((+last.a||+last.za||+last.ta||String(last.fw||last.why||'').trim())&&!armed(b,'Tap again: B'+a.length+' has results')) return true; a.pop(); } setP(it,'G',a); saveMonth(k); render(); return true; }
   if(ds.rmany){ const [key,n]=splitTail(ds.rmany,1), {k,it}=itemAt(key); if(!it) return true; const a=arrP(it,'G'); for(let i=0;i<+n;i++) a.push(newComp()); setP(it,'G',a); saveMonth(k); render(); return true; }
   if(ds.rnd){ const [eid,r]=splitTail(ds.rnd,1), {k,e}=findEntry(eid)||{}; if(!e) return true; e.round=e.round===r?'':r; if(!e.round) delete e.round; saveMonth(k); render(); return true; }
@@ -2424,7 +2604,7 @@ function fieldClick(ds,b){
   if(ds.slw){ const [key,w]=splitTail(ds.slw,1), {it}=itemAt(key); if(!it) return true; const P=slParse(String(getP(it,'T')||'').replace(/Stress \/ thoughts/g,'Stress / thoughts')); const i=P.sel.indexOf(w); if(i>=0) P.sel.splice(i,1); else P.sel.push(w); slSet(key,P.sel,P.other); buzz(); b.classList.toggle('on',i<0); b.setAttribute('aria-pressed',i<0); setTimeout(()=>softRender(),250); return true; }
   if(ds.pkadd){ pickAdd(ds.pkadd); return true; }
   if(ds.pdel){ const i=ds.pdel.indexOf('|',ds.pdel.indexOf('|')+1), key=ds.pdel.slice(0,i), name=ds.pdel.slice(i+1), {it}=itemAt(key); if(!it) return true; S.cfg.picks=Object.assign({},S.cfg.picks||{},{[pickKey(it)]:myPicks(it).filter(x=>x!==name)}); saveCfg(); render(); return true; }
-  if(ds.qedit){ S.st.qedit=Object.assign({},S.st.qedit,{[ds.qedit]:!(S.st.qedit||{})[ds.qedit]}); render(); return true; }
+  if(ds.qedit){ const on=!(S.st.qedit||{})[ds.qedit]; S.st.qedit=Object.assign({},S.st.qedit,{[ds.qedit]:on}); render(); const {it}=itemAt(ds.qedit); if(on&&it&&!myPicks(it).length){ const i=[...document.querySelectorAll('[data-pkin]')].find(x=>x.dataset.pkin===ds.qedit); if(i) try{ i.focus({preventScroll:true}); }catch(e){} } return true; }
   if(ds.qdel){ const i=ds.qdel.indexOf('|',ds.qdel.indexOf('|')+1), key=ds.qdel.slice(0,i), name=ds.qdel.slice(i+1), {it}=itemAt(key); if(!it) return true; setHidden('B',it.name,name,true); toast(`${name} removed from saved`); render(); return true; }
   if(ds.bmhide){ const p=ds.bmhide.split('|'), name=decN(p.pop()), r=p.pop(); setHidden('M',r,name,true); toast(`${name} removed from saved`); render(); return true; }
   if(ds.vadd){ const i=ds.vadd.lastIndexOf('|'), {k,it}=itemAt(ds.vadd.slice(0,i)); if(!it) return true; const n=+ds.vadd.slice(i+1), a=arrP(it,'V'); a.push({id:rid(),at:nowHM(),n,note:''}); setP(it,'V',a); saveMonth(k); render(); toast(`${n}/10 at ${nowHM()}`); return true; }
@@ -2542,7 +2722,7 @@ function flowGen(e,it,key,fid){ return compsList(it).map(c=>{ const h=compHTML(e
 function flowX(e,it,key,fid){ const c=xcfg(e,it), o=objP(it,'X'), u=c.u||'', st=c.u==='kg'?(c.role==='bw'?0.5:1):1, p=prevX(e,it,S.sel), P=p?xVals(p.it):{};
   const fing=c.u==='kg'&&c.bw==='lift'&&c.lr;
   const box=(k,l)=>`<div class="xbig"><small>${l}</small><div class="flmin"><button class="flstep" data-flxs="${key}|${k}|-${st}" aria-label="${l} less">−</button><label><input type="number" inputmode="decimal" step="any" data-k="${key}" data-c="X" data-p="${k}" value="${esc(o[k]??'')}" placeholder="${P[k]!=null?esc(P[k]):'0'}" aria-label="${esc(it.name)} ${l}"><span>${esc(u)}</span></label><button class="flstep" data-flxs="${key}|${k}|${st}" aria-label="${l} more">+</button></div>${P[k]!=null?`<button class="xlast" data-flxs="${key}|${k}|=${P[k]}">Last time ${P[k]}${u?' '+esc(u):''} · use</button>`:''}</div>`;
-  return `${c.role==='bw'?'<p class="flsub">Morning, after the toilet, before food</p>':''}
+  return `${c.role==='bw'?'<p class="flsub">Morning, after the toilet, before food. Same way every time.</p>':''}
     ${fing?`<p class="flsub">Pull for 7 s on the 20 mm edge, one hand at a time. Write the kg you pulled.</p>`:''}
     ${fing?`<button class="xtimer" data-fltimer="7" aria-label="Start the 7 second timer"><b>7 s</b><span>Hang timer</span></button>`:''}
     ${c.lr?box('l','Left hand')+box('r','Right hand'):box('v',c.role==='bw'?'Bodyweight':'Result')}
@@ -2626,17 +2806,17 @@ function sheetBody(e,it,key){ const fid='f'+e.id+it.fid, cs=compsList(it), op=S.
   return tools+body+plausHTML(it)+secHTML(e,it,key); }
 function renderSheet(){ const F=S.flow, {e}=findEntry(F.eid); if(!e){ S.flow=null; document.documentElement.classList.remove('inflow'); (S.view==='perf'?renderPerf:renderCal)(); { const y=S.flowY||0; S.flowY=null; requestAnimationFrame(()=>window.scrollTo({top:Math.min(y,document.documentElement.scrollHeight-innerHeight),behavior:'instant'})); } return; }
   const I=flowItems(e), N=I.length, done=I.filter(filledItem).length, perf=isPerfE(e), first=F.shown!=='sheet'; F.shown='sheet';
-  const rows=I.map((it,j)=>{ const key=`${e.id}|${it.fid}`, open=perf||F.open===it.fid, f=filledItem(it), sm=f?itemSummary(it):'';
+  const rows=I.map((it,j)=>{ const key=`${e.id}|${it.fid}`, open=F.open===it.fid, f=filledItem(it), sm=f?itemSummary(it):'';
     return `<section class="cks${open?' open':''}${F.anim===it.fid?' anim':''}" data-shs="${it.fid}" style="--i:${j}">
-      ${perf?`<div class="ckh static"><span class="ckt"><b>${esc(it.name)}</b></span></div>`:`<button class="ckh" data-shtog="${it.fid}" aria-expanded="${open}"><span class="cki${f?' on':''}">${f?'<svg viewBox="0 0 12 12" width="12" height="12"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>':j+1}</span><span class="ckt"><b>${esc(it.name)}</b>${sm&&!open?`<small>${esc(sm)}</small>`:''}${it.sec&&!open?'<small>secret note</small>':''}</span><span class="ckc" aria-hidden="true"></span></button>`}
+      ${`<button class="ckh" data-shtog="${it.fid}" aria-expanded="${open}"><span class="cki${f?' on':''}">${f?'<svg viewBox="0 0 12 12" width="12" height="12"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>':j+1}</span><span class="ckt"><b>${esc(it.name)}</b>${sm&&!open?`<small>${esc(sm)}</small>`:''}${it.sec&&!open?'<small>secret note</small>':''}</span><span class="ckc" aria-hidden="true"></span></button>`}
       ${open?`<div class="ckb"><div class="ckbi">${sheetBody(e,it,key)}</div></div>`:''}</section>`; }).join('');
   F.anim=null;
   app.innerHTML=`<div class="flow sheet${first?' in':''}" style="--fc:${tplColor(e)}">
     <header class="cktop"><button class="ckx" data-flx="1" aria-label="Close">✕</button><div class="cktt"><small>${esc(dayName(S.sel))} · ${esc(S.sel.slice(5).replace('-','.'))}</small><h1>${esc(tplName(e).replace(/^\+*\s*/,''))}</h1></div><div class="ckring">${shRing(done,N)}</div></header>
     ${perf?perfHowHTML(e):''}<div class="ckl">${rows}</div>
-    <details class="more ckmore"><summary>${perf?'Delete this test':'Add a field or delete this log'}</summary>
-      ${perf?'':`<div class="addf"><label class="note" for="nf${e.id}">New field name</label><div class="row"><input type="text" id="nf${e.id}" placeholder="e.g. Emocijos"><button class="btn" data-newf="${e.id}">Add</button></div></div>`}
-      <button class="del" data-delentry="${e.id}">${perf?'Delete this test':'Delete this log'}</button></details>
+    ${perf?`<button class="del ckdel" data-delentry="${e.id}">${isTestE(e)?'Delete this test':'Delete this log'}</button>`:`<details class="more ckmore"><summary>Add a field or delete this log</summary>
+      <div class="addf"><label class="note" for="nf${e.id}">New field name</label><div class="row"><input type="text" id="nf${e.id}" placeholder="e.g. Emocijos"><button class="btn" data-newf="${e.id}">Add</button></div></div>
+      <button class="del" data-delentry="${e.id}">Delete this log</button></details>`}
     <div class="ckedge" aria-hidden="true"><i></i></div></div>`;
   app.querySelectorAll('textarea').forEach(grow); }
 function shToggle(fid){ const F=S.flow; if(!F) return; const cur=F.open;
@@ -2721,7 +2901,7 @@ function renderCrew(){ if(GUEST){ S.view='cal'; renderCal(); return; } boardPush
     ${card('climbs','Most climbs','',I.wall,v=>v||0,x=>x.climbs>0,'routes logged this week')}
     <p class="note brdpriv">Shared: name, streak, check-in days, average sleep, training time, number of climbs. Never pain, feelings, notes, body or test results.</p>`;
  }
-function boardCard(){ if(GUEST||!lvlUser()) return ''; return `<div class="card"><h3>Team rankings</h3><p class="note">Show my streak, check-ins, sleep average, training time and number of climbs on the Team board.</p><div class="row" style="margin-top:8px"><button class="btn${boardOn()?'':' ghost'}" data-brd="1">${boardOn()?'Shown on the board':'Hidden'}</button></div></div>`; }
+function boardCard(){ if(GUEST||!lvlUser()) return ''; return `<div class="card"><h3>Team rankings</h3><p class="note">Show my streak, check-ins, sleep average, training time and number of climbs on the Team board.</p><button class="swrow${boardOn()?' on':''}" data-brd="1" aria-pressed="${boardOn()}"><span>${boardOn()?'Shown on the board':'Hidden from the board'}</span><i class="tgl" aria-hidden="true"></i></button></div>`; }
 
 // ================= Tracking levels =================
 // Level 1 = only the essentials (how hard + how long, sleep, energy, finger pain, your climbs), no stats, little text.
@@ -2870,7 +3050,7 @@ function renderSettings(){
   <div class="h2">Daily log types</div>
   <p class="note">Your calendar: how you feel, sleep, food, body. Changes apply to new logs. Logs you already filled in keep their fields.</p>
   ${S.cfg.templates.map((t,ti)=>t.perf?'':tplSecHTML(t,ti)).join('')}
-  <button class="btn" data-act="tadd">+ New log type</button>
+  <button class="btn bigbtn gloss" style="--gc:#C1272D" data-act="tadd">+ New log type</button>
   <div class="h2">Performance tests</div>
   <p class="note">Fixed for the whole team, so test numbers stay comparable over time and milestones keep reading them. Only the calendar above is yours to change.</p>
   <div class="card ptlist">${PGRP.map(([g,l])=>{ const L=S.cfg.templates.filter(t=>t.perf&&pgOf(t)===g); return L.length?`<div class="ptg"><span class="clab">${l}</span>${L.map(t=>`<div class="ptrow"><i style="background:${t.color}"></i><b>${esc(t.name)}</b></div>`).join('')}</div>`:''; }).join('')}</div>
@@ -2885,13 +3065,13 @@ function tplSecHTML(t,ti){ return `<div class="sec" style="--c:${t.color}">
     ${t.perf?`<label class="ftin" style="margin:0 0 8px">How to do this test <small class="note">(shown when you open it)</small><textarea rows="2" data-thow="${ti}" placeholder="e.g. Warm up 15 min. 20 mm edge, half crimp, 7 s. Best of 3.">${esc(t.how||'')}</textarea></label>`:''}
     ${t.fields.map((f,fi)=>{ const cs=compsOf(f), R=compRatings(f.name), rt=fmtLevel(formatScore(f.name,cs)); return `<div class="cfield"><div class="row" style="margin:0">
       <span class="rdot" style="background:${RCOL[rt]}" title="${RWORD[rt]} setup for this field"></span><input type="text" value="${esc(f.name)}" data-fname="${ti}|${fi}" aria-label="Field name">
-      <button class="mini" data-fmove="${ti}|${fi}|-1" aria-label="Move up">↑</button><button class="mini" data-fdel="${ti}|${fi}" aria-label="Remove field">✕</button></div>
+      <button class="mini" data-fmove="${ti}|${fi}|-1" aria-label="Move up">↑</button><button class="mini mdel" data-fdel="${ti}|${fi}" aria-label="Remove field">✕</button></div>
       <button class="cpsum" data-cpo="${ti}|${fi}" aria-expanded="${S.st.cpOpen===ti+'|'+fi}"><span>Parts: <b>${cs.map(c=>COMP[c]).join(' + ')}</b></span><span class="note">${S.st.cpOpen===ti+'|'+fi?'Done':'Change'}</span></button>
       ${S.st.cpOpen===ti+'|'+fi?`<div class="chips cparts">${CORDER.map(c=>`<button data-cp="${ti}|${fi}|${c}" class="${cs.includes(c)?'on':''}" style="--rc:${RCOL[R.rate[c]??1]}" aria-pressed="${cs.includes(c)}"><i></i>${COMP[c]}</button>`).join('')}</div><p class="note" style="margin:4px 0 0">Best for ${esc(f.name)}: ${R.best.map(c=>COMP[c]).join(' + ')}.</p>`:''}
-      ${t.perf?'':`<div class="flvrow"><span class="note">Show on Level 1?</span>${[[1,'Yes'],[2,'No, Level 2+']].map(([n,l])=>`<button class="mini${fieldLv(t,f)===n?' on':''}" data-flv="${ti}|${fi}|${n}" aria-pressed="${fieldLv(t,f)===n}">${l}</button>`).join('')}</div>`}
+      ${t.perf?'':`<div class="flvrow"><span class="note">Show on Level 1?</span><span class="segs">${[[1,'Yes'],[2,'No, Level 2+']].map(([n,l])=>`<button class="${fieldLv(t,f)===n?'on':''}" data-flv="${ti}|${fi}|${n}" aria-pressed="${fieldLv(t,f)===n}">${l}</button>`).join('')}</span></div>`}
       ${cs.includes('X')?xcfgHTML('xc',`${ti}|${fi}`,normX(f.x||{})):''}
       ${cs.includes('L')?`<div class="row" style="margin:6px 0 0"><input type="text" value="${esc((f.opts||[]).join(', '))}" data-fopts="${ti}|${fi}" placeholder="Checklist items, e.g. Vitaminai, Omega3" aria-label="Checklist items"></div>`:''}</div>`; }).join('')}
-    <div class="row"><button class="btn ghost" data-fadd="${ti}">+ Add field</button>
+    <div class="row"><button class="btn ghost addrow" data-fadd="${ti}">+ Add field</button>
       <span style="flex:1"></span><button class="del" data-tdel="${ti}">Delete ${t.perf?'test':'type'}</button></div>
   </div>`; }
 
@@ -3645,7 +3825,7 @@ function weekText(s,lt){ const T=(en,l)=>lt?l:en, lines=[`${T('Week','Savaitė')
 function wsec(title,summary,body,open){ const O=S.st.wopen||(S.st.wopen=new Set(['Overview','Sleep','Training','Body'])); const isO=O.has(title)||(open&&!S.st.wtouched); return `<div class="wsec"><button class="wsh" data-ws="${esc(title)}" aria-expanded="${isO}"><span>${isO?'▾':'▸'} ${title}</span><b>${summary}</b></button>${isO?`<div class="wbody">${body}</div>`:''}</div>`; }
 const crow=(l,v,c)=>`<div class="crow"><span>${l}</span><b${c?` style="color:${c}"`:''}>${v}</b></div>`;
 function weekCard(){ const off=S.st.wk||0, s=weekStats(off); const lt=S.st.wl==='lt', txt=weekText(s,lt); S.st.weekTxt=txt;
-  const nav=`<div class="wnav"><button class="mini" data-wk="${off+1}" aria-label="Previous week">‹</button><span>${off===0?'This week':off===1?'Last week':`${off} weeks ago`} <span class="note">${dmy(s.W[0])}–${dmy(s.W[s.W.length-1])}</span></span><button class="mini" data-wk="${Math.max(0,off-1)}"${off===0?' disabled':''} aria-label="Next week">›</button></div>`;
+  const nav=`<div class="wnav"><button class="mini mnav" data-wk="${off+1}" aria-label="Previous week">‹</button><span>${off===0?'This week':off===1?'Last week':`${off} weeks ago`} <span class="note">${dmy(s.W[0])}–${dmy(s.W[s.W.length-1])}</span></span><button class="mini mnav" data-wk="${Math.max(0,off-1)}"${off===0?' disabled':''} aria-label="Next week">›</button></div>`;
   if(!s.logged) return `<div class="card"><h3>Weekly stats</h3>${nav}<p class="note">Nothing logged this week yet.</p></div>`;
   const col=(a,b,sw)=>a==null||b==null||Math.abs(a-b)<(sw||0.0001)?'var(--ink)':a>b?'var(--pos)':'var(--neg)';
   let out='';
@@ -3946,7 +4126,7 @@ function bodySaveBar(c,v,sv){ const dirty=isDirty(v.d), k=v.base.kind;
     :k==='saved'?`<button class="btn bsavebtn" disabled>✓ Saved${v.s.t?' '+esc(v.s.t):''}</button>`
     :k==='last'&&!c.stats?`<button class="btn bsavebtn" data-bmsave="${c.ek}">Save as is</button>`:'';
   return `<div class="bsave">${main}${dirty?`<button class="btn ghost" data-bmdisc="${c.ek}">Undo changes</button>`:''}</div>
-    <div class="bbar"><button class="btn ghost" data-bmall="${c.ek}">All else fresh</button>${sv&&hasRatings(sv)&&!c.stats?`<button class="btn ghost bclr" data-bmclr="${c.ek}">Delete check</button>`:'<span></span>'}</div>`; }
+    <div class="bbar"><button class="btn ghost" data-bmall="${c.ek}">All else fresh</button>${sv&&hasRatings(sv)&&!c.stats?`<button class="btn ghost bclr" data-bmclr="${c.ek}">Delete check</button>`:''}</div>`; }
 function bodyEditor(ek){ const c=edCtx(ek); if(!c) return ''; let v=viewOf(c);
   if(v.d&&!isDirty(v.d)&&!v.d.u.length&&!v.d.f.length){ delete BD[dkey(c)]; saveBD(); v=viewOf(c); }
   const s=v.s, map=snapVals(s), sel=(S.st.bsel||{})[ek], sv=savedOf(c);
@@ -4286,6 +4466,7 @@ app.addEventListener('click',async ev=>{
   const tp=ev.target.closest('[data-tip]'); if(tp){ const w=tp.closest('.cw'), t=w&&w.querySelector('.tip'); if(t) t.textContent=tp.dataset.tip; if(w) w.querySelectorAll('.hit.sel').forEach(x=>x.classList.remove('sel')); tp.classList.add('sel'); ev.stopPropagation(); return; }
   if(bodyClick(ev)) return;
   const b=ev.target.closest('button'); if(!b) return; const ds=b.dataset;
+  if(!GUEST&&swdClick(b,ds)) return;
   if(!GUEST&&flowClick(ds,b)) return;
   if(ds.qpad!==undefined){ if(!GUEST) qpadSet(b,ev); return; }
   if(ds.pgrp){ S.st.pgrp=ds.pgrp; render(); return; }
@@ -4348,7 +4529,7 @@ app.addEventListener('click',async ev=>{
   if(ds.pdur){ const [d,v]=ds.pdur.split('|'), cur=planOf(d); if(cur) planPatch(d,{dur:Math.max(0,Math.min(600,(cur.dur||60)+(+v)))}); buzz(); return; }
   if(ds.pint){ const [d,v]=ds.pint.split('|'), cur=planOf(d); if(cur) planPatch(d,{int:cur.int===+v?0:+v}); buzz(); return; }
   if(ds.cpk){ const [d,k,...r]=ds.cpk.split('|'), v=r.join('|'), cur=planOf(d); if(cur) planPatch(d,{[k]:nk(cur[k])===nk(v)?'':v}); buzz(); return; }
-  if(ds.cpked){ PLAN.ed=PLAN.ed===ds.cpked?null:ds.cpked; render(); return; }
+  if(ds.cpked){ PLAN.ed=PLAN.ed===ds.cpked?null:ds.cpked; render(); if(PLAN.ed&&!cpk(PLAN.ed).length){ const i=document.querySelector(`[data-cpkin="${PLAN.ed}"]`); if(i) try{ i.focus({preventScroll:true}); }catch(e){} } return; }
   if(ds.cpkadd){ cpkAdd(ds.cpkadd); return; }
   if(ds.cpkdel){ const [k,...r]=ds.cpkdel.split('|'), v=r.join('|'); S.cfg.picks=Object.assign({},S.cfg.picks||{},{['@'+k]:cpk(k).filter(x=>x!==v)}); saveCfg(); render(); return; }
   if(ds.pcopy&&ACC.role!=='athlete'){ const sel=PLAN.sel||todayStr, t=new Date(sel+'T12:00'), mon=dAdd(sel,-((t.getDay()+6)%7)); let n=0; const P=Object.assign({},TEAM.info.plan||{});
@@ -4400,12 +4581,12 @@ app.addEventListener('click',async ev=>{
   if(ds.act==='packno'){ S.cfg.packNo=1; saveCfg(); render(); return; }
   if(ds.act==='aistop'){ const c=ds.which==='sci'?sciCtl:aiCtl; if(c) c.abort(); return; }
   if(ds.add){ if(Date.now()-lastAdd<600) return; lastAdd=Date.now(); const t=S.cfg.templates.find(t=>t.id===ds.add); if(!t) return; const [y,m,d]=S.sel.split('-'); const k=`${y}-${m}`; const mo=month(k);
-    const e={id:rid(),tid:t.id,name:t.name,color:t.color,items:t.fields.map(newItem)}; if(lvlUser()) e.lv=TLV(); if(lvlUser()&&(!t.perf||t.fields.some(f=>compsOf(f).includes('X')))) S.flowNew=e.id; if(t.perf) e.perf=1; if(t.comp) e.items.forEach(it=>{ if(compsList(it).includes('G')) setP(it,'G',[newComp(),newComp(),newComp(),newComp()]); });
+    const e={id:rid(),tid:t.id,name:t.name,color:t.color,items:t.fields.map(newItem)}; if(lvlUser()) e.lv=TLV(); if(lvlUser()) S.flowNew=e.id; if(t.perf) e.perf=1; if(t.comp) e.items.forEach(it=>{ if(compsList(it).includes('G')) setP(it,'G',[newComp(),newComp(),newComp(),newComp()]); });
     (mo.days[String(+d)]=mo.days[String(+d)]||[]).push(e); S.open=e.id; saveMonth(k); if(S.flowNew===e.id){ S.flowNew=null; flowStart(e.id); return; } render(); const el=document.querySelector(`[data-toggle="${e.id}"]`); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); toast(`${t.name} added`); return; }
-  if(ds.toggle&&lvlUser()&&TLV()<=2&&S.open!==ds.toggle){ const {e}=findEntry(ds.toggle); if(e&&(!isPerfE(e)||e.items.some(it=>compsList(it).includes('X')))&&flowItems(e).length){ flowStart(e.id); return; } }
-  if(ds.toggle&&!GUEST&&lvlUser()&&S.open!==ds.toggle){ const {e}=findEntry(ds.toggle); if(e&&flowItems(e).length&&(!isPerfE(e)||e.items.some(it=>compsList(it).includes('X')))){ flowStart(e.id); return; } }
+  if(ds.toggle&&lvlUser()&&TLV()<=2&&S.open!==ds.toggle){ const {e}=findEntry(ds.toggle); if(e&&flowItems(e).length){ flowStart(e.id); return; } }
+  if(ds.toggle&&!GUEST&&lvlUser()&&S.open!==ds.toggle){ const {e}=findEntry(ds.toggle); if(e&&flowItems(e).length){ flowStart(e.id); return; } }
   if(ds.toggle){ const was=S.open===ds.toggle; S.open=was?null:ds.toggle; S.typeOpen=null; render(); if(was){ const el=document.querySelector(`[data-toggle="${ds.toggle}"]`); if(el) el.scrollIntoView({block:'nearest'}); } return; }
-  if(ds.delentry){ if(!armed(b,'Tap again to delete')) return; const {k,arr}=findEntry(ds.delentry); arr.splice(arr.findIndex(x=>x.id===ds.delentry),1); saveMonth(k); render(); toast('Log deleted'); return; }
+  if(ds.delentry){ if(!armed(b,'Tap again to delete')) return; const {k,arr,e:de}=findEntry(ds.delentry); const tst=isTestE(de); arr.splice(arr.findIndex(x=>x.id===ds.delentry),1); saveMonth(k); render(); toast(tst?'Test deleted':'Log deleted',{label:'Undo',fn:()=>{ histStep(-1); toast(tst?'Test is back':'Log is back'); }}); return; }
   if(ds.newf){ const inp=document.getElementById('nf'+ds.newf), name=inp.value.trim(); if(!name){ inp.focus(); return; }
     const {k,e}=findEntry(ds.newf); if(!e) return;
     if(e.items.some(i=>i.name.trim().toLowerCase()===name.toLowerCase())){ toast(`${name} is already in this log`); return; }
@@ -4626,7 +4807,7 @@ function backupCard(){
   </div>`; }
 function backupNudge(){ if(GUEST) return ''; const a=bkAge(); if(!a.lvl) return ''; let sn=0; try{ sn=+localStorage.getItem(PFX+'bksnooze')||0; }catch(e){} if(Date.now()<sn) return '';
   if(logDays(S.months).length<3) return '';
-  return `<div class="bnudge" style="--bc:${BKCOL[a.lvl]}"><span><b>${a.days===Infinity?'No backup yet':'Last backup '+a.txt}</b><br><span class="note">One tap saves everything as a file.</span></span><button class="btn" data-act="bsave">Save now</button><button class="mini" data-act="bsnooze" aria-label="Remind me in 3 days">✕</button></div>`; }
+  return `<div class="bnudge" style="--bc:${BKCOL[a.lvl]}"><span><b>${a.days===Infinity?'No backup yet':'Last backup '+a.txt}</b><br><span class="note">One tap saves everything as a file.</span></span><button class="btn" data-act="bsave">Save now</button><button class="mini mx" data-act="bsnooze" aria-label="Remind me in 3 days">✕</button></div>`; }
 // copy text right inside the tap (works where the clipboard API is blocked); false if the phone refused
 function copyNow(text){ let ok=false; const ta=document.createElement('textarea'); ta.value=text; ta.setAttribute('aria-hidden','true'); ta.style.cssText='position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px;border:0;padding:0';
   document.body.appendChild(ta); try{ ta.focus({preventScroll:true}); }catch(e){} ta.select(); try{ ta.setSelectionRange(0,text.length); }catch(e){}
@@ -4747,9 +4928,9 @@ const canDelNote=n=>coachLooking()&&(n.by===ACC.id||!TM.list.some(a=>a.id===n.by
 const noteWhen=at=>{ const d=new Date(at||0); return at?`${pad(d.getDate())}.${pad(d.getMonth()+1)} ${pad(d.getHours())}:${pad(d.getMinutes())}`:''; };
 function noteHTML(n){ const cv=coachLooking(), mine=n.by===ACC.id, editing=S.st.cnEdit===n.id, replying=S.st.cnReply===n.id, R=repliesOf(n);
   return `<div class="cnote" id="cn-${n.id}"><div class="cnh"><b>${esc(n.byName||'Coach')}</b><span class="note">${noteWhen(n.at)}${n.edited?' · edited':''}</span>
-      ${cv&&mine&&!editing?`<button class="mini" data-cnedit="${n.id}" aria-label="Edit note">✎</button>`:''}${canDelNote(n)?`<button class="mini${TM.noteArm===n.id?' armed':''}" data-cndel="${n.id}" aria-label="Delete note">${TM.noteArm===n.id?'Delete?':'✕'}</button>`:''}</div>
+      ${cv&&mine&&!editing?`<button class="mini" data-cnedit="${n.id}" aria-label="Edit note">✎</button>`:''}${canDelNote(n)?`<button class="mini mdel${TM.noteArm===n.id?' armed':''}" data-cndel="${n.id}" aria-label="Delete note">${TM.noteArm===n.id?'Delete?':'✕'}</button>`:''}</div>
     ${editing?`<textarea id="cnedit" rows="2" maxlength="600">${esc(S.st.cnEditText!=null?S.st.cnEditText:n.text)}</textarea><div class="row" style="margin:6px 0 0"><button class="btn" data-cnsave="${n.id}">Save</button><button class="btn ghost" data-act="cneditx">Cancel</button></div>`:`<p>${esc(n.text)}</p>`}
-    ${R.length?`<div class="creps">${R.map(r=>{ const k=n.id+'|'+r.id; return `<div class="crep"><div class="cnh"><b>${esc(r.byName||'')}</b><span class="note">${noteWhen(r.at)}</span>${r.by===ACC.id?`<button class="mini${TM.repArm===k?' armed':''}" data-crdel="${k}" aria-label="Delete reply">${TM.repArm===k?'Delete?':'✕'}</button>`:''}</div><p>${esc(r.text)}</p></div>`; }).join('')}</div>`:''}
+    ${R.length?`<div class="creps">${R.map(r=>{ const k=n.id+'|'+r.id; return `<div class="crep"><div class="cnh"><b>${esc(r.byName||'')}</b><span class="note">${noteWhen(r.at)}</span>${r.by===ACC.id?`<button class="mini mdel${TM.repArm===k?' armed':''}" data-crdel="${k}" aria-label="Delete reply">${TM.repArm===k?'Delete?':'✕'}</button>`:''}</div><p>${esc(r.text)}</p></div>`; }).join('')}</div>`:''}
     ${canReply()&&!editing?(replying?`<textarea id="cnreply" rows="2" maxlength="600" placeholder="Write a reply…">${esc(S.st.cnReplyText||'')}</textarea><div class="row" style="margin:6px 0 0"><button class="btn" data-cnrsend="${n.id}"${S.st.cnBusy?' disabled':''}>${S.st.cnBusy?'Sending…':'Send reply'}</button><button class="btn ghost" data-act="cnreplyx">Cancel</button></div>`:`<button class="linkb" data-cnreply="${n.id}">↩ Reply</button>`):''}</div>`; }
 function dayNotesHTML(){ const L=notesFor(S.sel), cv=coachLooking();
   if(!L.length&&!cv) return '';
@@ -4846,7 +5027,7 @@ function rowHTML(a){ const me=a.id===ACC.id, role=seenRole(a), s=a.sum||{}, open
   // log status and pain only where I may open the calendar anyway (a coach for athletes, everyone for themselves)
   const hurt=status&&!me&&s.pain&&dayIdx(s.pain,todayStr)<=2, replied=status&&!me&&s.reply&&Date.now()-s.reply<3*864e5;
   const canCode=canManage(a)||me, canRole=canManage(a)&&!me, canDel=canManage(a)&&!me&&!(role==='supervisor'&&supers().length<=1), any=canCode||canRole||canDel;
-  const line=!status?(role==='coach'?'':'Athlete'):TM.loading===a.id?'Opening…':!s.at?'Hasn’t logged in yet':!s.last?'No logs yet':s.last===todayStr?'Logged today':`Last log ${relDay(s.last)}`;
+  const line=role==='coach'?'':!status?'Athlete':TM.loading===a.id?'Opening…':!s.at&&!me?'Hasn’t logged in yet':!s.last?'No logs yet':s.last===todayStr?'Logged today':`Last log ${relDay(s.last)}`;
   return `<div class="tmrow${open?' open':''}${hurt?' hurt':''}">
     <${view?`button class="tmmain" data-tmview="${a.id}"`:'div class="tmmain tmstatic"'}><span class="tav" style="background:${nameColor(a.name)}" aria-hidden="true">${initial(a.name)}</span>
       <span class="tmname"><b>${esc(a.name)}${role!=='athlete'?`<span class="role${role==='supervisor'?' sup':''}">${ROLE_NAME[role]}</span>`:''}${me?' <span class="note">(you)</span>':''}</b><span class="note${status&&s.last===todayStr?' ok':''}">${line}${replied?`${line?' · ':''}replied to a note`:''}</span></span>
@@ -4857,7 +5038,7 @@ function rowHTML(a){ const me=a.id===ACC.id, role=seenRole(a), s=a.sum||{}, open
       ${canRole?`<div class="tmlab">Role<div class="pills tmroles">${rolesICanGive().map(r=>{ const k=a.id+'|'+r, armed=TM.roleArm===k; return `<button data-tmrole="${k}" class="${role===r?'on':''}${armed?' armed':''}" aria-pressed="${role===r}">${armed?'Tap again':ROLE_NAME[r]}</button>`; }).join('')}</div><span class="note tmrolehelp">${role==='supervisor'?'Logs like an athlete and can do everything.':role==='coach'?'Sees everyone, manages people, leaves notes.':'Sees only their own calendar.'}</span></div>`:''}
       ${canDel?`<div class="tmbtns"><button class="btn ghost bkdanger${TM.arm===a.id?' armed':''}" data-tmdel="${a.id}">${TM.arm===a.id?`Tap again: delete ${esc(a.name)} and all their logs`:'Remove'}</button></div>`:''}</div>`:''}</div>`; }
 function addHTML(){ const f=TM.add;
-  if(!f) return `<button class="btn bkmain" data-act="tmaddopen">+ Add a person</button>`;
+  if(!f) return `<button class="btn bkmain bigbtn gloss" style="--gc:#35A071" data-act="tmaddopen">+ Add a person</button>`;
   const help={athlete:'Athletes only see their own calendar.',coach:'Coaches see everyone’s calendar, manage people and leave notes.',supervisor:'Supervisors log like athletes and can do everything: roles, codes, coaches.'};
   return `<div class="card tmadd"><h3>Add a person</h3>
     <label class="tmlab">Name<input type="text" data-tmf="name" value="${esc(f.name)}" placeholder="Vardas" maxlength="40" autocomplete="off"></label>
@@ -4879,10 +5060,10 @@ function renderTeam(){ if(!isCoach()){ S.view='cal'; renderCal(); return; } team
     ${TM.err?`<div class="alert amber">${esc(TM.err)}</div>`:''}
     ${madeHTML()}
     ${TM.loaded?`${ACC.role==='coach'?`<div class="tmhead"><div class="tmstat"><b>${today}/${ath.length}</b><span>athletes logged today</span></div><div class="tmstat${hurt?' bad':''}"><b>${hurt}</b><span>marked pain in the last 3 days</span></div></div>
-      ${ath.length?'<p class="note" style="margin:0 0 8px">Tap an athlete to see their calendar, leave notes or copy their data.</p>':'<p class="note" style="margin:0 0 8px">Add your athletes below. Each one gets a code to log in with.</p>'}`:'<p class="note" style="margin:0 0 8px">You manage the accounts here: ⋯ for codes, roles and removing. Calendars stay private, so you can’t open anyone else’s.</p>'}
+      ${ath.length?'':'<p class="note" style="margin:0 0 8px">Add your athletes below. Each one gets a code to log in with.</p>'}`:'<p class="note" style="margin:0 0 8px">You manage the accounts here: ⋯ for codes, roles and removing. Calendars stay private, so you can’t open anyone else’s.</p>'}
       <div class="tmlist">${L.map(rowHTML).join('')}</div>`:`<p class="note">${TEAM.db?'Loading the team…':''}</p>`}
     ${TEAM.db?addHTML():''}
-    ${isCoach()?`<div class="card" style="margin-top:16px"><h3>Starting setup</h3><p class="note">The log types new people start with. Everyone can change their own later in Customize.</p>
+    ${false&&isCoach()?`<div class="card" style="margin-top:16px"><h3>Starting setup</h3><p class="note">The log types new people start with. Everyone can change their own later in Customize.</p>
       <div class="legend" style="margin:8px 2px 10px">${setup.map(t=>`<span><i style="background:${safeColor(t.color)}"></i>${esc(t.name)}</span>`).join('')||'<span>Basic log types</span>'}</div>
       <button class="btn ghost${TM.setupArm&&Date.now()-TM.setupArm<4000?' armed':''}" data-act="tmsetup">${TM.setupArm&&Date.now()-TM.setupArm<4000?'Tap again: new people get my log types':'Use my log types instead'}</button>${TM.setupMsg?`<p class="note" role="status">${esc(TM.setupMsg)}</p>`:''}</div>`:''}`; }
 function accountCard(){ if(GUEST) return ''; const f=S.st.myCode, arm=S.st.outArm&&Date.now()-S.st.outArm<4000;
@@ -5028,7 +5209,7 @@ function xVals(it){ const o=getP(it,'X')||{}; return {v:num(o.v),l:num(o.l),r:nu
 function xShort(it){ const c=xcfg(null,it), V=xVals(it), u=c.u?' '+c.u:''; return c.lr?`L ${V.l??'–'} · R ${V.r??'–'}${u}`:`${V.v??'–'}${u}`; }
 function prevX(e,it,day){ let best=null; Object.values(S.months).forEach(mo=>Object.entries((mo&&mo.days)||{}).forEach(([d,es])=>{ const ds=`${mo.key}-${pad(+d)}`; if(ds>=day) return;
   (es||[]).forEach(e2=>{ if(e2.tid!==e.tid) return; const i2=(e2.items||[]).find(i=>i.fid===it.fid); if(!i2||!filledPart(i2,'X')) return; if(!best||ds>best.d) best={d:ds,e:e2,it:i2}; }); })); return best; }
-function xResText(e,it){ const c=xcfg(e,it), day=XDAY||S.sel; if(c.role==='bw') return 'Morning, after the toilet, before food. Same way every time.';
+function xResText(e,it){ const c=xcfg(e,it), day=XDAY||S.sel; if(c.role==='bw') return '';
   const V=xVals(it), sides=c.lr?[['l','L'],['r','R']]:[['v','']], has=sides.some(([k])=>V[k]!=null), out=[];
   if(c.u==='kg'&&c.bw){ const bw=bwOf(e,day); if(!bw) out.push('Add your bodyweight to see % of bodyweight.'); else if(has) out.push(`= <b>${sides.filter(([k])=>V[k]!=null).map(([k,l])=>`${l?l+' ':''}${xPct(c,V[k],bw)}%`).join(' · ')}</b> of bodyweight <span>(${bw} kg)</span>`); }
   const p=e&&has?prevX(e,it,day):null; if(p){ const P=xVals(p.it), pbw=c.u==='kg'&&c.bw?bwOf(p.e,p.d):null, f=k=>P[k]==null?null:pbw?xPct(c,P[k],pbw)+'%':P[k]+(c.u?' '+c.u:''); const t=sides.map(([k,l])=>f(k)==null?'':`${l?l+' ':''}${f(k)}`).filter(Boolean).join(' · '); if(t) out.push(`Last time (${dmy(p.d)}): ${t}`); }
@@ -5093,8 +5274,8 @@ const LEGACY_ST={slab:'Slab',vert:'Vertical',over:'Overhang',crimp:'Crimps',pres
 const styName=k=>LEGACY_ST[k]||String(k||'');
 const cleanTag=t=>String(t||'').replace(/[|<>"`&\\]/g,'').replace(/\s+/g,' ').trim().slice(0,24);
 const myTags=()=>Array.isArray(S.cfg.styles)?S.cfg.styles:[];
-function tagRowHTML(attr,ref,cur){ const sel=(cur||[]).map(styName), L=myTags().slice(); sel.forEach(t=>{ if(!L.some(x=>nk(x)===nk(t))) L.push(t); }); const ed=S.st.tagEd===ref;
-  return `<div class="rsty" role="group" aria-label="Style"><span class="rlab">Style</span>${L.map(t=>{ const on=sel.some(x=>nk(x)===nk(t)); return `<button data-${attr}="${ref}|${esc(t)}" class="${on?'on':''}" aria-pressed="${on}">${esc(t)}</button>`; }).join('')}<button class="tagedit" data-taged="${ref}">${ed?'Done':myTags().length?'Edit':'+ Add your styles'}</button></div>
+function tagRowHTML(attr,ref,cur,short){ const sel=(cur||[]).map(styName), L=myTags().slice(); sel.forEach(t=>{ if(!L.some(x=>nk(x)===nk(t))) L.push(t); }); const ed=S.st.tagEd===ref;
+  return `<div class="rsty" role="group" aria-label="Style"><span class="rlab">Style</span>${L.map(t=>{ const on=sel.some(x=>nk(x)===nk(t)); return `<button data-${attr}="${ref}|${esc(t)}" class="${on?'on':''}" aria-pressed="${on}">${esc(t)}</button>`; }).join('')}<button class="tagedit" data-taged="${ref}">${ed?'Done':myTags().length?'Edit':short?'+ Styles':'+ Add your styles'}</button></div>
   ${ed?`<div class="taged"><div class="row" style="margin:0"><input type="text" id="tagnew" placeholder="New style, e.g. Dyno" maxlength="24" aria-label="New style" enterkeyhint="done"><button class="btn" data-tagadd="${ref}">Add</button></div>${myTags().length?`<p class="note" style="margin:8px 0 4px">Tap to delete:</p><div class="chips">${myTags().map(t=>`<button class="tagdel" data-tagdel="${esc(t)}" aria-label="Delete ${esc(t)}">${esc(t)} ✕</button>`).join('')}</div>`:'<p class="note" style="margin:8px 0 0">Your styles show on every route card, in comps and in Milestones.</p>'}</div>`:''}`; }
 const tagToggle=(arr,t)=>{ const L=(arr||[]).map(styName), i=L.findIndex(x=>nk(x)===nk(t)); if(i>=0) L.splice(i,1); else L.push(cleanTag(t)); return L.filter(Boolean); };
 const RRES=[['flash','Flash'],['top','Top'],['zone','Zone'],['no','No top']];
@@ -5115,7 +5296,7 @@ function routeCard(key,y0,i){ const y=routeUp(Object.assign({},y0)), at=+y.a||0,
     <div class="rtop"><b>#${i+1}</b><input class="rg" type="text" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="g" value="${esc(y.g||'')}" placeholder="Grade" aria-label="Grade of route ${i+1}" autocapitalize="characters" enterkeyhint="done">
       <label class="rmin lv2"><input type="number" inputmode="decimal" min="0" step="any" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="dur" value="${esc(y.dur??'')}" placeholder="–" aria-label="Minutes on route ${i+1}"><span>min</span></label><button class="x" data-rdel="${key}|${y.id}" aria-label="Remove route ${i+1}">✕</button></div>${gradeChips(key,y)}
     <p class="rlbl"><b>${{flash:'Flash',top:'Top',zone:'Zone, no top',no:'No zone','':'Not tried yet'}[st]}</b>${ta>1?` <span>on attempt ${ta}</span>`:''}${y.at?` <span>· ${esc(y.at)}</span>`:''}</p>
-    ${compStepHTML(key,y,'a','Attempts','all goes')}<div class="lv2">${compStepHTML(key,y,'za','Zone on attempt','– = no zone')}</div>${compStepHTML(key,y,'ta','Top on attempt','– = no top')}
+    ${compPickHTML('rz',key+'|'+y.id,y,false,true)}
     <div class="lv2">${tagRowHTML('rst',key+'|'+y.id,y.st)}
     ${za||ta?goodHTML(key,y):''}${at>0&&ta!==1?fallsHTML(key,y,at):''}</div>
     <textarea class="lv2" rows="1" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="why" placeholder="Note (optional)" aria-label="Note for route ${i+1}">${esc(y.why||'')}</textarea>${old?`<p class="note">Flash note: “${esc(old)}”</p>`:''}</div>`; }
@@ -5129,9 +5310,18 @@ const ROUNDS=[['q','Qualification'],['s','Semi-final'],['f','Final']];
 function isCompE(e){ const t=e&&S.cfg.templates.find(t=>t.id===e.tid); return !!(t&&t.comp); }
 const newComp=()=>({id:rid(),at:nowHM(),g:'',a:0,za:null,ta:null,top:null,fl:null,zone:null,why:'',fall:[]});
 function compSync(y){ const za=+y.za||0, ta=+y.ta||0; y.za=za||null; y.ta=ta||null; y.a=ta?ta:Math.max(+y.a||0,za); y.top=y.a?!!ta:null; y.fl=y.a?ta===1:null; y.zone=y.a?!!(za||ta):null; if(ta&&(!za||za>ta)) y.za=ta; }
-function compStep(y,f,d){ if(f==='a'){ if(+y.ta&&d>0){ toast('Topped: no attempts after the top. Change “Top on attempt” instead.'); return; } y.a=Math.max(0,(+y.a||0)+d); if(y.ta>y.a) y.ta=y.a||null; if(y.za>y.a) y.za=y.a||null; }
+function compStep(y,f,d){ if(f==='a'){ if(+y.ta&&d>0){ toast('Topped: attempts end at the top. Set Top to No first.'); return; } y.a=Math.max(0,(+y.a||0)+d); if(y.ta>y.a) y.ta=y.a||null; if(y.za>y.a) y.za=y.a||null; }
   else { const cur=+y[f]||0; let v=Math.max(0,cur+d); if(f==='za'&&y.ta&&v>y.ta) v=y.ta; y[f]=v||null; if(f==='ta'&&v&&y.za&&y.za>v) y.za=v; if(f==='ta'&&!v&&!y.za) {} }
   compSync(y); }
+function compSet(y,f,n){ n=Math.max(0,Math.round(+n||0)); const ta=+y.ta||0;
+  if(f==='za'){ if(ta&&(n===0||n>ta)) return; y.za=n||null; if(n>(+y.a||0)) y.a=n; }
+  else if(f==='ta'){ y.ta=n||null; if(n&&(+y.za||0)>n) y.za=n; if(!n&&+y.za&&+y.za>(+y.a||0)) y.a=+y.za; }
+  compSync(y); }
+// Attempts with − / +, then tap the attempt you got the zone and the top on. "No" = not reached.
+function compPickHTML(attr,key,y,dis,zlv){ const a=+y.a||0, za=+y.za||0, ta=+y.ta||0, N=Math.max(a,za,ta), D=dis?' disabled':'';
+  const row=(f,lab)=>{ const v=+y[f]||0; return `<div class="cpick"><span class="cpl">${lab}<small>on attempt</small></span><div class="cpn" role="group" aria-label="${lab} on attempt">${[0,...Array.from({length:N},(_,i)=>i+1)].map(n=>{ const off=f==='za'&&ta&&(n===0||n>ta); return `<button data-${attr}="${key}|${f}|=${n}" class="${v===n?'on':''}${n===0?' no':''}${f==='ta'&&n===1?' fl':''}"${off||dis?' disabled':''} aria-pressed="${v===n}">${n===0?'No':n}</button>`; }).join('')}</div></div>`; };
+  return `<div class="crow cpa"><span class="clab2">Attempts<small>all goes on this boulder</small></span><span class="step"><button data-${attr}="${key}|a|-1" aria-label="One attempt less"${D}>−</button><b>${a}</b><button data-${attr}="${key}|a|1" aria-label="One more attempt"${D}>+</button></span></div>
+    ${N?(zlv?`<div class="lv2">${row('za','Zone')}</div>`:row('za','Zone'))+row('ta','Top'):'<p class="note cphint">Add an attempt, then tap the attempt you got the zone and the top on.</p>'}`; }
 const ifscPts=y=>{ const ta=+y.ta||0, za=+y.za||0; return ta?25-0.1*(ta-1):za?10-0.1*(za-1):0; };
 function compSum(a){ const T=a.filter(y=>+y.ta>0), Z=a.filter(y=>+y.za>0||+y.ta>0), pts=a.reduce((t,y)=>t+ifscPts(y),0);
   return {T:T.length,Z:Z.length,ta:T.reduce((t,y)=>t+(+y.ta),0),za:Z.reduce((t,y)=>t+(+y.za||+y.ta),0),pts:Math.round(pts*10)/10,att:a.reduce((t,y)=>t+(+y.a||0),0)}; }
@@ -5139,11 +5329,11 @@ function compStepHTML(key,y,f,lab,sub){ const v=+y[f]||0;
   return `<div class="crow"><span class="clab2">${lab}<small>${sub}</small></span><span class="step"><button data-rz="${key}|${y.id}|${f}|-1" aria-label="${lab}: one less">−</button><b>${v||'–'}</b><button data-rz="${key}|${y.id}|${f}|1" aria-label="${lab}: one more">+</button></span></div>`; }
 function compCard(key,y,i){ const pts=ifscPts(y), at=+y.a||0, flash=+y.ta===1, st=+y.ta?'top':+y.za?'zone':at?'no':'';
   return `<div class="route comp${st?' r-'+st:''}"><div class="rtop"><b>B${i+1}</b><input class="rg" type="text" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="g" value="${esc(y.g||'')}" placeholder="Grade" aria-label="Grade of boulder ${i+1}" autocapitalize="characters" enterkeyhint="done"><span class="cres">${st==='top'?(flash?'Flash':'Top'):st==='zone'?'Zone':st==='no'?'No zone':'Not tried'}${at?` · <b>${n1(pts)}</b> pts`:''}</span></div>
-    ${compStepHTML(key,y,'a','Attempts','all goes')}${compStepHTML(key,y,'za','Zone on attempt','– = no zone')}${compStepHTML(key,y,'ta','Top on attempt','– = no top')}
+    ${compPickHTML('rz',key+'|'+y.id,y)}
     ${tagRowHTML('rst',key+'|'+y.id,y.st)}
     ${+y.za||+y.ta?goodHTML(key,y):''}${at>0&&!flash?`<p class="clab rfl">Why did you fall? <small>your own words</small></p><textarea rows="2" data-k="${key}" data-c="G" data-gid="${y.id}" data-p="fw" placeholder="What happened, what would you change?" aria-label="Why did you fall on boulder ${i+1}">${esc(y.fw||'')}</textarea>`:''}</div>`; }
 const plural=(n,w)=>`${n} ${w}${n===1?'':'s'}`;
-function sumBoxes(S2){ return `<div class="csum"><span><b>${S2.T}</b><small>${S2.T===1?'top':'tops'}</small></span><span><b>${S2.Z}</b><small>${S2.Z===1?'zone':'zones'}</small></span><span><b>${n1(S2.pts)}</b><small>points</small></span></div><p class="note csumn">Attempts: ${S2.T?`${S2.ta} to get ${S2.T===1?'the top':'the tops'}`:'no tops yet'} · ${S2.Z?`${S2.za} to get ${S2.Z===1?'the zone':'the zones'}`:'no zones yet'}.</p>`; }
+function sumBoxes(S2){ return `<div class="csum"><span><b>${S2.T}</b><small>${S2.T===1?'top':'tops'}</small></span><span><b>${S2.Z}</b><small>${S2.Z===1?'zone':'zones'}</small></span><span><b>${n1(S2.pts)}</b><small>points</small></span></div>${S2.T||S2.Z?`<p class="note csumn">Attempts: ${S2.T?`${S2.ta} to get ${S2.T===1?'the top':'the tops'}`:'no tops yet'} · ${S2.Z?`${S2.za} to get ${S2.Z===1?'the zone':'the zones'}`:'no zones yet'}.</p>`:''}`; }
 function compGHTML(e,it,key,a){ const r=e.round||'', S2=compSum(a);
   return `<div class="cbar"><div><p class="clab">Round</p><div class="chips rnds">${ROUNDS.map(([k,l])=>`<button data-rnd="${e.id}|${k}" class="${r===k?'on':''}" aria-pressed="${r===k}">${l}</button>`).join('')}</div></div>
       <div class="ccount"><p class="clab">Boulders</p><span class="step"><button data-rcount="${key}|-1" aria-label="One boulder less">−</button><b>${a.length}</b><button data-rcount="${key}|1" aria-label="One boulder more">+</button></span></div></div>
@@ -5202,7 +5392,7 @@ function ensurePerf(){ if(GUEST||ACC.role==='coach'||(S.cfg.perfMig&&S.cfg.perfV
 // a setup change the app makes by itself: saved and synced, but not an undo step
 function saveCfgQuiet(){ bump(); ls.set('config',S.cfg); queue('config',()=>col.doc('config').set(S.cfg)); if(HIST.base.config!==undefined) HIST.base.config=docJSON('config'); }
 function perfHowHTML(e){ const t=S.cfg.templates.find(t=>t.id===e.tid); if(!t||!t.perf) return ''; const fing=/pir[sš]t|finger|hang/i.test(t.name)||t.fields.some(f=>{ const c=normX(f.x); return c.u==='kg'&&c.bw==='lift'; });
-  return `${t.how?`<p class="note phow">${esc(t.how)}</p>`:''}${fing&&!GUEST&&fingersSore()?'<div class="alert amber">Your fingers hurt in the last few days. Skip the max test, or ask your physio first. A max pull on a sore finger is how pulleys go.</div>':''}`; }
+  return `${t.how?`<details class="phowd"><summary>How to do it</summary><p class="note phow">${esc(t.how)}</p></details>`:''}${fing&&!GUEST&&fingersSore()?'<div class="alert amber">Your fingers hurt in the last few days. Skip the max test, or ask your physio first. A max pull on a sore finger is how pulleys go.</div>':''}`; }
 function fingersSore(){ let bad=false; try{ bad=ftPainRecent(); }catch(e){} try{ return bad||stateEntries().some(x=>/^f[LR]\d$/.test(x.r)&&x.v>=SORE); }catch(e){ return bad; } }
 function metricSeries(tid,fid,side,as){ return cached(`MS:${tid}:${fid}:${side}:${as}`,()=>{ const out=[]; Object.values(S.months).forEach(mo=>Object.entries((mo&&mo.days)||{}).forEach(([d,es])=>{ const ds=`${mo.key}-${pad(+d)}`; if(ds>todayStr) return;
   (es||[]).forEach(e=>{ if(e.tid!==tid) return; const it=(e.items||[]).find(i=>i.fid===fid); if(!it||!compsList(it).includes('X')) return; const raw=xVals(it)[side]; if(raw==null) return; let v=raw;
@@ -5237,15 +5427,15 @@ function renderPerf(){ ensurePerf(); const k=mkey(S.y,S.m); month(k); if(S.st.pg
     cells+=`<button class="day${ds===todayStr?' today':''}${ds===S.sel?' sel':''}" style="--d:${d}" data-day="${ds}" aria-label="${d} ${MONTHS[S.m]}, ${es.length} logs"><span class="n">${d}</span>${!GUEST&&tsAll().some(x=>x.date===ds&&x.who.includes(ACC.id))?'<i class="dtest" aria-hidden="true"></i>':''}<span class="tapes">${es.slice(0,4).map(e=>`<span class="tape" style="background:${tplColor(e)}"></span>`).join('')}</span></button>`; }
   const sd=new Date(S.sel+'T12:00'), sel=entriesOn(S.sel).filter(isPerfE).filter(inG), cnt=k2=>entriesOn(S.sel).filter(isPerfE).filter(e=>{ const t=S.cfg.templates.find(t=>t.id===e.tid); return t&&pgOf(t)===k2; }).length;
   const sub={daily:'Short tests every session. They show how fresh you are today.',super:'Max tests. No hard training in the 48 h before, so they are rare and comparable.',climb:'One card per boulder: grade, attempts, result, why you fell.',comp:'One log per round: your boulders with attempts to zone and top, points like the IFSC.'}[g];
-  app.innerHTML=`${topBar()}<div class="phead"><div><h1>Performance</h1><p class="lvtxt">Tests, climbing and competitions, on their own calendar.</p></div>${fig('perf')}</div>
-  <div class="pseg" role="tablist">${PGRP.filter(([k2])=>(PG_LV[k2]||1)<=TLV()).map(([k2,l])=>`<button data-pgrp="${k2}" class="${g===k2?'on':''}" role="tab" aria-selected="${g===k2}">${k2==='daily'?'+ ':k2==='super'?'+++ ':''}${l}${cnt(k2)?` <i>${cnt(k2)}</i>`:''}</button>`).join('')}</div>
-  <p class="note psub"><span class="lvtxt">${sub} </span>${helpBtn({daily:'daily',super:'super',climb:'routes',comp:'comp'}[g]||'daily')}</p>
+  app.innerHTML=`${topBar()}<div class="phead"><div><h1>Performance ${helpBtn({daily:'daily',super:'super',climb:'routes',comp:'comp'}[g]||'daily')}</h1><p class="lvtxt">Tests, climbing and competitions, on their own calendar.</p></div>${fig('perf')}</div>
+  <div class="pseg" role="tablist">${PGRP.filter(([k2])=>(PG_LV[k2]||1)<=TLV()).map(([k2,l])=>`<button data-pgrp="${k2}" class="${g===k2?'on':''}" role="tab" aria-selected="${g===k2}">${l}${cnt(k2)?` <i>${cnt(k2)}</i>`:''}</button>`).join('')}</div>
+  <p class="note psub lvtxt">${sub}</p>
   ${TLV()>=3&&g==='daily'?readyCard():''}${TLV()>=3&&g==='super'?goalStrip()+perfNowCard('super'):''}
   <div class="month"><h1>${MONTHS[S.m]}<span>${S.y}</span></h1><div class="arrows"><button data-act="prev" aria-label="Previous month">‹</button><button data-act="next" aria-label="Next month">›</button></div></div>
   <div class="grid">${cells}</div>
-  <div class="dayhead" id="dayhead"><button class="mini" data-dnav="-1" aria-label="Previous day">‹</button><span>${LTWD[sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}${S.sel!==todayStr?'<button class="todaypill" data-act="gotoday">Today</button>':''}</span><button class="mini" data-dnav="1" aria-label="Next day">›</button></div>
+  <div class="dayhead" id="dayhead"><button class="mini mnav" data-dnav="-1" aria-label="Previous day">‹</button><span>${LTWD[sd.getDay()]}, ${sd.getDate()} ${MONTHS[sd.getMonth()].toLowerCase()}${S.sel===todayStr?' <span class="todaytag">šiandien</span>':''}${S.sel!==todayStr?'<button class="todaypill" data-act="gotoday">Today</button>':''}</span><button class="mini mnav" data-dnav="1" aria-label="Next day">›</button></div>
   ${GUEST||g!=='comp'?'':simDayHTML(S.sel)}${tsInviteCards(S.sel)}
-  ${GUEST?'':PT.length?`<div class="adds">${PT.filter(t=>TLV()>=2||pgOf(t)!=='daily'||isFingerTpl(t)).map(t=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)}" data-add="${t.id}">${/^\+/.test(t.name)?'':'+ '}${esc(t.name)}</button>`).join('')}</div>`:`<div class="empty">${col&&!PULLED?'Connecting… your tests show up once you are online.':'No tests in this group.'}</div>`}
+  ${GUEST?'':PT.length?`<div class="adds">${PT.filter(t=>TLV()>=2||pgOf(t)!=='daily'||isFingerTpl(t)).map((t,i)=>`<button class="add" style="--c:${t.color};color:${inkFor(t.color)};--i:${i}" data-add="${t.id}"><i aria-hidden="true">+</i><span>${esc(String(t.name).replace(/^\+*\s*/,''))}</span></button>`).join('')}</div>`:`<div class="empty">${col&&!PULLED?'Connecting… your tests show up once you are online.':'No tests in this group.'}</div>`}
   ${sel.length?sel.map(entryHTML).join(''):`<div class="empty">${GUEST?'Nothing on this day.':'Nothing on this day yet. Tap above to log.'}</div>`}
   ${g==='climb'||g==='comp'?fallCard():''}`;
   app.querySelectorAll('textarea').forEach(grow); }
@@ -5330,7 +5520,7 @@ function renderGoals(){ ensurePerf(); const G=S.cfg.goals||[], ed=S.st.gedit||nu
       <button class="gopt" data-gadd="1"><b>Build my own</b><span>Add a milestone with a date, then the goals you choose: a test number, a boulder grade, every style, or a tick box.</span><em>Start →</em></button></div>`}
     ${G.length&&!GUEST&&pathMine()&&(!G.some(m=>m.items.some(i=>i.sec))||G.some(m=>m.items.some(i=>i.kind==='grade'&&i.count>1)))?`<div class="card"><h3>New version of the path</h3><p class="note">One milestone every year, sorted into finger strength, bouldering, every style, lead and competitions. It replaces the milestones below. ↶ undoes it.</p><button class="btn" data-groad="1" style="margin-top:8px">Use the yearly path</button></div>`:''}
     ${G.map(m=>ed===m.id&&!GUEST?goalEditHTML(m):goalCardHTML(m,m.id===nx)).join('')}
-    ${G.length&&!GUEST?'<button class="btn ghost gaddbtn" data-gadd="1">+ Add milestone</button>':''}
+    ${G.length&&!GUEST?'<button class="btn ghost gaddbtn addrow" data-gadd="1">+ Add milestone</button>':''}
     ${G.length?'<div class="card gnotes lvtxt"><p class="gsec">How it is measured</p><p class="note"><b>Finger strength</b>: the Daily finger test, your best of the last 14 days, as % of bodyweight. <b>Bouldering</b>: Font grades from your route cards. “In the last 6 months” = your hardest top in that time, the way climbing research reports a climber’s level. <b>Every style</b>: your hardest top tagged with each style. <b>Pace</b>: how fast your tests rise compared with what the date needs.</p></div>':''}`; }
 
 function goalItem(mid,iid){ const m=(S.cfg.goals||[]).find(x=>x.id===mid); return m&&m.items.find(i=>i.id===iid); }
@@ -5375,7 +5565,7 @@ function setupPlan(){ const out=[]; S.cfg.templates.forEach(t=>{ if(t.perf) retu
     if(/kas vyko|how was the session|session quality/i.test(n)&&!cs.includes('W')){ out.push({f,to:['W','T'],txt:`${t.name} · ${n}: session quality (physical, technical, mental 1–10) + note`}); return; }
     if(/energ|fok|focus|motyv|motiv|oda\b|skin|nusiteik/i.test(n)&&!cs.includes('A')&&(cs.includes('S')||cs.includes('V'))) out.push({f,to:['A','T'],txt:`${t.name} · ${n}: 1–7 scale + note`}); });
     if(t.fields.some(f=>sleepLike(f.name))&&!t.fields.some(f=>/stres/i.test(f.name))) out.push({add:t,txt:`${t.name}: new “Stresas” 1–7 (stress outside training)`}); }); return out; }
-function setupUpdateCard(){ if(S.cfg.setupV4) return ''; const P=setupPlan(); if(!P.length) return '';
+function setupUpdateCard(){ return ''; if(S.cfg.setupV4) return ''; const P=setupPlan(); if(!P.length) return '';
   return `<div class="card pack"><h3>Daily check-in update</h3><p class="note">Feelings become 1–7 scales compared with your own normal, emotions use the feelings grid, a stress item is added next to sleep, “Kas vyko treniruotėje” becomes session quality, and route cards move to Performance. Only new logs change. Old logs keep everything, and ↶ undoes it.</p>
     <ul class="setuplist">${P.map(x=>`<li>${esc(x.txt)}</li>`).join('')}</ul>
     <div class="row" style="margin:8px 0 0"><button class="btn" data-act="setupv2">Update</button><button class="btn ghost" data-act="setupno">No thanks</button></div></div>`; }
@@ -5410,7 +5600,7 @@ const simK=x=>x.rr?2:1;
 const simPos=(x,id)=>x.mode==='same'?Math.max(0,x.inv.findIndex(a=>a.id===id)):0;
 const simRots=x=>(x.mode==='same'?Math.max(0,x.inv.length-1):0)+simK(x)*(x.n-1)+1;
 const simRotLen=x=>(x.chg||0)+x.climb;
-function simNoteText(x){ const T=simRotLen(x), total=(x.obs?x.obs*x.n:0)+simRots(x)*T;
+function simNoteText(x){ const T=simRotLen(x), total=(x.obs?x.obs*x.n:0)+simRots(x)*T; return `Whole round about ${Math.ceil(total/60)} min`;
   return (x.mode==='same'?(x.rr?`Like the IFSC: one athlete per boulder. You climb, then rest one rotation (${mmss(T)}) while the next athlete climbs the boulder you left.`:'One athlete per boulder, no rest: as soon as you finish, you go to your next boulder.'):(x.rr?`Everyone starts together on their own boulders and rests one rotation (${mmss(T)}) between boulders.`:'Everyone starts together on their own boulders, straight from one to the next.'))+` Whole round about ${Math.ceil(total/60)} min.`; }
 function simPhases(x){ const P=[]; let t=0; if(x.obs){ P.push({k:'obs',t0:t,len:x.obs*x.n}); t+=x.obs*x.n; }
   for(let r=0;r<simRots(x);r++){ if(x.chg){ P.push({k:'move',i:r,t0:t,len:x.chg}); t+=x.chg; } P.push({k:'climb',i:r,t0:t,len:x.climb}); t+=x.climb; } return {P,total:t}; }
@@ -5424,7 +5614,7 @@ function athAt(x,st,p){ const k=simK(x), R=simRots(x), base=x.obs?x.obs*x.n:0, T
   for(let r=from;r<R;r++){ const b=at(r); if(b>=0){ const climbStart=base+r*T+(x.chg||0); return {act:'wait',b,r,next:st.k==='move'||st.k==='climb'?r===st.i+1:false,first:r===p,until:climbStart-el}; } }
   return {act:'done'}; }
 const boulderFor=(x,start,i)=>((start-1+i)%x.n);
-function simLabel(x,st,me,staff){ if(st.k==='wait') return staff&&me==null?['Ready','Tap Start when everyone is at the wall']:['Waiting for the coach','The timer starts on every phone at the same time']; if(st.k==='end') return ['Finished','']; if(st.k==='stop') return ['Stopped','The coach ended the round'];
+function simLabel(x,st,me,staff){ if(st.k==='wait') return staff&&me==null?['Ready','']:['Waiting for the coach','The timer starts on every phone at the same time']; if(st.k==='end') return ['Finished','']; if(st.k==='stop') return ['Stopped','The coach ended the round'];
   if(st.k==='count') return [st.paused?'Paused':'Starting in',me!=null&&x.mode==='same'?`You are number ${me+1} in the order`:''];
   if(st.k==='obs') return ['Observation',`All ${x.n} boulders · touch only the start holds`];
   if(me==null) return st.k==='move'?['Change',`Rotation ${st.i+1} of ${simRots(x)} starts`]:[`Rotation ${st.i+1} of ${simRots(x)}`,st.paused?'Paused':'Climbing'];
@@ -5462,7 +5652,12 @@ function simSignals(st,sec){ const key=st.k+':'+(st.i??'')+':'+sec; if(key===SIM
   if(!first&&prevK!==SIM.sigK){ if(st.k==='climb'||st.k==='obs') LONG(); else if(st.k==='move') MIN(); else if(st.k==='rest'||st.k==='end') END(); return; }
   if(first) return; if((st.k==='climb'||st.k==='rest'||st.k==='count'||st.k==='obs'||st.k==='move')&&sec>=1&&sec<=5) PIP(); else if(st.k==='climb'&&sec===60) MIN(); }
 async function simEnter(){ try{ if(document.fullscreenElement==null&&document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen(); }catch(e){} try{ await screen.orientation.lock('landscape'); }catch(e){}
-  try{ if(navigator.wakeLock) SIM.wake=await navigator.wakeLock.request('screen'); }catch(e){} simAudio(); }
+  simWake(); simAudio(); }
+// keep the screen on while a round is open (phones dim and lock after ~30 s otherwise); full screen only where the phone can do it
+async function simWake(){ if(SIM.wake||!navigator.wakeLock||document.visibilityState!=='visible') return; try{ SIM.wake=await navigator.wakeLock.request('screen'); SIM.wake.addEventListener('release',()=>{ SIM.wake=null; }); }catch(e){ SIM.wake=null; } }
+const canFS=()=>!!document.documentElement.requestFullscreen;
+document.addEventListener('fullscreenchange',()=>{ if(!ALIVE||S.view!=='sim') return; const on=!!document.fullscreenElement; if(on!==!!S.st.simFull){ S.st.simFull=on; if(!on){ try{ screen.orientation.unlock(); }catch(e){} } render(); } });
+document.addEventListener('visibilitychange',()=>{ if(ALIVE&&S.view==='sim'&&document.visibilityState==='visible') simWake(); });
 async function simExit(){ try{ if(screen.orientation&&screen.orientation.unlock) screen.orientation.unlock(); }catch(e){} try{ if(document.fullscreenElement) await document.exitFullscreen(); }catch(e){} try{ if(SIM.wake) await SIM.wake.release(); }catch(e){} SIM.wake=null; }
 function simTickStart(){ if(SIM.tick) return; SIM.tick=setInterval(()=>{ if(!ALIVE||S.view!=='sim'){ clearInterval(SIM.tick); SIM.tick=null; return; } const x=simById(S.st.simId); if(!x||S.st.simDraft) return; const st=simState(x);
   const sec=st.k==='wait'?-1:st.k==='end'?0:Math.max(0,Math.ceil(st.left)), me=iAmIn(x)?simPos(x,ACC.id):null, staff=ACC.role==='coach'||ACC.role==='supervisor';
@@ -5486,13 +5681,13 @@ function simInviteCards(){ if(GUEST) return ''; return sims().filter(x=>iAmIn(x)
   <p class="note">${esc(x.byName)} · ${dmyy(x.date)} · ${x.n} boulders · ${mmss(x.climb)} per boulder${x.mode==='own'?' · your own boulders':''} · ${x.mode==='same'?`you are number ${simPos(x,ACC.id)+1} in the climbing order`:'everyone starts together'}</p>
   <div class="row" style="margin:10px 0 0"><button class="btn" data-simans="${x.id}|yes">Accept</button><button class="btn ghost" data-simans="${x.id}|no">Decline</button></div></div>`).join(''); }
 function simDayHTML(day){ const L=simCardsForDay(day); if(!L.length) return ''; return L.map(x=>{ const st=simState(x), m=SIM.mine[x.id];
-  return `<button class="card simday" data-simopen="${x.id}"><span class="sikick"><span class="flagbar"></span>Comp simulation${x.status==='live'?' · <b class="live">LIVE</b>':x.status==='done'?' · finished':''}</span><b class="sititle">${esc(x.name)}</b><span class="note">${x.n} boulders · ${mmss(x.climb)} per boulder${m&&m.ans==='no'?' · you declined':''}${iAmIn(x)&&m&&m.ans==='yes'?` · ${simScore(x,m).T}T ${simScore(x,m).Z}Z`:''}</span><span class="simgo">Open ›</span></button>`; }).join(''); }
+  return `<button class="card simday" data-simopen="${x.id}"><span class="sikick"><span class="flagbar"></span>Comp simulation${x.status==='live'?' · <b class="live">LIVE</b>':x.status==='done'?' · finished':''}</span><b class="sititle">${esc(x.name)}</b><span class="note">${x.n} boulders · ${mmss(x.climb)} per boulder${m&&m.ans==='no'?' · you declined':''}${iAmIn(x)&&m&&m.ans==='yes'&&(simScore(x,m).T||simScore(x,m).Z)?` · ${plural(simScore(x,m).T,'top')}, ${plural(simScore(x,m).Z,'zone')}`:''}</span><span class="simgo">Open ›</span></button>`; }).join(''); }
 function renderSims(){ if(GUEST){ S.view='cal'; renderCal(); return; } simSub(); const L=sims(), coach=ACC.role==='coach'||ACC.role==='supervisor';
   const mine=L.filter(x=>coach?true:iAmIn(x)&&x.status!=='draft');
-  app.innerHTML=`${topBar()}<div class="phead"><div><h1>Comp <span class="nw">simulation ${helpBtn('sim')}</span></h1><p class="lvtxt">${coach?'Build a round, invite athletes, start one timer on every phone.':'Rounds your coach invited you to.'}</p></div>${fig('sims')}</div>
+  app.innerHTML=`${topBar()}<div class="phead"><div><h1>Comp <span class="nw">simulation ${helpBtn('sim')}</span></h1>${coach?'':'<p class="lvtxt">Rounds your coach invited you to.</p>'}</div>${fig('sims')}</div>
     ${coach?`<button class="btn bigbtn gloss" style="--gc:#E86A2C" data-act="simnew">+ New simulation</button>`:''}
     ${simInviteCards()}
-    ${mine.length?mine.map(x=>`<button class="card simrow" data-simopen="${x.id}"><span class="simd"><b>${x.date.slice(8)}</b><small>${MONTHS[+x.date.slice(5,7)-1].slice(0,3)}</small></span><span class="simm"><b>${esc(x.name)}</b><small>${SIMP[x.round]?SIMP[x.round][0]+' · ':''}${x.n} boulders · ${x.mode==='own'?'own boulders':'same boulders'} · ${x.inv.length} invited</small></span><span class="simst s-${x.status}">${{draft:'Draft',open:'Invited',live:'Live',done:'Done'}[x.status]}${x.locked?' · locked':''}</span></button>`).join(''):`<div class="empty">${coach?'No simulations yet.':'No simulations yet. Your coach invites you from his phone.'}</div>`}`; }
+    ${mine.length?mine.map(x=>`<button class="card simrow" data-simopen="${x.id}"><span class="simd"><b>${x.date.slice(8)}</b><small>${MONTHS[+x.date.slice(5,7)-1].slice(0,3)}</small></span><span class="simm"><b>${esc(x.name)}</b><small>${SIMP[x.round]?SIMP[x.round][0]+' · ':''}${x.n} boulders · ${x.mode==='own'?'own boulders':'same boulders'} · ${x.inv.length} invited</small></span><span class="simst s-${x.status}">${(()=>{ const a=!coach&&x.status==='open'?(SIM.mine[x.id]||{}).ans:''; return a==='yes'?'You’re in':a==='no'?'Declined':{draft:'Draft',open:'Invited',live:'Live',done:'Done'}[x.status]; })()}${x.locked?' · locked':''}</span></button>`).join(''):`<div class="empty">${coach?'No simulations yet.':'No simulations yet. Your coach invites you from his phone.'}</div>`}`; }
 function tStep(k,v,lab,sub){ const m=Math.floor(v/60), sc=v%60, opt=(n,cur,suf)=>`<option value="${n}"${n===cur?' selected':''}>${n}${suf}</option>`;
   return `<div class="tstep"><span class="clab2">${lab}<small>${sub}</small></span><span class="tsel tin"><input type="text" inputmode="decimal" data-simtt="${k}" value="${m}:${pad(sc)}" aria-label="${lab}, minutes:seconds"><small>min:s</small></span></div>`;
   return `<div class="tstep"><span class="clab2">${lab}<small>${sub}</small></span><span class="tsel"><select data-simtm="${k}|m" aria-label="${lab} minutes">${Array.from({length:31},(_,n)=>opt(n,m,' min')).join('')}</select><select data-simtm="${k}|s" aria-label="${lab} seconds">${Array.from({length:60},(_,n)=>opt(n,sc,' s')).join('')}</select></span></div>`; }
@@ -5501,15 +5696,16 @@ function simEditHTML(x){ const ath=(TM.list||[]).filter(a=>seenRole(a)==='athlet
   return `<div class="card simed"><p class="clab">Name</p><input type="text" data-sime="name" value="${esc(x.name)}" maxlength="60">
     <div class="ftgrid"><label class="ftin">Date<input type="date" data-sime="date" value="${esc(x.date)}"></label><label class="ftin">Boulders<span class="step"><button data-simn="-1" aria-label="One boulder less">−</button><b>${x.n}</b><button data-simn="1" aria-label="One boulder more">+</button></span></label></div>
     <p class="clab">Round <small>IFSC times</small></p><div class="chips">${Object.entries(SIMP).map(([k,v])=>`<button data-simround="${k}" class="${x.round===k?'on':''}">${v[0]}</button>`).join('')}<button data-simround="c" class="${x.round==='c'?'on':''}">Custom</button></div>
-    <div class="tsteps">${tStep('climb',x.climb,'Climb','per boulder')}${tStep('chg',x.chg,'Change','walk to the boulder, before each climb')}${tStep('obs',x.obs,'Observation','per boulder, before the start')}</div>
-    <div class="chips" style="margin:8px 0 2px"><button data-simrr="1" class="${x.rr?'on':''}" aria-pressed="${x.rr}">Rest a rotation between boulders</button></div>
-    <p class="note" id="simnote">${simNoteText(x)}</p>
+    <div class="tsteps">${tStep('climb',x.climb,'Climb','per boulder')}${tStep('chg',x.chg,'Change','before each climb')}${tStep('obs',x.obs,'Observation','per boulder, before the start')}</div>
+    <button class="swrow${x.rr?' on':''}" data-simrr="1" aria-pressed="${x.rr}"><span>Rest a rotation between boulders</span><i class="tgl" aria-hidden="true"></i></button>
+    <p class="note simtot" id="simnote">${simNoteText(x)}</p>
     <p class="clab">Boulders</p><div class="chips"><button data-simmode="same" class="${x.mode==='same'?'on':''}">Same for everyone</button><button data-simmode="own" class="${x.mode==='own'?'on':''}">Each athlete their own</button></div>
-    ${x.mode==='same'?`<div class="simroutes">${x.routes.map((r,i)=>{ const nOpen=r.note||(S.st.simNote||{})[i]; return `<div class="simroute c"><b>B${i+1}</b><input type="text" data-simr="${i}|g" value="${esc(r.g)}" placeholder="Grade" autocapitalize="characters" aria-label="Boulder ${i+1} grade">${nOpen?'':`<button class="simnadd" data-simnote="${i}" aria-label="Add a note to boulder ${i+1}">+ Note</button>`}<div class="simst">${tagRowHTML('simrst',String(i),r.st)}</div>${nOpen?`<input type="text" class="simnote" data-simr="${i}|note" value="${esc(r.note)}" placeholder="Note" aria-label="Boulder ${i+1} note">`:''}</div>`; }).join('')}</div>`:'<p class="note">Athletes write the grade and style of each boulder themselves. You see their results, no ranking.</p>'}
-    <p class="clab">Invite <small>${x.mode==='same'?'and the climbing order: number 1 climbs first':'everyone starts together on their own boulders'}</small></p>
-    ${x.inv.length&&x.mode==='same'?`<div class="simord">${x.inv.map((a,i)=>`<div class="sord"><b>${i+1}</b><span>${esc(a.name)}</span><button data-simord="${a.id}|-1" aria-label="Climb earlier"${i?'':' disabled'}>↑</button><button data-simord="${a.id}|1" aria-label="Climb later"${i<x.inv.length-1?'':' disabled'}>↓</button></div>`).join('')}</div>`:''}
-    ${ath.length?ath.map(a=>{ const on=inv.get(a.id); return `<div class="siminv-row"><button class="gchk${on?' on':''}" data-siminv="${a.id}" aria-pressed="${!!on}">${on?'✓':''}</button><span>${esc(a.name)}</span>${on&&x.mode==='same'?`<small class="note">#${x.inv.findIndex(z=>z.id===a.id)+1}</small>`:''}</div>`; }).join(''):`<p class="note">${TM.loaded?'No athletes in the team yet.':'Loading the team…'}</p>`}
-    <div class="row" style="margin:14px 0 0"><button class="btn" data-act="simsave">${x.status==='draft'?'Send invites':'Save'}</button><button class="btn ghost" data-act="simcancel">Cancel</button><span style="flex:1"></span>${x.created&&(ACC.role==='supervisor'||x.by===ACC.id)?`<button class="del" data-act="simdel">Delete</button>`:''}</div></div>`; }
+    ${x.mode==='same'?`<div class="simroutes">${x.routes.map((r,i)=>{ const nOpen=r.note||(S.st.simNote||{})[i]; return `<div class="simroute c"><b>B${i+1}</b><input type="text" data-simr="${i}|g" value="${esc(r.g)}" placeholder="Grade" autocapitalize="characters" aria-label="Boulder ${i+1} grade">${nOpen?'':`<button class="simnadd" data-simnote="${i}" aria-label="Add a note to boulder ${i+1}">+ Note</button>`}<div class="simst">${tagRowHTML('simrst',String(i),r.st,1)}</div>${nOpen?`<input type="text" class="simnote" data-simr="${i}|note" value="${esc(r.note)}" placeholder="Note" aria-label="Boulder ${i+1} note">`:''}</div>`; }).join('')}</div>`:'<p class="note">Athletes write the grade and style of each boulder themselves. You see their results, no ranking.</p>'}
+    <p class="clab">Who climbs${x.mode==='same'&&x.inv.length>1?' <small>in this order</small>':''}</p>
+    <div class="simppl">${x.inv.map((a,i)=>`<div class="sprow on"><button class="spck" data-siminv="${a.id}" aria-pressed="true" aria-label="Don’t invite ${esc(a.name)}"><span class="gchk on" aria-hidden="true">✓</span>${x.mode==='same'?`<b class="spnum">${i+1}</b>`:''}<span class="spn">${esc(a.name)}</span></button>${x.mode==='same'&&x.inv.length>1?`<button class="mini" data-simord="${a.id}|-1" aria-label="Climb earlier"${i?'':' disabled'}>↑</button><button class="mini" data-simord="${a.id}|1" aria-label="Climb later"${i<x.inv.length-1?'':' disabled'}>↓</button>`:''}</div>`).join('')}
+    ${ath.filter(a=>!inv.has(a.id)).map(a=>`<div class="sprow"><button class="spck" data-siminv="${a.id}" aria-pressed="false" aria-label="Invite ${esc(a.name)}"><span class="gchk" aria-hidden="true"></span><span class="spn">${esc(a.name)}</span></button></div>`).join('')}</div>
+    ${ath.length||x.inv.length?'':`<p class="note">${TM.loaded?'No athletes in the team yet.':'Loading the team…'}</p>`}
+    <div class="simsave"><button class="btn bigbtn gloss" style="--gc:#E86A2C" data-act="simsave">${x.status==='draft'?'Send invites':'Save'}</button><button class="btn ghost" data-act="simcancel">Cancel</button></div>${x.created&&(ACC.role==='supervisor'||x.by===ACC.id)?`<button class="del simdelx2" data-act="simdel">Delete this simulation</button>`:''}</div>`; }
 // what the coach needs at a glance: who leads, each boulder as the comp result boards show it, where everyone is now, how stressed they are
 function simCell(r){ return +r.ta?`<i class="t" title="Top on attempt ${r.ta}">T${r.ta}</i>`:+r.za?`<i class="z" title="Zone on attempt ${r.za}">Z${r.za}</i>`:+r.a?`<i class="f" title="${r.a} attempts, no zone">${r.a}×</i>`:'<i>–</i>'; }
 function simRows(x){ const W=SIM.watch[x.id]||{}; return x.mode==='same'?simRank(x):x.inv.filter(a=>W[a.id]&&W[a.id].ans==='yes').map(a=>({a,m:W[a.id],sc:simScore(x,W[a.id])})); }
@@ -5523,9 +5719,9 @@ function simTableHTML(x,rows,opt){ const st=simState(x), live=opt.live, ranked=x
 function simAthHTML(x,o){ const m=o.m, z=m.z||{}, L=Array.from({length:x.n},(_,j)=>{ const r=simRes(m,j), R=x.routes[j]||{}, g=x.mode==='own'?r.g:R.g, tags=(x.mode==='own'?r.st:R.st)||[], res=+r.ta?(+r.ta===1?'Flash':`Top on attempt ${r.ta}`):+r.za?`Zone on attempt ${r.za}, no top`:+r.a?'No zone':'Not tried';
     return `<div class="sad"><b>B${j+1}${g?' · '+esc(g):''}${tags.length?' · '+esc(tags.map(styName).join(', ')):''}</b><span>${res}${+r.a?` · ${plural(+r.a,'attempt')}`:''}</span>${String(r.good||'').trim()?`<span class="sfw">What went well: “${esc(String(r.good).trim())}”</span>`:''}${String(r.fw||'').trim()?`<span class="sfw">Why they fell: “${esc(String(r.fw).trim())}”</span>`:''}</div>`; }).join('');
   return `<div class="sadwrap">${+z.bi||+z.mi?`<p class="sadz">Stress: body ${+z.bi||'–'}/4${z.bd!=null&&z.bd!==''?` (effect ${sgn3(z.bd)})`:''} · mind ${+z.mi||'–'}/4${z.md!=null&&z.md!==''?` (effect ${sgn3(z.md)})`:''}</p>`:'<p class="sadz">No stress rating yet.</p>'}${L}</div>`; }
-function simLegend(x){ return `<p class="note sbp sblegend"><b>T2</b> = top on attempt 2 · <b>Z1</b> = zone on attempt 1 · <b>3×</b> = 3 attempts, no zone.${x.mode==='same'?' Order: points, then tops, zones, fewer attempts.':' Everyone climbed their own boulders, so there is no ranking.'}</p>`; }
+function simLegend(x){ return `<p class="note sbp sblegend"><b>T2</b> top on attempt 2 · <b>Z1</b> zone on attempt 1 · <b>3×</b> no zone${x.mode==='same'?'':' · own boulders, no ranking'}</p>`; }
 function simBoardHTML(x){ const W=SIM.watch[x.id]||{}, rows=simRows(x), inN=x.inv.filter(a=>(W[a.id]||{}).ans==='yes').length;
-  return `<div class="simboard" id="simboard"><div class="sbh"><span>${x.mode==='same'?'Ranking':'Results'}</span><small>${inN} of ${x.inv.length} in · ${x.locked?'locked':'live'}</small></div>
+  return `<div class="simboard" id="simboard"><div class="sbh"><span>${x.mode==='same'?'Ranking':'Results'}</span><small>${inN} of ${x.inv.length} in</small>${x.locked?'<b class="sbadge lk">Locked</b>':x.status==='live'?'<b class="sbadge live"><i></i>Live</b>':''}</div>
     ${inN?simTableHTML(x,rows,{live:true,click:true}):'<p class="note sbp">Nobody has accepted yet.</p>'}${simLegend(x)}
     <div class="sbinv">${x.inv.map(a=>{ const v=(W[a.id]||{}).ans; return `<span class="${v==='yes'?'y':v==='no'?'n':''}">${esc(a.name)}${x.mode==='same'?` · #${simPos(x,a.id)+1}`:''} · ${v==='yes'?'in':v==='no'?'declined':'not answered'}</span>`; }).join('')}</div></div>`; }
 // when the coach locks the results, the table is published for the athletes too (they can't read each other's logs)
@@ -5534,19 +5730,29 @@ function simFinalHTML(x){ const F=Array.isArray(x.final)?x.final:[]; if(!F.lengt
   const you=mi>=0?(ranked?`<div class="place ${mi===0?'m1':mi===1?'m2':mi===2?'m3':'m0'}"><span class="pl1">Your place</span><b>${ord(mi+1)}</b><span class="pl2">of ${F.length} · ${n1(F[mi].sc.pts)} points · ${plural(F[mi].sc.T,'top')}, ${plural(F[mi].sc.Z,'zone')}</span></div>`:`<div class="place"><span class="pl1">Your result</span><b>${plural(F[mi].sc.T,'top')}</b><span class="pl2">${plural(F[mi].sc.Z,'zone')}. Everyone climbed their own boulders, so there is no ranking.</span></div>`):'';
   const rows=ranked?`<div class="rk"><div class="rkr rkh"><span>Rank</span><span>Athlete</span><span>Tops</span><span>Zones</span><span>Points</span></div>${F.map((o,i)=>`<div class="rkr${o.a.id===ACC.id?' me':''}${i<3?' p'+(i+1):''}"><b class="rkp">${i+1}</b><span class="rkn">${esc(o.a.name)}${o.a.id===ACC.id?' <small>you</small>':''}</span><span><b>${o.sc.T}</b><small>${o.sc.ta} att.</small></span><span><b>${o.sc.Z}</b><small>${o.sc.za} att.</small></span><b class="rkpt">${n1(o.sc.pts)}</b></div>`).join('')}</div>`:'';
   return `${you}<div class="simboard"><div class="sbh"><span>${ranked?'Final ranking':'Results'}</span><small>locked</small></div>${rows}<p class="clab sbp" style="margin:10px 0 0">Per boulder</p>${simTableHTML(x,F,{live:false,click:false})}${simLegend(x)}</div>`; }
-function simCtlHTML(x,st){ const live=x.status==='live', paused=!!x.pausedAt;
-  const main=!live?`${x.status==='done'?`<button class="btn" data-act="simreset">Reset</button><button class="btn go" data-act="simstart">Run again</button>`:`<button class="btn go" data-act="simstart">Start · 10 s countdown</button>`}<button class="btn ghost" data-act="simedit">Edit</button>`
-    :`${paused?`<button class="btn go" data-act="simresume">Resume</button>`:`<button class="btn" data-act="simpause">Pause</button>`}<button class="btn danger" data-act="simend">End</button><button class="btn ghost" data-act="simreset">Reset</button>`;
-  return `<div class="simctl">${main}</div><div class="simctl sc2"><button class="btn ${x.locked?'go':'ghost'}" data-act="simlock">${x.locked?'Results locked · unlock':'Lock results'}</button>${ACC.role==='supervisor'||x.by===ACC.id?'<button class="btn ghost danger-t" data-act="simdel2">Delete</button>':''}</div>`; }
+function simCtlHTML(x,st){ const live=x.status==='live', paused=!!x.pausedAt, I=SVGI;
+  const main=!live?(x.status==='done'?`<button class="btn sgo" data-act="simstart">${I.play}<span>Run again</span></button>`:`<button class="btn sgo" data-act="simstart">${I.play}<span>Start</span></button>`)
+    :paused?`<button class="btn sgo" data-act="simresume">${I.play}<span>Resume</span></button>`:`<button class="btn spause" data-act="simpause">${I.pause}<span>Pause</span></button>`;
+  const sub=!live?`${x.status==='done'?`<button class="btn s2" data-act="simreset">${I.reset}<span>Reset</span></button>`:''}<button class="btn s2" data-act="simedit">${I.edit}<span>Edit</span></button>`
+    :`<button class="btn s2 send" data-act="simend">${I.stop}<span>End round</span></button><button class="btn s2" data-act="simreset">${I.reset}<span>Reset</span></button>`;
+  return `<div class="simctl">${main}<div class="simctl2">${sub}</div></div>
+    <button class="simlockb${x.locked?' on':''}" data-act="simlock" aria-pressed="${x.locked}"><span class="slk">${x.locked?I.lock:I.unlock}</span><span class="slt"><b>${x.locked?'Results locked':'Lock results'}</b></span><i class="tgl" aria-hidden="true"></i></button>`; }
+const SVGI={play:'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>',pause:'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></svg>',
+  stop:'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2.5" fill="currentColor"/></svg>',reset:'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v4h4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  edit:'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',lock:'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="currentColor"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>',
+  unlock:'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 6.8-1.2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+  back:'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  full:'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  unfull:'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'};
 function simZHTML(x,m){ const o=m.z||{}, I=['Not at all','A bit','Moderately','Very much'], row=(f,df,t,sub)=>{ const v=+o[f]||0, d=o[df]==null||o[df]===''?null:+o[df];
   return `<div class="zrow"><div class="zh"><b>${t}</b><small>${sub}</small></div><div class="zi">${I.map((l,n)=>`<button data-simzz="${x.id}|${f}|${n+1}" class="${v===n+1?'on':''}"><b>${n+1}</b><small>${l}</small></button>`).join('')}</div>${v>1?`<p class="zq">Did it help or hurt?</p><div class="zd">${[-3,-2,-1,0,1,2,3].map(n=>`<button data-simzz="${x.id}|${df}|${n}" class="${d===n?'on':''} ${n<0?'neg':n>0?'pos':''}">${n>0?'+'+n:n}</button>`).join('')}</div><div class="s7e"><span>Hurt a lot</span><span>Helped a lot</span></div>`:''}</div>`; };
   const done=+o.bi&&+o.mi&&(+o.bi<=1||(o.bd!=null&&o.bd!==''))&&(+o.mi<=1||(o.md!=null&&o.md!=='')), open=S.st.simZ===true||(S.st.simZ!==false&&!done);
   return `<div class="simz"><button class="simzh" data-act="simztog"><span>Stress & adrenaline</span><small>${+o.bi||+o.mi?`body ${+o.bi||'–'}/4 · mind ${+o.mi||'–'}/4 · ${open?'hide':'change'}`:'rate it before you start'}</small></button>${open?row('bi','bd','Body','adrenaline, heart pounding, butterflies')+row('mi','md','Mind','worry, pressure, doubts'):''}</div>`; }
 function renderSim(){ if(GUEST){ S.view='cal'; renderCal(); return; } simSub(); const id=S.st.simId;
-  if(S.st.simDraft){ const x=S.st.simDraft; teamSub(); app.innerHTML=`${topBar()}<div class="phead stack"><div><h1>${x.created?'Edit simulation':'New simulation'}</h1><p class="lvtxt">Times, boulders, who climbs and where they start.</p></div></div>${simEditHTML(x)}`; return; }
+  if(S.st.simDraft){ const x=S.st.simDraft; teamSub(); app.innerHTML=`${topBar()}<div class="phead stack"><div><h1>${x.created?'Edit simulation':'New simulation'}</h1></div></div>${simEditHTML(x)}`; return; }
   const x=simById(id); if(!x){ app.innerHTML=`${topBar()}<div class="empty">This simulation was deleted.</div><button class="btn ghost" data-tab="sims">Back</button>`; return; }
   const staff=ACC.role==='coach'||ACC.role==='supervisor', coach=staff, me=iAmIn(x), m=SIM.mine[x.id]||{res:[]}, st=simState(x);
-  if(staff) simWatch(x); if(!SIM.offOk) simClock(); simTickStart(); SIM.cur=JSON.stringify(x); SIM.lastSec=null;
+  if(staff) simWatch(x); if(!SIM.offOk) simClock(); simTickStart(); simWake(); SIM.cur=JSON.stringify(x); SIM.lastSec=null;
   const mp=me?simPos(x,ACC.id):null, [L1,L2]=simLabel(x,st,mp,staff), timer=`<div class="simbox${st.paused?' paused':''}" id="simbox" data-ph="${st.k}"><div class="simtop"><span class="flagbar"></span><span>${esc(x.name)}</span><span>${SIMP[x.round]?SIMP[x.round][0]:'Custom'}</span></div>
     <div class="simlab" id="siml">${esc(L1)}</div><div class="simt" id="simt">${simShow(x,st,mp)}</div><div class="simsub" id="simsub">${esc(L2)}</div><div class="simprog"><i id="simbar"></i></div></div>`;
   const A0=mp!=null&&['move','climb'].includes(st.k)?athAt(x,st,mp):null, cur=A0&&(A0.act==='climb'||A0.act==='move')?A0.b:-1;
@@ -5555,8 +5761,8 @@ function renderSim(){ if(GUEST){ S.view='cal'; renderCal(); return; } simSub(); 
       ${sumBoxes(simScore(x,m))}`
     :me&&x.locked?'<p class="note">You didn’t join before the results were locked.</p>':me&&m.ans!=='no'?`<div class="card"><p class="note">Accept the invite to log results.</p><div class="row"><button class="btn" data-simans="${x.id}|yes">Accept</button><button class="btn ghost" data-simans="${x.id}|no">Decline</button></div></div>`:me?'<p class="note">You declined this simulation.</p>':'';
   const board=coach?simBoardHTML(x):x.locked?(x.final?simFinalHTML(x):'<div class="simboard"><p class="note sbp">Final results show here as soon as the coach’s phone sends them.</p></div>'):'';
-  app.innerHTML=`<div class="simfs"><div class="simbar"><button class="btn ghost" data-act="simback">‹ Back</button>${helpBtn('sim')}<button class="btn ghost" data-act="simfull">${S.st.simFull?'Exit full screen':'Full screen · landscape ⤢'}</button></div>
-    <div class="simgrid"><div class="simleft">${timer}${staff?simCtlHTML(x,st):''}${!SIM.offOk?'<p class="note">Syncing the clock…</p>':''}</div><div class="simright">${x.locked&&!coach?board+pane:pane+board}</div></div></div>`;
+  app.innerHTML=`<div class="simfs"><div class="simbar"><button class="simback" data-act="simback">${SVGI.back}<span>Comps</span></button><span class="sbsp"></span>${helpBtn('sim')}${canFS()?`<button class="simfsb" data-act="simfull" aria-pressed="${!!S.st.simFull}">${S.st.simFull?SVGI.unfull:SVGI.full}<span>${S.st.simFull?'Exit full screen':'Full screen'}</span></button>`:''}</div>
+    <div class="simgrid"><div class="simleft">${timer}${staff?simCtlHTML(x,st):''}${!SIM.offOk?'<p class="note">Syncing the clock…</p>':''}</div><div class="simright">${x.locked&&!coach?board+pane:pane+board}${staff&&(ACC.role==='supervisor'||x.by===ACC.id)?'<button class="del simdelx" data-act="simdel2">Delete this simulation</button>':''}</div></div></div>`;
   if(x.locked&&!staff) app.querySelectorAll('.simres button,.simres input,.simres textarea,.simz .zrow button').forEach(el=>{ el.disabled=true; });
   app.querySelectorAll('textarea').forEach(grow); }
 function simResHTML(x,m,i){ const r=simRes(m,i), key=x.id+'|'+i, at=+r.a||0, can=at>0&&+r.ta!==1, R=x.routes[i]||{};
@@ -5564,7 +5770,7 @@ function simResHTML(x,m,i){ const r=simRes(m,i), key=x.id+'|'+i, at=+r.a||0, can
   return `<div class="simres"><div class="srh"><b>Boulder ${i+1}</b>${x.mode==='same'&&(R.g||R.st.length)?`<span>${esc(R.g)}${R.st.length?' · '+esc(R.st.map(styName).join(', ')):''}</span>`:''}<span class="pts">${n1(ifscPts(r))} pts</span></div>
     ${x.mode==='same'&&R.note?`<p class="note">${esc(R.note)}</p>`:''}
     ${x.mode==='own'?`<div class="srown"><input type="text" data-simg="${key}" value="${esc(r.g||'')}" placeholder="Grade" autocapitalize="characters">${tagRowHTML('simst',key,r.st)}</div>`:''}
-    ${stp('a','Attempts','all goes')}${stp('za','Zone on attempt','– = no zone')}${stp('ta','Top on attempt','– = no top')}
+    ${compPickHTML('simz',key,r)}
     ${+r.za||+r.ta?`<p class="clab rfl">What went well? <small>your own words</small></p><textarea rows="2" data-simgood="${key}" placeholder="What worked, what felt great?">${esc(r.good||'')}</textarea>`:''}
     ${can||String(r.fw||'').trim()?`<p class="clab rfl">Why did you fall? <small>your own words</small></p><textarea rows="2" data-simfw="${key}" placeholder="What happened, what would you change?">${esc(r.fw||'')}</textarea>`:''}</div>`; }
 // ---- clicks and edits
@@ -5575,7 +5781,7 @@ function simClick(ds,b){
   if(ds.simans){ if(simById(ds.simans.split('|')[0])&&simById(ds.simans.split('|')[0]).locked){ toast('The coach already locked the results'); return true; } const [id,v]=ds.simans.split('|'), m=SIM.mine[id]||(SIM.mine[id]={res:[]}); m.ans=v; simSaveMine(id); render(); toast(v==='yes'?'You’re in. It shows on your calendar.':'Declined'); return true; }
   if(ds.act==='simnew'){ S.view='sim'; S.st.simDraft=simDraftNew(); render(); scrollTo(0,0); return true; }
   if(ds.act==='simback'){ simExit(); S.st.simFull=false; simUnwatch(); S.view='sims'; render(); return true; }
-  if(ds.act==='simfull'){ S.st.simFull=!S.st.simFull; if(S.st.simFull) simEnter(); else simExit(); render(); return true; }
+  if(ds.act==='simfull'){ S.st.simFull=!S.st.simFull; if(S.st.simFull) simEnter(); else { try{ screen.orientation.unlock(); }catch(e){} try{ if(document.fullscreenElement) document.exitFullscreen(); }catch(e){} } render(); return true; }
   if(ds.act==='simztog'){ const o=(SIM.mine[S.st.simId]||{}).z||{}, done=+o.bi&&+o.mi; S.st.simZ=S.st.simZ===true?false:S.st.simZ===false?true:!done?false:true; render(); return true; }
   const D=S.st.simDraft;
   if(D){ const fix=()=>{ D.routes=Array.from({length:D.n},(_,i)=>D.routes[i]||{g:'',st:[],note:''}); D.inv.forEach(a=>{ if(a.s>D.n) a.s=1; }); };
@@ -5586,7 +5792,7 @@ function simClick(ds,b){
     if(ds.simrr){ D.rr=!D.rr; render(); return true; }
     if(ds.simord){ const [id,d]=ds.simord.split('|'), i=D.inv.findIndex(z=>z.id===id), j=i+(+d); if(i<0||j<0||j>=D.inv.length) return true; const t=D.inv[i]; D.inv[i]=D.inv[j]; D.inv[j]=t; render(); return true; }
     if(ds.simrst){ const [i,...rest]=ds.simrst.split('|'), r=D.routes[+i]; r.st=tagToggle(r.st,rest.join('|')); render(); return true; }
-    if(ds.siminv){ const a=(TM.list||[]).find(z=>z.id===ds.siminv); if(!a) return true; const i=D.inv.findIndex(z=>z.id===a.id); if(i>=0) D.inv.splice(i,1); else D.inv.push({id:a.id,name:a.name,s:(D.inv.length%D.n)+1}); render(); return true; }
+    if(ds.siminv){ const i=D.inv.findIndex(z=>z.id===ds.siminv); if(i>=0){ D.inv.splice(i,1); render(); return true; } const a=(TM.list||[]).find(z=>z.id===ds.siminv); if(!a) return true; D.inv.push({id:a.id,name:a.name,s:(D.inv.length%D.n)+1}); render(); return true; }
     if(ds.act==='simcancel'){ S.st.simDraft=null; S.view=D.created?'sim':'sims'; render(); return true; }
     if(ds.act==='simsave'){ if(!D.inv.length){ toast('Invite at least one athlete'); return true; } if(!TEAM.db){ toast('No connection'); return true; } const id=D.id||rid(), x=simNorm(Object.assign({},D,{status:D.status==='draft'?'open':D.status,created:D.created||Date.now()}),id);
       simPut(x).then(()=>{ S.st.simDraft=null; S.st.simId=id; S.view='sim'; render(); toast(D.created?'Saved':'Invites sent'); }).catch(()=>toast('Couldn’t save. Check the connection.')); return true; }
@@ -5606,7 +5812,7 @@ function simClick(ds,b){
   if(x&&ds.simb!==undefined){ S.st.simB=S.st.simB===+ds.simb?null:+ds.simb; render(); return true; }
   if(ds.simzz){ const [id,f,n]=ds.simzz.split('|'), m=SIM.mine[id]; if(!m) return true; const o=m.z=Object.assign({},m.z||{}), v=+n; o[f]=o[f]===v?null:v; if((f==='bi'||f==='mi')&&!(+o[f]>1)) o[f==='bi'?'bd':'md']=null; const done=+o.bi&&+o.mi&&(+o.bi<=1||(o.bd!=null&&o.bd!==''))&&(+o.mi<=1||(o.md!=null&&o.md!=='')); S.st.simZ=done?false:true; simSaveMine(id); render(); if(done) toast('Stress saved. Tap the bar to change it.'); return true; }
   const rk=ds.simz||ds.simfo||ds.simst; if(rk){ const [id,i]=rk.split('|'), m=SIM.mine[id]; if(!m) return true; const res=m.res; while(res.length<=+i) res.push({}); const r=res[+i]=Object.assign({},res[+i]);
-    if(ds.simz){ const f=ds.simz.split('|')[2], d=+ds.simz.split('|')[3]; compStep(r,f,d); }
+    if(ds.simz){ const f=ds.simz.split('|')[2], d=String(ds.simz.split('|')[3]); if(d[0]==='=') compSet(r,f,+d.slice(1)); else compStep(r,f,+d); }
     else if(ds.simfo){ r.fo=1; }
     else if(ds.simst){ r.st=tagToggle(r.st,ds.simst.split('|').slice(2).join('|')); }
     simSaveMine(id); render(); return true; }
