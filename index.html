@@ -1647,6 +1647,16 @@ button.linkb{color:var(--ink)!important}
 /* a finished log: the white disc shows a check in the log's colour */
 .entry .ering.full b,.entry .ering.full b svg,.entry .ering.full b svg *{color:var(--c)!important}
 .ering b svg{position:static!important;transform:none!important;inset:auto!important}
+/* swipe right anywhere to go back: the page tilts away in its colour, a glowing arrow fills up and pops when letting go will close it */
+.sheet.swp{box-shadow:-24px 0 60px rgba(0,0,0,.28);position:relative;z-index:2;overflow:hidden;background:var(--bg)}
+#swbk{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(120% 70% at 0% 50%,color-mix(in srgb,var(--fc,#2F6FD1) calc(var(--f,0) * 70%),transparent),transparent 70%),linear-gradient(90deg,color-mix(in srgb,var(--fc,#2F6FD1) 22%,var(--bg)),var(--bg) 60%);opacity:calc(.35 + var(--f,0) * 1.6);transition:opacity .25s}
+#swbk i{position:absolute;left:22px;top:50%;width:58px;height:58px;margin-top:-29px;border-radius:50%;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,color-mix(in srgb,var(--fc,#2F6FD1) 70%,#fff),var(--fc,#2F6FD1) 50%,color-mix(in srgb,var(--fc,#2F6FD1) 65%,#000));box-shadow:0 10px 30px color-mix(in srgb,var(--fc,#2F6FD1) 50%,transparent),inset 0 1px 0 rgba(255,255,255,.4);transform:translateX(calc(-70px + var(--p,0) * 70px)) scale(calc(.55 + var(--p,0) * .45)) rotate(calc(-90deg + var(--p,0) * 90deg));transition:transform .08s linear}
+#swbk i::before{content:"";position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(rgba(255,255,255,.9) calc(var(--p,0) * 360deg),rgba(255,255,255,.15) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3px));mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3px))}
+#swbk.go i{transform:scale(1.15)!important;transition:transform .3s cubic-bezier(.3,1.8,.5,1)!important;box-shadow:0 0 0 10px color-mix(in srgb,var(--fc,#2F6FD1) 22%,transparent),0 14px 38px color-mix(in srgb,var(--fc,#2F6FD1) 60%,transparent)}
+#swbk.out i{transform:translateX(30px) scale(1.25)!important;opacity:0;transition:transform .3s,opacity .3s!important}
+#swbk.bye{opacity:0!important}
+.sheet.swp .ckedge{opacity:0}
+@media (prefers-reduced-motion:reduce){#swbk i{transition:none!important}}
 </style>
 </head>
 <body>
@@ -2320,18 +2330,27 @@ function tsMark(id){ const L=Array.isArray(S.cfg.tsSeen)?S.cfg.tsSeen.slice():[]
 
 // swipe right from the left edge: the page follows the finger, then slides out to the calendar
 const SWP={on:false};
-document.addEventListener('touchstart',ev=>{ if(!S.flow||ev.touches.length!==1) return; const t=ev.touches[0]; if(t.clientX>28) return; const el=document.querySelector('.sheet'); if(!el) return;
-  SWP.on=true; SWP.x0=t.clientX; SWP.y0=t.clientY; SWP.dx=0; SWP.lock=null; SWP.el=el; el.style.transition='none'; SWP.pin=false; },{passive:true});
+// swipe right from anywhere on the page to go back (not when the finger starts on a slider, a text box or a row that scrolls sideways)
+const swpNo=t=>{ if(!t||!t.closest) return true; if(t.closest('input,textarea,select,[data-qpad],[data-bsl],.rquick,.gchips,.snav,.sbscroll,.bodypick')) return true;
+  for(let e=t;e&&e!==document.body;e=e.parentElement){ if(e.scrollWidth>e.clientWidth+2){ const o=getComputedStyle(e).overflowX; if(o==='auto'||o==='scroll') return true; } } return false; };
+function swpBack(on){ let k=document.getElementById('swbk'); if(on&&!k){ k=document.createElement('div'); k.id='swbk'; k.setAttribute('aria-hidden','true'); k.innerHTML='<i><svg viewBox="0 0 24 24" width="26" height="26"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></i>'; const fc=getComputedStyle(SWP.el).getPropertyValue('--fc'); if(fc) k.style.setProperty('--fc',fc); document.body.appendChild(k); } return k; }
+document.addEventListener('touchstart',ev=>{ if(!S.flow||ev.touches.length!==1) return; const t=ev.touches[0], el=document.querySelector('.sheet'); if(!el) return; if(t.clientX>28&&swpNo(ev.target)) return;
+  SWP.on=true; SWP.x0=t.clientX; SWP.y0=t.clientY; SWP.t0=performance.now(); SWP.dx=0; SWP.lock=null; SWP.el=el; SWP.go=false; el.style.transition='none'; SWP.pin=false; },{passive:true});
 function swpPin(el){ const h=el.querySelector('.cktop'); if(!h) return; const r=h.getBoundingClientRect(), R=el.getBoundingClientRect(); h.style.cssText=`position:absolute!important;top:${r.top-R.top}px!important;left:${r.left-R.left}px!important;right:auto!important;width:${r.width}px`; SWP.pin=true; }
 function swpUnpin(el){ const h=el.querySelector('.cktop'); if(h) h.style.cssText=''; SWP.pin=false; }
+const swpLim=()=>Math.min(110,innerWidth*.28);
 document.addEventListener('touchmove',ev=>{ if(!SWP.on) return; const t=ev.touches[0], dx=t.clientX-SWP.x0, dy=t.clientY-SWP.y0;
-  if(SWP.lock==null&&(Math.abs(dx)>8||Math.abs(dy)>8)) SWP.lock=Math.abs(dx)>Math.abs(dy)*1.2?'x':'y'; if(SWP.lock!=='x') return;
-  if(ev.cancelable) ev.preventDefault(); if(!SWP.pin) swpPin(SWP.el); SWP.dx=Math.max(0,dx); const f=Math.min(1,SWP.dx/innerWidth);
-  SWP.el.style.transform=`translate3d(${SWP.dx}px,0,0) scale(${1-f*.06})`; SWP.el.style.opacity=String(1-f*.5); SWP.el.style.borderRadius=`${Math.round(f*40)}px`; },{passive:false});
-document.addEventListener('touchend',()=>{ if(!SWP.on) return; SWP.on=false; const el=SWP.el; if(!el) return; el.style.transition='transform .32s cubic-bezier(.2,.8,.2,1),opacity .32s';
-  if(SWP.lock==='x'&&SWP.dx>Math.min(110,innerWidth*.28)){ el.style.transform=`translate3d(${innerWidth}px,0,0) scale(.92)`; el.style.opacity='0'; buzz(); setTimeout(()=>{ const b=document.querySelector('.sheet [data-flx]'); if(b) b.click(); },260); }
-  else { el.style.transform=''; el.style.opacity=''; el.style.borderRadius=''; setTimeout(()=>{ if(!SWP.on) swpUnpin(el); },330); } });
-document.addEventListener('touchcancel',()=>{ if(!SWP.on) return; SWP.on=false; const el=SWP.el; if(!el) return; el.style.transition='transform .32s cubic-bezier(.2,.8,.2,1),opacity .32s'; el.style.transform=''; el.style.opacity=''; el.style.borderRadius=''; setTimeout(()=>{ if(!SWP.on) swpUnpin(el); },330); });
+  if(SWP.lock==null&&(Math.abs(dx)>10||Math.abs(dy)>10)) SWP.lock=dx>0&&Math.abs(dx)>Math.abs(dy)*1.3?'x':'y'; if(SWP.lock!=='x') return;
+  if(ev.cancelable) ev.preventDefault(); if(!SWP.pin){ swpPin(SWP.el); SWP.el.classList.add('swp'); } SWP.dx=Math.max(0,dx); SWP.vx=dx/Math.max(1,performance.now()-SWP.t0); const f=Math.min(1,SWP.dx/innerWidth), p=Math.min(1,SWP.dx/swpLim());
+  SWP.el.style.transform=`translate3d(${SWP.dx}px,0,0) scale(${1-f*.07}) rotate(${(f*2.2).toFixed(2)}deg)`; SWP.el.style.borderRadius=`${Math.round(f*48)}px`;
+  const k=swpBack(true); k.style.setProperty('--p',p.toFixed(3)); k.style.setProperty('--f',f.toFixed(3)); const go=p>=1; if(go!==SWP.go){ SWP.go=go; k.classList.toggle('go',go); buzz(); } },{passive:false});
+function swpEnd(cancel){ if(!SWP.on) return; SWP.on=false; const el=SWP.el; if(!el) return; const k=document.getElementById('swbk');
+  if(SWP.lock!=='x'){ return; }
+  const close=!cancel&&(SWP.dx>swpLim()||(SWP.dx>50&&SWP.vx>.55));
+  el.style.transition='transform .34s cubic-bezier(.2,.8,.2,1),opacity .34s,border-radius .34s';
+  if(close){ el.style.transform=`translate3d(${innerWidth*1.05}px,0,0) scale(.9) rotate(4deg)`; el.style.opacity='0'; if(k){ k.classList.add('go','out'); } setTimeout(()=>{ const b=document.querySelector('.sheet [data-flx]'); if(b) b.click(); const kk=document.getElementById('swbk'); if(kk){ kk.classList.add('bye'); setTimeout(()=>kk.remove(),260); } },280); }
+  else { el.style.transform=''; el.style.opacity=''; el.style.borderRadius=''; if(k){ k.classList.add('bye'); setTimeout(()=>k.remove(),300); } setTimeout(()=>{ if(!SWP.on){ swpUnpin(el); el.classList.remove('swp'); } },340); } }
+document.addEventListener('touchend',()=>swpEnd(false)); document.addEventListener('touchcancel',()=>swpEnd(true));
 // the phone's own back button or back gesture closes the check-in page too, instead of leaving the app
 const BKH={pushed:null,ign:0};
 // pages that sit on top of the tabs: the check-in page and the comp clock. The phone's back takes you out of them, not out of the app.
