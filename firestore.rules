@@ -33,7 +33,8 @@ service cloud.firestore {
     match /board/{id} {
       allow read: if member();
       allow create, update: if member() && id == me() && (roleOf(id) == 'athlete' || roleOf(id) == 'supervisor')
-        && request.resource.data.keys().hasOnly(['name','streak','wk','mo','sleep','mins','climbs','at','wkey'])
+        && request.resource.data.keys().hasOnly(['name','streak','wk','mo','sleep','mins','climbs','at','wkey','pic'])
+        && (!('pic' in request.resource.data) || (request.resource.data.pic is string && request.resource.data.pic.size() <= 60000 && request.resource.data.pic.matches('^data:image/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$')))
         && request.resource.data.name is string && request.resource.data.name.size() <= 40
         && request.resource.data.streak is int && request.resource.data.mo is int && request.resource.data.mo <= 31;
       allow delete: if (member() && id == me()) || isStaff();
