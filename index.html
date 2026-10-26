@@ -3726,7 +3726,8 @@ Each number is the last test result in kg or seconds. Next to it: how much it ch
 Leaderboards for the whole team: streak, check-ins, sleep, training time and climbs. On the podium, gold, silver and bronze show how many boards each person is 1st, 2nd or 3rd in. Most gold wins, then silver, then bronze.|Visos komandos reitingai: serija, įrašai, miegas, treniruočių laikas ir trasos. Podiume auksas, sidabras ir bronza rodo, keliuose reitinguose žmogus yra 1-as, 2-as ar 3-ias. Laimi daugiausia aukso, tada sidabro, tada bronzos.|Рейтинги всієї команди: серія, записи, сон, час тренувань і траси. На подіумі золото, срібло й бронза показують, у скількох рейтингах людина 1-ша, 2-га чи 3-тя. Перемагає найбільше золота, потім срібла, потім бронзи.
 Only for you as supervisor|Tik tau kaip vadovui|Лише для тебе як керівника
 For coaches|Treneriams|Для тренерів
-For athletes|Sportininkams|Для спортсменів`;
+For athletes|Sportininkams|Для спортсменів
+1 s hold|1 s išlaikymas|утримання 1 с`;
 // words that change with a number, and lines built from numbers or names
 const plLT=(n,a,b,c)=>{ n=Math.abs(Math.round(+n||0)); const d=n%10, t=n%100; return d===1&&t!==11?a:d>=2&&d<=9&&(t<12||t>19)?b:c; };
 const plUK=(n,a,b,c)=>{ n=Math.abs(Math.round(+n||0)); const d=n%10, t=n%100; return d===1&&t!==11?a:d>=2&&d<=4&&(t<12||t>14)?b:c; };
@@ -4532,11 +4533,11 @@ const tsTpl=(T,name)=>(T||[]).find(t=>t.perf&&nkS(tName(t))===nkS(name));
 function tsEntry(months,tpl,date){ if(!tpl) return null; const [y,m,d]=date.split('-'), mo=months&&months[`${y}-${m}`]; return ((mo&&mo.days&&mo.days[String(+d)])||[]).find(e=>e.tid===tpl.id)||null; }
 // one number per athlete for the ranking: % of bodyweight when it is a finger test, otherwise the raw result (both hands averaged)
 function tsScore(tpl,e){ if(!tpl||!e) return null; let bw=null; const parts=[], out=[];
-  tpl.fields.forEach(f=>{ const it=(e.items||[]).find(i=>i.fid===f.id); if(!it||!compsOf(f).includes('X')) return; const c=normX(it.x||f.x), V=xVals(it); if(c.role==='bw'){ bw=V.v; return; } parts.push({f,c,V}); });
+  tpl.fields.forEach(f=>{ const it=(e.items||[]).find(i=>i.fid===f.id); if(!it||!compsOf(f).includes('X')) return; const c=normX(it.x||f.x), V=xVals(it); if(c.role==='bw'){ bw=V.v; return; } parts.push({f,c,V,s1:xSec(it)===1}); });
   let score=null, unit=''; parts.forEach(({f,c,V})=>{ const sides=c.lr?['l','r']:['v'], pct=c.u==='kg'&&!!c.bw&&bw; const vals=sides.map(sd=>V[sd]).filter(v=>v!=null).map(v=>pct?xPct(c,v,bw):v);
     sides.forEach(sd=>{ if(V[sd]!=null) out.push(`${c.lr?(sd==='l'?'L ':'R '):''}${V[sd]}${c.u?' '+c.u:''}${pct?` (${xPct(c,V[sd],bw)}%)`:''}`); });
     if(score==null&&vals.length){ score=Math.round(vals.reduce((a,b)=>a+b,0)/vals.length*10)/10; unit=pct?'%':(c.u?' '+c.u:''); } });
-  return {score,unit,text:out.join(' · '),bw}; }
+  if(parts.some(p=>p.s1)) out.push('1 s hold'); return {score,unit,text:out.join(' · '),bw,s1:parts.some(p=>p.s1)}; }
 function renderTests(){ if(ACC.role!=='coach'){ S.view='cal'; renderCal(); return; } teamSub(); ensurePerf(); planRefresh(); const P=atPeople(); P.forEach(a=>atLoad(a));
   const L=tsAll(), M=TSN.make, tests=tsTests(P);
   const tick='<svg viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -7567,7 +7568,7 @@ function xResText(e,it){ const c=xcfg(e,it), day=XDAY||S.sel; if(c.role==='bw') 
 function xExport(it){ const c=xcfg(XENT,it), V=xVals(it), u=c.u?' '+c.u:'', day=XDAY||S.sel; if(c.role==='bw') return `bodyweight ${V.v} kg`;
   const parts=c.lr?[['l','left'],['r','right']]:[['v','']]; let s=parts.filter(([k])=>V[k]!=null).map(([k,l])=>`${l?l+' ':''}${V[k]}${u}`).join(', ');
   if(c.u==='kg'&&c.bw){ const bw=bwOf(XENT,day); if(bw) s+=` = ${parts.filter(([k])=>V[k]!=null).map(([k,l])=>`${l?l+' ':''}${xPct(c,V[k],bw)}%`).join(', ')} of bodyweight (${bw} kg; ${c.bw==='hang'?'bodyweight + added':'kg on the hand'})`; }
-  return s; }
+  return s+(xSec(it)===1?' (1 s hold, not the usual 7 s)':''); }
 // ---- Scale part: 7 points, every item worded so 7 is the good end. Compared with your own normal (last 4 weeks).
 // Why 7 points: Hooper-style daily wellness items use 1–7, and a 7-point scale picked up changes better than a 0–100 line in athletes.
 // Why your own normal: self-reports react to training load best when compared with the same athlete's baseline (Saw et al. 2016).
