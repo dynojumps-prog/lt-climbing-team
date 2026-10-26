@@ -2027,6 +2027,25 @@ html.swpon .sheet .cks,html.swpon .sheet .card{box-shadow:none!important}
 .sheet.swp,.sheet.swp.swp{background:transparent!important;will-change:auto!important;box-shadow:none!important;border-radius:0!important;overflow:visible!important;contain:none!important;z-index:3!important}
 .newsbox{background:var(--bg)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 .newsov{background:rgba(5,10,15,.62)!important}
+
+/* ---- What's new: light green bubble card, every change in its own white bubble, solid (nothing shows through) ---- */
+.newsov .newsbox{--ng:#1F9D55;background:linear-gradient(180deg,#F0FBF3 0%,#DFF4E6 100%)!important;color:#0F2E1E!important;border:0!important;border-radius:30px!important;box-shadow:0 30px 80px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.9)!important;padding:22px 18px 16px!important}
+.newsov .newsbox .newsk{color:var(--ng)!important;display:inline-flex;align-items:center;gap:8px;background:#fff;border-radius:999px;padding:5px 12px;box-shadow:0 2px 8px rgba(31,157,85,.15)}
+.newsov .newsbox h2{color:#0F2E1E!important;font-size:1.9rem!important;margin:10px 0 14px!important}
+.newsov .newsbox .newsl{color:#fff!important;background:var(--ng);display:inline-block;border-radius:999px;padding:5px 12px;margin:16px 0 8px!important;letter-spacing:.08em}
+.newsov .newsbox .newsul{display:flex;flex-direction:column;gap:8px}
+.newsov .newsbox .newsul li{position:relative;background:#fff!important;border:0!important;border-radius:20px;padding:12px 14px 12px 46px!important;box-shadow:0 4px 14px rgba(15,46,30,.08),inset 0 1px 0 #fff}
+.newsov .newsbox .newsul li::before{content:"✓";position:absolute;left:12px;top:12px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;font-weight:900;color:#fff;background:linear-gradient(160deg,#3CC97A,#1F9D55);box-shadow:0 3px 8px rgba(31,157,85,.35)}
+.newsov .newsbox .newsul b{color:#0F2E1E!important;font-size:1rem!important}
+.newsov .newsbox .newsul span{color:#2F5A42!important;font-size:.9rem!important;line-height:1.4!important;margin-top:2px}
+.newsov .newsbox .langb{background:#fff!important;border-color:transparent!important;box-shadow:0 4px 14px rgba(15,46,30,.08)}
+.newsov .newsbox .langb.on{border-color:var(--ng)!important;box-shadow:0 0 0 2px var(--ng),0 6px 16px rgba(31,157,85,.25)!important}
+.newsov .newsbox .langb b{color:#0F2E1E!important}
+.newsov .newsbox .newsf{background:#DFF4E6!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border-top:1px solid rgba(31,157,85,.18)!important;box-shadow:0 -10px 20px #DFF4E6}
+.newsov .newsbox .newsok{background:linear-gradient(160deg,#3CC97A,#1F9D55)!important;color:#fff!important;border:0!important;border-radius:999px!important;box-shadow:0 8px 20px rgba(31,157,85,.35),inset 0 1px 0 rgba(255,255,255,.35)!important}
+.newsov .newsbox .newsdet,.newsov .newsbox .newsok2{background:#fff!important;color:#1F7A45!important;border:0!important;border-radius:999px!important;box-shadow:0 4px 12px rgba(15,46,30,.1)!important}
+.newsov .newsbox .newsn,.newsov .newsbox .note{color:#2F5A42!important}
+.newsov .newsbox .ndi{background:#fff}
 </style>
 </head>
 <body>
@@ -5340,7 +5359,7 @@ function newsHTML(){ const staff=ACC.role==='coach'||ACC.role==='supervisor', C=
   return `<div class="newsbox" role="dialog" aria-modal="true" aria-labelledby="newsh"><div class="newsk"><span class="flagbar"></span>Update</div><h2 id="newsh">What’s new</h2><div class="langs">${LANGS.map(([k,n])=>`<button class="langb${L10N.lang===k?' on':''}" data-lang="${k}" aria-pressed="${L10N.lang===k}" translate="no"><span class="lflag">${LANGFLAG[k]}</span><b>${n}</b></button>`).join('')}</div>
     ${C.length?`<p class="newsl">For you as ${ACC.role==='coach'?'coach':'supervisor'}</p><ul class="newsul">${C.map(li).join('')}</ul><p class="newsl">For everyone</p>`:''}
     <ul class="newsul">${NEWS_ALL.map(li).join('')}</ul>
-    <div class="newsf"><button class="btn ghost newsdet" data-newsdet="1">Details: what each change is based on</button><button class="btn newsok" data-newsok="1">OK</button><p class="note newsn">You can see this again in Customize → What’s new.</p></div></div>`; }
+    <div class="newsf"><button class="btn ghost newsdet" data-newsdet="1">What it’s based on</button><button class="btn newsok" data-newsok="1">OK</button><p class="note newsn">You can see this again in Customize → What’s new.</p></div></div>`; }
 function newsOpen(){ if(document.getElementById('news')) return; const o=document.createElement('div'); o.id='news'; o.className='newsov'; o.innerHTML=newsHTML(); l10n(o); document.body.appendChild(o);
   o.addEventListener('click',ev=>{ if(ev.target.closest('[data-newsok]')) newsClose(); else if(ev.target.closest('[data-newsdet]')){ o.innerHTML=newsDetailHTML(); l10n(o); o.scrollTop=0; const bx=o.querySelector('.newsbox'); if(bx) bx.scrollTop=0; } else if(ev.target.closest('[data-newsback]')){ o.innerHTML=newsHTML(); l10n(o); } else { const lb=ev.target.closest('[data-lang]'); if(lb){ langPick(lb.dataset.lang); o.innerHTML=newsHTML(); l10n(o); } } }); const b=o.querySelector('.newsok'); if(b) try{ b.focus({preventScroll:true}); }catch(e){} }
 function newsClose(){ const o=document.getElementById('news'); if(o) o.remove(); if(!GUEST&&S.cfg.news!==NEWS_V){ S.cfg.news=NEWS_V; saveCfg(); } }
