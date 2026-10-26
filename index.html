@@ -1815,6 +1815,22 @@ button.linkb{color:var(--ink)!important}
 .s7e{font-size:.74rem}
 .s7e span{max-width:48%}
 
+
+/* swipe back, light: while the finger moves the page is one flat layer (no shadow, no rounded clip, no blur, paused animations) */
+.sheet.swp{box-shadow:none!important;border-radius:0!important;overflow:visible!important;contain:layout paint}
+html.swpon .sheet *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;animation-play-state:paused!important;transition:none!important}
+html.swpon .sheet .cks,html.swpon .sheet .card{box-shadow:none!important}
+#swbk .swed{position:absolute;top:0;bottom:0;left:-26px;width:26px;background:linear-gradient(90deg,transparent,rgba(30,0,0,.35));will-change:transform;transform:translate3d(0,0,0)}
+.pcrop{position:fixed;inset:0;z-index:80;background:rgba(5,10,15,.72);display:grid;place-items:center;padding:16px;animation:pcin .2s ease-out}
+.pcrop.bye{opacity:0;transition:opacity .2s}
+@keyframes pcin{from{opacity:0}}
+.pcbox{background:var(--bg,#fff);border-radius:26px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:0 20px 60px rgba(0,0,0,.45);max-width:100%}
+.pcbox h3{margin:0;align-self:flex-start}
+.pcst{position:relative;overflow:hidden;border-radius:20px;background:#111;touch-action:none;cursor:grab}
+.pcst img{position:absolute;left:50%;top:50%;max-width:none;user-select:none;-webkit-user-select:none;pointer-events:none;transform-origin:50% 50%;will-change:transform}
+.pcring{position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 999px rgba(0,0,0,.55);outline:2px solid rgba(255,255,255,.9);outline-offset:-2px;pointer-events:none}
+.pcz{width:100%}
+.pcb{display:flex;gap:10px;width:100%}.pcb .btn{flex:1}
 /* ---- swipe back v3: deep red side, arrow rides the page edge, sparks; smooth (transform/opacity only) ---- */
 .sheet.swp{will-change:transform;border-radius:26px;overflow:hidden;box-shadow:-18px 0 40px rgba(60,0,0,.35)!important}
 #swbk{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0;background:none!important;transition:opacity .2s}
@@ -3617,7 +3633,9 @@ Your mood scores have been low all week. Talking to someone you trust, your coac
 Happy Halloween!|Linksmo Helovino!|Щасливого Гелловіну!
 Boo!|Bū!|Бу!
 Ho ho ho! Top!|Ho ho ho! Topas!|Хо-хо-хо! Топ!
-Ho ho ho! Next stop: the chimney|Ho ho ho! Kita stotelė – kaminas|Хо-хо-хо! Наступна зупинка — комин`;
+Ho ho ho! Next stop: the chimney|Ho ho ho! Kita stotelė – kaminas|Хо-хо-хо! Наступна зупинка — комин
+Fit your picture|Pritaikyk nuotrauką|Налаштуй фото
+Zoom|Priartinti|Масштаб`;
 // words that change with a number, and lines built from numbers or names
 const plLT=(n,a,b,c)=>{ n=Math.abs(Math.round(+n||0)); const d=n%10, t=n%100; return d===1&&t!==11?a:d>=2&&d<=9&&(t<12||t>19)?b:c; };
 const plUK=(n,a,b,c)=>{ n=Math.abs(Math.round(+n||0)); const d=n%10, t=n%100; return d===1&&t!==11?a:d>=2&&d<=4&&(t<12||t>14)?b:c; };
@@ -3659,7 +3677,7 @@ const TRX=[
  [/^Copy (.+)’s data for AI$/,{lt:m=>`Kopijuoti duomenis AI (${m[1]})`,uk:m=>`Копіювати дані ${m[1]} для ШІ`}],
  [/^(.+)’s log$/,{lt:m=>`${m[1]}: dienynas`,uk:m=>`${m[1]}: запис`}],
  [/^Read only\. Only (.+) can change it\.$/,{lt:m=>`Tik peržiūra. Keisti gali tik ${m[1]}.`,uk:m=>`Лише перегляд. Змінювати може тільки ${m[1]}.`}],
- [/^What is (.+)\?$/,{lt:m=>`Kas yra ${m[1]}?`,uk:m=>`Що таке ${m[1]}?`}],
+ [/^What is (.+)\?$/,{lt:m=>`Kas yra ${NM(m[1])}?`,uk:m=>`Що таке ${NM(m[1])}?`}],
  [/^(.+): not done$/,{lt:m=>`${T(m[1])}: nepadaryta`,uk:m=>`${T(m[1])}: не зроблено`}],
  [/^First (.+)$/,{lt:m=>`Pirmasis ${m[1]}`,uk:m=>`Перший ${m[1]}`}],
  [/^(.+) in every style$/,{lt:m=>`${m[1]} visais stiliais`,uk:m=>`${m[1]} в усіх стилях`}],
@@ -3744,8 +3762,8 @@ const TRX=[
  [/^(\d+) tests$/,{lt:m=>`${m[1]} ${plLT(m[1],'testas','testai','testų')}`,uk:m=>`${m[1]} ${plUK(m[1],'тест','тести','тестів')}`}],
  [/^Last time (.+) · use$/,{lt:m=>`Praeitą kartą ${m[1]} · naudoti`,uk:m=>`Минулого разу ${m[1]} · взяти`}],
  [/^(.+) (\d+), (.+)$/,{lt:m=>{ const r=T(m[3]); return r===m[3]?null:`${m[1]} ${m[2]}, ${r}`; },uk:m=>{ const r=T(m[3]); return r===m[3]?null:`${m[1]} ${m[2]}, ${r}`; }}],
- [/^(.+) text$/,{lt:m=>`${m[1]}: tekstas`,uk:m=>`${m[1]}: текст`}],
- [/^(.+) new item$/,{lt:m=>`${m[1]}: naujas punktas`,uk:m=>`${m[1]}: новий пункт`}],
+ [/^(.+) text$/,{lt:m=>`${NM(m[1])}: tekstas`,uk:m=>`${NM(m[1])}: текст`}],
+ [/^(.+) new item$/,{lt:m=>`${NM(m[1])}: naujas punktas`,uk:m=>`${NM(m[1])}: новий пункт`}],
  [/^Best for (.+): (.+)\.$/,{lt:m=>`Geriausia laukui „${m[1]}“: ${m[2].split(' + ').map(x=>T(x)).join(' + ')}.`,uk:m=>`Найкраще для «${m[1]}»: ${m[2].split(' + ').map(x=>T(x)).join(' + ')}.`}],
  [/^Tap to add or remove parts\. Best for (.+):$/,{lt:m=>`Paspausk, kad pridėtum ar pašalintum dalis. Geriausia laukui „${m[1]}“:`,uk:m=>`Натисни, щоб додати або прибрати частини. Найкраще для «${m[1]}»:`}],
  [/^([^:]+): ((?:[^+]+ \+ )+[^+]+)$/,{lt:m=>{ const p=m[2].split(' + '), r=p.map(x=>T(x)); return r.join()===p.join()?null:`${m[1]}: ${r.join(' + ')}`; },uk:m=>{ const p=m[2].split(' + '), r=p.map(x=>T(x)); return r.join()===p.join()?null:`${m[1]}: ${r.join(' + ')}`; }}],
@@ -3754,9 +3772,14 @@ let TRM=null;
 function trBuild(){ TRM={lt:new Map(),uk:new Map()}; String(typeof TRT==='string'?TRT:'').split('\n').forEach(l=>{ const p=l.split('|'); if(p.length<3) return; const k=p[0].trim(); if(!k) return; if(p[1].trim()) TRM.lt.set(k,p[1].trim()); if(p[2].trim()) TRM.uk.set(k,p[2].trim()); }); }
 const TRC={lt:new Map(),uk:new Map()};
 function T(s){ if(L10N.lang==='en'||s==null) return s; if(!TRM) trBuild(); const k=String(s), L=L10N.lang, v=TRM[L].get(k); if(v!=null) return v; const C=TRC[L]; if(C.has(k)) return C.get(k); let out=k; if(typeof TRX!=='undefined') for(const [re,f] of TRX){ const m=re.exec(k); if(m&&f[L]){ const r=f[L](m); if(r!=null){ out=r; break; } } } if(C.size>6000) C.clear(); C.set(k,out); return out; }
-function l10n(root){ if(!root||L10N.lang==='en') return; if(!TRM) trBuild(); const w=document.createTreeWalker(root,5,{acceptNode:n=>n.nodeType===1?((n.getAttribute&&n.getAttribute('translate')==='no')||n.nodeName==='SCRIPT'||n.nodeName==='STYLE'||n.nodeName==='TEXTAREA'?2:3):1}); let n;
+function l10n(root){ if(!root) return; if(L10N.lang==='en'){ nameTr(root); return; } if(!TRM) trBuild(); const w=document.createTreeWalker(root,5,{acceptNode:n=>n.nodeType===1?((n.getAttribute&&n.getAttribute('translate')==='no')||n.nodeName==='SCRIPT'||n.nodeName==='STYLE'||n.nodeName==='TEXTAREA'?2:3):1}); let n;
   while((n=w.nextNode())){ const v=n.nodeValue, t=v.trim(); if(!t||t.length>900) continue; const tk=n.parentNode&&n.parentNode.getAttribute&&n.parentNode.getAttribute('data-tk'); let r=tk?T(tk+'::'+t):t; if(!tk||r===tk+'::'+t) r=T(t); if(r!==t) n.nodeValue=v.replace(t,r); }
-  if(root.querySelectorAll) root.querySelectorAll('[placeholder],[aria-label],[title]').forEach(e=>{ for(const a of ['placeholder','aria-label','title']){ const v=e.getAttribute(a); if(v){ const t=v.trim(), r=T(t); if(r!==t) e.setAttribute(a,r); } } }); }
+  if(root.querySelectorAll) root.querySelectorAll('[placeholder],[aria-label],[title]').forEach(e=>{ for(const a of ['placeholder','aria-label','title']){ const v=e.getAttribute(a); if(v){ const t=v.trim(), r=T(t); if(r!==t) e.setAttribute(a,r); } } });  nameTr(root); }
+// log type and field names: the team's own words get shown in the chosen language too (only these known names; anything else stays as written)
+const NAMES={"prieš trieša":{"en": "Before training", "lt": "Prieš trieša", "uk": "Перед тренуванням"},"per trieša":{"en": "During training", "lt": "Per trieša", "uk": "Під час тренування"},"po triešos":{"en": "After training", "lt": "Po triešos", "uk": "Після тренування"},"restday":{"en": "Rest day", "lt": "Poilsio diena", "uk": "День відпочинку"},"baseline":{"en": "Baseline", "lt": "Bazinė būsena", "uk": "Базовий рівень"},"before comp day":{"en": "Day before comp", "lt": "Diena prieš varžybas", "uk": "День перед змаганнями"},"comp day":{"en": "Comp day", "lt": "Varžybų diena", "uk": "День змагань"},"kūno patikra":{"en": "Body check", "lt": "Kūno patikra", "uk": "Перевірка тіла"},"miegas":{"en": "Sleep", "lt": "Miegas", "uk": "Сон"},"maistas":{"en": "Food", "lt": "Maistas", "uk": "Їжа"},"maisto papildai":{"en": "Supplements", "lt": "Maisto papildai", "uk": "Добавки"},"energija":{"en": "Energy", "lt": "Energija", "uk": "Енергія"},"kūnas":{"en": "Body", "lt": "Kūnas", "uk": "Тіло"},"fokusas":{"en": "Focus", "lt": "Fokusas", "uk": "Фокус"},"emocijos":{"en": "Emotions", "lt": "Emocijos", "uk": "Емоції"},"oda":{"en": "Skin", "lt": "Oda", "uk": "Шкіра"},"apšilimas":{"en": "Warm-up", "lt": "Apšilimas", "uk": "Розминка"},"stresas":{"en": "Stress", "lt": "Stresas", "uk": "Стрес"},"krūvis":{"en": "Training load", "lt": "Krūvis", "uk": "Навантаження"},"pirštai":{"en": "Fingers", "lt": "Pirštai", "uk": "Пальці"},"pirštų skausmas":{"en": "Finger pain", "lt": "Pirštų skausmas", "uk": "Біль у пальцях"},"pirštų testas":{"en": "Finger test", "lt": "Pirštų testas", "uk": "Тест пальців"},"kaip jaučuosi":{"en": "How I feel", "lt": "Kaip jaučiuosi", "uk": "Як я почуваюся"},"kaip nusiteikes treniruotei?":{"en": "Mindset for training?", "lt": "Kaip nusiteikęs treniruotei?", "uk": "Який настрій на тренування?"},"kas vyko trenirutoeje":{"en": "What happened in training", "lt": "Kas vyko treniruotėje", "uk": "Що було на тренуванні"},"ko išmokau":{"en": "What I learned", "lt": "Ko išmokau", "uk": "Чого я навчився"},"note":{"en": "Note", "lt": "Pastaba", "uk": "Нотатка"},"performance":{"en": "Performance", "lt": "Atlikimas", "uk": "Виконання"},"proteinas":{"en": "Protein", "lt": "Baltymai", "uk": "Білок"},"vanduo":{"en": "Water", "lt": "Vanduo", "uk": "Вода"},"kūno svoris":{"en": "Bodyweight", "lt": "Kūno svoris", "uk": "Вага тіла"},"pastabos":{"en": "Notes", "lt": "Pastabos", "uk": "Нотатки"},"rezultatas":{"en": "Result", "lt": "Rezultatas", "uk": "Результат"},"pridėtas svoris · 2 kartai":{"en": "Added weight · 2 reps", "lt": "Pridėtas svoris · 2 kartai", "uk": "Додаткова вага · 2 повтори"},"90° · viena ranka":{"en": "90° · one arm", "lt": "90° · viena ranka", "uk": "90° · одна рука"},"max 7 s · 20 mm · half crimp":{"en": "Max 7 s · 20 mm · half crimp", "lt": "Maks. 7 s · 20 mm · pusė krimpo", "uk": "Макс 7 с · 20 мм · напівкримп"},"stresas ir adrenalinas":{"en": "Stress and adrenaline", "lt": "Stresas ir adrenalinas", "uk": "Стрес і адреналін"},"boulderiai":{"en": "Boulders", "lt": "Boulderiai", "uk": "Боулдери"},"lipimas":{"en": "Climbing", "lt": "Lipimas", "uk": "Лазіння"},"varžybos":{"en": "Comps", "lt": "Varžybos", "uk": "Змагання"},"prisitraukimai":{"en": "Pull-ups", "lt": "Prisitraukimai", "uk": "Підтягування"},"naujas tipas":{"en": "New type", "lt": "Naujas tipas", "uk": "Новий тип"}}, NAMEK=Object.keys(NAMES).sort((a,b)=>b.length-a.length);
+function NM(t){ if(typeof window!=='undefined'&&window.__noNames) return t; const s=String(t), lo=s.toLowerCase(); for(const k of NAMEK){ if(lo===k||lo.startsWith(k+' ')||lo.startsWith(k+':')||lo.startsWith(k+',')){ const x=NAMES[k][L10N.lang]; return x?x+s.slice(k.length):s; } } return s; }
+function nameTr(root){ if(!root||(typeof window!=='undefined'&&window.__noNames)) return; const w=document.createTreeWalker(root,5,{acceptNode:n=>n.nodeType===1?((n.getAttribute&&n.getAttribute('translate')==='no')||n.nodeName==='SCRIPT'||n.nodeName==='STYLE'||n.nodeName==='TEXTAREA'?2:3):1}); let n;
+  while((n=w.nextNode())){ const v=n.nodeValue, t=v.trim(); if(!t||t.length>80) continue; const r=NM(t); if(r!==t) n.nodeValue=v.replace(t,r); } }
 function H10(h){ if(L10N.lang==='en'||!h) return h; const d=document.createElement('div'); d.innerHTML=h; l10n(d); return d.innerHTML; }
 function langSet(l){ if(!['lt','en','uk'].includes(l)) return; L10N.lang=l; try{ localStorage.setItem('ct:lang',l); }catch(e){} try{ document.documentElement.lang=l; }catch(e){} }
 try{ document.documentElement.lang=L10N.lang; }catch(e){}
@@ -4493,20 +4516,21 @@ function swpPin(el){ const h=el.querySelector('.cktop'); if(!h) return; const r=
 function swpUnpin(el){ const h=el.querySelector('.cktop'); if(h) h.style.cssText=''; SWP.pin=false; }
 const swpLim=()=>Math.min(110,innerWidth*.28);
 function swpFrame(){ SWP.raf=0; if(!SWP.on||SWP.lock!=='x') return; const el=SWP.el, dx=SWP.dx, f=Math.min(1,dx/innerWidth), p=Math.min(1,dx/swpLim());
-  el.style.transform=`translate3d(${dx}px,0,0) rotate(${(f*1.6).toFixed(2)}deg)`;
+  el.style.transform=`translate3d(${dx}px,0,0)`; const ed=SWP.ed; if(ed) ed.style.transform=`translate3d(${dx}px,0,0)`;
   const k=swpBack(true); k.style.opacity=Math.min(1,.25+p*1.1).toFixed(3); const ar=k.querySelector('i'); if(ar){ ar.style.transform=`translate3d(${Math.max(14,dx/2-29).toFixed(1)}px,-50%,0) scale(${(.55+.45*p).toFixed(3)})`; ar.style.setProperty('--p',p.toFixed(3)); }
-  if(dx-SWP.sx>14){ SWP.sx=dx; swpSpark(dx-2); }
+  if(dx-SWP.sx>48){ SWP.sx=dx; swpSpark(dx-2); }
   const go=p>=1; if(go!==SWP.go){ SWP.go=go; k.classList.toggle('go',go); buzz(); if(go) swpSpark(Math.max(43,dx/2),innerHeight/2,true); } }
 document.addEventListener('touchmove',ev=>{ if(!SWP.on) return; const t=ev.touches[0], dx=t.clientX-SWP.x0, dy=t.clientY-SWP.y0;
   if(SWP.lock==null&&(Math.abs(dx)>10||Math.abs(dy)>10)) SWP.lock=dx>0&&Math.abs(dx)>Math.abs(dy)*1.3?'x':'y'; if(SWP.lock!=='x') return;
-  if(ev.cancelable) ev.preventDefault(); if(!SWP.pin){ swpPin(SWP.el); SWP.el.classList.add('swp'); swpBack(true); }
+  if(ev.cancelable) ev.preventDefault(); if(!SWP.pin){ swpPin(SWP.el); SWP.el.classList.add('swp'); document.documentElement.classList.add('swpon'); const k=swpBack(true); if(!k.querySelector('.swed')) k.insertAdjacentHTML('beforeend','<span class="swed"></span>'); SWP.ed=k.querySelector('.swed'); }
   SWP.dx=Math.max(0,dx); SWP.vx=dx/Math.max(1,performance.now()-SWP.t0); if(!SWP.raf) SWP.raf=requestAnimationFrame(swpFrame); },{passive:false});
 function swpEnd(cancel){ if(!SWP.on) return; SWP.on=false; if(SWP.raf){ cancelAnimationFrame(SWP.raf); SWP.raf=0; } const el=SWP.el; if(!el) return; const k=document.getElementById('swbk');
   if(SWP.lock!=='x'){ return; }
   const close=!cancel&&(SWP.dx>swpLim()||(SWP.dx>50&&SWP.vx>.55));
-  el.style.transition='transform .32s cubic-bezier(.2,.8,.2,1),opacity .32s';
-  if(close){ el.style.transform=`translate3d(${innerWidth*1.05}px,0,0) rotate(3deg)`; el.style.opacity='0'; if(k){ k.classList.add('go','out'); k.style.opacity='1'; swpSpark(Math.min(innerWidth*.6,SWP.dx),innerHeight/2,true); } setTimeout(()=>{ const b=document.querySelector('.sheet [data-flx]'); if(b) b.click(); const kk=document.getElementById('swbk'); if(kk){ kk.classList.add('bye'); setTimeout(()=>kk.remove(),300); } },260); }
-  else { el.style.transform=''; el.style.opacity=''; if(k){ k.classList.add('bye'); const ar=k.querySelector('i'); if(ar) ar.style.transform='translate3d(14px,-50%,0) scale(.5)'; setTimeout(()=>k.remove(),320); } setTimeout(()=>{ if(!SWP.on){ swpUnpin(el); el.classList.remove('swp'); } },340); } }
+  el.style.transition='transform .26s cubic-bezier(.2,.8,.2,1),opacity .26s';
+  if(SWP.ed){ SWP.ed.style.transition='transform .26s cubic-bezier(.2,.8,.2,1)'; SWP.ed.style.transform=close?`translate3d(${innerWidth}px,0,0)`:'translate3d(0,0,0)'; }
+  if(close){ el.style.transform=`translate3d(${innerWidth*1.05}px,0,0)`; el.style.opacity='0'; if(k){ k.classList.add('go','out'); k.style.opacity='1'; swpSpark(Math.min(innerWidth*.6,SWP.dx),innerHeight/2,true); } setTimeout(()=>{ const b=document.querySelector('.sheet [data-flx]'); if(b) b.click(); const kk=document.getElementById('swbk'); if(kk){ kk.classList.add('bye'); setTimeout(()=>kk.remove(),300); } },260); }
+  else { el.style.transform=''; el.style.opacity=''; if(k){ k.classList.add('bye'); const ar=k.querySelector('i'); if(ar) ar.style.transform='translate3d(14px,-50%,0) scale(.5)'; setTimeout(()=>k.remove(),320); } setTimeout(()=>{ if(!SWP.on){ swpUnpin(el); el.classList.remove('swp'); document.documentElement.classList.remove('swpon'); } },340); } setTimeout(()=>{ if(!SWP.on) document.documentElement.classList.remove('swpon'); },700); }
 document.addEventListener('touchend',()=>swpEnd(false)); document.addEventListener('touchcancel',()=>swpEnd(true));
 // the check-in page header gets out of the way: it slides up while you scroll down and comes back as soon as you scroll up
 const CKH={hid:false,y:0};
@@ -4524,18 +4548,18 @@ function backSync(){ try{ if(BKH.ign) return; const sp=subPage();
 addEventListener('popstate',()=>{ if(BKH.ign){ BKH.ign=0; clearTimeout(BKH.t); backSync(); return; } if(!BKH.pushed) return; const kind=BKH.pushed; BKH.pushed=null;
   const b=kind==='sheet'?S.flow&&document.querySelector('.sheet [data-flx]'):S.view==='sim'&&document.querySelector('[data-act=simback]'); if(b) b.click(); });
 // swipe a log or test card to the left to delete it, like iPhone Mail: a short swipe shows the red Delete button, a long one deletes at once. Undo brings it back.
-const SWD={on:false,t:0}, SWDW=96, swdFull=W=>Math.min(W*.36,140); // a short swipe deletes (no long drag across the screen)
+const SWD={on:false,t:0}, SWDW=96, swdFull=W=>Math.min(W*.2,76); // a short swipe deletes (no long drag across the screen)
 function swdClose(except){ document.querySelectorAll('.eswrap.swopen').forEach(w=>{ if(w===except) return; w.classList.remove('swopen'); const c=w.querySelector(':scope>.entry'); if(c){ c.style.transition='transform .32s cubic-bezier(.2,.8,.2,1)'; c.style.transform=''; } }); }
 document.addEventListener('touchstart',ev=>{ if(S.flow||GUEST||ev.touches.length!==1) return; const w=ev.target.closest&&ev.target.closest('.eswrap'); if(!w||ev.target.closest('.eswdel')){ if(!w) swdClose(); return; }
   const c=w.querySelector(':scope>.entry'); if(!c) return; const t=ev.touches[0]; swdClose(w);
-  Object.assign(SWD,{on:true,w,c,x0:t.clientX,y0:t.clientY,lock:null,base:w.classList.contains('swopen')?-SWDW:0,full:false}); SWD.dx=SWD.base; c.style.transition='none'; },{passive:true});
+  Object.assign(SWD,{on:true,w,c,x0:t.clientX,y0:t.clientY,t0:performance.now(),W:w.offsetWidth,lock:null,base:w.classList.contains('swopen')?-SWDW:0,full:false,raf:0}); SWD.dx=SWD.base; c.style.transition='none'; c.style.willChange='transform'; },{passive:true});
 document.addEventListener('touchmove',ev=>{ if(!SWD.on) return; const t=ev.touches[0], dx=t.clientX-SWD.x0, dy=t.clientY-SWD.y0;
   if(SWD.lock==null&&(Math.abs(dx)>8||Math.abs(dy)>8)) SWD.lock=Math.abs(dx)>Math.abs(dy)*1.2?'x':'y'; if(SWD.lock!=='x') return;
-  if(ev.cancelable) ev.preventDefault(); const W=SWD.w.offsetWidth; let x=SWD.base+dx; if(x>0) x*=.2; if(x<-W) x=-W+(x+W)*.2;
-  SWD.dx=x; SWD.c.style.transform=`translate3d(${x}px,0,0)`; SWD.w.classList.add('swiping'); const full=-x>swdFull(W); if(full!==SWD.full){ SWD.full=full; SWD.w.classList.toggle('swfull',full); buzz(); } },{passive:false});
-function swdEnd(cancel){ if(!SWD.on) return; SWD.on=false; const w=SWD.w, c=SWD.c, W=w.offsetWidth, x=SWD.dx; c.style.transition='transform .32s cubic-bezier(.2,.8,.2,1)'; w.classList.remove('swiping','swfull');
+  if(ev.cancelable) ev.preventDefault(); const W=SWD.W; let x=SWD.base+dx; if(x>0) x*=.2; if(x<-W) x=-W+(x+W)*.2;
+  SWD.dx=x; SWD.vx=dx/Math.max(1,performance.now()-SWD.t0); if(!SWD.raf) SWD.raf=requestAnimationFrame(()=>{ SWD.raf=0; if(!SWD.c) return; SWD.c.style.transform=`translate3d(${SWD.dx}px,0,0)`; SWD.w.classList.add('swiping'); const full=-SWD.dx>swdFull(W); if(full!==SWD.full){ SWD.full=full; SWD.w.classList.toggle('swfull',full); buzz(); } }); },{passive:false});
+function swdEnd(cancel){ if(!SWD.on) return; SWD.on=false; if(SWD.raf){ cancelAnimationFrame(SWD.raf); SWD.raf=0; } const w=SWD.w, c=SWD.c, W=SWD.W, x=SWD.dx; c.style.willChange=''; c.style.transition='transform .26s cubic-bezier(.2,.8,.2,1)'; w.classList.remove('swiping','swfull');
   if(SWD.lock!=='x'){ c.style.transform=w.classList.contains('swopen')?`translate3d(${-SWDW}px,0,0)`:''; return; } SWD.t=Date.now();
-  if(!cancel&&-x>swdFull(W)){ swdDelete(w); return; }
+  if(!cancel&&(-x>swdFull(W)||(-x>34&&SWD.vx<-.45))){ c.style.transform=`translate3d(${x}px,0,0)`; swdDelete(w); return; }
   if(!cancel&&-x>44){ c.style.transform=`translate3d(${-SWDW}px,0,0)`; w.classList.add('swopen'); } else { c.style.transform=''; w.classList.remove('swopen'); } }
 document.addEventListener('touchend',()=>swdEnd(false)); document.addEventListener('touchcancel',()=>swdEnd(true));
 function swdDelete(w){ const id=w.dataset.eid, c=w.querySelector(':scope>.entry'), r=id&&findEntry(id); if(!c||!r||!r.e) return; const perf=isTestE(r.e), red=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -5062,8 +5086,27 @@ const picOK=v=>typeof v==='string'&&v.length<60000&&/^data:image\/(jpeg|png|webp
 const picOf=id=>{ if(id===ACC.id&&picOK(S.cfg.pic)) return S.cfg.pic; const b=BRD.list.find(x=>x.id===id); return b&&picOK(b.pic)?b.pic:''; };
 // '<'+'img' on purpose: a plain img tag written in this script can make the browser fetch the placeholder text as a file while the page loads
 const avHTML=(name,pic,cls)=>`<span class="tav${cls?' '+cls:''}" style="background:${nameColor(name)}" aria-hidden="true">${picOK(pic)?'<'+`img src="${pic}" alt="">`:initial(name)}</span>`;
-function picPick(){ const i=document.createElement('input'); i.type='file'; i.accept='image/*'; i.onchange=()=>{ const f=i.files&&i.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ const im=new Image(); im.onload=()=>{ const N=144, c=document.createElement('canvas'); c.width=N; c.height=N; const x=c.getContext('2d'), m=Math.min(im.width,im.height); x.drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,N,N);
-  let q=.82, d=c.toDataURL('image/jpeg',q); while(d.length>40000&&q>.4){ q-=.12; d=c.toDataURL('image/jpeg',q); } if(!picOK(d)){ toast('That picture did not work, try another one'); return; } S.cfg.pic=d; saveCfg(); BRD.noPic=false; boardPush(); render(); toast('Profile picture saved'); }; im.onerror=()=>toast('That picture did not work, try another one'); im.src=r.result; }; r.readAsDataURL(f); }; i.click(); }
+function picPick(){ const i=document.createElement('input'); i.type='file'; i.accept='image/*'; i.onchange=()=>{ const f=i.files&&i.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ const im=new Image(); im.onload=()=>picCrop(im); im.onerror=()=>toast('That picture did not work, try another one'); im.src=r.result; }; r.readAsDataURL(f); }; i.click(); }
+// fit the picture yourself: drag to move, pinch (or the slider) to zoom; the circle is what everyone sees
+function picCrop(im){ const o=document.createElement('div'); o.className='pcrop'; const V=Math.round(Math.min(innerWidth-48,320));
+  o.innerHTML=`<div class="pcbox" role="dialog" aria-modal="true"><h3>Fit your picture</h3><div class="pcst" style="width:${V}px;height:${V}px"><img alt="" draggable="false"><i class="pcring"></i></div><input type="range" class="pcz" min="1" max="4" step="0.01" value="1" aria-label="Zoom"><div class="pcb"><button class="btn ghost" data-pc="x">Cancel</button><button class="btn" data-pc="ok">Save</button></div></div>`;
+  l10n(o); document.body.appendChild(o); const st=o.querySelector('.pcst'), img=st.querySelector('img'), z=o.querySelector('.pcz'), base=V/Math.min(im.width,im.height); let sc=1, tx=0, ty=0, raf=0;
+  img.src=im.src; img.style.width=im.width*base+'px'; img.style.height=im.height*base+'px';
+  const draw=()=>{ raf=0; const w=im.width*base*sc, h=im.height*base*sc, mx=(w-V)/2, my=(h-V)/2; tx=Math.max(-mx,Math.min(mx,tx)); ty=Math.max(-my,Math.min(my,ty)); img.style.transform=`translate(-50%,-50%) translate3d(${tx}px,${ty}px,0) scale(${sc})`; };
+  const later=()=>{ if(!raf) raf=requestAnimationFrame(draw); }; draw();
+  const P=new Map(); let d0=0, s0=1;
+  st.addEventListener('pointerdown',e=>{ try{ st.setPointerCapture(e.pointerId); }catch(x){} P.set(e.pointerId,{x:e.clientX,y:e.clientY}); if(P.size===2){ const [a,b]=[...P.values()]; d0=Math.hypot(a.x-b.x,a.y-b.y); s0=sc; } });
+  st.addEventListener('pointermove',e=>{ const p=P.get(e.pointerId); if(!p) return; const dx=e.clientX-p.x, dy=e.clientY-p.y; P.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    if(P.size===1){ tx+=dx; ty+=dy; } else if(P.size===2&&d0){ const [a,b]=[...P.values()]; sc=Math.max(1,Math.min(4,s0*Math.hypot(a.x-b.x,a.y-b.y)/d0)); z.value=sc; tx+=dx/2; ty+=dy/2; } later(); });
+  const up=e=>{ P.delete(e.pointerId); if(P.size===2){ const [a,b]=[...P.values()]; d0=Math.hypot(a.x-b.x,a.y-b.y); s0=sc; } else d0=0; }; st.addEventListener('pointerup',up); st.addEventListener('pointercancel',up);
+  st.addEventListener('wheel',e=>{ e.preventDefault(); sc=Math.max(1,Math.min(4,sc*(e.deltaY<0?1.08:1/1.08))); z.value=sc; later(); },{passive:false});
+  z.addEventListener('input',()=>{ sc=+z.value; later(); });
+  const close=()=>{ o.classList.add('bye'); setTimeout(()=>o.remove(),200); };
+  o.addEventListener('click',e=>{ if(e.target===o){ close(); return; } const b=e.target.closest('[data-pc]'); if(!b) return; if(b.dataset.pc!=='ok'){ close(); return; }
+    draw(); const N=256, c=document.createElement('canvas'); c.width=N; c.height=N; const x=c.getContext('2d'), k=base*sc, sw=V/k, sx=im.width/2-(V/2+tx)/k, sy=im.height/2-(V/2+ty)/k;
+    x.fillStyle='#fff'; x.fillRect(0,0,N,N); x.drawImage(im,sx,sy,sw,sw,0,0,N,N);
+    let q=.85, d=c.toDataURL('image/jpeg',q); while(d.length>45000&&q>.4){ q-=.1; d=c.toDataURL('image/jpeg',q); } if(!picOK(d)){ toast('That picture did not work, try another one'); return; }
+    close(); S.cfg.pic=d; saveCfg(); BRD.noPic=false; boardPush(); render(); toast('Profile picture saved'); }); }
 
 const boardOn=()=>true; // everyone is on the rankings
 function boardStats(){ const W=weekInfo(), D=filledDays(), mk=todayStr.slice(0,7), mon=W.days[0];
