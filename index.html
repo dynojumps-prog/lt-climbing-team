@@ -5360,7 +5360,7 @@ function newsDetailHTML(){ const G=NEWS_DETAIL.concat(pathMine()?[NEWS_MINE]:[])
     ${G.map(([t,R])=>`<p class="newsl">${t}</p><ul class="newsul">${R.map(([n,b,k,imp])=>`<li><div class="ndh"><b><i class="nd ${k}" title="${NEWS_KIND[k]}"></i>${n}</b><em class="ndi ${imp.toLowerCase()}" data-tk="imp">${imp}</em></div><span>${b}</span></li>`).join('')}</ul>`).join('')}
     <p class="note" style="margin:12px 0 0">Most important: training load, finger pain warning signs, the weekly body check and the finger test. They are the best proven, and they help most with getting stronger without getting hurt.</p>
     <div class="newsf"><button class="btn ghost newsok2" data-newsback="1">‹ Back</button><button class="btn newsok" data-newsok="1">OK</button></div></div>`; }
-function newsHTML(){ const staff=ACC.role==='coach'||ACC.role==='supervisor', C=staff?NEWS_COACH:[];
+function newsHTML(){ const staff=ACC.role==='coach'||ACC.role==='supervisor', C=staff?NEWS_COACH.filter(x=>ACC.role==='supervisor'||x[0]!=='Log types'):[];
   const li=([t,d])=>`<li><b>${t}</b><span>${d}</span></li>`;
   return `<div class="newsbox" role="dialog" aria-modal="true" aria-labelledby="newsh"><div class="newsk"><span class="flagbar"></span>Update</div><h2 id="newsh">What’s new</h2><div class="langs">${LANGS.map(([k,n])=>`<button class="langb${L10N.lang===k?' on':''}" data-lang="${k}" aria-pressed="${L10N.lang===k}" translate="no"><span class="lflag">${LANGFLAG[k]}</span><b>${n}</b></button>`).join('')}</div>
     ${C.length?`<p class="newsl">For you as ${ACC.role==='coach'?'coach':'supervisor'}</p><ul class="newsul">${C.map(li).join('')}</ul><p class="newsl">For everyone</p>`:''}
