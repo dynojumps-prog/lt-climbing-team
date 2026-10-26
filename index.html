@@ -1614,6 +1614,7 @@ button.swrow:active{transform:scale(.98)}button.swrow>span{flex:1}
 .simtot{margin:2px 0 10px;font-weight:700}
 .simed input[type=date]{border:1.5px solid var(--line)!important;background:var(--field)!important;border-radius:12px!important;min-height:44px;padding:6px 10px!important;font:inherit;color:var(--ink);width:100%;box-sizing:border-box}
 .simroute.c .simst .rsty{justify-content:flex-start!important}.tagedit{white-space:nowrap}
+.simroute.c{grid-template-columns:40px minmax(0,1fr) auto!important}.simroute.c input[data-simr$="|g"]{grid-column:2;max-width:200px}.simroute.c .simnadd{grid-column:3!important}.simroute.c .simnote{grid-column:1/-1!important}
 .simppl{display:flex;flex-direction:column;gap:6px;margin:6px 0 12px}
 .sprow{display:flex;align-items:center;gap:6px;padding:4px 6px 4px 4px;border-radius:14px;border:1.5px solid var(--line);background:var(--panel);transition:background-color .25s,border-color .25s}
 .sprow.on{border-color:color-mix(in srgb,var(--pos) 45%,var(--line));background:color-mix(in srgb,var(--pos) 7%,var(--panel))}
@@ -7535,8 +7536,9 @@ const styName=k=>LEGACY_ST[k]||String(k||'');
 const cleanTag=t=>String(t||'').replace(/[|<>"`&\\]/g,'').replace(/\s+/g,' ').trim().slice(0,24);
 const myTags=()=>Array.isArray(S.cfg.styles)?S.cfg.styles:[];
 function tagRowHTML(attr,ref,cur,short){ const sel=(cur||[]).map(styName), L=myTags().slice(); sel.forEach(t=>{ if(!L.some(x=>nk(x)===nk(t))) L.push(t); }); const ed=S.st.tagEd===ref;
-  return `<div class="rsty" role="group" aria-label="Style"><span class="rlab">Style</span>${L.map(t=>{ const on=sel.some(x=>nk(x)===nk(t)); return `<button data-${attr}="${ref}|${esc(t)}" class="${on?'on':''}" aria-pressed="${on}">${esc(t)}</button>`; }).join('')}<button class="tagedit" data-taged="${ref}">${ed?'Done':myTags().length?'Edit':short?'+ Styles':'+ Add your styles'}</button></div>
-  ${ed?`<div class="taged"><div class="row" style="margin:0"><input type="text" id="tagnew" placeholder="New style, e.g. Dyno" maxlength="24" aria-label="New style" enterkeyhint="done"><button class="btn" data-tagadd="${ref}">Add</button></div>${myTags().length?`<p class="note" style="margin:8px 0 4px">Tap to delete:</p><div class="chips">${myTags().map(t=>`<button class="tagdel" data-tagdel="${esc(t)}" aria-label="Delete ${esc(t)}">${esc(t)} ✕</button>`).join('')}</div>`:'<p class="note" style="margin:8px 0 0">Your styles show on every route card, in comps and in Milestones.</p>'}</div>`:''}`; }
+  const chips=ed?myTags().map(t=>`<button class="qchip qdel" data-tagdel="${esc(t)}" aria-label="Delete ${esc(t)}">${esc(t)}<i aria-hidden="true">✕</i></button>`).join('')
+    :L.map(t=>{ const on=sel.some(x=>nk(x)===nk(t)); return `<button class="qchip${on?' on':''}" data-${attr}="${ref}|${esc(t)}" aria-pressed="${on}">${esc(t)}</button>`; }).join('');
+  return `<div class="qp rsty2${ed?' ed':''}"><p class="clab">Style</p><div class="quick">${chips}<button class="qchip ${ed?'qdone':'qadd'}" data-taged="${ref}">${ed?'Done':myTags().length?'Edit':'+ Add'}</button></div>${ed?`<div class="row pkadd"><input type="text" id="tagnew" placeholder="New style" maxlength="24" aria-label="New style" enterkeyhint="done"><button class="btn" data-tagadd="${ref}">Save</button></div>`:''}</div>`; }
 const tagToggle=(arr,t)=>{ const L=(arr||[]).map(styName), i=L.findIndex(x=>nk(x)===nk(t)); if(i>=0) L.splice(i,1); else L.push(cleanTag(t)); return L.filter(Boolean); };
 const RRES=[['flash','Flash'],['top','Top'],['zone','Zone'],['no','No top']];
 function rresOf(y){ return !y?null:y.fl===true?'flash':y.top===true?'top':y.top===false?(y.zone?'zone':'no'):null; }
@@ -7548,7 +7550,8 @@ function routeUp(y){ if(!y||('ta' in y)||('za' in y)) return y; const a=+y.a||1;
 
 // grade chips around your level (your recent hardest top), so a grade is one tap
 const GRADES=(()=>{ const L=[]; for(let n=4;n<=9;n++) for(const x of ['A','B','C']) for(const p of ['','+']) L.push(`${n}${x}${p}`); return L; })();
-function gradeChips(key,y){ const tops=allRoutes().filter(r=>r.top===true||+r.ta>0).map(r=>FONT(r.g)).filter(v=>v!=null).slice(-40), c=tops.length?Math.max(...tops):FONT('6C'), cur=String(y.g||'').toUpperCase();
+function gradeChips(key,y){ return ''; }
+function gradeChipsOld(key,y){ const tops=allRoutes().filter(r=>r.top===true||+r.ta>0).map(r=>FONT(r.g)).filter(v=>v!=null).slice(-40), c=tops.length?Math.max(...tops):FONT('6C'), cur=String(y.g||'').toUpperCase();
   const ix=GRADES.findIndex(g=>FONT(g)===c), from=Math.max(0,ix-4), L=GRADES.slice(from,from+8);
   return `<div class="gchips">${L.map(g=>`<button class="${cur===g?'on':''}" data-rgq="${key}|${y.id}|${g}" aria-pressed="${cur===g}">${g}</button>`).join('')}</div>`; }
 function routeCard(key,y0,i){ const y=routeUp(Object.assign({},y0)), at=+y.a||0, ta=+y.ta||0, za=+y.za||0, st=ta?(ta===1?'flash':'top'):za?'zone':at?'no':'', old=String(y.fwhy||'').trim();
@@ -7964,7 +7967,7 @@ function simEditHTML(x){ const ath=(TM.list||[]).filter(a=>seenRole(a)==='athlet
     <button class="swrow${x.rr?' on':''}" data-simrr="1" aria-pressed="${x.rr}"><span>Rest a rotation between boulders</span><i class="tgl" aria-hidden="true"></i></button>
     <p class="note simtot" id="simnote">${simNoteText(x)}</p>
     <p class="clab">Boulders</p><div class="chips"><button data-simmode="same" class="${x.mode==='same'?'on':''}">Same for everyone</button><button data-simmode="own" class="${x.mode==='own'?'on':''}">Each athlete their own</button></div>
-    ${x.mode==='same'?`<div class="simroutes">${x.routes.map((r,i)=>{ const nOpen=r.note||(S.st.simNote||{})[i]; return `<div class="simroute c"><b>B${i+1}</b><input type="text" data-simr="${i}|g" value="${esc(r.g)}" placeholder="Grade" autocapitalize="characters" aria-label="Boulder ${i+1} grade">${nOpen?'':`<button class="simnadd" data-simnote="${i}" aria-label="Add a note to boulder ${i+1}">+ Note</button>`}<div class="simst">${tagRowHTML('simrst',String(i),r.st,1)}</div>${nOpen?`<input type="text" class="simnote" data-simr="${i}|note" value="${esc(r.note)}" placeholder="Note" aria-label="Boulder ${i+1} note">`:''}</div>`; }).join('')}</div>`:'<p class="note">Athletes write the grade and style of each boulder themselves. You see their results, no ranking.</p>'}
+    ${x.mode==='same'?`<div class="simroutes">${x.routes.map((r,i)=>{ const nOpen=r.note||(S.st.simNote||{})[i]; return `<div class="simroute c"><b>B${i+1}</b><input type="text" data-simr="${i}|g" value="${esc(r.g)}" placeholder="Grade" autocapitalize="characters" aria-label="Boulder ${i+1} grade">${nOpen?'':`<button class="simnadd" data-simnote="${i}" aria-label="Add a note to boulder ${i+1}">+ Note</button>`}${nOpen?`<input type="text" class="simnote" data-simr="${i}|note" value="${esc(r.note)}" placeholder="Note" aria-label="Boulder ${i+1} note">`:''}</div>`; }).join('')}</div>`:'<p class="note">Athletes write the grade and style of each boulder themselves. You see their results, no ranking.</p>'}
     <p class="clab">Who climbs${x.mode==='same'&&x.inv.length>1?' <small>in this order</small>':''}</p>
     <div class="simppl">${x.inv.map((a,i)=>`<div class="sprow on"><button class="spck" data-siminv="${a.id}" aria-pressed="true" aria-label="Don’t invite ${esc(a.name)}"><span class="gchk on" aria-hidden="true">✓</span>${x.mode==='same'?`<b class="spnum">${i+1}</b>`:''}<span class="spn">${esc(a.name)}</span></button>${x.mode==='same'&&x.inv.length>1?`<button class="mini" data-simord="${a.id}|-1" aria-label="Climb earlier"${i?'':' disabled'}>↑</button><button class="mini" data-simord="${a.id}|1" aria-label="Climb later"${i<x.inv.length-1?'':' disabled'}>↓</button>`:''}</div>`).join('')}
     ${ath.filter(a=>!inv.has(a.id)).map(a=>`<div class="sprow"><button class="spck" data-siminv="${a.id}" aria-pressed="false" aria-label="Invite ${esc(a.name)}"><span class="gchk" aria-hidden="true"></span><span class="spn">${esc(a.name)}</span></button></div>`).join('')}</div>
@@ -8033,7 +8036,7 @@ function simResHTML(x,m,i){ const r=simRes(m,i), key=x.id+'|'+i, at=+r.a||0, can
   const stp=(f,lab,sub)=>`<div class="crow"><span class="clab2">${lab}<small>${sub}</small></span><span class="step"><button data-simz="${key}|${f}|-1">−</button><b>${+r[f]||'–'}</b><button data-simz="${key}|${f}|1">+</button></span></div>`;
   return `<div class="simres"><div class="srh"><b>Boulder ${i+1}</b>${x.mode==='same'&&(R.g||R.st.length)?`<span>${esc(R.g)}${R.st.length?' · '+esc(R.st.map(styName).join(', ')):''}</span>`:''}<span class="pts">${n1(ifscPts(r))} pts</span></div>
     ${x.mode==='same'&&R.note?`<p class="note">${esc(R.note)}</p>`:''}
-    ${x.mode==='own'?`<div class="srown"><input type="text" data-simg="${key}" value="${esc(r.g||'')}" placeholder="Grade" autocapitalize="characters">${tagRowHTML('simst',key,r.st)}</div>`:''}
+    ${x.mode==='own'?`<div class="srown"><input type="text" data-simg="${key}" value="${esc(r.g||'')}" placeholder="Grade" autocapitalize="characters"></div>`:''}
     ${compPickHTML('simz',key,r)}
     ${+r.za||+r.ta?`<p class="clab rfl">What went well? <small>your own words</small></p><textarea rows="2" data-simgood="${key}" placeholder="What worked, what felt great?">${esc(r.good||'')}</textarea>`:''}
     ${can||String(r.fw||'').trim()?`<p class="clab rfl">Why did you fall? <small>your own words</small></p><textarea rows="2" data-simfw="${key}" placeholder="What happened, what would you change?">${esc(r.fw||'')}</textarea>`:''}</div>`; }
