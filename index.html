@@ -1855,6 +1855,24 @@ html.swpon .sheet .cks,html.swpon .sheet .card{box-shadow:none!important}
 @media (prefers-reduced-motion:reduce){.tcclimb,.tcwin{animation:none!important}.tcpod{display:none}}
 /* the header colours, toned down: dark base, the flag only as a soft tint */
 :root:not([data-skin="xmas"]):not([data-skin="halloween"]) .top{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,0) 45%),linear-gradient(172deg,rgba(242,174,0,.30) 0%,rgba(242,174,0,.16) 30%,rgba(10,123,76,.22) 40%,rgba(10,123,76,.18) 60%,rgba(193,39,45,.20) 72%,rgba(193,39,45,.28) 100%),#141C22!important}
+
+/* swipe back look: deep red with a warm glow, a glowing page edge, sparks */
+.sheet.swp::before{display:none}
+#swpg{box-shadow:-3px 0 0 rgba(255,120,120,.55),-10px 0 24px rgba(255,60,60,.45),-30px 0 50px rgba(60,0,0,.45)!important}
+#swbk .swbg{background:radial-gradient(70% 50% at 0% 50%,rgba(255,90,70,.35),transparent 70%),linear-gradient(90deg,#3A0407 0%,#6E0910 50%,#9C1119 100%)!important}
+#swbk .swglow{position:absolute;left:0;top:50%;width:160px;height:160px;margin:-80px 0 0 -80px;border-radius:50%;background:radial-gradient(circle,rgba(255,200,120,.55),rgba(255,80,60,.2) 45%,transparent 70%);opacity:.5;transform:scale(.6);transition:opacity .25s,transform .35s cubic-bezier(.3,1.6,.5,1)}
+#swbk.go .swglow{opacity:1;transform:scale(1.25)}
+#swbk .swpk{position:absolute;width:6px;height:6px;margin:-3px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c);pointer-events:none;will-change:transform,opacity;animation:swpk2 .75s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes swpk2{from{transform:translate3d(0,0,0) scale(1);opacity:1}to{transform:translate3d(var(--dx),var(--dy),0) scale(.3);opacity:0}}
+@media (prefers-reduced-motion:reduce){#swbk .swpk{display:none}}
+
+/* ---- milestones: each part in its own coloured group ---- */
+.ggrp{--gc:#2F6FD1;margin:12px 0 0;padding:12px 14px 6px;border-radius:18px;background:color-mix(in srgb,var(--gc) 8%,var(--panel));border:1.5px solid color-mix(in srgb,var(--gc) 22%,transparent)}
+.ggrp .gsec{margin:0 0 4px!important;color:var(--gc)!important;display:flex;align-items:center;gap:8px}
+.ggrp .gsec::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--gc)}
+.ggrp .gitem:last-child{border-bottom:0!important}
+.ggrp .mbar i{background:var(--gc)!important}
+.gg-fing{--gc:#1FA2A8}.gg-bould{--gc:#E86A2C}.gg-style{--gc:#8E52CC}.gg-lead{--gc:#2F6FD1}.gg-comp{--gc:#D23F63}.gg-other{--gc:#5B6770}
 /* ---- swipe back v3: deep red side, arrow rides the page edge, sparks; smooth (transform/opacity only) ---- */
 .sheet.swp{will-change:transform;border-radius:26px;overflow:hidden;box-shadow:-18px 0 40px rgba(60,0,0,.35)!important}
 #swbk{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0;background:none!important;transition:opacity .2s}
@@ -1995,6 +2013,7 @@ html.swpon .sheet .cks,html.swpon .sheet .card{box-shadow:none!important}
 .dlong{white-space:nowrap;font-weight:inherit}
 
 .tabs button>span{font-size:calc(1em * var(--tf,1));text-overflow:clip!important}
+.sheet.swp,.sheet.swp.swp{background:transparent!important;will-change:auto!important;box-shadow:none!important;border-radius:0!important;overflow:visible!important;contain:none!important;z-index:3!important}
 </style>
 </head>
 <body>
@@ -4538,19 +4557,24 @@ const swpNo=t=>{ if(!t||!t.closest) return true; if(t.closest('input,textarea,se
 // Only transform and opacity change while the finger moves (no repaint of big areas), batched to one update per frame.
 // the page slides right with your finger and the deep red side shows under it. Only transform changes while the finger moves,
 // on layers that already exist (the page content is its own layer from the start), so nothing is redrawn mid-swipe.
-function swpBack(on){ let k=document.getElementById('swbk'); if(on&&!k){ k=document.createElement('div'); k.id='swbk'; k.setAttribute('aria-hidden','true'); k.innerHTML='<span class="swbg"></span>'; document.body.appendChild(k); } return k; }
+function swpBack(on){ let k=document.getElementById('swbk'); if(on&&!k){ k=document.createElement('div'); k.id='swbk'; k.setAttribute('aria-hidden','true'); k.innerHTML='<span class="swbg"></span><span class="swglow"></span>'; document.body.appendChild(k); } return k; }
 function swpPage(){ let g=document.getElementById('swpg'); if(!g){ g=document.createElement('div'); g.id='swpg'; g.setAttribute('aria-hidden','true'); let bi='none'; try{ bi=getComputedStyle(document.body,'::before').backgroundImage; }catch(e){} g.style.backgroundImage=bi&&bi!=='none'?bi:''; document.body.appendChild(g); } return g; }
 document.addEventListener('touchstart',ev=>{ if(!S.flow||ev.touches.length!==1) return; const t=ev.touches[0], el=document.querySelector('.sheet'); if(!el) return; if(t.clientX>28&&swpNo(ev.target)) return;
   SWP.on=true; SWP.x0=t.clientX; SWP.y0=t.clientY; SWP.t0=performance.now(); SWP.dx=0; SWP.lock=null; SWP.el=el; SWP.bd=el.querySelector('.ckbody'); SWP.hd=el.querySelector('.cktop'); SWP.started=false; },{passive:true});
 function swpSet(x,anim){ const tr=x?`translate3d(${x}px,0,0)`:''; [SWP.bd,SWP.hd,document.getElementById('swpg')].forEach(n=>{ if(!n) return; n.style.transition=anim?'transform .24s cubic-bezier(.2,.8,.2,1)':'none'; n.style.transform=tr; }); }
 const swpLim=()=>Math.min(110,innerWidth*.28);
-function swpFrame(){ SWP.raf=0; if(!SWP.on||SWP.lock!=='x') return; swpSet(SWP.dx,false); const go=SWP.dx>=swpLim(); if(go!==SWP.go){ SWP.go=go; buzz(); } }
+// sparks fly off the page edge while you slide (a few small dots, transform and opacity only), a burst when it will close
+function swpSpark(x,n,burst){ const k=document.getElementById('swbk'); if(!k) return; const C=['#FF4D4D','#FF8A3D','#FFC24D','#FFFFFF','#FF6B8B'];
+  for(let q=0;q<n;q++){ if(k.childElementCount>40) break; const p=document.createElement('b'), a=burst?Math.random()*Math.PI*2:Math.PI+(Math.random()-.5)*1.2, d=burst?30+Math.random()*60:30+Math.random()*70, y=burst?innerHeight/2:innerHeight*(.1+Math.random()*.8);
+    p.className='swpk'; p.style.cssText=`left:${x}px;top:${y}px;--dx:${(Math.cos(a)*d).toFixed(0)}px;--dy:${(Math.sin(a)*d).toFixed(0)}px;--c:${C[q%C.length]}`; k.appendChild(p); setTimeout(()=>p.remove(),800); } }
+function swpFrame(){ SWP.raf=0; if(!SWP.on||SWP.lock!=='x') return; swpSet(SWP.dx,false); if(SWP.dx-(SWP.sx||0)>24){ SWP.sx=SWP.dx; swpSpark(SWP.dx,2); } const go=SWP.dx>=swpLim(); if(go!==SWP.go){ SWP.go=go; buzz(); if(go) swpSpark(SWP.dx,12,true); const k=document.getElementById('swbk'); if(k) k.classList.toggle('go',go); } }
 document.addEventListener('touchmove',ev=>{ if(!SWP.on) return; const t=ev.touches[0], dx=t.clientX-SWP.x0, dy=t.clientY-SWP.y0;
   if(SWP.lock==null&&(Math.abs(dx)>10||Math.abs(dy)>10)) SWP.lock=dx>0&&Math.abs(dx)>Math.abs(dy)*1.3?'x':'y'; if(SWP.lock!=='x') return;
-  if(ev.cancelable) ev.preventDefault(); if(!SWP.started){ SWP.started=true; SWP.go=false; swpBack(true); swpPage(); }
+  if(ev.cancelable) ev.preventDefault(); if(!SWP.started){ SWP.started=true; SWP.go=false; SWP.sx=0; swpBack(true); swpPage(); SWP.el.classList.add('swp'); }
   SWP.dx=Math.max(0,dx); SWP.vx=dx/Math.max(1,performance.now()-SWP.t0); if(!SWP.raf) SWP.raf=requestAnimationFrame(swpFrame); },{passive:false});
 function swpEnd(cancel){ if(!SWP.on) return; SWP.on=false; if(SWP.raf){ cancelAnimationFrame(SWP.raf); SWP.raf=0; } if(SWP.lock!=='x'||!SWP.started) return;
-  const close=!cancel&&(SWP.dx>swpLim()||(SWP.dx>50&&SWP.vx>.55)), clean=()=>{ ['swbk','swpg'].forEach(id=>{ const n=document.getElementById(id); if(n) n.remove(); }); };
+  const close=!cancel&&(SWP.dx>swpLim()||(SWP.dx>50&&SWP.vx>.55)), el=SWP.el, clean=()=>{ ['swbk','swpg'].forEach(id=>{ const n=document.getElementById(id); if(n) n.remove(); }); if(el) el.classList.remove('swp'); };
+  if(close) swpSpark(Math.min(innerWidth*.7,SWP.dx+40),14,true);
   if(close){ swpSet(innerWidth,true); setTimeout(()=>{ const b=document.querySelector('.sheet [data-flx]'); if(b) b.click(); clean(); },230); }
   else { swpSet(0,true); setTimeout(()=>{ if(!SWP.on){ clean(); [SWP.bd,SWP.hd].forEach(n=>{ if(n){ n.style.transition=''; n.style.transform=''; } }); } },260); } }
 document.addEventListener('touchend',()=>swpEnd(false)); document.addEventListener('touchcancel',()=>swpEnd(true));
@@ -7787,7 +7811,7 @@ function goalCardHTML(m,nx){ const st=m.items.map(i=>goalItemState(i,m)), done=s
   const row=([i,x])=>i.kind==='check'?`<div class="gitem gck${x.done?' done':''}"><button class="gchk${i.done?' on':''}" data-gchk="${m.id}|${i.id}" aria-pressed="${!!i.done}" aria-label="${esc(i.name)}: ${i.done?'done':'not done'}"${GUEST?' disabled':''}>${i.done?'✓':''}</button><b>${esc(i.name)}</b></div>`
     :`<div class="gitem${x.done?' done':''}"><div class="gih"><span class="gname">${esc(i.name)}</span>${pill(x)}</div>${x.now!=null?`<div class="gnums"><span><small>now</small><b>${x.now}</b></span><i>→</i><span><small>goal</small><b>${x.goal}</b></span></div>`:`<span class="gmain">${x.main}</span>`}${i.kind==='styles'?'':`<span class="mbar${x.behind?' neg':''}"><i style="width:${Math.round(x.pct*100)}%"></i></span>`}</div>`;
   return `<div class="card goal${nx?' gnext':''}${past?' gpast':''}"><button class="ghead" data-gopen="${m.id}" aria-expanded="${open}"><span class="gring" style="--p:${avg}"><span>${Math.round(avg*100)}</span></span><span class="gttl"><b>${esc(m.label)}</b><small>${dmyy(m.date)} · ${dl>0?`${dl} days left`:dl===0?'today':'date passed'}</small></span><span class="gcount">${done}/${st.length}</span></button>
-    ${open?`<div class="gitems">${secs.map(([k,L])=>`<p class="gsec">${GSEC[k]}</p>${L.map(row).join('')}`).join('')}
+    ${open?`<div class="gitems">${secs.map(([k,L])=>`<div class="ggrp gg-${k}"><p class="gsec">${GSEC[k]}</p>${L.map(row).join('')}</div>`).join('')}
       ${GUEST?'':`<button class="btn ghost gedbtn" data-gedit="${m.id}">Edit</button>`}</div>`:''}</div>`; }
 function metricOptions(){ const out=[]; S.cfg.templates.filter(t=>t.perf&&pgOf(t)!=='super').forEach(t=>t.fields.forEach(f=>{ if(!compsOf(f).includes('X')) return; const c=normX(f.x); if(c.role==='bw') return;
   (c.lr?[['l','left'],['r','right']]:[['v','']]).forEach(([s,l])=>out.push({v:`${t.id}|${f.id}|${s}`,l:`${t.name} · ${f.name}${l?' · '+l:''}${c.u==='kg'&&c.bw?' (% bodyweight)':c.u?` (${c.u})`:''}`})); })); return out; }
