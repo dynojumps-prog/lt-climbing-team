@@ -1875,6 +1875,15 @@ html.swpon .sheet .cks,html.swpon .sheet .card{box-shadow:none!important}
 .ggrp .gitem:last-child{border-bottom:0!important}
 .ggrp .mbar i{background:var(--gc)!important}
 .gg-fing{--gc:#1FA2A8}.gg-bould{--gc:#E86A2C}.gg-style{--gc:#8E52CC}.gg-lead{--gc:#2F6FD1}.gg-comp{--gc:#D23F63}.gg-other{--gc:#5B6770}
+
+/* ---- coach stats: just the number and the change since the previous test ---- */
+.rdc2{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:14px;border:1.5px solid var(--line);background:var(--panel);min-width:0}
+.rdc2 small{font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--ink)}
+.rdc2 b{font-family:var(--fh);font-size:1.5rem;line-height:1.1}
+.atchg{font-style:normal;font-weight:800;font-size:.9rem;color:var(--ink)}.atchg.pos{color:var(--pos)}.atchg.neg{color:var(--neg)}
+.atnone{font-size:1.2rem}
+.atrow2{display:grid!important;grid-template-columns:minmax(70px,1fr) 2fr auto 52px;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.atrow2:first-child{border-top:0}.atrow2 .atbarw{grid-column:2!important}.atrow2 .atn{grid-column:1}.atrow2 .atv{grid-column:3}.atrow2 .atchg{grid-column:4}.atrow2 .atn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.atrow2 .atv{font-family:var(--fh);font-size:1.3rem;white-space:nowrap}.atrow2 .atchg{text-align:right}
 /* ---- swipe back v3: deep red side, arrow rides the page edge, sparks; smooth (transform/opacity only) ---- */
 .sheet.swp{will-change:transform;border-radius:26px;overflow:hidden;box-shadow:-18px 0 40px rgba(60,0,0,.35)!important}
 #swbk{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0;background:none!important;transition:opacity .2s}
@@ -3687,7 +3696,8 @@ Rest a rotation|Poilsis per rotaciją|Відпочинок одну ротаці
 On: after each boulder you rest for one rotation (the climbing time + 15 s) before your next boulder, like in IFSC qualification and semi-finals.|Įjungta: po kiekvieno boulderio ilsiesi vieną rotaciją (lipimo laikas + 15 s) prieš kitą boulderį, kaip IFSC kvalifikacijoje ir pusfinalyje.|Увімкнено: після кожного боулдера ти відпочиваєш одну ротацію (час лазіння + 15 с) перед наступним, як у кваліфікації та півфіналі IFSC.
 With everyone on the same boulders, the next athlete climbs the boulder you just left while you rest. Off: no rest, you go straight to your next boulder. With it on, the round takes about twice as long.|Kai visi lipa tuos pačius boulderius, kol ilsiesi, kitas sportininkas lipa tavo ką tik paliktą boulderį. Išjungta: be poilsio, iškart eini prie kito boulderio. Įjungus raundas trunka maždaug dvigubai ilgiau.|Коли всі лізуть ті самі боулдери, поки ти відпочиваєш, наступний спортсмен лізе боулдер, який ти щойно залишив. Вимкнено: без відпочинку, одразу йдеш до наступного боулдера. Коли увімкнено, раунд триває приблизно вдвічі довше.
 Training the real comp rhythm (climb, rest the same time, climb) makes real comps feel normal.|Treniruojant tikrą varžybų ritmą (lipi, tiek pat ilsiesi, lipi) tikros varžybos atrodo įprastos.|Тренування справжнього ритму змагань (лізеш, стільки ж відпочиваєш, лізеш) робить справжні змагання звичними.
-IFSC boulder rules: the rest between boulders is as long as the climbing time.|IFSC boulderingo taisyklės: poilsis tarp boulderių trunka tiek pat, kiek lipimo laikas.|Правила IFSC з боулдерингу: відпочинок між боулдерами триває стільки ж, скільки час лазіння.`;
+IFSC boulder rules: the rest between boulders is as long as the climbing time.|IFSC boulderingo taisyklės: poilsis tarp boulderių trunka tiek pat, kiek lipimo laikas.|Правила IFSC з боулдерингу: відпочинок між боулдерами триває стільки ж, скільки час лазіння.
+Each number is the last test result in kg or seconds. Next to it: how much it changed since the test before, green when it went up, red when it went down.|Kiekvienas skaičius – paskutinio testo rezultatas kg arba sekundėmis. Šalia – kiek jis pasikeitė nuo ankstesnio testo: žalia, kai pagerėjo, raudona, kai suprastėjo.|Кожне число – останній результат тесту в кг або секундах. Поруч – наскільки він змінився від попереднього тесту: зелений, коли зріс, червоний, коли впав.`;
 // words that change with a number, and lines built from numbers or names
 const plLT=(n,a,b,c)=>{ n=Math.abs(Math.round(+n||0)); const d=n%10, t=n%100; return d===1&&t!==11?a:d>=2&&d<=9&&(t<12||t>19)?b:c; };
 const plUK=(n,a,b,c)=>{ n=Math.abs(Math.round(+n||0)); const d=n%10, t=n%100; return d===1&&t!==11?a:d>=2&&d<=4&&(t<12||t>14)?b:c; };
@@ -4190,9 +4200,9 @@ function atPerfData(d){ return d._perf||(d._perf=(()=>{ const T=(d.cfg&&d.cfg.te
   bws.sort((a,b)=>a.d<b.d?-1:1); const bwAt=(e,ds)=>{ const own=bws.find(x=>x.e===e.id); if(own) return own.v; const L=bws.filter(x=>x.d<=ds); return L.length?L[L.length-1].v:null; };
   atEach(d,(e,ds)=>{ const t=byId[e.tid]; if(!t) return; const g=pgOf(t); if(g!=='daily'&&g!=='super') return; const Xf=t.fields.filter(f=>compsOf(f).includes('X')&&normX(f.x).role!=='bw');
     (e.items||[]).forEach(it=>{ const f=Xf.find(f=>f.id===it.fid); if(!f) return; const c=normX(it.x||f.x), pct=c.u==='kg'&&!!c.bw, V=xVals(it);
-      (c.lr?[['l','left'],['r','right']]:[['v','']]).forEach(([sd,sl])=>{ const raw=V[sd]; if(raw==null) return; let v=raw; if(pct){ const bw=bwAt(e,ds); if(!bw) return; v=xPct(c,raw,bw); }
+      (c.lr?[['l','left'],['r','right']]:[['v','']]).forEach(([sd,sl])=>{ const raw=V[sd]; if(raw==null) return; const v=raw;
         const key=`${g}|${nkS(tName(t))}|${Xf.length>1?nkS(f.name):''}|${sd}`;
-        const o=out[key]||(out[key]={grp:g,label:`${tName(t)}${Xf.length>1?' · '+f.name:''}${sl?' · '+sl+' hand':''}`,unit:pct?'%':(c.u?' '+c.u:''),pct,ser:[]}); o.ser.push({d:ds,v}); }); }); });
+        const o=out[key]||(out[key]={grp:g,label:`${tName(t)}${Xf.length>1?' · '+f.name:''}${sl?' · '+sl+' hand':''}`,unit:c.u?' '+c.u:'',pct:false,ser:[]}); o.ser.push({d:ds,v}); }); }); });
   Object.values(out).forEach(o=>o.ser.sort((a,b)=>a.d<b.d?-1:1)); return out; })()); }
 function atClimb(d,from){ const T=(d.cfg&&d.cfg.templates||[]), byId={}; T.forEach(t=>byId[t.id]=t); const R=[], C=[];
   atEach(d,(e,ds)=>{ if(ds<from) return; const t=byId[e.tid]; if(!t) return; (e.items||[]).forEach(it=>{ if(!compsList(it).includes('G')) return; const a=(getP(it,'G')||[]).filter(y=>y&&typeof y==='object');
@@ -4207,21 +4217,16 @@ function atPerfHTML(P){ const R=AT.prange||90, from=dAdd(todayStr,-R+1), load=P.
   const order=k=>(keys[k].grp==='daily'?0:1)+(/finger|pir[sš]t/i.test(keys[k].label)?0:.5);
   const K=Object.keys(keys).sort((a,b)=>order(a)-order(b)||keys[a].label.localeCompare(keys[b].label));
   // readiness: today's (or last) daily test against that athlete's previous 7, same rule as the athlete sees
-  const ready=D.map(({a,pf})=>{ const cells=K.filter(k=>keys[k].grp==='daily').map(k=>{ const ser=(pf[k]||{}).ser||[]; if(!ser.length) return null; const last=ser[ser.length-1], prev=ser.slice(0,-1).slice(-7);
-      if(prev.length<3||dayIdx(last.d,todayStr)>3) return {k,last,cls:'',txt:dayIdx(last.d,todayStr)>3?dmy(last.d):'building normal'}; const m=meanOf(prev.map(x=>x.v)), dv=(last.v/m-1)*100; return {k,last,cls:dv<=-10?'neg':dv<=-5?'amb':'pos',txt:`${dv>=0?'+':'−'}${n1(Math.abs(dv))}% vs normal`}; }).filter(Boolean);
-    return {a,cells}; });
+  const chg=ser=>{ if(ser.length<2) return null; const a=ser[ser.length-2].v, b=ser[ser.length-1].v; return a?(b/a-1)*100:null; }, chip=c=>c==null?'':`<em class="atchg ${c>0?'pos':c<0?'neg':''}">${c>0?'+':c<0?'−':''}${n1(Math.abs(c))}%</em>`;
+  const short=k=>keys[k].label.replace(/^\+*\s*Daily\s+/i,'').replace(/ · (left|right) hand$/,(m,h)=>' · '+(h==='left'?'L':'R'));
+  const ready=D.map(({a,pf})=>({a,cells:K.filter(k=>keys[k].grp==='daily').map(k=>{ const ser=(pf[k]||{}).ser||[]; return ser.length?{k,last:ser[ser.length-1],c:chg(ser)}:null; }).filter(Boolean)}));
   const readyHTML=`<div class="card"><h3>Readiness ${helpBtn('coach')}</h3>
-    ${ready.map(({a,cells})=>`<div class="atrd"><b>${esc(a.name)}</b>${cells.length?`<div class="atrdc">${cells.map(c=>`<span class="rdc ${c.cls}"><small>${esc(keys[c.k].label.replace(/^Daily /i,''))}</small><b>${n1(c.last.v)}${keys[c.k].unit}</b><i>${esc(c.txt)}</i></span>`).join('')}</div>`:'<span class="note">No daily tests yet</span>'}</div>`).join('')}</div>`;
-  const testCard=k=>{ const o=keys[k], daily=o.grp==='daily'; const rows=[], none=[];
-    D.forEach(({a,pf})=>{ const all=(pf[k]||{}).ser||[], ser=all.filter(x=>x.d>=from); if(!ser.length){ none.push(a.name); return; }
-      const nowV=daily?Math.max(...all.filter(x=>x.d>=dAdd(ser[ser.length-1].d,-13)&&x.d<=ser[ser.length-1].d).map(x=>x.v)):ser[ser.length-1].v, best=Math.max(...ser.map(x=>x.v)), ch=ser.length>1?nowV-ser[0].v:null;
-      rows.push({a,ser,nowV,best,ch,last:ser[ser.length-1].d}); });
+    ${ready.map(({a,cells})=>`<div class="atrd"><b>${esc(a.name)}</b>${cells.length?`<div class="atrdc">${cells.map(c=>`<span class="rdc2"><small>${esc(short(c.k))}</small><b>${n1(c.last.v)}${keys[c.k].unit}</b>${chip(c.c)}</span>`).join('')}</div>`:'<b class="atnone">–</b>'}</div>`).join('')}</div>`;
+  const testCard=k=>{ const o=keys[k]; const rows=[];
+    D.forEach(({a,pf})=>{ const all=(pf[k]||{}).ser||[], ser=all.filter(x=>x.d>=from); if(!ser.length) return; rows.push({a,nowV:ser[ser.length-1].v,c:chg(all)}); });
     if(!rows.length) return ''; rows.sort((p,q)=>q.nowV-p.nowV); const max=Math.max(...rows.map(r=>r.nowV))||1;
-    return `<div class="card atcard"><div class="athead"><h3>${esc(o.label.replace(/^\+*\s*Daily\s+/i,'').replace(/ · (left|right) hand$/,(m,h)=>' · '+(h==='left'?'L':'R')))}${o.unit==='%'?' <small class="note">%</small>':''}</h3></div>
-      <div class="atrows">${rows.map(r=>`<div class="atrow"><div class="atname"><b>${esc(r.a.name)}</b><span class="note">${daily?'best of 14 days':'last test'} · ${dmy(r.last)}</span></div>
-        <div class="atbarw"><i class="atbar" style="width:${Math.max(4,Math.round(r.nowV/max*100))}%"></i></div><div class="atavg"><b>${n1(r.nowV)}${o.unit}</b><small>now</small></div>
-        <div class="atmeta"><span>best ${n1(r.best)}${o.unit}</span>${r.ch!=null?`<span class="${r.ch>0?'pos':r.ch<0?'neg':''}">${r.ch>0?'▲':r.ch<0?'▼':'='} ${n1(Math.abs(r.ch))}${o.unit} since ${dmy(r.ser[0].d)}</span>`:''}<span>${r.ser.length} test${r.ser.length>1?'s':''}</span>${atSpark(r.ser,from)}</div></div>`).join('')}
-      ${none.length?`<p class="note" style="margin:8px 0 0">No test in this time: ${esc(none.join(', '))}</p>`:''}</div></div>`; };
+    return `<div class="card atcard"><div class="athead"><h3>${esc(short(k))}</h3></div>
+      <div class="atrows">${rows.map(r=>`<div class="atrow2"><b class="atn">${esc(r.a.name)}</b><div class="atbarw"><i class="atbar" style="width:${Math.max(4,Math.round(r.nowV/max*100))}%"></i></div><b class="atv">${n1(r.nowV)}${o.unit}</b>${chip(r.c)||'<em class="atchg"></em>'}</div>`).join('')}</div></div>`; };
   const cl=D.map(({a,d})=>({a,c:atClimb(d,from)}));
   const climbHTML=`<div class="card"><h3>Climbing</h3><div class="attbl"><div class="atth"><span>Athlete</span><span>Routes</span><span>Tops</span><span>Flash</span><span>Hardest top</span></div>
     ${cl.map(({a,c})=>`<div class="attr"><b>${esc(a.name)}</b><span>${c.n||'–'}</span><span>${c.n?c.tops:'–'}</span><span>${c.n?Math.round(c.fl/c.n*100)+'%':'–'}</span><span>${c.hard?esc(c.hard.g):'–'}${c.hardF?` <small>flash ${esc(c.hardF.g)}</small>`:''}</span></div>`).join('')}</div></div>`;
@@ -5249,7 +5254,7 @@ const HELP={
  sim:['Practice comps','A practice round run like a real competition.','Each boulder has climbing time, then a short change time. In a comp order, one athlete is on each boulder at a time, and you rest while others climb. Signals: a long beep at the start and end, one beep at 1 minute left, short beeps in the last 5 seconds.','Practising the real rhythm and nerves makes real comps feel normal.','IFSC competition rules. The 15-second change time is our choice.'],
  levels:['Tracking levels','How much the app shows you. Level 1 is the simplest, Level 3 shows everything.','Level 1: your check-in (sleep, energy, body, focus, emotions, skin, warm-up, load, how the session went), the daily finger test and your climbs. Level 2: log everything, but without long explanations; today’s sleep and readiness on the calendar. Level 3: every explanation and stat. The ? buttons work on every level. In Customize you can choose which fields show on Level 1.','Logging only a little but every day is worth more than logging everything for a week and then stopping. Start simple and add more when it feels easy.','Progressive disclosure (Nielsen Norman Group): show the most important things first and the rest one clear step away. Athlete monitoring research: good data with the least burden (Saw et al. 2015), and short wellness checks of about 5 items (McLean et al. 2010).'],
  board:['Team rankings','Leaderboards for the whole team: streak, check-ins, sleep, training time and climbs. The podium shows who is first in the most of them.','Everyone is listed in every board, with a bar for how close you are. Streak = days in a row with a log. Training time and climbs reset on Monday, check-ins on the 1st of the month.','Seeing others keep going is a nudge to keep going too, and it turns logging into something you do together.','Only a few numbers and your profile picture are shared, never pain, feelings, notes, body or test results. Which numbers count is our choice.'],
- coach:['Team performance','Every athlete’s tests, climbing and comps side by side.','Readiness: green = fresh, yellow = 5% or more below their own normal, red = 10% or more below. Test cards: “now” (for daily tests the best of the last 14 days), their best, and how much it changed since their first test in the period.','You can see who is tired before a hard session, and who is improving.','The same rules as the athletes see: daily and super tests, finger strength research (Baláš et al. 2012).']};
+ coach:['Team performance','Every athlete’s tests, climbing and comps side by side.','Each number is the last test result in kg or seconds. Next to it: how much it changed since the test before, green when it went up, red when it went down.','You can see who is tired before a hard session, and who is improving.','The same rules as the athletes see: daily and super tests, finger strength research (Baláš et al. 2012).']};
 const helpBtn=(k,lbl)=>`<button class="qh" data-help="${k}" aria-label="${lbl||'What is this?'}" title="What is this?">?</button>`;
 function helpOpen(keys){ keys=keys.filter(k=>HELP[k]); if(!keys.length||document.getElementById('help')) return; const o=document.createElement('div'); o.id='help'; o.className='newsov';
   const sec=k=>{ const [t,w,r,y,b]=HELP[k]; return `<h2>${t}</h2><p class="newsl">What it is</p><p class="hp">${w}</p><p class="newsl">How to read it</p><p class="hp">${r}</p><p class="newsl">Why it helps</p><p class="hp">${y}</p><p class="newsl">Based on</p><p class="hp hb">${b}</p>`; };
