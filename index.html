@@ -3770,7 +3770,9 @@ your usual|tavo įprasta|твоє звичне
 Bad: a lot of training and every day the same. This is when athletes get sick or hurt.|Blogai: daug treniruočių ir kasdien tas pats. Būtent tada sportininkai suserga ar susižeidžia.|Погано: багато тренувань і щодня одне й те саме. Саме тоді спортсмени хворіють або травмуються.
 High: more than your usual. Plan rest days.|Didelė: daugiau nei įprastai. Suplanuok poilsio dienas.|Високе: більше, ніж зазвичай. Заплануй дні відпочинку.
 Good: not higher than usual.|Gerai: ne didesnė nei įprastai.|Добре: не вище, ніж зазвичай.
-Load = effort (0–10) × minutes. Rest days are 0.|Krūvis = pastangos (0–10) × minutės. Poilsio dienos – 0.|Навантаження = зусилля (0–10) × хвилини. Дні відпочинку — 0.`;
+Load = effort (0–10) × minutes. Rest days are 0.|Krūvis = pastangos (0–10) × minutės. Poilsio dienos – 0.|Навантаження = зусилля (0–10) × хвилини. Дні відпочинку — 0.
+≈ from a 1 s test|≈ iš 1 s testo|≈ з тесту 1 с
+now · from 1 s|dabar · iš 1 s|зараз · з 1 с`;
 // words that change with a number, and lines built from numbers or names
 const plLT=(n,a,b,c)=>{ n=Math.abs(Math.round(+n||0)); const d=n%10, t=n%100; return d===1&&t!==11?a:d>=2&&d<=9&&(t<12||t>19)?b:c; };
 const plUK=(n,a,b,c)=>{ n=Math.abs(Math.round(+n||0)); const d=n%10, t=n%100; return d===1&&t!==11?a:d>=2&&d<=4&&(t<12||t>14)?b:c; };
@@ -7885,12 +7887,25 @@ function goalItemState(i,m){
     return {done,none:!win.length,now:i.count>1?`${n}/${i.count}`:best?best.g:'–',goal:i.count>1?`${esc(i.target)}+`:esc(i.target),pct:i.count>1?Math.min(1,n/i.count):done?1:best?Math.min(0.95,gradeP(FONT(best.g),tg)):0,main:i.count>1?`<b>${n}</b> of ${i.count} tops at ${esc(i.target)} or harder${i.days?` <small>in ${i.days} days</small>`:''}`:best?`Hardest top${i.days?` <small>(${Math.round(i.days/30.4)} months)</small>`:''} <b>${esc(best.g)}</b> → ${esc(i.target)}`:`No tops${i.days?' in this time':' logged yet'} → ${esc(i.target)}`,
       sub:i.count>1?`Tops at ${esc(i.target)} or harder${i.days?` in the last ${Math.round(i.days/30.4)} months`:''}, from your route cards.`:`Hardest top${i.days?` in the last ${Math.round(i.days/30.4)} months`:''}, from your route cards.`,short:i.count>1?`${i.target}: ${n}/${i.count} tops`:best?`Hardest ${best.g} → ${i.target}`:`${i.name}`}; }
   const t=S.cfg.templates.find(t=>t.id===i.tid), f=t&&t.fields.find(f=>f.id===i.fid); if(!f) return {done:false,pct:0,main:'Test not found',sub:'Tap Edit and pick a test.',short:`${i.name}: no test`};
-  const c=normX(f.x), as=c.u==='kg'&&c.bw&&i.as==='pct'?'pct':'raw', unit=as==='pct'?'%':(c.u?' '+c.u:''), daily=pgOf(t)==='daily', raw0=metricSeries(i.tid,i.fid,i.side,as,i.hs), ser=daily?raw0.map(x=>({d:x.d,v:Math.max(...raw0.filter(y=>y.d<=x.d&&y.d>=dAdd(x.d,-13)).map(y=>y.v))})):raw0, nm=(i.sec==='fing'&&c.lr?`Fingers ${i.side==='l'?'L':'R'}`:i.name)+(i.hs===1?' · 1 s':'');
+  const c=normX(f.x), as=c.u==='kg'&&c.bw&&i.as==='pct'?'pct':'raw', unit=as==='pct'?'%':(c.u?' '+c.u:''), daily=pgOf(t)==='daily', raw0=goalSeries(i,c,as), ser=daily?raw0.map(x=>{ const b=raw0.filter(y=>y.d<=x.d&&y.d>=dAdd(x.d,-13)).reduce((p,q)=>q.v>p.v?q:p); return {d:x.d,v:b.v,k1:b.k1}; }):raw0, nm=(i.sec==='fing'&&c.lr?`Fingers ${i.side==='l'?'L':'R'}`:i.name)+(i.hs===1?' · 1 s':'');
   if(!ser.length) return {done:false,none:true,pct:0,main:`– → <b>${i.target}${unit}</b>`,sub:`No test yet. Do the “${esc(t.name.replace(/^\+\s*/,''))}” in Performance → Daily tests.`,short:`${nm}: no test yet`};
   const fst=ser[0], lst=ser[ser.length-1], done=lst.v>=i.target, ml=monthsTo(m.date), need=ml>0?(i.target-lst.v)/ml:null, span=dayIdx(fst.d,lst.d), act=span>=21?(lst.v-fst.v)/(span/30.44):null, behind=!done&&act!=null&&need!=null&&act<need;
-  const sub=done?'':ml<=0?'Date passed':`Needs ${sgnN(need)}${unit} a month${act!=null?` · you: ${sgnN(act)}${unit} a month`:' · keep testing to see your pace'}`;
-  return {done,behind,pace:act!=null&&!behind,now:n1(lst.v)+unit,goal:i.target+unit,pct:Math.max(0,Math.min(1,lst.v/(i.target||1))),main:`<b>${n1(lst.v)}${unit}</b> → ${i.target}${unit}`,sub:`${i.hs===1?'1 s hold · ':''}${sub?sub+' · ':''}${daily?`best of 14 days · ${dmy(lst.d)}`:`last test ${dmy(lst.d)}`}`,short:`${nm} ${n1(lst.v)}→${i.target}${unit}`}; }
+  const cv=lst.k1?' · ≈ from a 1 s test':'', sub=done?'':ml<=0?'Date passed':`Needs ${sgnN(need)}${unit} a month${act!=null?` · you: ${sgnN(act)}${unit} a month`:' · keep testing to see your pace'}`;
+  return {done,behind,pace:act!=null&&!behind,k1:!!lst.k1,now:(lst.k1?'≈':'')+n1(lst.v)+unit,goal:i.target+unit,pct:Math.max(0,Math.min(1,lst.v/(i.target||1))),main:`<b>${n1(lst.v)}${unit}</b> → ${i.target}${unit}`,sub:`${i.hs===1?'1 s hold · ':''}${sub?sub+' · ':''}${cv?cv.slice(3)+' · ':''}${daily?`best of 14 days · ${dmy(lst.d)}`:`last test ${dmy(lst.d)}`}`,short:`${nm} ${n1(lst.v)}→${i.target}${unit}`}; }
 const pathMine=()=>/kajus/i.test(String(ACC.name||''));
+// Kajus only: his 7 s finger goals also count his 1 s tests, turned into what he'd hold for 7 s.
+// A max you can hold 1 s is more than one you can hold 7 s (force drops with hang time). We use his own ratio from days
+// he did both within 14 days (median, kept between 0.80 and 1.00); until there are 2 such pairs, 0.92 (7 s ≈ 92% of a 1 s max).
+// 0.92 is an estimate: hangboard load guides put a 5 s max at about 104% of the 7 s max (StrengthClimbing), so 1 s sits a bit higher.
+function sec1Ratio(i,as){ const a=metricSeries(i.tid,i.fid,i.side,as,7), b=metricSeries(i.tid,i.fid,i.side,as,1), r=[];
+  b.forEach(y=>{ const x=a.filter(x=>Math.abs(dayIdx(x.d,y.d))<=14).sort((p,q)=>Math.abs(dayIdx(p.d,y.d))-Math.abs(dayIdx(q.d,y.d)))[0]; if(x&&y.v>0) r.push(x.v/y.v); });
+  if(r.length<2) return {k:.92,own:false}; r.sort((p,q)=>p-q); const m=r[Math.floor(r.length/2)]; return {k:Math.max(.8,Math.min(1,m)),own:true,n:r.length}; }
+function goalSeries(i,c,as){ const s7=metricSeries(i.tid,i.fid,i.side,as,i.hs);
+  if(i.hs===1||!pathMine()||!(c.u==='kg'&&c.bw==='lift'&&c.lr)) return s7;
+  const s1=metricSeries(i.tid,i.fid,i.side,as,1); if(!s1.length) return s7; const {k}=sec1Ratio(i,as), by={};
+  s7.forEach(x=>by[x.d]={d:x.d,v:x.v}); s1.forEach(y=>{ const v=Math.round(y.v*k*10)/10; if(!by[y.d]||by[y.d].v<v) by[y.d]={d:y.d,v,k1:true}; });
+  return Object.values(by).sort((a,b)=>a.d<b.d?-1:1); }
+
 const nextGoal=()=>{ const G=S.cfg.goals||[]; return G.find(x=>x.date>=todayStr)||G[G.length-1]||null; };
 function goalStrip(){ const m=nextGoal(); if(!m) return '';
   const st=m.items.map(i=>({i,s:goalItemState(i,m)})), done=st.filter(x=>x.s.done).length, n=st.length, dl=dayIdx(todayStr,m.date), f=n?done/n:0, R=19, C=2*Math.PI*R;
@@ -7902,7 +7917,7 @@ function goalCardHTML(m,nx){ const st=m.items.map(i=>goalItemState(i,m)), done=s
   const secs=GSECO.map(k=>[k,m.items.map((i,j)=>[i,st[j]]).filter(([i])=>secOf(i)===k)]).filter(([,L])=>L.length);
   const pill=x=>x.done?'<span class="gpill done">Reached</span>':x.none?'<span class="gpill none">No data</span>':x.behind?'<span class="gpill behind">Behind</span>':x.pace?'<span class="gpill ok">On pace</span>':'<span class="gpill">In progress</span>';
   const row=([i,x])=>i.kind==='check'?`<div class="gitem gck${x.done?' done':''}"><button class="gchk${i.done?' on':''}" data-gchk="${m.id}|${i.id}" aria-pressed="${!!i.done}" aria-label="${esc(i.name)}: ${i.done?'done':'not done'}"${GUEST?' disabled':''}>${i.done?'✓':''}</button><b>${esc(i.name)}</b></div>`
-    :`<div class="gitem${x.done?' done':''}"><div class="gih"><span class="gname">${esc(i.name)}</span>${pill(x)}</div>${x.now!=null?`<div class="gnums"><span><small>now</small><b>${x.now}</b></span><i>→</i><span><small>goal</small><b>${x.goal}</b></span></div>`:`<span class="gmain">${x.main}</span>`}${i.kind==='styles'?'':`<span class="mbar${x.behind?' neg':''}"><i style="width:${Math.round(x.pct*100)}%"></i></span>`}</div>`;
+    :`<div class="gitem${x.done?' done':''}"><div class="gih"><span class="gname">${esc(i.name)}</span>${pill(x)}</div>${x.now!=null?`<div class="gnums"><span><small>${x.k1?'now · from 1 s':'now'}</small><b>${x.now}</b></span><i>→</i><span><small>goal</small><b>${x.goal}</b></span></div>`:`<span class="gmain">${x.main}</span>`}${i.kind==='styles'?'':`<span class="mbar${x.behind?' neg':''}"><i style="width:${Math.round(x.pct*100)}%"></i></span>`}</div>`;
   return `<div class="card goal${nx?' gnext':''}${past?' gpast':''}"><button class="ghead" data-gopen="${m.id}" aria-expanded="${open}"><span class="gring" style="--p:${avg}"><span>${Math.round(avg*100)}</span></span><span class="gttl"><b>${esc(m.label)}</b><small>${dmyy(m.date)} · ${dl>0?`${dl} days left`:dl===0?'today':'date passed'}</small></span><span class="gcount">${done}/${st.length}</span></button>
     ${open?`<div class="gitems">${secs.map(([k,L])=>`<div class="ggrp gg-${k}"><p class="gsec">${GSEC[k]}</p>${L.map(row).join('')}</div>`).join('')}
       ${GUEST?'':`<button class="btn ghost gedbtn" data-gedit="${m.id}">Edit</button>`}</div>`:''}</div>`; }
