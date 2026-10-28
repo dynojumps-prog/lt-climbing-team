@@ -3793,7 +3793,12 @@ World Championship medal|Pasaulio čempionato medalis|Медаль чемпіо�
 World Cup series top 3|Pasaulio taurės serijos top 3|Топ-3 серії Кубка світу
 World Cup series title|Pasaulio taurės serijos titulas|Титул серії Кубка світу
 Olympic medal|Olimpinis medalis|Олімпійська медаль
-Lead 8c|Lead 8c|Лід 8c`;
+Lead 8c|Lead 8c|Лід 8c
+Comp tops|Topai varžybose|Топи на змаганнях
++ Comp rounds|+ Varžybų raundai|+ Раунди змагань
+Any round|Bet kuris raundas|Будь-який раунд
+Target %|Tikslas %|Ціль %
+At least boulders|Bent boulderių|Щонайменше боулдерів`;
 // words that change with a number, and lines built from numbers or names
 const plLT=(n,a,b,c)=>{ n=Math.abs(Math.round(+n||0)); const d=n%10, t=n%100; return d===1&&t!==11?a:d>=2&&d<=9&&(t<12||t>19)?b:c; };
 const plUK=(n,a,b,c)=>{ n=Math.abs(Math.round(+n||0)); const d=n%10, t=n%100; return d===1&&t!==11?a:d>=2&&d<=4&&(t<12||t>14)?b:c; };
@@ -3837,6 +3842,7 @@ const TRX=[
  [/^Read only\. Only (.+) can change it\.$/,{lt:m=>`Tik peržiūra. Keisti gali tik ${m[1]}.`,uk:m=>`Лише перегляд. Змінювати може тільки ${m[1]}.`}],
  [/^What is (.+)\?$/,{lt:m=>`Kas yra ${NM(m[1])}?`,uk:m=>`Що таке ${NM(m[1])}?`}],
  [/^(.+): not done$/,{lt:m=>`${T(m[1])}: nepadaryta`,uk:m=>`${T(m[1])}: не зроблено`}],
+ [/^(\d+) of (\d+) comp boulders (topped|flashed|zoned)(?: \((qualification|semi-final|final) rounds\))?$/,{lt:m=>`${m[1]} iš ${m[2]} varžybų boulderių – ${{topped:'topas',flashed:'iš pirmo karto',zoned:'zona'}[m[3]]}${m[4]?` (${{qualification:'atrankos','semi-final':'pusfinalio',final:'finalo'}[m[4]]} raundai)`:''}`,uk:m=>`${m[1]} з ${m[2]} боулдерів на змаганнях — ${{topped:'топ',flashed:'з першої спроби',zoned:'зона'}[m[3]]}${m[4]?` (${{qualification:'кваліфікація','semi-final':'півфінали',final:'фінали'}[m[4]]})`:''}`}],
  [/^Flash half of (.+)$/,{lt:m=>`Pusė ${m[1]} iš pirmo karto`,uk:m=>`Половина ${m[1]} з першої спроби`}],
  [/^(\d+) of (\d+) boulders at (.+) or harder flashed$/,{lt:m=>`${m[1]} iš ${m[2]} ${m[3]} ar sunkesnių boulderių – iš pirmo karto`,uk:m=>`${m[1]} з ${m[2]} боулдерів ${m[3]} і важче — з першої спроби`}],
  [/^needs (\d+) boulders$/,{lt:m=>`reikia ${m[1]} boulderių`,uk:m=>`потрібно ${m[1]} боулдерів`}],
@@ -7070,7 +7076,7 @@ app.addEventListener('change',ev=>{
   if(ds.xiu){ const {k,e,it}=itemAt(ds.xiu); if(!it) return; it.x=normX(Object.assign({},xcfg(e,it),{u:t.value})); saveMonth(k); render(); return; }
   for(const k of ['thow','tname','xcu','fname','xlr','xbw','xrole']) if(ds[k]!==undefined){ const tp=T[+String(ds[k]).split('|')[0]]; if(tp&&tp.perf) return; }
   if(ds.thow!==undefined){ const tp=T[+ds.thow]; if(tp){ tp.how=t.value.trim().slice(0,600); saveCfg(); } return; }
-  if(ds.gfield!==undefined||ds.gdate!==undefined||ds.glabel!==undefined||ds.gitarget!==undefined||ds.giname!==undefined||ds.gicount!==undefined||ds.gidays!==undefined||ds.gipct!==undefined){ goalChange(t,ds); return; }
+  if(ds.gfield!==undefined||ds.gdate!==undefined||ds.glabel!==undefined||ds.gitarget!==undefined||ds.giname!==undefined||ds.gicount!==undefined||ds.gidays!==undefined||ds.gipct!==undefined||ds.gimin!==undefined||ds.gistat!==undefined||ds.giround!==undefined){ goalChange(t,ds); return; }
   if(ds.tname!==undefined) T[+ds.tname].name=t.value.trim()||'Be pavadinimo';
   else if(ds.fname){ const [ti,fi]=ds.fname.split('|').map(Number); T[ti].fields[fi].name=t.value.trim()||'Laukas'; }
   else if(ds.ccolor!==undefined){ T[+ds.ccolor].color=safeColor(t.value); saveCfg(); render(); return; }
@@ -7876,10 +7882,11 @@ function renderPerf(){ ensurePerf(); const k=mkey(S.y,S.m); month(k); if(S.st.pg
 const secOf=i=>GSEC[i.sec]?i.sec:i.kind==='metric'?'fing':i.kind==='grade'?'bould':i.kind==='styles'?'style':i.kind==='flash'?'flash':i.kind==='balance'?'health':'other';
 function normGoals(g){ if(!Array.isArray(g)) return []; const S2=s=>String(s==null?'':s).replace(/[<>"`]/g,'').slice(0,80), okid=v=>/^[A-Za-z0-9_-]{1,64}$/.test(String(v));
   return g.filter(m=>m&&typeof m==='object').slice(0,30).map(m=>({id:okid(m.id)?String(m.id):rid(),label:S2(m.label)||'Milestone',date:/^\d{4}-\d{2}-\d{2}$/.test(String(m.date))?String(m.date):'2027-12-31',
-    items:(Array.isArray(m.items)?m.items:[]).filter(i=>i&&typeof i==='object').slice(0,24).map(i=>{ const k=['metric','grade','check','styles','flash','balance'].includes(i.kind)?i.kind:'check', o={id:okid(i.id)?String(i.id):rid(),kind:k,name:S2(i.name)||'Goal'}; if(GSEC[i.sec]) o.sec=i.sec;
+    items:(Array.isArray(m.items)?m.items:[]).filter(i=>i&&typeof i==='object').slice(0,24).map(i=>{ const k=['metric','grade','check','styles','flash','balance','comp'].includes(i.kind)?i.kind:'check', o={id:okid(i.id)?String(i.id):rid(),kind:k,name:S2(i.name)||'Goal'}; if(GSEC[i.sec]) o.sec=i.sec;
       if(k==='metric'){ o.tid=okid(i.tid)?String(i.tid):''; o.fid=okid(i.fid)?String(i.fid):''; o.side=['l','r','v'].includes(i.side)?i.side:'v'; o.as=i.as==='raw'?'raw':'pct'; o.target=isFinite(+i.target)?+i.target:0; if(+i.hs===1) o.hs=1; }
       if(k==='grade'||k==='styles'){ o.target=S2(i.target).toUpperCase().slice(0,4)||'7C'; o.count=Math.max(1,Math.min(50,Math.round(+i.count)||1)); o.days=Math.max(0,Math.min(3650,Math.round(+i.days)||0)); }
       if(k==='flash'){ o.target=S2(i.target).toUpperCase().slice(0,4)||'7B'; o.pct=Math.max(5,Math.min(100,Math.round(+i.pct)||50)); o.days=Math.max(30,Math.min(3650,Math.round(+i.days)||182)); o.min=Math.max(1,Math.min(50,Math.round(+i.min)||5)); }
+      if(k==='comp'){ o.stat=['top','flash','zone'].includes(i.stat)?i.stat:'top'; o.round=['q','s','f'].includes(i.round)?i.round:''; o.pct=Math.max(5,Math.min(100,Math.round(+i.pct)||50)); o.days=Math.max(30,Math.min(3650,Math.round(+i.days)||365)); o.min=Math.max(1,Math.min(60,Math.round(+i.min)||8)); }
       if(k==='balance'){ o.tid=okid(i.tid)?String(i.tid):''; o.fid=okid(i.fid)?String(i.fid):''; o.as=i.as==='raw'?'raw':'pct'; o.target=isFinite(+i.target)?Math.max(1,Math.min(100,+i.target)):90; }
       if(k==='check') o.done=!!i.done; return o; })})).sort((a,b)=>a.date<b.date?-1:1); }
 // The template path, one milestone a year. Finger targets are % of bodyweight on the 7 s one-arm test (Lattice benchmarks for the grade);
@@ -7911,7 +7918,13 @@ const monthsTo=d=>(new Date(d+'T12:00')-new Date(todayStr+'T12:00'))/864e5/30.44
 function gradeTops(days){ const R=allRoutes().filter(y=>y.top===true&&FONT(y.g)!=null); return days?R.filter(y=>y.d>=dAdd(todayStr,-days+1)):R; }
 // grade progress: 8 Font grades below the goal is the start of the bar (6C+ toward 7C+ is a quarter, not most of the way)
 const gradeP=(b,tg)=>b==null||tg==null?0:Math.max(0,Math.min(1,(b-(tg-8))/8));
+// every boulder from my competition round logs (and practice rounds logged the same way): attempts, zone attempt, top attempt, round
+function compBoulders(from){ return cached('CB:'+from,()=>{ const out=[]; atEach({months:S.months},(e,ds)=>{ if(ds<from) return; const t=S.cfg.templates.find(t=>t.id===e.tid); if(!t||!t.comp) return;
+  (e.items||[]).forEach(it=>{ if(!compsList(it).includes('G')) return; (getP(it,'G')||[]).filter(y=>y&&typeof y==='object').forEach(y=>out.push({d:ds,round:e.round||'',a:+y.a||0,za:+y.za||0,ta:+y.ta||0})); }); }); return out; }); }
 function goalItemState(i,m){
+  if(i.kind==='comp'){ const from=dAdd(todayStr,-i.days+1), B=compBoulders(from).filter(y=>!i.round||y.round===i.round), n=B.length, hit=B.filter(y=>i.stat==='flash'?y.ta===1:i.stat==='zone'?(y.za>0||y.ta>0):y.ta>0).length, rate=n?hit/n*100:0, enough=n>=i.min, done=enough&&rate>=i.pct;
+    const what=i.stat==='flash'?'flashed':i.stat==='zone'?'zoned':'topped', rl={q:'qualification',s:'semi-final',f:'final'}[i.round];
+    return {done,none:!n,now:n?`${Math.round(rate)}%`:'–',goal:`${i.pct}%`,pct:Math.min(1,rate/i.pct)*Math.min(1,n/i.min),main:'',sub:`${hit} of ${n} comp boulders ${what}${rl?` (${rl} rounds)`:''}${enough?'':` · needs ${i.min} boulders`}`,short:`${i.name}: ${n?Math.round(rate)+'%':'–'} → ${i.pct}%`}; }
   if(i.kind==='flash'){ const tg=FONT(i.target); if(tg==null) return {done:false,pct:0,main:esc(i.target),sub:'Use a Font grade like 7B or 8A.',short:i.name};
     const from=dAdd(todayStr,-i.days+1), R=allRoutes().filter(y=>y.d>=from&&FONT(y.g)!=null&&FONT(y.g)>=tg&&rresOf(y)!=null), n=R.length, f=R.filter(y=>rresOf(y)==='flash').length, rate=n?f/n*100:0, enough=n>=i.min, done=enough&&rate>=i.pct;
     return {done,none:!n,now:n?`${Math.round(rate)}%`:'–',goal:`${i.pct}%`,pct:Math.min(1,(rate/i.pct))*Math.min(1,n/i.min),main:'',sub:`${f} of ${n} boulders at ${esc(i.target)} or harder flashed${enough?'':` · needs ${i.min} boulders`}`,short:`Flash ${i.target}+: ${n?Math.round(rate)+'%':'–'} → ${i.pct}%`}; }
@@ -7973,9 +7986,10 @@ function goalEditHTML(m){ const O=metricOptions();
       ${i.kind==='metric'?`<div class="ftgrid"><label class="ftin">Test<select data-gfield="${m.id}|${i.id}">${O.some(o=>o.v===cur)?'':'<option value="" selected>Pick a test</option>'}${O.map(o=>`<option value="${o.v}"${o.v===cur?' selected':''}>${esc(o.l)}</option>`).join('')}</select></label><label class="ftin">Target<input type="number" inputmode="decimal" step="any" data-gitarget="${m.id}|${i.id}" value="${esc(i.target)}"></label></div>`
        :i.kind==='grade'?`<div class="ftgrid g3"><label class="ftin">Grade<input type="text" data-gitarget="${m.id}|${i.id}" value="${esc(i.target)}" autocapitalize="characters"></label><label class="ftin">Tops<input type="number" inputmode="numeric" min="1" data-gicount="${m.id}|${i.id}" value="${esc(i.count)}"></label><label class="ftin">In days <small>0 = ever</small><input type="number" inputmode="numeric" min="0" data-gidays="${m.id}|${i.id}" value="${esc(i.days)}"></label></div>`
        :i.kind==='flash'?`<div class="ftgrid g3"><label class="ftin">Grade or harder<input type="text" data-gitarget="${m.id}|${i.id}" value="${esc(i.target)}" autocapitalize="characters"></label><label class="ftin">Flashed %<input type="number" inputmode="numeric" min="5" max="100" data-gipct="${m.id}|${i.id}" value="${esc(i.pct)}"></label><label class="ftin">In days<input type="number" inputmode="numeric" min="30" data-gidays="${m.id}|${i.id}" value="${esc(i.days)}"></label></div>`
+       :i.kind==='comp'?`<div class="ftgrid g3"><label class="ftin">Count<select data-gistat="${m.id}|${i.id}">${[['top','Tops'],['flash','Flashes'],['zone','Zones']].map(([v,l])=>`<option value="${v}"${i.stat===v?' selected':''}>${l}</option>`).join('')}</select></label><label class="ftin">Round<select data-giround="${m.id}|${i.id}">${[['','Any round'],['q','Qualification'],['s','Semi-final'],['f','Final']].map(([v,l])=>`<option value="${v}"${i.round===v?' selected':''}>${l}</option>`).join('')}</select></label><label class="ftin">Target %<input type="number" inputmode="numeric" min="5" max="100" data-gipct="${m.id}|${i.id}" value="${esc(i.pct)}"></label></div><div class="ftgrid"><label class="ftin">In days<input type="number" inputmode="numeric" min="30" data-gidays="${m.id}|${i.id}" value="${esc(i.days)}"></label><label class="ftin">At least boulders<input type="number" inputmode="numeric" min="1" data-gimin="${m.id}|${i.id}" value="${esc(i.min)}"></label></div>`
        :i.kind==='balance'?`<div class="ftgrid"><label class="ftin">Weaker hand at least (% of the other)<input type="number" inputmode="numeric" min="1" max="100" data-gitarget="${m.id}|${i.id}" value="${esc(i.target)}"></label></div>`
        :i.kind==='styles'?`<div class="ftgrid"><label class="ftin">Grade in every style<input type="text" data-gitarget="${m.id}|${i.id}" value="${esc(i.target)}" autocapitalize="characters"></label><label class="ftin">In days <small>0 = ever</small><input type="number" inputmode="numeric" min="0" data-gidays="${m.id}|${i.id}" value="${esc(i.days)}"></label></div>`:''}</div>`; }).join('')}
-    <p class="clab" style="margin-top:10px">Add a goal</p><div class="chips"><button data-giadd="${m.id}|metric">+ Test number</button><button data-giadd="${m.id}|grade">+ Boulder grade</button><button data-giadd="${m.id}|styles">+ Every style</button><button data-giadd="${m.id}|flash">+ Flash rate</button><button data-giadd="${m.id}|check">+ Tick box</button></div>
+    <p class="clab" style="margin-top:10px">Add a goal</p><div class="chips"><button data-giadd="${m.id}|metric">+ Test number</button><button data-giadd="${m.id}|grade">+ Boulder grade</button><button data-giadd="${m.id}|styles">+ Every style</button><button data-giadd="${m.id}|flash">+ Flash rate</button><button data-giadd="${m.id}|comp">+ Comp rounds</button><button data-giadd="${m.id}|check">+ Tick box</button></div>
     <div class="row" style="margin:12px 0 0"><button class="btn" data-gdone="1">Done</button><span style="flex:1"></span><button class="del" data-gdel="${m.id}">Delete milestone</button></div></div>`; }
 
 function goalCelebrate(){ if(GUEST) return; let seen={}; try{ seen=JSON.parse(localStorage.getItem(PFX+'reached')||'{}'); }catch(e){} const fresh=[];
@@ -8006,17 +8020,20 @@ function goalClick(ds,b){
   if(ds.gchk){ const [mid,iid]=ds.gchk.split('|'), i=goalItem(mid,iid); if(!i) return true; i.done=!i.done; saveCfg(); render(); if(i.done) toast(`✓ ${i.name}`); return true; }
   if(ds.gidel){ const [mid,iid]=ds.gidel.split('|'), m=(S.cfg.goals||[]).find(x=>x.id===mid); if(!m) return true; m.items=m.items.filter(i=>i.id!==iid); saveCfg(); render(); return true; }
   if(ds.giadd){ const [mid,kind]=ds.giadd.split('|'), m=(S.cfg.goals||[]).find(x=>x.id===mid); if(!m) return true; const o=metricOptions()[0], ref=o?o.v.split('|'):['','','v'];
-    m.items.push(kind==='metric'?{id:rid(),kind,name:'Test goal',tid:ref[0],fid:ref[1],side:ref[2],as:'pct',target:100}:kind==='grade'?{id:rid(),kind,name:'Boulder grade',target:'7C',count:1,days:0}:kind==='styles'?{id:rid(),kind,name:'Every style',target:'7B',count:1,days:365}:kind==='flash'?{id:rid(),kind,name:'Flash rate',target:'7B',pct:50,days:182,min:5}:{id:rid(),kind:'check',name:'New goal',done:false}); saveCfg(); render(); return true; }
+    m.items.push(kind==='metric'?{id:rid(),kind,name:'Test goal',tid:ref[0],fid:ref[1],side:ref[2],as:'pct',target:100}:kind==='grade'?{id:rid(),kind,name:'Boulder grade',target:'7C',count:1,days:0}:kind==='styles'?{id:rid(),kind,name:'Every style',target:'7B',count:1,days:365}:kind==='flash'?{id:rid(),kind,name:'Flash rate',target:'7B',pct:50,days:182,min:5}:kind==='comp'?{id:rid(),kind,sec:'comp',name:'Comp tops',stat:'top',round:'',pct:50,days:365,min:8}:{id:rid(),kind:'check',name:'New goal',done:false}); saveCfg(); render(); return true; }
   return false; }
 function goalChange(t,ds){ const G=S.cfg.goals||[];
   if(ds.glabel!==undefined){ const m=G.find(x=>x.id===ds.glabel); if(m) m.label=t.value.replace(/[<>"`]/g,'').trim().slice(0,80)||'Milestone'; }
   else if(ds.gdate!==undefined){ const m=G.find(x=>x.id===ds.gdate); if(m&&/^\d{4}-\d{2}-\d{2}$/.test(t.value)) m.date=t.value; }
-  else { const raw=ds.giname||ds.gitarget||ds.gicount||ds.gidays||ds.gipct||ds.gfield||'', [mid,iid]=raw.split('|'), i=goalItem(mid,iid); if(!i) return;
+  else { const raw=ds.giname||ds.gitarget||ds.gicount||ds.gidays||ds.gipct||ds.gimin||ds.gistat||ds.giround||ds.gfield||'', [mid,iid]=raw.split('|'), i=goalItem(mid,iid); if(!i) return;
     if(ds.giname!==undefined) i.name=t.value.replace(/[<>"`]/g,'').trim().slice(0,80)||'Goal';
     else if(ds.gitarget!==undefined) i.target=['grade','styles','flash'].includes(i.kind)?t.value.trim().toUpperCase().slice(0,4):(t.value!==''&&isFinite(+t.value)?+t.value:i.target);
     else if(ds.gicount!==undefined) i.count=Math.max(1,Math.round(+t.value)||1);
     else if(ds.gidays!==undefined) i.days=Math.max(0,Math.round(+t.value)||0);
     else if(ds.gipct!==undefined) i.pct=Math.max(5,Math.min(100,Math.round(+t.value)||50));
+    else if(ds.gimin!==undefined) i.min=Math.max(1,Math.min(60,Math.round(+t.value)||1));
+    else if(ds.gistat!==undefined) i.stat=['top','flash','zone'].includes(t.value)?t.value:'top';
+    else if(ds.giround!==undefined) i.round=['q','s','f'].includes(t.value)?t.value:'';
     else if(ds.gfield!==undefined&&t.value){ const [tid,fid,side,hs]=t.value.split('|'), f=fieldById(fid), c=normX(f&&f.x); Object.assign(i,{tid,fid,side,as:c.u==='kg'&&c.bw?'pct':'raw'}); if(hs==='1') i.hs=1; else delete i.hs; } }
   saveCfg(); }
 function goalsExport(){ const G=S.cfg.goals||[]; if(!G.length) return []; const L=['=== Milestones (status on '+todayStr+') ==='];
