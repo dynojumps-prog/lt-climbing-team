@@ -1876,7 +1876,7 @@ html.swpon .sheet .cks,html.swpon .sheet .card{box-shadow:none!important}
 .ggrp .gsec::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--gc)}
 .ggrp .gitem:last-child{border-bottom:0!important}
 .ggrp .mbar i{background:var(--gc)!important}
-.gg-fing{--gc:#1FA2A8}.gg-bould{--gc:#E86A2C}.gg-style{--gc:#8E52CC}.gg-lead{--gc:#2F6FD1}.gg-comp{--gc:#D23F63}.gg-other{--gc:#5B6770}
+.gg-fing{--gc:#1FA2A8}.gg-power{--gc:#7A5AC8}.gg-health{--gc:#2E9E6A}.gg-flash{--gc:#D99A00}.gg-bould{--gc:#E86A2C}.gg-style{--gc:#8E52CC}.gg-lead{--gc:#2F6FD1}.gg-comp{--gc:#D23F63}.gg-other{--gc:#5B6770}
 
 /* ---- coach stats: just the number and the change since the previous test ---- */
 .rdc2{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:14px;border:1.5px solid var(--line);background:var(--panel);min-width:0}
@@ -3772,7 +3772,28 @@ High: more than your usual. Plan rest days.|Didelė: daugiau nei įprastai. Supl
 Good: not higher than usual.|Gerai: ne didesnė nei įprastai.|Добре: не вище, ніж зазвичай.
 Load = effort (0–10) × minutes. Rest days are 0.|Krūvis = pastangos (0–10) × minutės. Poilsio dienos – 0.|Навантаження = зусилля (0–10) × хвилини. Дні відпочинку — 0.
 ≈ from a 1 s test|≈ iš 1 s testo|≈ з тесту 1 с
-now · from 1 s|dabar · iš 1 s|зараз · з 1 с`;
+now · from 1 s|dabar · iš 1 s|зараз · з 1 с
+Pulling power|Traukimo jėga|Сила тяги
+Healthy fingers|Sveiki pirštai|Здорові пальці
+Flashing|Iš pirmo karto|З першої спроби
+Pull-ups, 2 reps|Prisitraukimai, 2 kartai|Підтягування, 2 повтори
+Weaker hand vs stronger|Silpnesnė ranka prieš stipresnę|Слабша рука проти сильнішої
+Test both hands.|Patikrink abi rankas.|Перевір обидві руки.
+Grade or harder|Kategorija ar sunkesnė|Категорія або важче
+Flashed %|Iš pirmo karto %|З першої спроби %
+Weaker hand at least (% of the other)|Silpnesnė ranka bent (% kitos)|Слабша рука щонайменше (% іншої)
++ Flash rate|+ Iš pirmo karto|+ З першої спроби
+Aimed at Sorato’s level: fingers, pull power, healthy fingers, flash rate, grades, lead and World Cup steps.|Nukreiptas į Sorato lygį: pirštai, traukimo jėga, sveiki pirštai, iš pirmo karto, kategorijos, lead ir Pasaulio taurės žingsniai.|Націлено на рівень Сорато: пальці, сила тяги, здорові пальці, з першої спроби, категорії, лід і кроки Кубка світу.
+European Cup top 20|Europos taurės top 20|Топ-20 Кубка Європи
+European Cup podium|Europos taurės prizininkas|Подіум Кубка Європи
+Qualified for the Olympics|Patekau į olimpiadą|Кваліфікувався на Олімпіаду
+Olympic final|Olimpinis finalas|Олімпійський фінал
+World Cup win|Pasaulio taurės pergalė|Перемога на Кубку світу
+World Championship medal|Pasaulio čempionato medalis|Медаль чемпіонату світу
+World Cup series top 3|Pasaulio taurės serijos top 3|Топ-3 серії Кубка світу
+World Cup series title|Pasaulio taurės serijos titulas|Титул серії Кубка світу
+Olympic medal|Olimpinis medalis|Олімпійська медаль
+Lead 8c|Lead 8c|Лід 8c`;
 // words that change with a number, and lines built from numbers or names
 const plLT=(n,a,b,c)=>{ n=Math.abs(Math.round(+n||0)); const d=n%10, t=n%100; return d===1&&t!==11?a:d>=2&&d<=9&&(t<12||t>19)?b:c; };
 const plUK=(n,a,b,c)=>{ n=Math.abs(Math.round(+n||0)); const d=n%10, t=n%100; return d===1&&t!==11?a:d>=2&&d<=4&&(t<12||t>14)?b:c; };
@@ -3816,6 +3837,12 @@ const TRX=[
  [/^Read only\. Only (.+) can change it\.$/,{lt:m=>`Tik peržiūra. Keisti gali tik ${m[1]}.`,uk:m=>`Лише перегляд. Змінювати може тільки ${m[1]}.`}],
  [/^What is (.+)\?$/,{lt:m=>`Kas yra ${NM(m[1])}?`,uk:m=>`Що таке ${NM(m[1])}?`}],
  [/^(.+): not done$/,{lt:m=>`${T(m[1])}: nepadaryta`,uk:m=>`${T(m[1])}: не зроблено`}],
+ [/^Flash half of (.+)$/,{lt:m=>`Pusė ${m[1]} iš pirmo karto`,uk:m=>`Половина ${m[1]} з першої спроби`}],
+ [/^(\d+) of (\d+) boulders at (.+) or harder flashed$/,{lt:m=>`${m[1]} iš ${m[2]} ${m[3]} ar sunkesnių boulderių – iš pirmo karto`,uk:m=>`${m[1]} з ${m[2]} боулдерів ${m[3]} і важче — з першої спроби`}],
+ [/^needs (\d+) boulders$/,{lt:m=>`reikia ${m[1]} boulderių`,uk:m=>`потрібно ${m[1]} боулдерів`}],
+ [/^(Left|Right) hand is at (\d+)% of the other$/,{lt:m=>`${m[1]==='Left'?'Kairė':'Dešinė'} ranka – ${m[2]}% kitos`,uk:m=>`${m[1]==='Left'?'Ліва':'Права'} рука — ${m[2]}% іншої`}],
+ [/^(Left|Right) hand (\d+)% → (\d+)%$/,{lt:m=>`${m[1]==='Left'?'Kairė':'Dešinė'} ranka ${m[2]}% → ${m[3]}%`,uk:m=>`${m[1]==='Left'?'Ліва':'Права'} рука ${m[2]}% → ${m[3]}%`}],
+ [/^Flash (.+)\+: (.+) → (.+)$/,{lt:m=>`Iš pirmo karto ${m[1]}+: ${m[2]} → ${m[3]}`,uk:m=>`З першої спроби ${m[1]}+: ${m[2]} → ${m[3]}`}],
  [/^First (.+)$/,{lt:m=>`Pirmasis ${m[1]}`,uk:m=>`Перший ${m[1]}`}],
  [/^(.+) in every style$/,{lt:m=>`${m[1]} visais stiliais`,uk:m=>`${m[1]} в усіх стилях`}],
  [/^(.+) in the last 6 months$/,{lt:m=>`${m[1]} per 6 mėnesius`,uk:m=>`${m[1]} за 6 місяців`}],
@@ -3930,7 +3957,7 @@ const MONTHS=['Sausis','Vasaris','Kovas','Balandis','Gegužė','Birželis','Liep
 const WD=['Pr','An','Tr','Kt','Pn','Š','S'];
 // ---------- field building blocks (v2): every field is a set of parts you add ----------
 // milestone sections: defined up here because saved milestones are cleaned when the app starts
-const GSEC={fing:'Finger strength',bould:'Bouldering',style:'Every style',lead:'Lead',comp:'Competitions',other:'Other goals'}, GSECO=['fing','bould','style','lead','comp','other'];
+const GSEC={fing:'Finger strength',power:'Pulling power',health:'Healthy fingers',bould:'Bouldering',flash:'Flashing',style:'Every style',lead:'Lead',comp:'Competitions',other:'Other goals'}, GSECO=['fing','power','health','bould','flash','style','lead','comp','other'];
 const COMP={Z:'Stress & adrenaline',W:'Session quality',R:'Time range',C:'Time',Q:'Mood Meter',A:'Scale 1–7',S:'1–10',V:'Timed scores',X:'Measure',N:'Number',D:'Minutes',K:'Count',Y:'Yes / No',E:'Training load',F:'Flash & tops',G:'Routes',P:'Pain check',M:'Body map',B:'Timed blocks',L:'Checklist',T:'Text'};
 const CORDER=['R','C','Q','Z','A','S','V','X','N','D','K','Y','E','W','F','G','P','M','B','L','T'];
 const LEG={text:'T',scale:'S',both:'ST',range:'R',sleep:'RT',rangeScale:'RS',all:'RST',blocks:'B',list:'L',load:'E',pain:'P',flash:'F',number:'N'};
@@ -7043,7 +7070,7 @@ app.addEventListener('change',ev=>{
   if(ds.xiu){ const {k,e,it}=itemAt(ds.xiu); if(!it) return; it.x=normX(Object.assign({},xcfg(e,it),{u:t.value})); saveMonth(k); render(); return; }
   for(const k of ['thow','tname','xcu','fname','xlr','xbw','xrole']) if(ds[k]!==undefined){ const tp=T[+String(ds[k]).split('|')[0]]; if(tp&&tp.perf) return; }
   if(ds.thow!==undefined){ const tp=T[+ds.thow]; if(tp){ tp.how=t.value.trim().slice(0,600); saveCfg(); } return; }
-  if(ds.gfield!==undefined||ds.gdate!==undefined||ds.glabel!==undefined||ds.gitarget!==undefined||ds.giname!==undefined||ds.gicount!==undefined||ds.gidays!==undefined){ goalChange(t,ds); return; }
+  if(ds.gfield!==undefined||ds.gdate!==undefined||ds.glabel!==undefined||ds.gitarget!==undefined||ds.giname!==undefined||ds.gicount!==undefined||ds.gidays!==undefined||ds.gipct!==undefined){ goalChange(t,ds); return; }
   if(ds.tname!==undefined) T[+ds.tname].name=t.value.trim()||'Be pavadinimo';
   else if(ds.fname){ const [ti,fi]=ds.fname.split('|').map(Number); T[ti].fields[fi].name=t.value.trim()||'Laukas'; }
   else if(ds.ccolor!==undefined){ T[+ds.ccolor].color=safeColor(t.value); saveCfg(); render(); return; }
@@ -7846,35 +7873,52 @@ function renderPerf(){ ensurePerf(); const k=mkey(S.y,S.m); month(k); if(S.st.pg
   ${g==='climb'||g==='comp'?fallCard():''}`;
   app.querySelectorAll('textarea').forEach(grow); }
 // ---- Milestones: the roadmap with real numbers, and how close you are today
-const secOf=i=>GSEC[i.sec]?i.sec:i.kind==='metric'?'fing':i.kind==='grade'?'bould':i.kind==='styles'?'style':'other';
+const secOf=i=>GSEC[i.sec]?i.sec:i.kind==='metric'?'fing':i.kind==='grade'?'bould':i.kind==='styles'?'style':i.kind==='flash'?'flash':i.kind==='balance'?'health':'other';
 function normGoals(g){ if(!Array.isArray(g)) return []; const S2=s=>String(s==null?'':s).replace(/[<>"`]/g,'').slice(0,80), okid=v=>/^[A-Za-z0-9_-]{1,64}$/.test(String(v));
   return g.filter(m=>m&&typeof m==='object').slice(0,30).map(m=>({id:okid(m.id)?String(m.id):rid(),label:S2(m.label)||'Milestone',date:/^\d{4}-\d{2}-\d{2}$/.test(String(m.date))?String(m.date):'2027-12-31',
-    items:(Array.isArray(m.items)?m.items:[]).filter(i=>i&&typeof i==='object').slice(0,24).map(i=>{ const k=['metric','grade','check','styles'].includes(i.kind)?i.kind:'check', o={id:okid(i.id)?String(i.id):rid(),kind:k,name:S2(i.name)||'Goal'}; if(GSEC[i.sec]) o.sec=i.sec;
+    items:(Array.isArray(m.items)?m.items:[]).filter(i=>i&&typeof i==='object').slice(0,24).map(i=>{ const k=['metric','grade','check','styles','flash','balance'].includes(i.kind)?i.kind:'check', o={id:okid(i.id)?String(i.id):rid(),kind:k,name:S2(i.name)||'Goal'}; if(GSEC[i.sec]) o.sec=i.sec;
       if(k==='metric'){ o.tid=okid(i.tid)?String(i.tid):''; o.fid=okid(i.fid)?String(i.fid):''; o.side=['l','r','v'].includes(i.side)?i.side:'v'; o.as=i.as==='raw'?'raw':'pct'; o.target=isFinite(+i.target)?+i.target:0; if(+i.hs===1) o.hs=1; }
       if(k==='grade'||k==='styles'){ o.target=S2(i.target).toUpperCase().slice(0,4)||'7C'; o.count=Math.max(1,Math.min(50,Math.round(+i.count)||1)); o.days=Math.max(0,Math.min(3650,Math.round(+i.days)||0)); }
+      if(k==='flash'){ o.target=S2(i.target).toUpperCase().slice(0,4)||'7B'; o.pct=Math.max(5,Math.min(100,Math.round(+i.pct)||50)); o.days=Math.max(30,Math.min(3650,Math.round(+i.days)||182)); o.min=Math.max(1,Math.min(50,Math.round(+i.min)||5)); }
+      if(k==='balance'){ o.tid=okid(i.tid)?String(i.tid):''; o.fid=okid(i.fid)?String(i.fid):''; o.as=i.as==='raw'?'raw':'pct'; o.target=isFinite(+i.target)?Math.max(1,Math.min(100,+i.target)):90; }
       if(k==='check') o.done=!!i.done; return o; })})).sort((a,b)=>a.date<b.date?-1:1); }
 // The template path, one milestone a year. Finger targets are % of bodyweight on the 7 s one-arm test (Lattice benchmarks for the grade);
 // grade steps get further apart as the grades get harder, as in Lattice's data (more years per grade band at the top).
+// The path toward Sorato Anraku's level: above-average targets, one milestone a year.
+// Fingers: % of bodyweight on the 7 s one-arm test, 20 mm. Lattice-based data: ~106% ≈ 8B+ (V14), ~110% ≈ 8C, ~114% ≈ 8C+, ~118% ≈ V17;
+// a World Cup winner should be at the top of that range. Pull-ups: heaviest 2 clean reps, % bodyweight; Lattice's gold standard is 165%,
+// the very best go above it. Flash rate: comps are onsight, so the share of boulders at a grade you flash (route cards, last 6 months).
+// Healthy fingers: the weaker hand at least 90–95% of the other (his right A2 pulley).
 function roadmapGoals(){ const isF=f=>{ const c=normX(f.x); return compsOf(f).includes('X')&&c.u==='kg'&&c.lr&&!!c.bw; }; let fing=S.cfg.templates.find(t=>t.perf&&pgOf(t)==='daily'&&t.fields.some(isF)); if(!fing){ fing=DAILY_TEST(); S.cfg.templates.push(fing); }
-  const fd=fing.fields.find(isF), F=(l,r)=>[['l',l],['r',r]].map(([side,t])=>({id:rid(),kind:'metric',sec:'fing',name:`${side==='l'?'Left':'Right'} hand`,tid:fing.id,fid:fd.id,side,as:'pct',target:t}));
+  const isP=f=>{ const c=normX(f.x); return compsOf(f).includes('X')&&c.u==='kg'&&c.bw==='hang'&&!c.lr; }; let pull=S.cfg.templates.find(t=>t.perf&&pgOf(t)==='daily'&&t.fields.some(isP)); if(!pull){ pull=DAILY_PULL(); S.cfg.templates.push(pull); }
+  const fd=fing.fields.find(isF), pf=pull.fields.find(isP), F=(l,r)=>[['l',l],['r',r]].map(([side,t])=>({id:rid(),kind:'metric',sec:'fing',name:`${side==='l'?'Left':'Right'} hand`,tid:fing.id,fid:fd.id,side,as:'pct',target:t}));
+  const P=t=>({id:rid(),kind:'metric',sec:'power',name:'Pull-ups, 2 reps',tid:pull.id,fid:pf.id,side:'v',as:'pct',target:t}), B=t=>({id:rid(),kind:'balance',sec:'health',name:'Weaker hand vs stronger',tid:fing.id,fid:fd.id,as:'pct',target:t});
+  const FL=t=>({id:rid(),kind:'flash',sec:'flash',name:`Flash half of ${t}`,target:t,pct:50,days:182,min:5});
   const first=t=>({id:rid(),kind:'grade',sec:'bould',name:`First ${t}`,target:t,count:1,days:0}), cons=t=>({id:rid(),kind:'grade',sec:'bould',name:`${t} in the last 6 months`,target:t,count:1,days:182}), sty=t=>({id:rid(),kind:'styles',sec:'style',name:`${t} in every style`,target:t,count:1,days:182});
   const ck=(sec,n)=>({id:rid(),kind:'check',sec,name:n,done:false}), M=(label,date,items)=>({id:rid(),label,date,items});
-  return [M('Mid 2027','2027-06-30',[...F(95,80),first('7C+'),cons('7C'),sty('7B'),ck('lead','Lead 7b+'),ck('comp','Compete at a European Cup')]),
-    M('2027','2027-12-31',[...F(97,88),first('8A'),cons('7C+'),sty('7B+'),ck('lead','Lead 7c+'),ck('comp','European Cup semi-final')]),
-    M('2028','2028-12-31',[...F(100,95),first('8A+'),cons('8A'),sty('7C'),ck('lead','Lead 8a'),ck('comp','First World Cups'),ck('comp','World Cup top 40')]),
-    M('2029','2029-12-31',[...F(102,98),cons('8A+'),sty('7C+'),ck('lead','Lead 8a+'),ck('comp','World Cup top 30'),ck('comp','European Cup final')]),
-    M('2030','2030-12-31',[...F(103,101),first('8B'),sty('8A'),ck('lead','Lead 8b'),ck('comp','First World Cup semi-final')]),
-    M('2031','2031-12-31',[...F(104,103),cons('8B'),sty('8A'),ck('comp','Two or more World Cup semi-finals in a season')]),
-    M('2032','2032-12-31',[...F(105,105),first('8B+'),sty('8A+'),ck('comp','Semi-final in half of World Cup starts')]),
-    M('2033','2033-12-31',[...F(106,106),cons('8B+'),sty('8A+'),ck('lead','Lead 8b+'),ck('comp','First World Cup final')]),
-    M('2034','2034-12-31',[...F(106,106),sty('8B'),ck('comp','World Cup finals regularly')]),
-    M('2035','2035-12-31',[...F(106,106),sty('8B'),ck('comp','World Cup podium'),ck('comp','Olympic qualification events')]),
-    M('2036','2036-07-31',[ck('comp','Olympic Games')])]; }
+  return [M('Mid 2027','2027-06-30',[...F(97,88),P(150),B(90),first('7C+'),cons('7C'),FL('7A+'),sty('7B'),ck('lead','Lead 7b+'),ck('comp','European Cup top 20')]),
+    M('2027','2027-12-31',[...F(100,96),P(155),B(92),first('8A'),cons('7C+'),FL('7B'),sty('7B+'),ck('lead','Lead 7c+'),ck('comp','European Cup semi-final')]),
+    M('2028','2028-12-31',[...F(104,102),P(160),B(95),first('8B'),cons('8A'),FL('7B+'),sty('7C'),ck('lead','Lead 8a'),ck('comp','European Cup final'),ck('comp','World Cup top 30')]),
+    M('2029','2029-12-31',[...F(107,106),P(165),B(95),first('8B+'),cons('8A+'),FL('7C'),sty('7C+'),ck('lead','Lead 8a+'),ck('comp','European Cup podium'),ck('comp','First World Cup semi-final')]),
+    M('2030','2030-12-31',[...F(110,109),P(170),B(95),first('8C'),cons('8B'),FL('7C+'),sty('8A'),ck('lead','Lead 8b'),ck('comp','Semi-final in half of World Cup starts'),ck('comp','First World Cup final')]),
+    M('2031','2031-12-31',[...F(112,111),P(170),B(95),cons('8B+'),FL('8A'),sty('8A+'),ck('lead','Lead 8b+'),ck('comp','World Cup finals regularly'),ck('comp','Olympic qualification events')]),
+    M('2032','2032-12-31',[...F(114,113),P(175),B(95),first('8C+'),cons('8C'),FL('8A'),sty('8B'),ck('comp','World Cup podium'),ck('comp','Qualified for the Olympics'),ck('comp','Olympic final')]),
+    M('2033','2033-12-31',[...F(116,115),P(175),B(95),cons('8C'),FL('8A+'),sty('8B'),ck('lead','Lead 8c'),ck('comp','World Cup win'),ck('comp','World Championship medal')]),
+    M('2034','2034-12-31',[...F(118,117),P(175),B(95),first('9A'),cons('8C+'),FL('8A+'),sty('8B+'),ck('comp','World Cup series top 3')]),
+    M('2035','2035-12-31',[...F(118,118),P(175),B(95),cons('8C+'),FL('8B'),sty('8B+'),ck('comp','World Cup series title'),ck('comp','Qualified for the Olympics')]),
+    M('2036','2036-07-31',[...F(118,118),ck('comp','Olympic medal')])]; }
 const monthsTo=d=>(new Date(d+'T12:00')-new Date(todayStr+'T12:00'))/864e5/30.44;
 function gradeTops(days){ const R=allRoutes().filter(y=>y.top===true&&FONT(y.g)!=null); return days?R.filter(y=>y.d>=dAdd(todayStr,-days+1)):R; }
 // grade progress: 8 Font grades below the goal is the start of the bar (6C+ toward 7C+ is a quarter, not most of the way)
 const gradeP=(b,tg)=>b==null||tg==null?0:Math.max(0,Math.min(1,(b-(tg-8))/8));
 function goalItemState(i,m){
+  if(i.kind==='flash'){ const tg=FONT(i.target); if(tg==null) return {done:false,pct:0,main:esc(i.target),sub:'Use a Font grade like 7B or 8A.',short:i.name};
+    const from=dAdd(todayStr,-i.days+1), R=allRoutes().filter(y=>y.d>=from&&FONT(y.g)!=null&&FONT(y.g)>=tg&&rresOf(y)!=null), n=R.length, f=R.filter(y=>rresOf(y)==='flash').length, rate=n?f/n*100:0, enough=n>=i.min, done=enough&&rate>=i.pct;
+    return {done,none:!n,now:n?`${Math.round(rate)}%`:'–',goal:`${i.pct}%`,pct:Math.min(1,(rate/i.pct))*Math.min(1,n/i.min),main:'',sub:`${f} of ${n} boulders at ${esc(i.target)} or harder flashed${enough?'':` · needs ${i.min} boulders`}`,short:`Flash ${i.target}+: ${n?Math.round(rate)+'%':'–'} → ${i.pct}%`}; }
+  if(i.kind==='balance'){ const t=S.cfg.templates.find(t=>t.id===i.tid), f=t&&t.fields.find(f=>f.id===i.fid); if(!f) return {done:false,pct:0,main:'Test not found',sub:'',short:i.name};
+    const c=normX(f.x), as=c.u==='kg'&&c.bw?'pct':'raw', best=sd=>{ const S2=goalSeries({tid:i.tid,fid:i.fid,side:sd},c,as); if(!S2.length) return null; const last=S2[S2.length-1].d, w=S2.filter(x=>x.d>=dAdd(last,-13)); return Math.max(...w.map(x=>x.v)); };
+    const L=best('l'), Rv=best('r'); if(L==null||Rv==null) return {done:false,none:true,pct:0,now:'–',goal:`${i.target}%`,main:'',sub:'Test both hands.',short:`${i.name}: no test yet`};
+    const r=Math.min(L,Rv)/Math.max(L,Rv)*100, weak=L<Rv?'Left':'Right'; return {done:r>=i.target,now:`${Math.round(r)}%`,goal:`${i.target}%`,pct:Math.min(1,r/i.target),main:'',sub:`${weak} hand is at ${Math.round(r)}% of the other`,short:`${weak} hand ${Math.round(r)}% → ${i.target}%`}; }
   if(i.kind==='check') return {done:!!i.done,pct:i.done?1:0,main:'',sub:'',short:i.name};
   if(i.kind==='styles'){ const tg=FONT(i.target); if(tg==null) return {done:false,pct:0,main:esc(i.target),sub:'Use a Font grade like 7B or 8A.',short:i.name};
     const T=myTags(); if(!T.length) return {done:false,pct:0,main:'',sub:'Add your styles on a route card (Style → Add your styles) and tag your tops. Then this shows your hardest top in each.',short:'Add your styles'};
@@ -7928,8 +7972,10 @@ function goalEditHTML(m){ const O=metricOptions();
     ${m.items.map(i=>{ const cur=`${i.tid}|${i.fid}|${i.side}${i.hs===1?'|1':''}`; return `<div class="giedit"><p class="gsec">${GSEC[secOf(i)]}</p><div class="row" style="margin:0"><input type="text" data-giname="${m.id}|${i.id}" value="${esc(i.name)}" aria-label="Goal name"><button class="x" data-gidel="${m.id}|${i.id}" aria-label="Remove ${esc(i.name)}">✕</button></div>
       ${i.kind==='metric'?`<div class="ftgrid"><label class="ftin">Test<select data-gfield="${m.id}|${i.id}">${O.some(o=>o.v===cur)?'':'<option value="" selected>Pick a test</option>'}${O.map(o=>`<option value="${o.v}"${o.v===cur?' selected':''}>${esc(o.l)}</option>`).join('')}</select></label><label class="ftin">Target<input type="number" inputmode="decimal" step="any" data-gitarget="${m.id}|${i.id}" value="${esc(i.target)}"></label></div>`
        :i.kind==='grade'?`<div class="ftgrid g3"><label class="ftin">Grade<input type="text" data-gitarget="${m.id}|${i.id}" value="${esc(i.target)}" autocapitalize="characters"></label><label class="ftin">Tops<input type="number" inputmode="numeric" min="1" data-gicount="${m.id}|${i.id}" value="${esc(i.count)}"></label><label class="ftin">In days <small>0 = ever</small><input type="number" inputmode="numeric" min="0" data-gidays="${m.id}|${i.id}" value="${esc(i.days)}"></label></div>`
+       :i.kind==='flash'?`<div class="ftgrid g3"><label class="ftin">Grade or harder<input type="text" data-gitarget="${m.id}|${i.id}" value="${esc(i.target)}" autocapitalize="characters"></label><label class="ftin">Flashed %<input type="number" inputmode="numeric" min="5" max="100" data-gipct="${m.id}|${i.id}" value="${esc(i.pct)}"></label><label class="ftin">In days<input type="number" inputmode="numeric" min="30" data-gidays="${m.id}|${i.id}" value="${esc(i.days)}"></label></div>`
+       :i.kind==='balance'?`<div class="ftgrid"><label class="ftin">Weaker hand at least (% of the other)<input type="number" inputmode="numeric" min="1" max="100" data-gitarget="${m.id}|${i.id}" value="${esc(i.target)}"></label></div>`
        :i.kind==='styles'?`<div class="ftgrid"><label class="ftin">Grade in every style<input type="text" data-gitarget="${m.id}|${i.id}" value="${esc(i.target)}" autocapitalize="characters"></label><label class="ftin">In days <small>0 = ever</small><input type="number" inputmode="numeric" min="0" data-gidays="${m.id}|${i.id}" value="${esc(i.days)}"></label></div>`:''}</div>`; }).join('')}
-    <p class="clab" style="margin-top:10px">Add a goal</p><div class="chips"><button data-giadd="${m.id}|metric">+ Test number</button><button data-giadd="${m.id}|grade">+ Boulder grade</button><button data-giadd="${m.id}|styles">+ Every style</button><button data-giadd="${m.id}|check">+ Tick box</button></div>
+    <p class="clab" style="margin-top:10px">Add a goal</p><div class="chips"><button data-giadd="${m.id}|metric">+ Test number</button><button data-giadd="${m.id}|grade">+ Boulder grade</button><button data-giadd="${m.id}|styles">+ Every style</button><button data-giadd="${m.id}|flash">+ Flash rate</button><button data-giadd="${m.id}|check">+ Tick box</button></div>
     <div class="row" style="margin:12px 0 0"><button class="btn" data-gdone="1">Done</button><span style="flex:1"></span><button class="del" data-gdel="${m.id}">Delete milestone</button></div></div>`; }
 
 function goalCelebrate(){ if(GUEST) return; let seen={}; try{ seen=JSON.parse(localStorage.getItem(PFX+'reached')||'{}'); }catch(e){} const fresh=[];
@@ -7942,7 +7988,7 @@ function renderGoals(){ ensurePerf(); const G=S.cfg.goals||[], ed=S.st.gedit||nu
   app.innerHTML=`${topBar()}<div class="phead"><div><h1>Milestones ${helpBtn('goals')}</h1></div>${fig('goals')}</div>
     ${G.length?'':GUEST?'<div class="empty">No milestones yet.</div>':`<div class="card gpick">${pathMine()?`<button class="gopt" data-groad="1"><b>My path 2027–2036</b><em>Use my path →</em></button>`:''}
       <button class="gopt" data-gadd="1"><b>Build my own</b><em>Start →</em></button></div>`}
-    ${G.length&&!GUEST&&pathMine()&&(!G.some(m=>m.items.some(i=>i.sec))||G.some(m=>m.items.some(i=>i.kind==='grade'&&i.count>1)))?`<div class="card"><h3>New version of the path</h3><button class="btn" data-groad="1" style="margin-top:8px">Use the yearly path</button></div>`:''}
+    ${G.length&&!GUEST&&pathMine()&&(!G.some(m=>m.items.some(i=>i.kind==='flash'))||G.some(m=>m.items.some(i=>i.kind==='grade'&&i.count>1)))?`<div class="card"><h3>New version of the path</h3><p>Aimed at Sorato’s level: fingers, pull power, healthy fingers, flash rate, grades, lead and World Cup steps.</p><button class="btn" data-groad="1" style="margin-top:8px">Use the yearly path</button></div>`:''}
     ${G.map(m=>ed===m.id&&!GUEST?goalEditHTML(m):goalCardHTML(m,m.id===nx)).join('')}
     ${G.length&&!GUEST?'<button class="btn ghost gaddbtn addrow" data-gadd="1">+ Add milestone</button>':''}
     `; }
@@ -7952,7 +7998,7 @@ function goalClick(ds,b){
   if(ds.gopen){ const nx=(nextGoal()||{}).id, cur=(S.st.gopen||{})[ds.gopen]; S.st.gopen=Object.assign({},S.st.gopen,{[ds.gopen]:!(cur===undefined?ds.gopen===nx:cur)}); render(); return true; }
   if(GUEST) return false;
   if(ds.groad&&!pathMine()) return true;
-  if(ds.groad){ S.cfg.goals=normGoals(roadmapGoals()); saveCfg(); render(); toast('Path added. Tap Edit on a milestone to change it'); return true; }
+  if(ds.groad){ const was={}; (S.cfg.goals||[]).forEach(m=>m.items.forEach(i=>{ if(i.kind==='check'&&i.done) was[nk(i.name)]=1; })); const NG=roadmapGoals(); NG.forEach(m=>m.items.forEach(i=>{ if(i.kind==='check'&&was[nk(i.name)]) i.done=true; })); S.cfg.goals=normGoals(NG); saveCfg(); render(); toast('Path added. Tap Edit on a milestone to change it'); return true; }
   if(ds.gadd){ const G=(S.cfg.goals||[]).slice(), last=G[G.length-1], m={id:rid(),label:'New milestone',date:last&&last.date>todayStr?dAdd(last.date,365):dAdd(todayStr,180),items:[]}; G.push(m); S.cfg.goals=normGoals(G); S.st.gedit=m.id; saveCfg(); render(); return true; }
   if(ds.gedit){ S.st.gedit=ds.gedit; render(); return true; }
   if(ds.gdone){ S.st.gedit=null; S.cfg.goals=normGoals(S.cfg.goals); saveCfg(); render(); return true; }
@@ -7960,16 +8006,17 @@ function goalClick(ds,b){
   if(ds.gchk){ const [mid,iid]=ds.gchk.split('|'), i=goalItem(mid,iid); if(!i) return true; i.done=!i.done; saveCfg(); render(); if(i.done) toast(`✓ ${i.name}`); return true; }
   if(ds.gidel){ const [mid,iid]=ds.gidel.split('|'), m=(S.cfg.goals||[]).find(x=>x.id===mid); if(!m) return true; m.items=m.items.filter(i=>i.id!==iid); saveCfg(); render(); return true; }
   if(ds.giadd){ const [mid,kind]=ds.giadd.split('|'), m=(S.cfg.goals||[]).find(x=>x.id===mid); if(!m) return true; const o=metricOptions()[0], ref=o?o.v.split('|'):['','','v'];
-    m.items.push(kind==='metric'?{id:rid(),kind,name:'Test goal',tid:ref[0],fid:ref[1],side:ref[2],as:'pct',target:100}:kind==='grade'?{id:rid(),kind,name:'Boulder grade',target:'7C',count:1,days:0}:kind==='styles'?{id:rid(),kind,name:'Every style',target:'7B',count:1,days:365}:{id:rid(),kind:'check',name:'New goal',done:false}); saveCfg(); render(); return true; }
+    m.items.push(kind==='metric'?{id:rid(),kind,name:'Test goal',tid:ref[0],fid:ref[1],side:ref[2],as:'pct',target:100}:kind==='grade'?{id:rid(),kind,name:'Boulder grade',target:'7C',count:1,days:0}:kind==='styles'?{id:rid(),kind,name:'Every style',target:'7B',count:1,days:365}:kind==='flash'?{id:rid(),kind,name:'Flash rate',target:'7B',pct:50,days:182,min:5}:{id:rid(),kind:'check',name:'New goal',done:false}); saveCfg(); render(); return true; }
   return false; }
 function goalChange(t,ds){ const G=S.cfg.goals||[];
   if(ds.glabel!==undefined){ const m=G.find(x=>x.id===ds.glabel); if(m) m.label=t.value.replace(/[<>"`]/g,'').trim().slice(0,80)||'Milestone'; }
   else if(ds.gdate!==undefined){ const m=G.find(x=>x.id===ds.gdate); if(m&&/^\d{4}-\d{2}-\d{2}$/.test(t.value)) m.date=t.value; }
-  else { const raw=ds.giname||ds.gitarget||ds.gicount||ds.gidays||ds.gfield||'', [mid,iid]=raw.split('|'), i=goalItem(mid,iid); if(!i) return;
+  else { const raw=ds.giname||ds.gitarget||ds.gicount||ds.gidays||ds.gipct||ds.gfield||'', [mid,iid]=raw.split('|'), i=goalItem(mid,iid); if(!i) return;
     if(ds.giname!==undefined) i.name=t.value.replace(/[<>"`]/g,'').trim().slice(0,80)||'Goal';
-    else if(ds.gitarget!==undefined) i.target=i.kind==='grade'?t.value.trim().toUpperCase().slice(0,4):(t.value!==''&&isFinite(+t.value)?+t.value:i.target);
+    else if(ds.gitarget!==undefined) i.target=['grade','styles','flash'].includes(i.kind)?t.value.trim().toUpperCase().slice(0,4):(t.value!==''&&isFinite(+t.value)?+t.value:i.target);
     else if(ds.gicount!==undefined) i.count=Math.max(1,Math.round(+t.value)||1);
     else if(ds.gidays!==undefined) i.days=Math.max(0,Math.round(+t.value)||0);
+    else if(ds.gipct!==undefined) i.pct=Math.max(5,Math.min(100,Math.round(+t.value)||50));
     else if(ds.gfield!==undefined&&t.value){ const [tid,fid,side,hs]=t.value.split('|'), f=fieldById(fid), c=normX(f&&f.x); Object.assign(i,{tid,fid,side,as:c.u==='kg'&&c.bw?'pct':'raw'}); if(hs==='1') i.hs=1; else delete i.hs; } }
   saveCfg(); }
 function goalsExport(){ const G=S.cfg.goals||[]; if(!G.length) return []; const L=['=== Milestones (status on '+todayStr+') ==='];
