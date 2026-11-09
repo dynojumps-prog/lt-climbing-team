@@ -1505,7 +1505,7 @@ html,body{overscroll-behavior-y:none}
 .eswrap{position:relative;margin-bottom:10px;border-radius:20px}
 .eswrap>.entry{margin-bottom:0!important;touch-action:pan-y}
 /* a card you can swipe is its own solid layer from the start: no blur behind it (a moving blur is redrawn every frame), so the swipe only moves pixels */
-.eswrap>.entry{will-change:transform;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background-image:linear-gradient(var(--panel),var(--panel))!important;background-color:var(--bg)!important}
+.eswrap>.entry{will-change:transform;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 .eswdel{position:absolute;inset:0;border:0;border-radius:20px;background:linear-gradient(135deg,#F2666B,#E5484D 50%,#C7353A);color:#fff;display:flex;align-items:center;justify-content:flex-end;padding:0;opacity:0;pointer-events:none;transition:opacity .12s,background-color .2s}
 .eswl{width:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
 .eswl b{font-size:.78rem;font-weight:800;letter-spacing:.02em}
@@ -7991,12 +7991,12 @@ const secOf=i=>GSEC[i.sec]?i.sec:i.kind==='health'?'health':i.kind==='metric'?'f
 function normGoals(g){ if(!Array.isArray(g)) return []; const S2=s=>String(s==null?'':s).replace(/[<>"`]/g,'').slice(0,180), okid=v=>/^[A-Za-z0-9_-]{1,64}$/.test(String(v));
   return g.filter(m=>m&&typeof m==='object').slice(0,30).map(m=>({id:okid(m.id)?String(m.id):rid(),label:S2(m.label)||'Milestone',date:/^\d{4}-\d{2}-\d{2}$/.test(String(m.date))?String(m.date):'2027-12-31',
     items:(Array.isArray(m.items)?m.items:[]).filter(i=>i&&typeof i==='object').slice(0,24).map(i=>{ const k=['metric','grade','check','styles','flash','balance','comp','health'].includes(i.kind)?i.kind:'check', o={id:okid(i.id)?String(i.id):rid(),kind:k,name:S2(i.name)||'Goal'}; if(GSEC[i.sec]) o.sec=i.sec;
-      if(k==='metric'){ o.tid=okid(i.tid)?String(i.tid):''; o.fid=okid(i.fid)?String(i.fid):''; o.side=['l','r','v'].includes(i.side)?i.side:'v'; o.as=i.as==='raw'?'raw':'pct'; o.target=isFinite(+i.target)?+i.target:0; if(+i.hs===1) o.hs=1; }
+      if(k==='metric'){ o.tid=okid(i.tid)?String(i.tid):''; o.fid=okid(i.fid)?String(i.fid):''; o.side=['l','r','v'].includes(i.side)?i.side:'v'; o.as=i.as==='raw'?'raw':'pct'; o.target=isFinite(+i.target)?+i.target:0; if(+i.hs===1) o.hs=1; if(i.any) o.any=true; }
       if(k==='grade'||k==='styles'){ o.target=S2(i.target).toUpperCase().slice(0,4)||'7C'; o.count=Math.max(1,Math.min(50,Math.round(+i.count)||1)); o.days=Math.max(0,Math.min(3650,Math.round(+i.days)||0)); }
       if(k==='flash'){ if(i.os) o.os=true; o.target=S2(i.target).toUpperCase().slice(0,4)||'7B'; o.pct=Math.max(5,Math.min(100,Math.round(+i.pct)||50)); o.days=Math.max(30,Math.min(3650,Math.round(+i.days)||182)); o.min=Math.max(1,Math.min(50,Math.round(+i.min)||5)); }
       if(k==='health'){ o.what=i.what==='pain'?'pain':'sleep'; o.target=isFinite(+i.target)?Math.max(0,Math.min(24,+i.target)):(o.what==='pain'?2:8); o.days=Math.max(7,Math.min(365,Math.round(+i.days)||28)); }
       if(k==='comp'){ o.stat=['top','flash','zone','score','starts'].includes(i.stat)?i.stat:'top'; o.round=['q','s','f'].includes(i.round)?i.round:''; o.lvl=['sim','nat','jp','es','wc','int'].includes(i.lvl)?i.lvl:''; o.g=FONT(i.g)!=null?String(i.g).toUpperCase().slice(0,4):''; o.pct=Math.max(1,Math.min(o.stat==='score'?125:o.stat==='starts'?40:100,Math.round(+i.pct*10)/10||50)); o.days=Math.max(30,Math.min(3650,Math.round(+i.days)||365)); o.min=Math.max(1,Math.min(60,Math.round(+i.min)||8)); }
-      if(k==='balance'){ o.tid=okid(i.tid)?String(i.tid):''; o.fid=okid(i.fid)?String(i.fid):''; o.as=i.as==='raw'?'raw':'pct'; o.target=isFinite(+i.target)?Math.max(1,Math.min(100,+i.target)):90; }
+      if(k==='balance'){ o.tid=okid(i.tid)?String(i.tid):''; o.fid=okid(i.fid)?String(i.fid):''; o.as=i.as==='raw'?'raw':'pct'; if(i.any) o.any=true; o.target=isFinite(+i.target)?Math.max(1,Math.min(100,+i.target)):90; }
       if(k==='check') o.done=!!i.done; return o; })})).sort((a,b)=>a.date<b.date?-1:1); }
 // The template path, one milestone a year. Finger targets are % of bodyweight on the 7 s one-arm test (Lattice benchmarks for the grade);
 // grade steps get further apart as the grades get harder, as in Lattice's data (more years per grade band at the top).
@@ -8011,9 +8011,9 @@ function normGoals(g){ if(!Array.isArray(g)) return []; const S2=s=>String(s==nu
 function roadmapGoals(){ const isF=f=>{ const c=normX(f.x); return compsOf(f).includes('X')&&c.u==='kg'&&c.lr&&!!c.bw; }; let fing=S.cfg.templates.find(t=>t.perf&&pgOf(t)==='daily'&&t.fields.some(isF)); if(!fing){ fing=DAILY_TEST(); S.cfg.templates.push(fing); }
   const isP=f=>{ const c=normX(f.x); return compsOf(f).includes('X')&&c.u==='kg'&&c.bw==='hang'&&!c.lr; }; let pull=S.cfg.templates.find(t=>t.perf&&pgOf(t)==='daily'&&t.fields.some(isP)); if(!pull){ pull=DAILY_PULL(); S.cfg.templates.push(pull); }
   const sl=tplByRole('pslap',POWER_TEST), jp=tplByRole('cmj',CMJ_TEST), mf=tplByRole('midf',MID_TEST);
-  const fd=fing.fields.find(isF), pf=pull.fields.find(isP), F=(l,r)=>[['l',l],['r',r]].map(([side,t])=>({id:rid(),kind:'metric',sec:'fing',name:`${side==='l'?'Left':'Right'} hand`,tid:fing.id,fid:fd.id,side,as:'pct',target:t}));
-  const P=t=>({id:rid(),kind:'metric',sec:'power',name:'Pull-ups, 2 reps',tid:pull.id,fid:pf.id,side:'v',as:'pct',target:t}), SL=t=>({id:rid(),kind:'metric',sec:'power',name:'Power slap',tid:sl.t.id,fid:sl.f.id,side:'v',as:'raw',target:t}), J=t=>({id:rid(),kind:'metric',sec:'power',name:'Jump (CMJ)',tid:jp.t.id,fid:jp.f.id,side:'v',as:'raw',target:t});
-  const B=t=>({id:rid(),kind:'balance',sec:'health',name:'Weaker hand vs stronger',tid:fing.id,fid:fd.id,as:'pct',target:t}), MB=t=>({id:rid(),kind:'balance',sec:'health',name:'Middle finger: weaker vs stronger',tid:mf.t.id,fid:mf.f.id,as:'raw',target:t});
+  const fd=fing.fields.find(isF), pf=pull.fields.find(isP), F=(l,r)=>[['l',l],['r',r]].map(([side,t])=>({id:rid(),kind:'metric',sec:'fing',name:`${side==='l'?'Left':'Right'} hand`,tid:fing.id,fid:fd.id,side,as:'pct',target:t,any:true}));
+  const P=t=>({id:rid(),kind:'metric',sec:'power',name:'Pull-ups, 2 reps',tid:pull.id,fid:pf.id,side:'v',as:'pct',target:t,any:true}), SL=t=>({id:rid(),kind:'metric',sec:'power',name:'Power slap',tid:sl.t.id,fid:sl.f.id,side:'v',as:'raw',target:t}), J=t=>({id:rid(),kind:'metric',sec:'power',name:'Jump (CMJ)',tid:jp.t.id,fid:jp.f.id,side:'v',as:'raw',target:t});
+  const B=t=>({id:rid(),kind:'balance',sec:'health',name:'Weaker hand vs stronger',tid:fing.id,fid:fd.id,as:'pct',target:t,any:true}), MB=t=>({id:rid(),kind:'balance',sec:'health',name:'Middle finger: weaker vs stronger',tid:mf.t.id,fid:mf.f.id,as:'raw',target:t});
   const PAIN=()=>({id:rid(),kind:'health',sec:'health',name:'Finger pain',what:'pain',target:2,days:28}), SLP=()=>({id:rid(),kind:'health',sec:'health',name:'Sleep',what:'sleep',target:8,days:28});
   const OS=t=>({id:rid(),kind:'flash',sec:'flash',name:`Onsight half of ${t}`,target:t,pct:50,days:90,min:15,os:true});
   const SIM=(t,n)=>({id:rid(),kind:'comp',sec:'flash',name:`Comp-sim: ${n} of 5 tops at ${t}`,stat:'top',lvl:'sim',round:'',g:t,pct:n*20,days:90,min:10});
@@ -8075,8 +8075,8 @@ function goalItemState(i,m){
     const from=dAdd(todayStr,-i.days+1), R=allRoutes().filter(y=>y.d>=from&&FONT(y.g)!=null&&FONT(y.g)>=tg&&rresOf(y)!=null), n=R.length, f=R.filter(y=>rresOf(y)==='flash'&&!(i.os&&y.bs)).length, rate=n?f/n*100:0, enough=n>=i.min, done=enough&&rate>=i.pct;
     return {done,none:!n,now:n?`${Math.round(rate)}%`:'–',goal:`${i.pct}%`,pct:Math.min(1,(rate/i.pct))*Math.min(1,n/i.min),main:'',sub:`${f} of ${n} boulders at ${esc(i.target)} or harder ${i.os?'onsighted':'flashed'}${enough?'':` · needs ${i.min} boulders`}`,short:`Flash ${i.target}+: ${n?Math.round(rate)+'%':'–'} → ${i.pct}%`}; }
   if(i.kind==='balance'){ const t=S.cfg.templates.find(t=>t.id===i.tid), f=t&&t.fields.find(f=>f.id===i.fid); if(!f) return {done:false,pct:0,main:'Test not found',sub:'',short:i.name};
-    const c=normX(f.x), as=c.u==='kg'&&c.bw?'pct':'raw', best=sd=>{ const S2=goalSeries({tid:i.tid,fid:i.fid,side:sd},c,as); if(!S2.length) return null; const last=S2[S2.length-1].d, w=S2.filter(x=>x.d>=dAdd(last,-13)); return Math.max(...w.map(x=>x.v)); };
-    const L=best('l'), Rv=best('r'); if(L==null||Rv==null) return {done:false,none:true,pct:0,now:'–',goal:`${i.target}%`,main:'',sub:'Test both hands.',short:`${i.name}: no test yet`};
+    const c=normX(f.x), as=c.u==='kg'&&c.bw?'pct':'raw', best=sd=>{ const S2=goalSeries({tid:i.tid,fid:i.fid,side:sd,any:i.any},c,as); if(!S2.length) return null; const last=S2[S2.length-1].d, w=S2.filter(x=>x.d>=dAdd(last,-13)); return Math.max(...w.map(x=>x.v)); };
+    const L=best('l'), Rv=best('r'); if(L==null||Rv==null||Math.max(L,Rv)<=0) return {done:false,none:true,pct:0,now:'–',goal:`${i.target}%`,main:'',sub:'Test both hands.',short:`${i.name}: no test yet`};
     const r=Math.min(L,Rv)/Math.max(L,Rv)*100, weak=L<Rv?'Left':'Right'; return {done:r>=i.target,now:`${Math.round(r)}%`,goal:`${i.target}%`,pct:Math.min(1,r/i.target),main:'',sub:`${weak} hand is at ${Math.round(r)}% of the other`,short:`${weak} hand ${Math.round(r)}% → ${i.target}%`}; }
   if(i.kind==='check') return {done:!!i.done,pct:i.done?1:0,main:'',sub:'',short:i.name};
   if(i.kind==='styles'){ const tg=FONT(i.target); if(tg==null) return {done:false,pct:0,main:esc(i.target),sub:'Use a Font grade like 7B or 8A.',short:i.name};
@@ -8103,10 +8103,13 @@ const pathMine=()=>/kajus/i.test(String(ACC.name||''));
 function sec1Ratio(i,as){ const a=metricSeries(i.tid,i.fid,i.side,as,7), b=metricSeries(i.tid,i.fid,i.side,as,1), r=[];
   b.forEach(y=>{ const x=a.filter(x=>Math.abs(dayIdx(x.d,y.d))<=14).sort((p,q)=>Math.abs(dayIdx(p.d,y.d))-Math.abs(dayIdx(q.d,y.d)))[0]; if(x&&y.v>0) r.push(x.v/y.v); });
   if(r.length<2) return {k:.92,own:false}; r.sort((p,q)=>p-q); const m=r[Math.floor(r.length/2)]; return {k:Math.max(.8,Math.min(1,m)),own:true,n:r.length}; }
-function goalSeries(i,c,as){ const s7=metricSeries(i.tid,i.fid,i.side,as,i.hs);
-  if(i.hs===1||!pathMine()||!(c.u==='kg'&&c.bw==='lift'&&c.lr)) return s7;
-  const s1=metricSeries(i.tid,i.fid,i.side,as,1); if(!s1.length) return s7; const {k}=sec1Ratio(i,as), by={};
-  s7.forEach(x=>by[x.d]={d:x.d,v:x.v}); s1.forEach(y=>{ const v=Math.round(y.v*k*10)/10; if(!by[y.d]||by[y.d].v<v) by[y.d]={d:y.d,v,k1:true}; });
+// a path goal counts every test of the same kind you log (daily finger test and super finger test alike), not only one log type
+function goalSeries(i,c,as){ const src=[{tid:i.tid,fid:i.fid}];
+  if(i.any) S.cfg.templates.filter(t=>t.perf).forEach(t=>t.fields.forEach(f=>{ if(t.id===i.tid&&f.id===i.fid) return; if(!compsOf(f).includes('X')) return; const x=normX(f.x); if(x.role==='bw'||x.u!==c.u||x.bw!==c.bw||x.lr!==c.lr) return; src.push({tid:t.id,fid:f.id}); }));
+  const by={}, add=(x,k1)=>{ if(!by[x.d]||by[x.d].v<x.v) by[x.d]=k1?{d:x.d,v:x.v,k1:true}:{d:x.d,v:x.v}; };
+  src.forEach(o=>{ const j=Object.assign({},i,o); metricSeries(o.tid,o.fid,i.side,as,i.hs).forEach(x=>add(x));
+    if(i.hs===1||!pathMine()||!(c.u==='kg'&&c.bw==='lift'&&c.lr)) return;
+    const s1=metricSeries(o.tid,o.fid,i.side,as,1); if(!s1.length) return; const {k}=sec1Ratio(j,as); s1.forEach(y=>add({d:y.d,v:Math.round(y.v*k*10)/10},true)); });
   return Object.values(by).sort((a,b)=>a.d<b.d?-1:1); }
 
 const nextGoal=()=>{ const G=S.cfg.goals||[]; return G.find(x=>x.date>=todayStr)||G[G.length-1]||null; };
